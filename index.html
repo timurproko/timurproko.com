@@ -244,6 +244,7 @@
       border: 0;
       transform-origin: top left;
       pointer-events: none;
+      overflow: hidden;
     }
     .preview::after {
       content: "";
@@ -379,7 +380,7 @@
       card.setAttribute("aria-label", `Open ${item.title}`);
       card.innerHTML = `
         <div class="preview" aria-hidden="true">
-          <iframe title="Preview of ${escapeHtml(item.title)}" src="${encodeURI(item.file)}" loading="lazy" tabindex="-1"></iframe>
+          <iframe title="Preview of ${escapeHtml(item.title)}" src="${encodeURI(item.file)}" loading="lazy" tabindex="-1" scrolling="no"></iframe>
         </div>
         <div class="meta">
           <h2 class="title">${escapeHtml(item.title).replace(/\n/g, ' ')}</h2>
@@ -390,6 +391,23 @@
           </div>
         </div>
       `;
+
+      // After the deck loads, lock it to slide 1 regardless of localStorage state.
+      const iframe = card.querySelector("iframe");
+      iframe.addEventListener("load", () => {
+        try {
+          const idoc = iframe.contentDocument || iframe.contentWindow.document;
+          // Suppress any internal scroll.
+          idoc.documentElement.style.cssText += ";overflow:hidden!important";
+          idoc.body.style.cssText += ";overflow:hidden!important";
+          // Reset to first slide.
+          const slides = idoc.querySelectorAll(".slide");
+          slides.forEach((s, i) => s.classList.toggle("active", i === 0));
+          const cur = idoc.getElementById("deck-cur");
+          if (cur) cur.textContent = "01";
+        } catch (_) {}
+      });
+
       return card;
     }
 
