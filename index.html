@@ -293,6 +293,16 @@
       color: var(--accent);
       font-weight: 500;
       font-size: 13px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-4px);
+      transition: opacity 0.15s, visibility 0.15s, transform 0.15s;
+    }
+    .card:hover .open-label,
+    .card:focus-within .open-label {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0);
     }
     .file-pill {
       overflow: hidden;
@@ -413,7 +423,7 @@
           <h2 class="title">${escapeHtml(item.title).replace(/\n/g, ' ')}</h2>
           <p class="description">${escapeHtml(item.description)}</p>
           <div class="open-row">
-            <span class="file-pill">${escapeHtml(item.file)}</span>
+            <span></span>
             <span class="open-label">Open →</span>
           </div>
         </div>
@@ -570,7 +580,7 @@
           <p class="profile-about">Unity Developer with experience building interactive digital products and immersive real-time experiences. I work at the intersection of product design, 3D graphics, and XR development, translating complex ideas into clear, intuitive interactions.</p>
           <div class="open-row">
             <span></span>
-            <a class="open-label" href="https://www.linkedin.com/in/timurproko/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="text-decoration:none;">LinkedIn profile →</a>
+            <a class="open-label" href="https://www.linkedin.com/in/timurproko/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="text-decoration:none;">LinkedIn →</a>
           </div>
         </div>
       `;
