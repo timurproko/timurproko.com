@@ -1627,7 +1627,10 @@
     var revealDistance = 10;
 
     extendDeckNavHideTimer = function () {
-      if (isIdle) return;
+      isIdle = false;
+      hiddenPointer = null;
+      clearShowTimer();
+      document.body.classList.remove('deck-nav-idle');
       scheduleHide();
     };
 

@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#111111" media="(max-width: 760px)" />
+  <meta name="theme-color" content="#f8f8f9" media="(min-width: 761px)" />
   <meta name="description" content="Unity developer building interactive products and immersive real-time experiences. Focused on XR, 3D graphics, and product-driven design across web, mobile, and AR/VR platforms." />
   <!-- social-preview:start -->
   <link rel="canonical" href="https://timurproko.com/" />
@@ -637,6 +639,9 @@
         background: var(--bg);
         transform: translate3d(0, var(--mobile-keyboard-offset, 0px), 0);
         will-change: transform;
+      }
+      body.mobile-search-active .hero {
+        display: none;
       }
       body.mobile-search-active .grid {
         padding-top: 43px;
