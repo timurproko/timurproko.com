@@ -720,6 +720,10 @@
       "ai-for-unity": "AI for Unity\nDevelopment",
       "cv": "Unity Developer\nCV"
     };
+    const DEFAULT_PREVIEW_VIEWPORT = { width: 1920, height: 1080 };
+    const PREVIEW_VIEWPORTS = {
+      cv: { width: 900, height: 900 }
+    };
     const DEFAULT_DESCRIPTION = "Agentic Engineering workflows for Unity Developers.";
 
     const grid = document.getElementById("presentations");
@@ -739,7 +743,8 @@
       for (const entry of entries) {
         const iframe = entry.target.querySelector("iframe");
         if (iframe) {
-          const s = entry.contentRect.width / 1920;
+          const previewWidth = Number(iframe.dataset.previewWidth) || DEFAULT_PREVIEW_VIEWPORT.width;
+          const s = entry.contentRect.width / previewWidth;
           iframe.style.transform = `scale(${s})`;
         }
       }
@@ -844,8 +849,14 @@
         </div>
       `;
 
-      // After the deck loads, lock it to slide 1 regardless of localStorage state.
+      const previewViewport = previewViewportFor(item.file);
       const iframe = card.querySelector("iframe");
+      iframe.dataset.previewWidth = String(previewViewport.width);
+      iframe.dataset.previewHeight = String(previewViewport.height);
+      iframe.style.width = `${previewViewport.width}px`;
+      iframe.style.height = `${previewViewport.height}px`;
+
+      // After the deck loads, lock it to slide 1 regardless of localStorage state.
       iframe.addEventListener("load", () => {
         try {
           const idoc = iframe.contentDocument || iframe.contentWindow.document;
@@ -1255,6 +1266,10 @@
       return String(file)
         .replace(/\/index\.html?$/i, "")
         .replace(/\/$/, "");
+    }
+
+    function previewViewportFor(file) {
+      return PREVIEW_VIEWPORTS[normalizePresentationRoute(file)] || DEFAULT_PREVIEW_VIEWPORT;
     }
 
     function previewUrl(file) {
