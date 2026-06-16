@@ -588,6 +588,41 @@
     @media (max-width: 760px) {
       .shell { padding: 72px 20px 64px; }
       .nav-inner { padding: 0 20px; }
+      .toolbar {
+        position: relative;
+        padding-top: 4px;
+        border-bottom-color: transparent;
+      }
+      .toolbar:focus-within { border-bottom-color: transparent; }
+      .toolbar::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -1px;
+        height: 1px;
+        background: var(--border);
+      }
+      .toolbar:focus-within::after { background: var(--accent); }
+      .toolbar.is-search-active {
+        position: sticky;
+        top: 56px;
+        z-index: 95;
+        margin-left: -20px;
+        margin-right: -20px;
+        padding: 4px 20px 0;
+        border-bottom-color: transparent;
+        background: oklch(99% 0.002 240 / 0.88);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      .toolbar.is-search-active.is-search-pinned {
+        border-bottom-color: var(--border);
+      }
+      .toolbar.is-search-active::after {
+        left: 20px;
+        right: 20px;
+      }
       .open-row .open-label {
         opacity: 1;
         visibility: visible;
@@ -646,9 +681,11 @@
     const grid = document.getElementById("presentations");
     const count = document.getElementById("count");
     const search = document.getElementById("search");
+    const toolbar = document.querySelector(".toolbar");
     const footerYear = document.querySelector("[data-footer-year]");
     let presentations = [];
     let profileHeightFrame = 0;
+    let blockNextCardClick = false;
 
     setupFooterYearAnimation();
 
@@ -790,14 +827,66 @@
       const files = await discoverPresentationFiles();
       presentations = await Promise.all(files.map(loadPresentationMeta));
       render(presentations);
+      setupMobileSearchInteractions();
+      updateSearchState();
       search.addEventListener("input", () => {
         const query = search.value.trim().toLowerCase();
         const filtered = presentations.filter(item =>
           [item.title, item.description, item.file].join(" ").toLowerCase().includes(query)
         );
+        updateSearchState();
         render(filtered, query);
         requestAnimationFrame(() => search.focus({ preventScroll: true }));
       });
+    }
+
+    function setupMobileSearchInteractions() {
+      search.addEventListener("focus", updateSearchState);
+      search.addEventListener("blur", updateSearchState);
+      window.addEventListener("scroll", updateSearchPinnedState, { passive: true });
+      window.addEventListener("resize", updateSearchPinnedState);
+
+      document.addEventListener("pointerdown", event => {
+        if (!isMobileSearchFocused()) return;
+        if (toolbar?.contains(event.target)) return;
+
+        blockNextCardClick = Boolean(event.target.closest?.(".card"));
+        if (blockNextCardClick) {
+          window.setTimeout(() => { blockNextCardClick = false; }, 700);
+        }
+        search.blur();
+        updateSearchState();
+      }, true);
+
+      document.addEventListener("click", event => {
+        if (!blockNextCardClick) return;
+        if (!event.target.closest?.(".card")) {
+          blockNextCardClick = false;
+          return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+        blockNextCardClick = false;
+      }, true);
+    }
+
+    function updateSearchState() {
+      const hasSearchText = search.value.trim().length > 0;
+      const isFocused = document.activeElement === search;
+      toolbar?.classList.toggle("is-search-active", hasSearchText || isFocused);
+      updateSearchPinnedState();
+    }
+
+    function updateSearchPinnedState() {
+      if (!toolbar) return;
+      const isActiveMobileSearch = toolbar.classList.contains("is-search-active") && window.matchMedia("(max-width: 760px)").matches;
+      const isPinned = isActiveMobileSearch && toolbar.getBoundingClientRect().top <= 56.5;
+      toolbar.classList.toggle("is-search-pinned", isPinned);
+    }
+
+    function isMobileSearchFocused() {
+      return document.activeElement === search && window.matchMedia("(max-width: 760px)").matches;
     }
 
     async function discoverPresentationFiles() {
