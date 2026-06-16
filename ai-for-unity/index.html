@@ -163,7 +163,8 @@
       background-color 720ms var(--ease-standard),
       border-color 720ms var(--ease-standard),
       color 720ms var(--ease-standard),
-      box-shadow 720ms var(--ease-standard);
+      box-shadow 720ms var(--ease-standard),
+      transform var(--motion-fast) var(--ease-standard);
   }
   .slide-tag::before,
   .deck-tag::before {
@@ -178,6 +179,9 @@
   }
   .deck-back:hover,
   .deck-back:focus-visible { color: var(--fg); }
+  .deck-back:hover::before,
+  .deck-back:focus-visible::before { transform: translateY(-1px); }
+  .deck-back:active::before { transform: translateY(0); }
   .slide-tag { position: absolute; top: 48px; left: clamp(56px, 6.67vw, 128px); font-family: var(--font-mono); font-size: clamp(12px, 0.9vw, 15px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); display: inline-flex; align-items: center; gap: 12px; }
   .slide.hero .slide-tag { left: clamp(80px, 10vw, 192px); }
   .slide.center .slide-tag { left: 50%; transform: translateX(-50%); }
@@ -354,7 +358,6 @@
     text-transform: uppercase;
     white-space: nowrap;
     user-select: none;
-    pointer-events: none;
     box-shadow: 0 8px 24px rgba(17,17,17,0.08);
     opacity: 0.92;
     transition:
@@ -364,7 +367,7 @@
       color 720ms var(--ease-standard),
       box-shadow 720ms var(--ease-standard);
   }
-  .nav-hint kbd {
+  .nav-hint button {
     font: inherit;
     color: var(--fg);
     background: color-mix(in oklab, var(--surface), var(--fg) 4%);
@@ -373,11 +376,20 @@
     padding: 2px 6px;
     line-height: 1;
     box-shadow: 0 1px 0 var(--border);
+    cursor: pointer;
     transition:
       background-color 720ms var(--ease-standard),
       border-color 720ms var(--ease-standard),
       color 720ms var(--ease-standard),
-      box-shadow 720ms var(--ease-standard);
+      box-shadow 720ms var(--ease-standard),
+      transform var(--motion-fast) var(--ease-standard);
+  }
+  .nav-hint button:hover,
+  .nav-hint button:focus-visible {
+    transform: translateY(-1px);
+  }
+  .nav-hint button:active {
+    transform: translateY(0);
   }
   .nav-hint .key-space {
     font-size: 0.86em;
@@ -387,6 +399,11 @@
   .nav-hint .sep {
     color: color-mix(in oklab, var(--muted), transparent 35%);
     transition: color 720ms var(--ease-standard);
+  }
+  body.deck-nav-idle .deck-back,
+  body.deck-nav-idle .nav-hint {
+    opacity: 0;
+    pointer-events: none;
   }
   body.chrome-on-dark .deck-back {
     background: color-mix(in oklab, #111111, transparent 16%);
@@ -410,7 +427,7 @@
     box-shadow: 0 8px 24px rgba(0,0,0,0.18);
     opacity: 0.78;
   }
-  body.chrome-on-dark .nav-hint kbd {
+  body.chrome-on-dark .nav-hint button {
     color: #f8f8f9;
     background: color-mix(in oklab, #f8f8f9, transparent 90%);
     border-color: color-mix(in oklab, #f8f8f9, transparent 86%);
@@ -706,7 +723,13 @@
 <div class="deck-counter" id="deckCounter"><span class="num">01</span> &nbsp;/&nbsp; 17</div>
 <div class="deck-credit is-hidden" id="deckCredit"><span class="speaker">Timur Prokopiev</span> &nbsp;·&nbsp; AI for Unity Development</div>
 <div class="mobile-swipe-hint" id="mobileSwipeHint" aria-hidden="true"><span class="swipe-prev">← Swipe</span><span class="swipe-counter"><span class="num">01</span> / <span class="total">17</span></span><span class="swipe-next">Swipe →</span></div>
-<div class="nav-hint" aria-hidden="true"><kbd>←</kbd><kbd>→</kbd> Slides <span class="sep">·</span> <kbd class="key-space">Space</kbd> Next</div>
+<div class="nav-hint" aria-label="Slide navigation">
+  <button type="button" data-deck-action="prev" aria-label="Previous slide">←</button>
+  <button type="button" data-deck-action="next" aria-label="Next slide">→</button>
+  Slides <span class="sep">·</span>
+  <button type="button" class="key-space" data-deck-action="next" aria-label="Next slide">Space</button>
+  Next
+</div>
 <section class="slide hero center dark" data-screen-label="01 Cover" data-notes="Welcome. This talk is about how AI is reshaping Unity development — from autocomplete to agentic engineering. We'll cover what changed, what tools matter, and what skills you need now.">
   <div class="kicker">A Knowledge-Sharing Session</div>
   <h1 class="h-hero">AI for Unity<br/>Development</h1>
@@ -1527,7 +1550,7 @@
   function onKey(e) {
     if (e.defaultPrevented) return;
     var t = e.target;
-    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT')) return;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.tagName === 'BUTTON')) return;
     if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
       e.preventDefault();
       go(active + 1);
@@ -1562,6 +1585,16 @@
     });
   }
 
+  document.querySelectorAll('[data-deck-action]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var action = button.getAttribute('data-deck-action');
+      if (action === 'prev') go(active - 1);
+      if (action === 'next') go(active + 1);
+    });
+  });
+
+  setupDeckNavigationAutoHide();
+
   window.addEventListener('keydown', onKey, true);
   document.addEventListener('keydown', onKey, true);
   document.addEventListener('scroll', syncFromScroll, { passive: true, capture: true });
@@ -1577,6 +1610,91 @@
     document.addEventListener('pointerdown', focusDeck, { passive: true });
     window.addEventListener('load', focusDeck);
     focusDeck();
+  }
+
+  function setupDeckNavigationAutoHide() {
+    if (!window.matchMedia || !window.matchMedia('(pointer: fine)').matches) return;
+
+    var hideTimer = null;
+    var showTimer = null;
+    var hiddenPointer = null;
+    var isIdle = false;
+    var idleDelay = 2200;
+    var revealDelay = 180;
+    var revealDistance = 10;
+
+    function clearShowTimer() {
+      if (!showTimer) return;
+      clearTimeout(showTimer);
+      showTimer = null;
+    }
+
+    function scheduleHide() {
+      if (hideTimer) clearTimeout(hideTimer);
+      hideTimer = setTimeout(function () {
+        isIdle = true;
+        hiddenPointer = null;
+        clearShowTimer();
+        document.body.classList.add('deck-nav-idle');
+      }, idleDelay);
+    }
+
+    function showNow() {
+      isIdle = false;
+      hiddenPointer = null;
+      clearShowTimer();
+      document.body.classList.remove('deck-nav-idle');
+      scheduleHide();
+    }
+
+    function scheduleReveal() {
+      if (showTimer) return;
+      showTimer = setTimeout(showNow, revealDelay);
+    }
+
+    function onPointerMove(e) {
+      if (e.pointerType && e.pointerType !== 'mouse') return;
+
+      if (!isIdle) {
+        scheduleHide();
+        return;
+      }
+
+      if (!hiddenPointer) {
+        hiddenPointer = { x: e.clientX, y: e.clientY };
+        return;
+      }
+
+      var dx = e.clientX - hiddenPointer.x;
+      var dy = e.clientY - hiddenPointer.y;
+      if (Math.hypot(dx, dy) < revealDistance) return;
+      scheduleReveal();
+    }
+
+    function isDeckNavigationKey(e) {
+      return e.key === 'ArrowRight' ||
+        e.key === 'ArrowLeft' ||
+        e.key === ' ' ||
+        e.key === 'PageDown' ||
+        e.key === 'PageUp' ||
+        e.key === 'Home' ||
+        e.key === 'End';
+    }
+
+    function onKeyReveal(e) {
+      if (isDeckNavigationKey(e)) {
+        clearShowTimer();
+        if (!isIdle) scheduleHide();
+        return;
+      }
+      showNow();
+    }
+
+    document.addEventListener('pointermove', onPointerMove, { passive: true });
+    document.addEventListener('pointerdown', showNow, { passive: true });
+    document.addEventListener('keydown', onKeyReveal, true);
+    document.addEventListener('focusin', showNow);
+    scheduleHide();
   }
 
   var touchStartX = 0;
