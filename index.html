@@ -688,6 +688,7 @@
     let footerRevealSetupFrame = 0;
     let footerRevealSetupTimer = 0;
     let blockNextCardClick = false;
+    let pendingMobileSearchBlur = null;
 
     const ro = new ResizeObserver(entries => {
       for (const entry of entries) {
@@ -862,19 +863,42 @@
     function setupMobileSearchInteractions() {
       search.addEventListener("focus", updateSearchState);
       search.addEventListener("blur", updateSearchState);
-      window.addEventListener("scroll", updateSearchPinnedState, { passive: true });
+      window.addEventListener("scroll", () => {
+        clearPendingMobileSearchBlur();
+        updateSearchPinnedState();
+      }, { passive: true });
       window.addEventListener("resize", updateSearchPinnedState);
 
       document.addEventListener("pointerdown", event => {
         if (!isMobileSearchFocused()) return;
         if (toolbar?.contains(event.target)) return;
 
-        blockNextCardClick = Boolean(event.target.closest?.(".card"));
-        if (blockNextCardClick) {
-          window.setTimeout(() => { blockNextCardClick = false; }, 700);
-        }
-        search.blur();
-        updateSearchState();
+        clearPendingMobileSearchBlur();
+        pendingMobileSearchBlur = {
+          pointerId: event.pointerId,
+          target: event.target,
+          startX: event.clientX,
+          startY: event.clientY,
+          shouldBlockCardClick: Boolean(event.target.closest?.(".card")),
+          timer: window.setTimeout(commitPendingMobileSearchBlur, 260)
+        };
+      }, true);
+
+      document.addEventListener("pointermove", event => {
+        if (!pendingMobileSearchBlur || pendingMobileSearchBlur.pointerId !== event.pointerId) return;
+        const dx = Math.abs(event.clientX - pendingMobileSearchBlur.startX);
+        const dy = Math.abs(event.clientY - pendingMobileSearchBlur.startY);
+        if (dx > 8 || dy > 8) clearPendingMobileSearchBlur();
+      }, true);
+
+      document.addEventListener("pointerup", event => {
+        if (!pendingMobileSearchBlur || pendingMobileSearchBlur.pointerId !== event.pointerId) return;
+        commitPendingMobileSearchBlur();
+      }, true);
+
+      document.addEventListener("pointercancel", event => {
+        if (!pendingMobileSearchBlur || pendingMobileSearchBlur.pointerId !== event.pointerId) return;
+        clearPendingMobileSearchBlur();
       }, true);
 
       document.addEventListener("click", event => {
@@ -888,6 +912,26 @@
         event.stopPropagation();
         blockNextCardClick = false;
       }, true);
+    }
+
+    function clearPendingMobileSearchBlur() {
+      if (!pendingMobileSearchBlur) return;
+      window.clearTimeout(pendingMobileSearchBlur.timer);
+      pendingMobileSearchBlur = null;
+    }
+
+    function commitPendingMobileSearchBlur() {
+      if (!pendingMobileSearchBlur) return;
+      const { shouldBlockCardClick, timer } = pendingMobileSearchBlur;
+      window.clearTimeout(timer);
+      pendingMobileSearchBlur = null;
+
+      blockNextCardClick = shouldBlockCardClick;
+      if (blockNextCardClick) {
+        window.setTimeout(() => { blockNextCardClick = false; }, 700);
+      }
+      search.blur();
+      updateSearchState();
     }
 
     function updateSearchState() {
