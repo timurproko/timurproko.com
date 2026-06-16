@@ -928,8 +928,15 @@
         updateSearchPinnedState();
       });
       window.visualViewport?.addEventListener("resize", () => {
-        scheduleMobileViewportOffsetUpdate();
+        updateMobileViewportOffset();
         updateSearchPinnedState();
+      });
+      // Track the visual viewport directly so the fixed header/search follow it
+      // 1:1 while the keyboard is open. Updating synchronously here (instead of
+      // through requestAnimationFrame) avoids the one-frame lag that causes the
+      // header to jump and jitter on scroll.
+      window.visualViewport?.addEventListener("scroll", () => {
+        updateMobileViewportOffset();
       });
 
       document.addEventListener("pointerdown", event => {
