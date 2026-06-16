@@ -105,6 +105,13 @@
       padding: 72px 32px 80px;
     }
     .hero { margin-bottom: 26px; }
+    .hero-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
     .eyebrow,
     .hero h1,
     .intro,
@@ -125,7 +132,7 @@
       display: inline-flex;
       gap: 8px;
       align-items: center;
-      margin: 0 0 16px;
+      margin: 0;
       color: var(--accent);
       font-size: 12px;
       font-weight: 500;
@@ -138,6 +145,42 @@
       height: 1.5px;
       background: currentColor;
       border-radius: 2px;
+    }
+    .print-shortcut {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 31px;
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: color-mix(in oklab, var(--surface), transparent 10%);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 1;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(17, 17, 17, 0.08);
+      opacity: 0;
+      animation: contentReveal 640ms cubic-bezier(0.22, 1, 0.36, 1) 180ms both;
+      transition: border-color 0.15s, color 0.15s, opacity 0.15s;
+    }
+    .print-shortcut:hover {
+      border-color: var(--accent);
+      color: var(--fg);
+    }
+    .print-shortcut kbd {
+      font: inherit;
+      color: var(--fg);
+      background: color-mix(in oklab, var(--surface), var(--fg) 4%);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px 6px;
+      line-height: 1;
+      box-shadow: 0 1px 0 var(--border);
     }
     h1 {
       font-family: var(--font-display);
@@ -312,6 +355,8 @@
     }
     .contact-value,
     .cert-title { display: block; color: var(--fg); font-size: 13px; letter-spacing: -0.005em; }
+    a.cert-title { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    a.cert-title:hover { color: var(--accent); }
     .cert-source { display: block; color: var(--muted); font-size: 12px; }
     .compact-list li { padding-bottom: 10px; border-bottom: 1px solid var(--border); }
     .compact-list li:last-child { padding-bottom: 0; border-bottom: 0; }
@@ -344,7 +389,7 @@
       .date { text-align: left; }
     }
     @media print {
-      nav, footer { display: none; }
+      nav, footer, .print-shortcut { display: none; }
       body { background: white; }
       .shell { max-width: none; padding: 0; }
       .card { break-inside: avoid; box-shadow: none; }
@@ -354,6 +399,7 @@
     @media (prefers-reduced-motion: reduce) {
       .nav-logo,
       .eyebrow,
+      .print-shortcut,
       .hero h1,
       .intro,
       .quick-meta,
@@ -380,7 +426,10 @@
 
   <main class="shell">
     <section class="hero" aria-labelledby="page-title">
-      <p class="eyebrow">Curriculum Vitae</p>
+      <div class="hero-top">
+        <p class="eyebrow">Curriculum Vitae</p>
+        <button class="print-shortcut" type="button" id="print-cv" aria-label="Print CV"><kbd>P</kbd> Print</button>
+      </div>
       <h1 id="page-title">Timur Prokopiev</h1>
       <p class="intro">
         Unity Developer with 15+ years of experience across real-time 3D development, UX, and technical art for Mobile, XR, and Desktop. I focus on scalable architectures, rendering pipeline optimization, custom editor tools, procedural generation, and spatial UI systems that accelerate production workflows.
@@ -495,15 +544,15 @@
               <span class="section-kicker">2022—2026</span>
             </div>
             <ul class="cert-list">
-              <li><span class="cert-date">2026</span><span class="cert-title">C# and .NET Design Patterns</span><span class="cert-source">Udemy</span></li>
-              <li><span class="cert-date">2025</span><span class="cert-title">Full-Stack Unity Developer</span><span class="cert-source">Code Craft</span></li>
-              <li><span class="cert-date">2025</span><span class="cert-title">XR Foundations Bootcamp</span><span class="cert-source">XR Bootcamp</span></li>
-              <li><span class="cert-date">2025</span><span class="cert-title">FMOD for Game Audio</span><span class="cert-source">Udemy</span></li>
-              <li><span class="cert-date">2025</span><span class="cert-title">Build Your MR Game &amp; Publish it on Meta’s Horizon Store</span><span class="cert-source">Udemy</span></li>
-              <li><span class="cert-date">2024</span><span class="cert-title">MVC Architecture For Unity 6 &amp; C#</span><span class="cert-source">Udemy</span></li>
-              <li><span class="cert-date">2024</span><span class="cert-title">Unit Testing For Unity 6 &amp; C#</span><span class="cert-source">Udemy</span></li>
-              <li><span class="cert-date">2023</span><span class="cert-title">Physics For Unity</span><span class="cert-source">Udemy</span></li>
-              <li><span class="cert-date">2023</span><span class="cert-title">Complete C# Unity Game Developer</span><span class="cert-source">Udemy</span></li>
+              <li><span class="cert-date">2026</span><a class="cert-title" href="https://www.udemy.com/certificate/UC-99698deb-c524-450b-b66d-41c434458186/" target="_blank" rel="noopener noreferrer">C# and .NET Design Patterns</a><span class="cert-source">Udemy</span></li>
+              <li><span class="cert-date">2025</span><a class="cert-title" href="https://github.com/timurproko/Full-StackUnityDeveloper/blob/main/CERTIFICATE.pdf" target="_blank" rel="noopener noreferrer">Full-Stack Unity Developer</a><span class="cert-source">Code Craft</span></li>
+              <li><span class="cert-date">2025</span><a class="cert-title" href="https://academy.xrbootcamp.com/certificates/yjjfkj7qi0" target="_blank" rel="noopener noreferrer">XR Foundations Bootcamp</a><span class="cert-source">XR Bootcamp</span></li>
+              <li><span class="cert-date">2025</span><a class="cert-title" href="https://www.udemy.com/certificate/UC-8ab0816c-f92e-4f2d-bc31-5b9c8c38978d/" target="_blank" rel="noopener noreferrer">FMOD for Game Audio</a><span class="cert-source">Udemy</span></li>
+              <li><span class="cert-date">2025</span><a class="cert-title" href="https://www.udemy.com/certificate/UC-5944e00e-7b50-44f6-bc02-f2595940d442/" target="_blank" rel="noopener noreferrer">Build Your MR Game &amp; Publish it on Meta’s Horizon Store</a><span class="cert-source">Udemy</span></li>
+              <li><span class="cert-date">2024</span><a class="cert-title" href="https://www.udemy.com/certificate/UC-bf1fcb5c-ccf9-4383-a16c-e5777afd0f3b/" target="_blank" rel="noopener noreferrer">MVC Architecture For Unity 6 &amp; C#</a><span class="cert-source">Udemy</span></li>
+              <li><span class="cert-date">2024</span><a class="cert-title" href="https://www.udemy.com/certificate/UC-5b8912a3-c2ae-4554-a7d7-47943da7ef9c/" target="_blank" rel="noopener noreferrer">Unit Testing For Unity 6 &amp; C#</a><span class="cert-source">Udemy</span></li>
+              <li><span class="cert-date">2023</span><a class="cert-title" href="https://www.udemy.com/certificate/UC-7cb27388-a250-4ea1-96b9-4159e3697b7a/" target="_blank" rel="noopener noreferrer">Physics For Unity</a><span class="cert-source">Udemy</span></li>
+              <li><span class="cert-date">2023</span><a class="cert-title" href="https://www.udemy.com/certificate/UC-a044e970-b33d-4cd4-b0a0-f2cb407cce6b/" target="_blank" rel="noopener noreferrer">Complete C# Unity Game Developer</a><span class="cert-source">Udemy</span></li>
               <li><span class="cert-date">2022</span><span class="cert-title">Programming for Unity Game Development Specialization</span><span class="cert-source">Coursera</span></li>
             </ul>
           </div>
@@ -587,5 +636,17 @@
 
     <footer>2026</footer>
   </main>
+  <script>
+    const printButton = document.getElementById("print-cv");
+    printButton?.addEventListener("click", () => window.print());
+    window.addEventListener("keydown", event => {
+      if (event.key !== "p" && event.key !== "P") return;
+      if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
+      const target = event.target;
+      if (target instanceof HTMLElement && target.closest("input, textarea, select, [contenteditable]")) return;
+      event.preventDefault();
+      window.print();
+    });
+  </script>
 </body>
 </html>

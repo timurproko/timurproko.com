@@ -742,8 +742,12 @@
       profile.style.setProperty("--reveal-delay", "520ms");
       grid.appendChild(profile);
 
+      const landingItems = [
+        ...items.filter(item => item.file === "cv.html"),
+        ...items.filter(item => item.file !== "cv.html")
+      ];
       const fragment = document.createDocumentFragment();
-      for (const [index, item] of items.entries()) {
+      for (const [index, item] of landingItems.entries()) {
         const card = makeCard(item);
         card.style.setProperty("--reveal-delay", `${580 + index * 70}ms`);
         fragment.appendChild(card);
