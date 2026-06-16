@@ -1267,9 +1267,12 @@
     Body/documentElement is the scroller — not a nested div inside a scaled canvas.
   */
   var STORAGE_KEY = 'ai-unity-deck-position';
+  var PREVIEW_MODE = new URLSearchParams(window.location.search).get('preview') === 'cover';
   var slides = document.querySelectorAll('.slide');
   var notesEl = document.getElementById('notes');
   var active = 0;
+  var programmaticTarget = null;
+  var programmaticTimer = null;
 
   function isMobileLayout() {
     return window.matchMedia && window.matchMedia('(max-width: 760px)').matches;
@@ -1330,6 +1333,18 @@
     var l = slides[active].dataset.screenLabel || '';
     notesEl.innerHTML = n ? '<b>' + l + '</b>' + n : '';
   }
+  function clearProgrammaticNavigation() {
+    programmaticTarget = null;
+    if (programmaticTimer) {
+      clearTimeout(programmaticTimer);
+      programmaticTimer = null;
+    }
+  }
+  function beginProgrammaticNavigation(i) {
+    programmaticTarget = i;
+    if (programmaticTimer) clearTimeout(programmaticTimer);
+    programmaticTimer = setTimeout(clearProgrammaticNavigation, 900);
+  }
   function setActive(i) {
     active = i;
     updateNotes();
@@ -1360,15 +1375,22 @@
     if (cr) cr.classList.toggle('is-hidden', i === 0);
     if (dt) dt.classList.toggle('is-hidden', isHero || !inSlideTag);
 
-    try { localStorage.setItem(STORAGE_KEY, String(i)); } catch (_) {}
+    if (!PREVIEW_MODE) {
+      try { localStorage.setItem(STORAGE_KEY, String(i)); } catch (_) {}
+    }
   }
   function go(i, behavior) {
     var next = Math.max(0, Math.min(slides.length - 1, i));
+    beginProgrammaticNavigation(next);
     setActive(next);
     scrollToSlide(next, behavior || 'smooth');
   }
   function syncFromScroll() {
     var i = Math.round(activeScrollLeft() / slideWidth());
+    if (programmaticTarget !== null) {
+      if (i === programmaticTarget) clearProgrammaticNavigation();
+      else return;
+    }
     if (i !== active && i >= 0 && i < slides.length) setActive(i);
   }
   function onKey(e) {
@@ -1433,16 +1455,21 @@
     go(touchStartActive + (dx < 0 ? 1 : -1));
   }, { passive: true });
 
-  try {
-    var saved = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
-    if (!isNaN(saved) && saved >= 0 && saved < slides.length) {
-      setActive(saved);
-      scrollToSlide(saved, 'instant');
-    } else {
+  if (PREVIEW_MODE) {
+    setActive(0);
+    scrollToSlide(0, 'instant');
+  } else {
+    try {
+      var saved = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
+      if (!isNaN(saved) && saved >= 0 && saved < slides.length) {
+        setActive(saved);
+        scrollToSlide(saved, 'instant');
+      } else {
+        setActive(0);
+      }
+    } catch (_) {
       setActive(0);
     }
-  } catch (_) {
-    setActive(0);
   }
 
   window.addEventListener('resize', function () {

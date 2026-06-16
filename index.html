@@ -417,7 +417,7 @@
       card.setAttribute("aria-label", `Open ${item.title}`);
       card.innerHTML = `
         <div class="preview" aria-hidden="true">
-          <iframe title="Preview of ${escapeHtml(item.title)}" src="${encodeURI(item.file)}" loading="lazy" tabindex="-1" scrolling="no"></iframe>
+          <iframe title="Preview of ${escapeHtml(item.title)}" src="${previewUrl(item.file)}" loading="lazy" tabindex="-1" scrolling="no"></iframe>
         </div>
         <div class="meta">
           <h2 class="title">${escapeHtml(item.title).replace(/\n/g, ' ')}</h2>
@@ -438,6 +438,9 @@
           idoc.documentElement.style.cssText += ";overflow:hidden!important";
           idoc.body.style.cssText += ";overflow:hidden!important";
           // Reset to first slide.
+          iframe.contentWindow.scrollTo({ left: 0, top: 0, behavior: "auto" });
+          idoc.documentElement.scrollLeft = 0;
+          idoc.body.scrollLeft = 0;
           const slides = idoc.querySelectorAll(".slide");
           slides.forEach((s, i) => s.classList.toggle("active", i === 0));
           const cur = idoc.getElementById("deck-cur");
@@ -614,6 +617,11 @@
 
     function isPresentationFile(file) {
       return /\.html?$/i.test(file) && !/^index\.html?$/i.test(file) && !file.includes("/");
+    }
+
+    function previewUrl(file) {
+      const separator = file.includes("?") ? "&" : "?";
+      return `${encodeURI(file)}${separator}preview=cover`;
     }
 
     function unique(values) {
