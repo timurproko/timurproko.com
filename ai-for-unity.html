@@ -365,6 +365,122 @@
   .animations-ready .slide.is-visible .flow-loop-dot { animation: dotReveal 900ms ease 1280ms both; }
   @media (prefers-reduced-motion: reduce) { .animations-ready .flow-loop-dot { opacity: 0.7 !important; } }
 
+  @media (max-width: 760px) {
+    html { height: auto; overflow-x: hidden; overflow-y: auto; }
+    html, body { min-height: 100%; height: auto; width: 100%; }
+    body {
+      display: block;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-snap-type: y proximity;
+      scrollbar-width: auto;
+    }
+    body::-webkit-scrollbar { display: initial; }
+    .slide {
+      width: 100%;
+      min-height: 100svh;
+      height: auto;
+      padding: 88px clamp(20px, 6vw, 32px) 64px;
+      overflow: visible;
+      scroll-snap-align: start;
+      scroll-snap-stop: normal;
+      container-type: normal;
+    }
+    .slide.hero {
+      min-height: 100svh;
+      justify-content: center;
+      padding: 64px clamp(20px, 7vw, 34px);
+    }
+    .slide.center:not(.hero) { align-items: flex-start; text-align: left; }
+    .slide.hero.center { align-items: center; text-align: center; }
+    .kicker { font-size: clamp(12px, 3.4vw, 16px); margin-bottom: 24px; }
+    .h-hero,
+    .slide.hero .h-hero { font-size: clamp(48px, 15vw, 72px); line-height: 0.98; letter-spacing: -0.035em; }
+    .deck-headline { font-size: clamp(34px, 10vw, 48px); line-height: 1.03; margin-bottom: 24px; max-width: 100%; }
+    .deck-subhead { font-size: clamp(18px, 5vw, 24px); margin-top: 0; margin-bottom: 24px; max-width: 100%; }
+    .deck-section-label { font-size: 11px; margin-bottom: 8px; }
+    .lead { font-size: clamp(22px, 6vw, 32px); margin-top: 24px; max-width: 100%; }
+    .arrow-list { gap: 16px; margin-top: 24px; max-width: 100%; }
+    .arrow-list li { grid-template-columns: 24px 1fr; gap: 12px; font-size: clamp(20px, 5.6vw, 28px); line-height: 1.28; }
+    .split .arrow-list li { white-space: normal; }
+    .cover-meta { margin-top: 32px; gap: 8px; font-size: 14px; }
+    .cover-meta .speaker { font-size: 14px; }
+    .cover-rule { width: 128px; height: 4px; margin-top: 32px; }
+    .closing-stamp { margin-top: 32px; font-size: 12px; }
+
+    .deck-credit,
+    .nav-hint { display: none !important; }
+    .deck-counter { bottom: 14px; right: 16px; font-size: 12px; letter-spacing: 0.1em; }
+    .deck-tag { top: 16px; left: 20px; font-size: 12px; letter-spacing: 0.12em; }
+    .deck-tag::after { height: 3px; margin-top: 8px; }
+    .slide-tag { top: 20px; left: 20px; font-size: 12px; letter-spacing: 0.12em; }
+    .slide-tag::after { height: 3px; margin-top: 8px; }
+    .slide.hero .slide-tag { left: 20px; }
+    .slide.hero.center .slide-tag.inline { margin-top: 32px; }
+
+    .two-col,
+    .split,
+    .pillar-grid,
+    .ui-workflow-grid { grid-template-columns: 1fr !important; gap: 18px; max-width: 100%; width: 100%; }
+    .two-col { margin-top: 20px; }
+    .split { margin-top: 12px; }
+    .split .col-image { justify-content: flex-start; }
+    .split .col-image .trend-illo { max-height: none; }
+    .pillar-grid { grid-template-columns: 1fr !important; margin-top: 20px; }
+    .pillar-grid .pill { padding: 18px 18px 20px; border-radius: 14px; }
+    .pill .num { font-size: 12px; }
+    .pill h4 { font-size: clamp(20px, 5.8vw, 26px); }
+    .pill .subhead { font-size: 15px; }
+    .pill .tag,
+    .pill-tags span { font-size: 11px; }
+
+    .trend-stack { flex: none; max-width: 100%; gap: 12px; margin: 0; }
+    .trend-columns { grid-template-columns: 1fr; grid-template-rows: none; gap: 12px; margin-top: 18px; align-items: start; }
+    .trend-col-label,
+    .trend-panel { grid-column: 1 !important; grid-row: auto !important; }
+    .trend-col-label { font-size: clamp(18px, 5vw, 22px); text-align: left; margin-top: 12px; }
+    .trend-col-sep { display: none; }
+    .trend-panel { width: min(100%, 260px); height: auto; max-height: none; justify-self: center; }
+    .trend-col-label:nth-of-type(1) { grid-row: 1 !important; }
+    .trend-panel:nth-of-type(1) { grid-row: 2 !important; }
+    .trend-col-label:nth-of-type(2) { grid-row: 3 !important; }
+    .trend-panel:nth-of-type(2) { grid-row: 4 !important; }
+    .trend-col-label:nth-of-type(3) { grid-row: 5 !important; }
+    .trend-panel:nth-of-type(3) { grid-row: 6 !important; }
+    .trend-col-label:nth-of-type(4) { grid-row: 7 !important; }
+    .trend-panel:nth-of-type(4) { grid-row: 8 !important; }
+
+    .slide-mcp { --mcp-section-gap: 22px; }
+    .slide-mcp .deck-headline,
+    .slide-mcp .mcp-tags,
+    .slide-mcp .arrow-list,
+    .slide-mcp .mcp-prosconlabel { max-width: 100%; }
+    .mcp-logo { position: static; transform: none; width: min(180px, 48vw); align-items: flex-start; gap: 14px; margin: 0 0 24px; }
+    .mcp-logo .mcp-mark { width: min(96px, 28vw); }
+    .mcp-tags { gap: 8px; }
+    .mcp-tags .tag { white-space: normal; font-size: 12px; padding: 7px 12px; }
+    .slide-mcp .arrow-list li,
+    .arrow-list.tight li { grid-template-columns: 22px 1fr; font-size: clamp(17px, 4.8vw, 22px); }
+
+    .progression { gap: 12px; margin-top: 24px; max-width: 100%; }
+    .progression .step { grid-template-columns: 42px 1fr; gap: 12px; padding: 14px 16px; font-size: 16px; }
+    .progression .step .idx { font-size: 13px; }
+    .progression .step.here::after { position: static; transform: none; display: inline-block; grid-column: 2; justify-self: start; margin-top: 8px; font-size: 10px; }
+
+    .pillars-venn { flex: none; min-height: auto; margin-top: 12px; }
+    .pillars-venn svg { width: 100%; height: auto; max-width: 100%; max-height: none; }
+    .pillars-venn .venn-label text { font-size: 40px; }
+    .pillars-venn .venn-core { font-size: 48px; }
+    .slide > svg { max-width: 100%; height: auto; }
+    .flow-graph { position: static !important; display: flex !important; width: 100%; justify-content: center; align-items: center; margin-top: 28px; }
+    .flow-graph svg { width: min(100%, 340px); height: auto; }
+
+    .ui-lane { padding: 18px; border-radius: 14px; }
+    .ui-item { padding: 10px 12px 10px 36px; font-size: 16px; }
+    .ui-note { font-size: 16px; }
+    .notes { left: 12px; right: 12px; bottom: 12px; max-height: 48vh; padding: 16px 18px; font-size: 15px; }
+  }
+
   @media print {
     @page { size: 1920px 1080px; margin: 0; }
     html, body { background: #fff; display: block; overflow: visible; height: auto; }
@@ -804,7 +920,7 @@
     <li>The output is controlled, not random</li>
     <li>You refine the process until it's repeatable</li>
   </ul>
-  <div style="position:absolute;right:160px;top:80px;bottom:60px;display:flex;align-items:center;">
+  <div class="flow-graph" style="position:absolute;right:160px;top:80px;bottom:60px;display:flex;align-items:center;">
       <svg viewBox="0 0 400 650" width="400" height="650" overflow="visible" xmlns="http://www.w3.org/2000/svg" style="font-family:var(--font-body);">
         <defs>
           <marker id="arrV" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
@@ -1060,6 +1176,10 @@
   var notesEl = document.getElementById('notes');
   var active = 0;
 
+  function isMobileLayout() {
+    return window.matchMedia && window.matchMedia('(max-width: 760px)').matches;
+  }
+
   function scrollContainers() {
     return [document.scrollingElement, document.documentElement, document.body]
       .filter(Boolean)
@@ -1077,8 +1197,10 @@
     var candidates = scrollContainers();
     var best = 0;
     for (var i = 0; i < candidates.length; i++) {
-      var left = scrollLeftOf(candidates[i]);
-      if (Math.abs(left) > Math.abs(best)) best = left;
+      var offset = isMobileLayout()
+        ? (Number(candidates[i].scrollTop) || 0)
+        : scrollLeftOf(candidates[i]);
+      if (Math.abs(offset) > Math.abs(best)) best = offset;
     }
     return best;
   }
@@ -1097,14 +1219,27 @@
     return best;
   }
   function slideWidth() {
-    return window.innerWidth || document.documentElement.clientWidth || 1920;
+    return isMobileLayout()
+      ? (window.innerHeight || document.documentElement.clientHeight || 1080)
+      : (window.innerWidth || document.documentElement.clientWidth || 1920);
   }
   function scrollToLeft(left, behavior) {
     var candidates = scrollContainers();
+    var mobile = isMobileLayout();
     for (var i = 0; i < candidates.length; i++) {
-      try { candidates[i].scrollLeft = left; } catch (_) {}
-      try { candidates[i].scrollTo({ left: left, behavior: behavior || 'smooth' }); } catch (_) {}
+      try { candidates[i][mobile ? 'scrollTop' : 'scrollLeft'] = left; } catch (_) {}
+      try {
+        candidates[i].scrollTo(mobile
+          ? { top: left, behavior: behavior || 'smooth' }
+          : { left: left, behavior: behavior || 'smooth' });
+      } catch (_) {}
     }
+  }
+  function scrollToSlide(i, behavior) {
+    if (isMobileLayout() && slides[i]) {
+      try { slides[i].scrollIntoView({ block: 'start', inline: 'nearest', behavior: behavior || 'smooth' }); return; } catch (_) {}
+    }
+    scrollToLeft(i * slideWidth(), behavior || 'smooth');
   }
   function updateNotes() {
     if (!notesEl || !notesEl.classList.contains('on')) return;
@@ -1145,10 +1280,20 @@
   function go(i, behavior) {
     var next = Math.max(0, Math.min(slides.length - 1, i));
     setActive(next);
-    scrollToLeft(next * slideWidth(), behavior || 'smooth');
+    scrollToSlide(next, behavior || 'smooth');
   }
   function syncFromScroll() {
-    var i = Math.round(activeScrollLeft() / slideWidth());
+    var i;
+    if (isMobileLayout()) {
+      var bestDist = Infinity;
+      i = active;
+      slides.forEach(function(slide, idx) {
+        var dist = Math.abs(slide.getBoundingClientRect().top);
+        if (dist < bestDist) { bestDist = dist; i = idx; }
+      });
+    } else {
+      i = Math.round(activeScrollLeft() / slideWidth());
+    }
     if (i !== active && i >= 0 && i < slides.length) setActive(i);
   }
   function onKey(e) {
@@ -1200,7 +1345,7 @@
     var saved = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
     if (!isNaN(saved) && saved >= 0 && saved < slides.length) {
       setActive(saved);
-      scrollToLeft(saved * slideWidth(), 'instant');
+      scrollToSlide(saved, 'instant');
     } else {
       setActive(0);
     }
@@ -1209,7 +1354,7 @@
   }
 
   window.addEventListener('resize', function () {
-    scrollToLeft(active * slideWidth(), 'instant');
+    scrollToSlide(active, 'instant');
   });
 })();
 </script>
