@@ -1113,8 +1113,9 @@
         `;
         empty.querySelector(".empty-action").addEventListener("click", () => {
           search.value = "";
+          search.blur();
+          updateSearchState();
           render(presentations);
-          search.focus();
         });
         grid.appendChild(empty);
         return;
