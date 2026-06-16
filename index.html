@@ -565,7 +565,7 @@
     <div class="nav-inner">
       <a href="#" class="nav-logo">Timur Prokopiev</a>
       <div class="nav-links" aria-label="Navigation">
-        <a href="cv.html" class="nav-link">CV</a>
+        <a href="cv" class="nav-link">CV</a>
         <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
       </div>
     </div>
@@ -600,10 +600,10 @@
   <script>
     // Static fallback for hosts that do not expose a directory listing/API.
     // This list was generated from the current folder when index.html was created.
-    const FALLBACK_PRESENTATIONS = ["ai-for-unity.html", "cv.html"];
+    const FALLBACK_PRESENTATIONS = ["ai-for-unity", "cv"];
     const TITLE_OVERRIDES = {
-      "ai-for-unity.html": "AI for Unity\nDevelopment",
-      "cv.html": "Unity Developer\nCV"
+      "ai-for-unity": "AI for Unity\nDevelopment",
+      "cv": "Unity Developer\nCV"
     };
     const DEFAULT_DESCRIPTION = "Agentic Engineering workflows for Unity Developers.";
 
@@ -706,7 +706,7 @@
         .filter(result => result.status === "fulfilled")
         .flatMap(result => result.value);
 
-      return unique([...discovered, ...FALLBACK_PRESENTATIONS])
+      return unique([...discovered, ...FALLBACK_PRESENTATIONS].map(normalizePresentationRoute))
         .filter(isPresentationFile)
         .sort((a, b) => a.localeCompare(b));
     }
@@ -732,7 +732,7 @@
       const entries = await response.json();
       if (!Array.isArray(entries)) return [];
       return entries
-        .filter(entry => entry.type === "file")
+        .filter(entry => entry.type === "file" || entry.type === "dir")
         .map(entry => entry.name)
         .filter(Boolean);
     }
@@ -849,8 +849,8 @@
       grid.appendChild(profile);
 
       const landingItems = [
-        ...items.filter(item => item.file === "cv.html"),
-        ...items.filter(item => item.file !== "cv.html")
+        ...items.filter(item => item.file === "cv"),
+        ...items.filter(item => item.file !== "cv")
       ];
       const fragment = document.createDocumentFragment();
       for (const [index, item] of landingItems.entries()) {
@@ -914,7 +914,14 @@
     }
 
     function isPresentationFile(file) {
+      if (FALLBACK_PRESENTATIONS.includes(file)) return true;
       return /\.html?$/i.test(file) && !/^index\.html?$/i.test(file) && !file.includes("/");
+    }
+
+    function normalizePresentationRoute(file) {
+      return String(file)
+        .replace(/\/index\.html?$/i, "")
+        .replace(/\/$/, "");
     }
 
     function previewUrl(file) {
