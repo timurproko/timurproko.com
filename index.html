@@ -625,6 +625,8 @@
         left: 0;
         right: 0;
         background: var(--bg);
+        transform: translate3d(0, var(--mobile-keyboard-offset, 0px), 0);
+        will-change: transform;
       }
       body.mobile-search-active .toolbar.is-search-active {
         position: fixed;
@@ -633,6 +635,8 @@
         right: 0;
         margin: 0;
         background: var(--bg);
+        transform: translate3d(0, var(--mobile-keyboard-offset, 0px), 0);
+        will-change: transform;
       }
       body.mobile-search-active .grid {
         padding-top: 43px;
@@ -710,6 +714,7 @@
     let footerRevealSetupTimer = 0;
     let blockNextCardClick = false;
     let pendingMobileSearchBlur = null;
+    let mobileViewportFrame = 0;
 
     const ro = new ResizeObserver(entries => {
       for (const entry of entries) {
@@ -886,9 +891,21 @@
       search.addEventListener("blur", updateSearchState);
       window.addEventListener("scroll", () => {
         clearPendingMobileSearchBlur();
+        scheduleMobileViewportOffsetUpdate();
         updateSearchPinnedState();
       }, { passive: true });
-      window.addEventListener("resize", updateSearchPinnedState);
+      window.addEventListener("resize", () => {
+        scheduleMobileViewportOffsetUpdate();
+        updateSearchPinnedState();
+      });
+      window.visualViewport?.addEventListener("resize", () => {
+        scheduleMobileViewportOffsetUpdate();
+        updateSearchPinnedState();
+      });
+      window.visualViewport?.addEventListener("scroll", () => {
+        scheduleMobileViewportOffsetUpdate();
+        updateSearchPinnedState();
+      });
 
       document.addEventListener("pointerdown", event => {
         if (!isMobileSearchFocused()) return;
@@ -961,7 +978,21 @@
       const isActiveMobileSearch = (hasSearchText || isFocused) && window.matchMedia("(max-width: 760px)").matches;
       toolbar?.classList.toggle("is-search-active", hasSearchText || isFocused);
       document.body.classList.toggle("mobile-search-active", isActiveMobileSearch);
+      scheduleMobileViewportOffsetUpdate();
       updateSearchPinnedState();
+    }
+
+    function scheduleMobileViewportOffsetUpdate() {
+      if (mobileViewportFrame) return;
+      mobileViewportFrame = requestAnimationFrame(updateMobileViewportOffset);
+    }
+
+    function updateMobileViewportOffset() {
+      mobileViewportFrame = 0;
+      const offset = document.body.classList.contains("mobile-search-active")
+        ? Math.max(0, Math.round(window.visualViewport?.offsetTop || 0))
+        : 0;
+      document.documentElement.style.setProperty("--mobile-keyboard-offset", `${offset}px`);
     }
 
     function updateSearchPinnedState() {
