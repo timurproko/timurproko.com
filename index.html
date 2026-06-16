@@ -563,9 +563,9 @@
 <body>
   <nav>
     <div class="nav-inner">
-      <a href="#" class="nav-logo">Timur Prokopiev</a>
+      <a href="https://timurproko.com/" class="nav-logo">Timur Prokopiev</a>
       <div class="nav-links" aria-label="Navigation">
-        <a href="cv" class="nav-link">CV</a>
+        <a href="cv/" class="nav-link" data-presentation-link="cv">CV</a>
         <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
       </div>
     </div>
@@ -626,7 +626,7 @@
     function makeCard(item) {
       const card = document.createElement("a");
       card.className = "card";
-      card.href = item.file;
+      card.href = presentationUrl(item.file);
       card.dataset.file = item.file;
       card.setAttribute("aria-label", `Open ${item.title}`);
       card.innerHTML = `
@@ -683,6 +683,10 @@
     init();
 
     async function init() {
+      document.querySelectorAll("[data-presentation-link]").forEach(link => {
+        link.href = presentationUrl(link.dataset.presentationLink);
+      });
+
       const files = await discoverPresentationFiles();
       presentations = await Promise.all(files.map(loadPresentationMeta));
       render(presentations);
@@ -928,9 +932,19 @@
       return cacheBustedUrl(file, "preview=cover");
     }
 
+    function presentationUrl(file) {
+      const normalized = normalizePresentationRoute(file);
+      const encoded = encodeURI(normalized);
+      if (!/\.html?$/i.test(normalized)) {
+        return location.protocol === "file:" ? `${encoded}/index.html` : `${encoded}/`;
+      }
+      return encoded;
+    }
+
     function cacheBustedUrl(file, query) {
-      const separator = file.includes("?") ? "&" : "?";
-      return `${encodeURI(file)}${separator}${query}&v=${Date.now()}`;
+      const url = presentationUrl(file);
+      const separator = url.includes("?") ? "&" : "?";
+      return `${url}${separator}${query}&v=${Date.now()}`;
     }
 
     function unique(values) {

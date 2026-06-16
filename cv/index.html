@@ -146,10 +146,10 @@
       background: currentColor;
       border-radius: 2px;
     }
+    .back-shortcut,
     .print-shortcut {
       position: fixed;
       top: 76px;
-      right: max(24px, calc((100vw - 1120px) / 2 + 32px));
       z-index: 90;
       display: inline-flex;
       align-items: center;
@@ -172,10 +172,14 @@
       animation: contentReveal 640ms cubic-bezier(0.22, 1, 0.36, 1) 180ms both;
       transition: border-color 0.15s, color 0.15s, opacity 0.15s;
     }
+    .back-shortcut { left: max(24px, calc((100vw - 1120px) / 2 + 32px)); text-decoration: none; }
+    .print-shortcut { right: max(24px, calc((100vw - 1120px) / 2 + 32px)); }
+    .back-shortcut:hover,
     .print-shortcut:hover {
       border-color: var(--accent);
       color: var(--fg);
     }
+    .back-shortcut kbd,
     .print-shortcut kbd {
       font: inherit;
       color: var(--fg);
@@ -393,10 +397,10 @@
       .side-column { grid-template-columns: 1fr; }
       .role { grid-template-columns: 1fr; }
       .date { text-align: left; }
-      .print-shortcut {
-        top: 68px;
-        right: 20px;
-      }
+      .back-shortcut,
+      .print-shortcut { top: 68px; }
+      .back-shortcut { left: 20px; }
+      .print-shortcut { right: 20px; }
     }
     @media print {
       @page { size: A4; margin: 7mm; }
@@ -417,6 +421,7 @@
       }
       nav,
       footer,
+      .back-shortcut,
       .print-shortcut { display: none !important; }
 
       .shell {
@@ -610,6 +615,7 @@
     @media (prefers-reduced-motion: reduce) {
       .nav-logo,
       .eyebrow,
+      .back-shortcut,
       .print-shortcut,
       .hero h1,
       .intro,
@@ -627,9 +633,9 @@
 <body>
   <nav>
     <div class="nav-inner">
-      <a href="index.html" class="nav-logo">Timur Prokopiev</a>
+      <a href="https://timurproko.com/" class="nav-logo">Timur Prokopiev</a>
       <div class="nav-links" aria-label="Navigation">
-        <a href="index.html" class="nav-link">Portfolio</a>
+        <a href="https://timurproko.com/" class="nav-link">Portfolio</a>
         <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
       </div>
     </div>
@@ -638,6 +644,7 @@
   <main class="shell">
     <section class="hero" aria-labelledby="page-title">
       <div class="hero-top">
+        <a class="back-shortcut" href="https://timurproko.com/" aria-label="Back to portfolio"><kbd>←</kbd> Back</a>
         <p class="eyebrow">Curriculum Vitae</p>
         <button class="print-shortcut" type="button" id="print-cv" aria-label="Print CV"><kbd>P</kbd> Print</button>
       </div>
