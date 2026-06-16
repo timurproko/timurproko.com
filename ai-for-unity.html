@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AI for Unity Development — Tymur Prokopiev</title>
+<title>AI for Unity Development — Timur Prokopiev</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -372,12 +372,12 @@
 <body>
 <div class="deck-tag is-hidden" id="deckTag">Trend</div>
 <div class="deck-counter" id="deckCounter"><span class="num">01</span> &nbsp;/&nbsp; 20</div>
-<div class="deck-credit is-hidden" id="deckCredit"><a href="https://www.linkedin.com/in/timurproko/" target="_blank" rel="noopener">Tymur Prokopiev</a> &nbsp;·&nbsp; AI for Unity Development</div>
+<div class="deck-credit is-hidden" id="deckCredit"><a href="https://timurproko.com" target="_blank" rel="noopener">Timur Prokopiev</a> &nbsp;·&nbsp; AI for Unity Development</div>
 <section class="slide hero center dark" data-screen-label="01 Cover" data-notes="Welcome. This talk is about how AI is reshaping Unity development — from autocomplete to agentic engineering. We'll cover what changed, what tools matter, and what skills you need now.">
   <div class="kicker">A Knowledge-Sharing Session</div>
   <h1 class="h-hero">AI for Unity<br/>Development</h1>
   <span class="slide-tag inline">2026</span>
-  <div class="cover-meta"><span class="speaker"><a href="https://www.linkedin.com/in/timurproko/" target="_blank" rel="noopener">Tymur Prokopiev</a></span><span class="cover-desc">Engineering · Tooling · Workflows</span></div>
+  <div class="cover-meta"><span class="speaker"><a href="https://timurproko.com" target="_blank" rel="noopener">Timur Prokopiev</a></span><span class="cover-desc">Engineering · Tooling · Workflows</span></div>
 </section>
 
 <section class="slide slide-trend" data-screen-label="02 Trend" data-notes="The industry is moving from traditional engineering to vibe coding to agentic engineering. AI is no longer just a tool you call — it's a collaborator inside your loop. Development is shifting from manual control to guided automation.">
@@ -1045,11 +1045,6 @@
 })();
 </script>
 <aside class="notes" id="notes"></aside>
-<div class="nav-hint" aria-hidden="true">
-  <kbd>←</kbd><kbd>→</kbd>
-  <span class="sep"></span>
-  <kbd>P</kbd>
-</div>
 <script>
 (function () {
   /*
@@ -1196,13 +1191,6 @@
   window.addEventListener('load', focusDeck);
   focusDeck();
 
-  document.addEventListener('click', function (e) {
-    if (!e.target.closest('.slide')) return;
-    focusDeck();
-    var x = e.clientX / slideWidth();
-    if (x < 0.28) go(active - 1);
-    else if (x > 0.72) go(active + 1);
-  });
 
   try {
     var saved = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
