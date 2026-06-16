@@ -221,7 +221,8 @@
       text-decoration: none;
     }
     a.chip:hover { border-color: var(--accent); color: var(--accent); }
-    .print-url { display: none; }
+    .print-url,
+    .print-only-chip { display: none; }
 
     .layout {
       display: grid;
@@ -478,6 +479,7 @@
         display: inline;
         margin-left: 0;
       }
+      .print-only-chip { display: inline-flex; }
 
       .layout {
         display: block;
@@ -647,6 +649,7 @@
         <span class="chip">Gdańsk, Poland</span>
         <a class="chip" href="mailto:timur.proko@gmail.com">timur.proko@gmail.com</a>
         <a class="chip github-chip" href="https://github.com/timurproko" target="_blank" rel="noopener noreferrer"><span class="screen-label">GitHub ↗</span><span class="print-url">github.com/timurproko</span></a>
+        <a class="chip print-only-chip" href="https://timurproko.com">timurproko.com</a>
       </div>
     </section>
 
