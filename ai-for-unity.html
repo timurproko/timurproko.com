@@ -365,31 +365,38 @@
   .animations-ready .slide.is-visible .flow-loop-dot { animation: dotReveal 900ms ease 1280ms both; }
   @media (prefers-reduced-motion: reduce) { .animations-ready .flow-loop-dot { opacity: 0.7 !important; } }
 
+  .mobile-swipe-hint { display: none; }
+
   @media (max-width: 760px) {
-    html { height: auto; overflow-x: hidden; overflow-y: auto; }
-    html, body { min-height: 100%; height: auto; width: 100%; }
+    html { height: 100%; overflow: hidden; }
+    html, body { height: 100%; width: 100%; }
     body {
-      display: block;
+      display: flex;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+    body::-webkit-scrollbar { display: none; }
+    .slide {
+      flex: 0 0 100vw;
+      width: 100vw;
+      min-height: 100svh;
+      height: 100svh;
+      padding: 88px clamp(20px, 6vw, 32px) 76px;
       overflow-x: hidden;
       overflow-y: auto;
-      scroll-snap-type: y proximity;
-      scrollbar-width: auto;
-    }
-    body::-webkit-scrollbar { display: initial; }
-    .slide {
-      width: 100%;
-      min-height: 100svh;
-      height: auto;
-      padding: 88px clamp(20px, 6vw, 32px) 64px;
-      overflow: visible;
       scroll-snap-align: start;
-      scroll-snap-stop: normal;
+      scroll-snap-stop: always;
       container-type: normal;
     }
     .slide.hero {
       min-height: 100svh;
+      height: 100svh;
       justify-content: center;
-      padding: 64px clamp(20px, 7vw, 34px);
+      padding: 64px clamp(20px, 7vw, 34px) 76px;
     }
     .slide.center:not(.hero) { align-items: flex-start; text-align: left; }
     .slide.hero.center { align-items: center; text-align: center; }
@@ -410,7 +417,31 @@
 
     .deck-credit,
     .nav-hint { display: none !important; }
-    .deck-counter { bottom: 14px; right: 16px; font-size: 12px; letter-spacing: 0.1em; }
+    .mobile-swipe-hint {
+      position: fixed;
+      left: 50%;
+      bottom: 12px;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      z-index: 100;
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: color-mix(in oklab, var(--surface), transparent 10%);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 1;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      pointer-events: none;
+      box-shadow: 0 8px 24px rgba(17,17,17,0.08);
+    }
+    .deck-counter { bottom: 46px; right: 16px; font-size: 12px; letter-spacing: 0.1em; }
     .deck-tag { top: 16px; left: 20px; font-size: 12px; letter-spacing: 0.12em; }
     .deck-tag::after { height: 3px; margin-top: 8px; }
     .slide-tag { top: 20px; left: 20px; font-size: 12px; letter-spacing: 0.12em; }
@@ -485,7 +516,7 @@
     @page { size: 1920px 1080px; margin: 0; }
     html, body { background: #fff; display: block; overflow: visible; height: auto; }
     .slide { width: 1920px; height: 1080px; page-break-after: always; }
-    .nav-hint, .notes { display: none !important; }
+    .nav-hint, .notes, .mobile-swipe-hint { display: none !important; }
   }
 </style>
 </head>
@@ -493,6 +524,7 @@
 <div class="deck-tag is-hidden" id="deckTag">Trend</div>
 <div class="deck-counter" id="deckCounter"><span class="num">01</span> &nbsp;/&nbsp; 20</div>
 <div class="deck-credit is-hidden" id="deckCredit"><a href="https://timurproko.com" target="_blank" rel="noopener">Timur Prokopiev</a> &nbsp;·&nbsp; AI for Unity Development</div>
+<div class="mobile-swipe-hint" aria-hidden="true">← Swipe left / right →</div>
 <section class="slide hero center dark" data-screen-label="01 Cover" data-notes="Welcome. This talk is about how AI is reshaping Unity development — from autocomplete to agentic engineering. We'll cover what changed, what tools matter, and what skills you need now.">
   <div class="kicker">A Knowledge-Sharing Session</div>
   <h1 class="h-hero">AI for Unity<br/>Development</h1>
@@ -1197,9 +1229,7 @@
     var candidates = scrollContainers();
     var best = 0;
     for (var i = 0; i < candidates.length; i++) {
-      var offset = isMobileLayout()
-        ? (Number(candidates[i].scrollTop) || 0)
-        : scrollLeftOf(candidates[i]);
+      var offset = scrollLeftOf(candidates[i]);
       if (Math.abs(offset) > Math.abs(best)) best = offset;
     }
     return best;
@@ -1219,26 +1249,16 @@
     return best;
   }
   function slideWidth() {
-    return isMobileLayout()
-      ? (window.innerHeight || document.documentElement.clientHeight || 1080)
-      : (window.innerWidth || document.documentElement.clientWidth || 1920);
+    return window.innerWidth || document.documentElement.clientWidth || 1920;
   }
   function scrollToLeft(left, behavior) {
     var candidates = scrollContainers();
-    var mobile = isMobileLayout();
     for (var i = 0; i < candidates.length; i++) {
-      try { candidates[i][mobile ? 'scrollTop' : 'scrollLeft'] = left; } catch (_) {}
-      try {
-        candidates[i].scrollTo(mobile
-          ? { top: left, behavior: behavior || 'smooth' }
-          : { left: left, behavior: behavior || 'smooth' });
-      } catch (_) {}
+      try { candidates[i].scrollLeft = left; } catch (_) {}
+      try { candidates[i].scrollTo({ left: left, behavior: behavior || 'smooth' }); } catch (_) {}
     }
   }
   function scrollToSlide(i, behavior) {
-    if (isMobileLayout() && slides[i]) {
-      try { slides[i].scrollIntoView({ block: 'start', inline: 'nearest', behavior: behavior || 'smooth' }); return; } catch (_) {}
-    }
     scrollToLeft(i * slideWidth(), behavior || 'smooth');
   }
   function updateNotes() {
@@ -1283,17 +1303,7 @@
     scrollToSlide(next, behavior || 'smooth');
   }
   function syncFromScroll() {
-    var i;
-    if (isMobileLayout()) {
-      var bestDist = Infinity;
-      i = active;
-      slides.forEach(function(slide, idx) {
-        var dist = Math.abs(slide.getBoundingClientRect().top);
-        if (dist < bestDist) { bestDist = dist; i = idx; }
-      });
-    } else {
-      i = Math.round(activeScrollLeft() / slideWidth());
-    }
+    var i = Math.round(activeScrollLeft() / slideWidth());
     if (i !== active && i >= 0 && i < slides.length) setActive(i);
   }
   function onKey(e) {
@@ -1340,6 +1350,23 @@
   window.addEventListener('load', focusDeck);
   focusDeck();
 
+  var touchStartX = 0;
+  var touchStartY = 0;
+  var touchStartActive = 0;
+  document.addEventListener('touchstart', function (e) {
+    if (!isMobileLayout() || !e.touches || e.touches.length !== 1) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchStartActive = active;
+  }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (!isMobileLayout() || !e.changedTouches || e.changedTouches.length !== 1) return;
+    if (active !== touchStartActive) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    var dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) < 56 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+    go(touchStartActive + (dx < 0 ? 1 : -1));
+  }, { passive: true });
 
   try {
     var saved = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
