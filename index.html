@@ -621,17 +621,18 @@
       }
       body.mobile-search-active nav {
         position: fixed;
-        top: var(--visual-viewport-top, 0px);
+        top: 0;
         left: 0;
         right: 0;
+        background: var(--bg);
       }
       body.mobile-search-active .toolbar.is-search-active {
         position: fixed;
-        top: calc(var(--visual-viewport-top, 0px) + 56px);
+        top: 56px;
         left: 0;
         right: 0;
-        margin-left: 0;
-        margin-right: 0;
+        margin: 0;
+        background: var(--bg);
       }
       body.mobile-search-active .grid {
         padding-top: 43px;
@@ -887,19 +888,7 @@
         clearPendingMobileSearchBlur();
         updateSearchPinnedState();
       }, { passive: true });
-      window.addEventListener("resize", () => {
-        updateVisualViewportTop();
-        updateSearchPinnedState();
-      });
-      window.visualViewport?.addEventListener("resize", () => {
-        updateVisualViewportTop();
-        updateSearchPinnedState();
-      });
-      window.visualViewport?.addEventListener("scroll", () => {
-        updateVisualViewportTop();
-        updateSearchPinnedState();
-      });
-      updateVisualViewportTop();
+      window.addEventListener("resize", updateSearchPinnedState);
 
       document.addEventListener("pointerdown", event => {
         if (!isMobileSearchFocused()) return;
@@ -972,13 +961,7 @@
       const isActiveMobileSearch = (hasSearchText || isFocused) && window.matchMedia("(max-width: 760px)").matches;
       toolbar?.classList.toggle("is-search-active", hasSearchText || isFocused);
       document.body.classList.toggle("mobile-search-active", isActiveMobileSearch);
-      updateVisualViewportTop();
       updateSearchPinnedState();
-    }
-
-    function updateVisualViewportTop() {
-      const viewportTop = window.visualViewport?.offsetTop || 0;
-      document.documentElement.style.setProperty("--visual-viewport-top", `${viewportTop}px`);
     }
 
     function updateSearchPinnedState() {
