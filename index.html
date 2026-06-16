@@ -565,22 +565,25 @@
       }
 
       // Profile card — first in the grid when no search
-      const profile = document.createElement("div");
+      const profile = document.createElement("a");
       profile.className = "card";
-      profile.setAttribute("aria-label", "Speaker profile");
+      profile.href = "https://www.linkedin.com/in/timurproko/";
+      profile.target = "_blank";
+      profile.rel = "noopener noreferrer";
+      profile.setAttribute("aria-label", "Open Timur Prokopiev LinkedIn profile");
       profile.innerHTML = `
         <div class="meta" style="gap:12px;">
           <div class="profile-header">
             <img class="profile-avatar" src="https://media.licdn.com/dms/image/v2/D4D03AQGMJVUHPnj-pQ/profile-displayphoto-scale_400_400/B4DZvQFuzqKAAg-/0/1768722723419?e=1782950400&v=beta&t=jDqlIQYM84ZuNQ_P6UaN0KtceFona36ki2TENL95YBw" alt="Timur Prokopiev" />
             <div>
               <strong class="title" style="display:block;">Timur Prokopiev</strong>
-              <p class="profile-roles">UX / XR Developer · Unity Developer<br>Tech Artist · AI Agentic Engineer</p>
+              <p class="profile-roles">UX / XR / Unity Developer, Tech Artist, AI Agentic Engineer</p>
             </div>
           </div>
           <p class="profile-about">Unity Developer with experience building interactive digital products and immersive real-time experiences. I work at the intersection of product design, 3D graphics, and XR development, translating complex ideas into clear, intuitive interactions.</p>
           <div class="open-row">
             <span></span>
-            <a class="open-label" href="https://www.linkedin.com/in/timurproko/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="text-decoration:none;">LinkedIn →</a>
+            <span class="open-label">LinkedIn →</span>
           </div>
         </div>
       `;

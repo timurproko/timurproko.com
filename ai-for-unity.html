@@ -258,9 +258,70 @@
   .notes { display: none; position: fixed; bottom: 24px; left: 24px; right: 24px; max-height: 36vh; overflow-y: auto; background: rgba(17,17,17,0.94); color: #fafafa; font-family: var(--font-body); font-size: 18px; line-height: 1.5; padding: 24px 32px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); z-index: 999; backdrop-filter: blur(14px); }
   .notes.on { display: block; }
   .notes b { color: var(--accent); display: block; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: 13px; }
-  .nav-hint { position: fixed; top: 48px; right: 64px; display: flex; align-items: center; gap: 10px; z-index: 50; user-select: none; pointer-events: none; }
-  .nav-hint kbd { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.04em; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 3px 7px; line-height: 1; box-shadow: 0 1px 0 var(--border); }
-  .nav-hint .sep { width: 1px; height: 14px; background: var(--border); }
+  .nav-hint {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    z-index: 100;
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--surface), transparent 10%);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
+    box-shadow: 0 8px 24px rgba(17,17,17,0.08);
+    opacity: 0.92;
+    transition:
+      opacity 720ms var(--ease-standard),
+      background-color 720ms var(--ease-standard),
+      border-color 720ms var(--ease-standard),
+      color 720ms var(--ease-standard),
+      box-shadow 720ms var(--ease-standard);
+  }
+  .nav-hint kbd {
+    font: inherit;
+    color: var(--fg);
+    background: color-mix(in oklab, var(--surface), var(--fg) 4%);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 6px;
+    line-height: 1;
+    box-shadow: 0 1px 0 var(--border);
+    transition:
+      background-color 720ms var(--ease-standard),
+      border-color 720ms var(--ease-standard),
+      color 720ms var(--ease-standard),
+      box-shadow 720ms var(--ease-standard);
+  }
+  .nav-hint .sep {
+    color: color-mix(in oklab, var(--muted), transparent 35%);
+    transition: color 720ms var(--ease-standard);
+  }
+  body.chrome-on-dark .nav-hint {
+    background: color-mix(in oklab, #111111, transparent 16%);
+    border-color: color-mix(in oklab, #f8f8f9, transparent 86%);
+    color: color-mix(in oklab, #f8f8f9, transparent 48%);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    opacity: 0.78;
+  }
+  body.chrome-on-dark .nav-hint kbd {
+    color: #f8f8f9;
+    background: color-mix(in oklab, #f8f8f9, transparent 90%);
+    border-color: color-mix(in oklab, #f8f8f9, transparent 86%);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.08);
+  }
+  body.chrome-on-dark .nav-hint .sep { color: color-mix(in oklab, #f8f8f9, transparent 72%); }
   /* ── Slide content reveal ── */
   @keyframes fadeUp  { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
   @keyframes scaleIn { from { opacity:0; transform:scale(0.96) translateY(10px); } to { opacity:1; transform:none; } }
@@ -526,6 +587,7 @@
 <div class="deck-counter" id="deckCounter"><span class="num">01</span> &nbsp;/&nbsp; 20</div>
 <div class="deck-credit is-hidden" id="deckCredit"><a href="https://timurproko.com" target="_blank" rel="noopener">Timur Prokopiev</a> &nbsp;·&nbsp; AI for Unity Development</div>
 <div class="mobile-swipe-hint" aria-hidden="true">← Swipe left / right →</div>
+<div class="nav-hint" aria-hidden="true"><kbd>←</kbd><kbd>→</kbd> Slides <span class="sep">·</span> <kbd>Space</kbd> Next</div>
 <section class="slide hero center dark" data-screen-label="01 Cover" data-notes="Welcome. This talk is about how AI is reshaping Unity development — from autocomplete to agentic engineering. We'll cover what changed, what tools matter, and what skills you need now.">
   <div class="kicker">A Knowledge-Sharing Session</div>
   <h1 class="h-hero">AI for Unity<br/>Development</h1>
@@ -1275,6 +1337,7 @@
     var cr = document.getElementById('deckCredit');
     var dt = document.getElementById('deckTag');
     var slideEl = slides[i];
+    var isDark = slideEl && slideEl.classList.contains('dark');
     var isHero = slideEl && slideEl.classList.contains('hero');
     var inSlideTag = slideEl && slideEl.querySelector(':scope > .slide-tag');
 
@@ -1292,6 +1355,7 @@
 
     // Visibility: only the cover (slide 0) and hero slides hide chrome.
     // Once revealed, chrome stays put across content slides — no per-slide flash.
+    document.body.classList.toggle('chrome-on-dark', !!isDark);
     if (dc) dc.classList.toggle('is-hidden', i === 0);
     if (cr) cr.classList.toggle('is-hidden', i === 0);
     if (dt) dt.classList.toggle('is-hidden', isHero || !inSlideTag);
