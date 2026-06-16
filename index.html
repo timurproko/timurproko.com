@@ -619,7 +619,8 @@
         -webkit-backdrop-filter: blur(12px);
       }
       body.mobile-search-active {
-        padding-top: 56px;
+        height: 100dvh;
+        overflow: hidden;
       }
       body.mobile-search-active nav {
         position: fixed;
@@ -629,6 +630,7 @@
         background: var(--bg);
         transform: translate3d(0, var(--mobile-keyboard-offset, 0px), 0);
         will-change: transform;
+        backface-visibility: hidden;
       }
       body.mobile-search-active .toolbar.is-search-active {
         position: fixed;
@@ -639,12 +641,24 @@
         background: var(--bg);
         transform: translate3d(0, var(--mobile-keyboard-offset, 0px), 0);
         will-change: transform;
+        backface-visibility: hidden;
       }
-      body.mobile-search-active .hero {
+      body.mobile-search-active .hero,
+      body.mobile-search-active footer {
         display: none;
       }
       body.mobile-search-active .grid {
-        padding-top: 43px;
+        position: fixed;
+        top: calc(var(--mobile-keyboard-offset, 0px) + 99px);
+        left: 0;
+        right: 0;
+        height: calc(var(--mobile-viewport-height, 100dvh) - 99px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        padding: 20px 20px 64px;
+        background: var(--bg);
+        z-index: 90;
       }
       .toolbar.is-search-active.is-search-pinned {
         border-bottom-color: var(--border);
@@ -991,10 +1005,15 @@
 
     function updateMobileViewportOffset() {
       mobileViewportFrame = 0;
-      const offset = document.body.classList.contains("mobile-search-active")
+      const isActive = document.body.classList.contains("mobile-search-active");
+      const offset = isActive
         ? Math.max(0, Math.round(window.visualViewport?.offsetTop || 0))
         : 0;
+      const viewportHeight = Math.round(window.visualViewport?.height || window.innerHeight || 0);
       document.documentElement.style.setProperty("--mobile-keyboard-offset", `${offset}px`);
+      if (viewportHeight) {
+        document.documentElement.style.setProperty("--mobile-viewport-height", `${viewportHeight}px`);
+      }
     }
 
     function updateSearchPinnedState() {
