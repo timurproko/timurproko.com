@@ -1622,6 +1622,7 @@
     var showTimer = null;
     var hiddenPointer = null;
     var isIdle = false;
+    var isHoveringChrome = false;
     var idleDelay = 4200;
     var revealDelay = 180;
     var revealDistance = 10;
@@ -1642,7 +1643,9 @@
 
     function scheduleHide() {
       if (hideTimer) clearTimeout(hideTimer);
+      if (isHoveringChrome) return;
       hideTimer = setTimeout(function () {
+        if (isHoveringChrome) return;
         isIdle = true;
         hiddenPointer = null;
         clearShowTimer();
@@ -1702,6 +1705,27 @@
       }
       showNow();
     }
+
+    document.querySelectorAll('.deck-back, .nav-hint').forEach(function (chrome) {
+      chrome.addEventListener('mouseenter', function () {
+        isHoveringChrome = true;
+        if (hideTimer) clearTimeout(hideTimer);
+        showNow();
+      });
+      chrome.addEventListener('mouseleave', function () {
+        isHoveringChrome = false;
+        scheduleHide();
+      });
+      chrome.addEventListener('focusin', function () {
+        isHoveringChrome = true;
+        if (hideTimer) clearTimeout(hideTimer);
+        showNow();
+      });
+      chrome.addEventListener('focusout', function () {
+        isHoveringChrome = false;
+        scheduleHide();
+      });
+    });
 
     document.addEventListener('pointermove', onPointerMove, { passive: true });
     document.addEventListener('pointerdown', showNow, { passive: true });
