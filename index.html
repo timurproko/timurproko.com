@@ -432,7 +432,52 @@
     .empty-icon {
       flex-shrink: 0;
       color: var(--muted);
-      opacity: 0.5;
+      opacity: 0.78;
+      overflow: visible;
+    }
+    .empty-icon-ring,
+    .empty-icon-mark {
+      stroke: url(#empty-icon-rainbow);
+      filter: drop-shadow(0 0 8px oklch(58% 0.18 255 / 0.16));
+    }
+    .empty-icon-ring {
+      stroke-dasharray: 113;
+      stroke-dashoffset: 113;
+      transform-origin: 20px 20px;
+      animation:
+        emptyIconDraw 780ms cubic-bezier(0.22, 1, 0.36, 1) 80ms forwards,
+        emptyIconSpin 1100ms cubic-bezier(0.22, 1, 0.36, 1) 80ms forwards;
+    }
+    .empty-icon-line {
+      stroke-dasharray: 10;
+      stroke-dashoffset: 10;
+      animation: emptyIconDraw 520ms cubic-bezier(0.22, 1, 0.36, 1) 460ms forwards;
+    }
+    .empty-icon-dot {
+      opacity: 0;
+      transform-origin: 20px 27px;
+      animation: emptyIconPop 360ms cubic-bezier(0.22, 1.55, 0.36, 1) 760ms forwards;
+    }
+    @keyframes emptyIconDraw {
+      to { stroke-dashoffset: 0; }
+    }
+    @keyframes emptyIconSpin {
+      from { transform: rotate(-28deg); }
+      to { transform: rotate(0deg); }
+    }
+    @keyframes emptyIconPop {
+      from { opacity: 0; transform: scale(0.35); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .empty-icon-ring,
+      .empty-icon-line,
+      .empty-icon-dot {
+        animation: none;
+        stroke-dashoffset: 0;
+        opacity: 1;
+        transform: none;
+      }
     }
     .empty-body { text-align: center; }
     .empty-title {
@@ -706,9 +751,19 @@
         empty.className = "empty";
         empty.innerHTML = `
           <svg class="empty-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-            <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
-            <path d="M20 12v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <circle cx="20" cy="27" r="1.5" fill="currentColor"/>
+            <defs>
+              <linearGradient id="empty-icon-rainbow" x1="4" y1="6" x2="36" y2="34" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#ff4d6d"/>
+                <stop offset="22%" stop-color="#ffb703"/>
+                <stop offset="44%" stop-color="#3ddc97"/>
+                <stop offset="66%" stop-color="#3a86ff"/>
+                <stop offset="84%" stop-color="#b517ff"/>
+                <stop offset="100%" stop-color="#ff4d6d"/>
+              </linearGradient>
+            </defs>
+            <circle class="empty-icon-ring" cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
+            <path class="empty-icon-mark empty-icon-line" d="M20 12v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle class="empty-icon-mark empty-icon-dot" cx="20" cy="27" r="1.5" fill="url(#empty-icon-rainbow)"/>
           </svg>
           <div class="empty-body">
             <div class="empty-title">No content found.</div>
