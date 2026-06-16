@@ -672,6 +672,14 @@
         visibility: visible;
         transform: translateX(0);
       }
+      .profile-card {
+        height: auto !important;
+      }
+      .profile-card .profile-about {
+        overflow: visible;
+        -webkit-mask-image: none;
+        mask-image: none;
+      }
     }
   </style>
 </head>
@@ -1221,8 +1229,18 @@
 
     function syncProfileCardHeight() {
       const profileCard = grid.querySelector(".profile-card");
+      if (!profileCard) return;
+      // Height-matching only makes sense in the desktop multi-column layout,
+      // where the profile card shares a row with another card. On the mobile
+      // single-column layout a forced height (measured against a tall preview
+      // card, often mid-transition while the search panel is fixed) makes the
+      // profile card overlap the next block and jump. Let it size to content.
+      if (window.matchMedia("(max-width: 760px)").matches) {
+        profileCard.style.height = "";
+        return;
+      }
       const referenceCard = grid.querySelector(".card:not(.profile-card)");
-      if (!profileCard || !referenceCard) return;
+      if (!referenceCard) return;
       profileCard.style.height = `${Math.ceil(referenceCard.getBoundingClientRect().height)}px`;
     }
 
