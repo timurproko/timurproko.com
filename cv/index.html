@@ -224,7 +224,13 @@
       letter-spacing: 0.01em;
       text-decoration: none;
     }
-    a.chip:hover { border-color: var(--accent); color: var(--accent); }
+    button.chip {
+      font-family: inherit;
+      cursor: pointer;
+    }
+    a.chip:hover,
+    button.chip:hover { border-color: var(--accent); color: var(--accent); }
+    .email-reveal.is-revealed { user-select: all; }
     .print-url,
     .print-only-chip { display: none; }
 
@@ -352,8 +358,18 @@
     .contact-list,
     .compact-list,
     .cert-list { list-style: none; display: grid; gap: 10px; }
-    .contact-list a { color: var(--fg); text-decoration: none; }
-    .contact-list a:hover { color: var(--accent); }
+    .contact-list a,
+    .contact-list button { color: var(--fg); text-decoration: none; }
+    .contact-list a:hover,
+    .contact-list button:hover { color: var(--accent); }
+    .contact-list button {
+      border: 0;
+      background: transparent;
+      font-family: inherit;
+      text-align: left;
+      cursor: pointer;
+      padding: 0;
+    }
     .contact-label,
     .cert-date {
       display: block;
@@ -654,7 +670,7 @@
       </p>
       <div class="quick-meta" aria-label="Profile highlights">
         <span class="chip">Gdańsk, Poland</span>
-        <a class="chip" href="mailto:timur.proko@gmail.com">timur.proko@gmail.com</a>
+        <button class="chip email-reveal" type="button" data-user="timur.proko" data-domain="gmail" data-tld="com" aria-label="Show email address">Show email</button>
         <a class="chip github-chip" href="https://github.com/timurproko" target="_blank" rel="noopener noreferrer"><span class="screen-label">GitHub ↗</span><span class="print-url">github.com/timurproko</span></a>
         <a class="chip print-only-chip" href="https://timurproko.com">timurproko.com</a>
       </div>
@@ -816,7 +832,7 @@
             </div>
             <ul class="contact-list">
               <li><span class="contact-label">Location</span><span class="contact-value">Gdańsk, Poland</span></li>
-              <li><span class="contact-label">Email</span><a class="contact-value" href="mailto:timur.proko@gmail.com">timur.proko@gmail.com</a></li>
+              <li><span class="contact-label">Email</span><button class="contact-value email-reveal" type="button" data-user="timur.proko" data-domain="gmail" data-tld="com" aria-label="Show email address">Show email</button></li>
               <li><span class="contact-label">LinkedIn</span><a class="contact-value" href="https://www.linkedin.com/in/timurproko/" target="_blank" rel="noopener noreferrer">linkedin.com/in/timurproko</a></li>
               <li><span class="contact-label">GitHub</span><a class="contact-value" href="https://github.com/timurproko" target="_blank" rel="noopener noreferrer">github.com/timurproko</a></li>
             </ul>
@@ -867,6 +883,30 @@
     }
     publishPageMeta();
     window.addEventListener("load", publishPageMeta);
+
+    function decodeEmail(button) {
+      const user = button.dataset.user || "";
+      const domain = button.dataset.domain || "";
+      const tld = button.dataset.tld || "";
+      return `${user}@${domain}.${tld}`;
+    }
+
+    function revealEmail(button) {
+      const email = decodeEmail(button);
+      button.textContent = email;
+      button.setAttribute("aria-label", `Email ${email}`);
+      button.classList.add("is-revealed");
+    }
+
+    document.querySelectorAll(".email-reveal").forEach(button => {
+      button.addEventListener("click", () => {
+        if (button.classList.contains("is-revealed")) {
+          window.location.href = `mailto:${decodeEmail(button)}`;
+          return;
+        }
+        document.querySelectorAll(".email-reveal").forEach(revealEmail);
+      });
+    });
 
     const printButton = document.getElementById("print-cv");
     printButton?.addEventListener("click", () => window.print());
