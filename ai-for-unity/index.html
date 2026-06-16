@@ -1415,6 +1415,7 @@
   var active = 0;
   var programmaticTarget = null;
   var programmaticTimer = null;
+  var extendDeckNavHideTimer = function () {};
 
   function isMobileLayout() {
     return window.matchMedia && window.matchMedia('(max-width: 760px)').matches;
@@ -1534,10 +1535,12 @@
     }
   }
   function go(i, behavior) {
+    var previous = active;
     var next = Math.max(0, Math.min(slides.length - 1, i));
     beginProgrammaticNavigation(next);
     setActive(next);
     scrollToSlide(next, behavior || 'smooth');
+    if (previous === 0 && next === 1) extendDeckNavHideTimer();
   }
   function syncFromScroll() {
     var i = Math.round(activeScrollLeft() / slideWidth());
@@ -1619,9 +1622,14 @@
     var showTimer = null;
     var hiddenPointer = null;
     var isIdle = false;
-    var idleDelay = 2200;
+    var idleDelay = 4200;
     var revealDelay = 180;
     var revealDistance = 10;
+
+    extendDeckNavHideTimer = function () {
+      if (isIdle) return;
+      scheduleHide();
+    };
 
     function clearShowTimer() {
       if (!showTimer) return;
@@ -1683,8 +1691,10 @@
 
     function onKeyReveal(e) {
       if (isDeckNavigationKey(e)) {
+        // Slide navigation keys should not keep the chrome alive. If the top
+        // bar is already visible, let the existing idle timer finish hiding it;
+        // if it is hidden, keep it hidden until intentional pointer movement.
         clearShowTimer();
-        if (!isIdle) scheduleHide();
         return;
       }
       showNow();
