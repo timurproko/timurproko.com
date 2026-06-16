@@ -896,7 +896,6 @@
       search.addEventListener("blur", updateSearchState);
       window.addEventListener("scroll", () => {
         clearPendingMobileSearchBlur();
-        scheduleMobileViewportOffsetUpdate();
         updateSearchPinnedState();
       }, { passive: true });
       window.addEventListener("resize", () => {
@@ -904,10 +903,6 @@
         updateSearchPinnedState();
       });
       window.visualViewport?.addEventListener("resize", () => {
-        scheduleMobileViewportOffsetUpdate();
-        updateSearchPinnedState();
-      });
-      window.visualViewport?.addEventListener("scroll", () => {
         scheduleMobileViewportOffsetUpdate();
         updateSearchPinnedState();
       });
@@ -984,6 +979,8 @@
       toolbar?.classList.toggle("is-search-active", hasSearchText || isFocused);
       document.body.classList.toggle("mobile-search-active", isActiveMobileSearch);
       scheduleMobileViewportOffsetUpdate();
+      window.setTimeout(scheduleMobileViewportOffsetUpdate, 120);
+      window.setTimeout(scheduleMobileViewportOffsetUpdate, 360);
       updateSearchPinnedState();
     }
 
