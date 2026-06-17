@@ -748,7 +748,7 @@
     .animations-ready .slide.is-visible .orbit-dot { animation: none !important; }
   }
   .animations-ready .flow-loop-dot { opacity: 0; }
-  .animations-ready .slide.is-visible .flow-loop-dot { animation: dotReveal 900ms ease 1280ms both; }
+  .animations-ready .slide.is-visible .flow-loop-dot.is-moving { animation: dotReveal 900ms ease both; }
   @media (prefers-reduced-motion: reduce) { .animations-ready .flow-loop-dot { opacity: 0.7 !important; } }
 
   /* ── MCP logo draw-on reveal ── */
@@ -1589,7 +1589,7 @@
         <path id="loopPath" class="flow-loop" style="--nd:1120ms" d="M70,563 L28,563 L28,33 L68,33" fill="none" stroke="#6b6b6b" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrLoop)"/>
 
         <circle class="flow-loop-dot" r="4" fill="#2f6feb" filter="url(#flowDotGlow)">
-          <animateMotion dur="5.5s" repeatCount="indefinite" begin="-1.2s" calcMode="linear">
+          <animateMotion id="flowLoopMotion" dur="5.5s" repeatCount="indefinite" begin="indefinite" calcMode="linear">
             <mpath href="#loopPath"/>
           </animateMotion>
         </circle>
@@ -1983,6 +1983,55 @@
     return { schedule: scheduleReveal, reset: resetCoverYear };
   }
 
+  function setupFlowLoopMotion() {
+    var motion = document.getElementById('flowLoopMotion');
+    var dot = motion ? motion.closest('.flow-loop-dot') : null;
+    var flowSlide = dot ? dot.closest('.slide') : null;
+    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var startTimer = null;
+    var hasStarted = false;
+    var revealDelay = 1940;
+
+    function clearStartTimer() {
+      if (!startTimer) return;
+      window.clearTimeout(startTimer);
+      startTimer = null;
+    }
+
+    function reset() {
+      clearStartTimer();
+      hasStarted = false;
+      if (dot) dot.classList.remove('is-moving');
+      if (motion && motion.endElement) {
+        try { motion.endElement(); } catch (err) {}
+      }
+    }
+
+    function start() {
+      startTimer = null;
+      if (hasStarted || !motion || !dot) return;
+      hasStarted = true;
+      dot.classList.add('is-moving');
+      if (motion.beginElement) motion.beginElement();
+    }
+
+    function onVisible(slide) {
+      if (!flowSlide || slide !== flowSlide || hasStarted || startTimer) return;
+      if (reducedMotion) {
+        if (dot) dot.classList.add('is-moving');
+        return;
+      }
+      startTimer = window.setTimeout(start, revealDelay);
+    }
+
+    function onHidden(slide) {
+      if (!flowSlide || slide !== flowSlide) return;
+      reset();
+    }
+
+    return { onVisible: onVisible, onHidden: onHidden };
+  }
+
   function setupAll() {
     function isCoverInView() {
       var left = Math.max(
@@ -2002,6 +2051,7 @@
     prepareSlideTitles();
 
     var coverYearAnimation = setupCoverYearAnimation();
+    var flowLoopMotion = setupFlowLoopMotion();
     var coverYearRevealDelay = 3360;
     var animationsStarted = false;
 
@@ -2015,6 +2065,7 @@
       var first = document.querySelector('.slide');
       if (first) {
         first.classList.add('is-visible');
+        flowLoopMotion.onVisible(first);
         if (first.matches('.hero') && isCoverInView()) coverYearAnimation.schedule(coverYearRevealDelay);
       }
     }
@@ -2034,10 +2085,12 @@
     function revealWhenOverlaysAreReady(slide) {
       if (document.body.classList.contains('deck-is-sliding')) {
         slide.classList.remove('is-visible');
+        flowLoopMotion.onHidden(slide);
         pendingVisibleSlides.add(slide);
         return;
       }
       slide.classList.add('is-visible');
+      flowLoopMotion.onVisible(slide);
     }
 
     function flushPendingVisibleSlides() {
@@ -2046,6 +2099,7 @@
         requestAnimationFrame(function () {
           pendingVisibleSlides.forEach(function (slide) {
             slide.classList.add('is-visible');
+            flowLoopMotion.onVisible(slide);
           });
           pendingVisibleSlides.clear();
         });
@@ -2065,6 +2119,7 @@
         } else {
           pendingVisibleSlides.delete(e.target);
           e.target.classList.remove('is-visible');
+          flowLoopMotion.onHidden(e.target);
           if (e.target.matches('.hero')) coverYearAnimation.reset();
         }
       });
