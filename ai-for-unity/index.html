@@ -46,6 +46,7 @@
     --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
     --motion-fast: 160ms;
     --motion-base: 260ms;
+    --motion-hover: 520ms;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { height: 100%; overflow: hidden; }
@@ -89,7 +90,7 @@
   .slide.dark .cover-meta .speaker { color: var(--bg); }
   .slide.dark .kicker { color: color-mix(in oklab, var(--bg), transparent 45%); }
   .slide.hero .h-hero { font-size: clamp(88px, 10.42vw, 200px); line-height: 0.94; letter-spacing: -0.04em; }
-  .deck-headline { font-family: var(--font-display); font-weight: 700; font-size: clamp(44px, 4.6vw, 88px); line-height: 0.98; letter-spacing: -0.03em; margin-bottom: clamp(28px, 2.8vw, 52px); max-width: min(1500px, 92vw); }
+  .deck-headline { font-family: var(--font-display); font-weight: 700; font-size: clamp(44px, min(4.6vw, 7.6vh), 88px); line-height: 0.98; letter-spacing: -0.03em; margin-bottom: clamp(28px, 2.8vw, 52px); max-width: min(1500px, 92vw); }
   .deck-subhead { font-family: var(--font-body); font-weight: 400; font-size: clamp(16px, 1.25vw, 24px); line-height: 1.55; color: var(--muted); margin-top: clamp(-18px, -1vw, -10px); margin-bottom: clamp(28px, 2.8vw, 52px); max-width: min(1500px, 92vw); }
   .slide.dark .deck-subhead { color: color-mix(in oklab, var(--bg), transparent 30%); }
   .deck-section-label { font-family: var(--font-mono); font-size: clamp(12px, 0.9vw, 15px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 10px; }
@@ -107,11 +108,11 @@
   .cover-rule { width: 240px; height: 6px; background: var(--accent); margin-top: 56px; }
   .slide.center .cover-rule { margin-left: auto; margin-right: auto; }
   .closing-stamp { margin-top: 56px; font-family: var(--font-mono); font-size: 22px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
-  .deck-counter { position: fixed; bottom: 48px; right: 64px; font-family: var(--font-mono); font-size: 22px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); z-index: 100; pointer-events: none; opacity: 0; transition: opacity 500ms var(--ease-standard); }
+  .deck-counter { position: fixed; bottom: 48px; right: 64px; font-family: var(--font-mono); font-size: 22px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); z-index: 130; pointer-events: none; opacity: 0; transition: opacity 500ms var(--ease-standard); }
   .deck-counter .num { color: var(--fg); }
   .deck-counter.is-hidden { opacity: 0; }
   .deck-counter:not(.is-hidden) { opacity: 1; animation: revealFromBottom 520ms var(--ease-spring) 360ms both; }
-  .deck-credit { position: fixed; bottom: 48px; left: clamp(56px, 6.67vw, 128px); font-family: var(--font-mono); font-size: 13px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); z-index: 100; opacity: 0; transition: opacity 500ms var(--ease-standard); }
+  .deck-credit { position: fixed; bottom: 48px; left: clamp(56px, 6.67vw, 128px); font-family: var(--font-mono); font-size: 13px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); z-index: 130; opacity: 0; transition: opacity 500ms var(--ease-standard); }
   .deck-credit .speaker { color: var(--fg); }
   .deck-credit.is-hidden { opacity: 0; pointer-events: none; }
   .deck-credit:not(.is-hidden) { opacity: 1; animation: revealFromBottom 520ms var(--ease-spring) 500ms both; }
@@ -123,7 +124,7 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    z-index: 120;
+    z-index: 130;
     padding: 7px 12px;
     border: 1px solid var(--border);
     border-radius: 999px;
@@ -177,21 +178,30 @@
     flex: 0 0 auto;
     transform-origin: left center;
   }
-  .deck-back:hover,
-  .deck-back:focus-visible { color: var(--fg); }
-  .deck-back:hover::before,
-  .deck-back:focus-visible::before { transform: translateY(-1px); }
+  .deck-back:focus,
+  .nav-hint button:focus {
+    outline: none;
+  }
+  .deck-back,
+  .nav-hint button {
+    -webkit-tap-highlight-color: transparent;
+  }
+  .deck-back:hover { color: var(--fg); }
+  .deck-back:hover::before { transform: translateY(-1px); }
   .deck-back:active::before { transform: translateY(0); }
   .slide-tag { position: absolute; top: 48px; left: clamp(56px, 6.67vw, 128px); font-family: var(--font-mono); font-size: clamp(12px, 0.9vw, 15px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); display: inline-flex; align-items: center; gap: 12px; }
   .slide.hero .slide-tag { left: clamp(80px, 10vw, 192px); }
   .slide.center .slide-tag { left: 50%; transform: translateX(-50%); }
   .slide.hero.center .slide-tag.inline { position: static; left: auto; transform: none; display: block; margin: 48px auto 0; text-align: center; width: max-content; }
   .slide.hero.center .slide-tag.inline::before { content: none; }
-  .slide.hero.center .slide-tag.inline::after { content: ''; display: block; width: 100%; height: 2px; margin-top: 10px; background: var(--accent); border-radius: 999px; }
+  .slide.hero.center .slide-tag.inline::after { content: ''; display: block; width: 100%; height: 2px; margin-top: 10px; background: var(--accent); border-radius: 999px; transform: scaleX(0); transform-origin: left center; }
+  .slide.hero.center .slide-tag.inline.year-line-visible::after { animation: expandWidth 520ms var(--ease-spring) both; }
+  .cover-year { display: inline-block; min-width: 4ch; opacity: 0; clip-path: inset(0 0 100% 0); transform: translateY(10px); transition: opacity 560ms var(--ease-spring), clip-path 720ms var(--ease-spring), transform 720ms var(--ease-spring); will-change: opacity, clip-path, transform; }
+  .cover-year.is-visible { opacity: 1; clip-path: inset(0 0 0 0); transform: translateY(0); }
   /* hide in-slide tags on non-hero content slides — chrome shows them dynamically */
   .slide:not(.hero) > .slide-tag { display: none; }
   /* fixed chrome tag — pinned under the back link, updates dynamically */
-  .deck-tag { position: fixed; top: 82px; left: clamp(56px, 6.67vw, 128px); font-family: var(--font-mono); font-size: clamp(12px, 0.9vw, 15px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); z-index: 50; opacity: 0; transition: opacity 500ms var(--ease-standard); pointer-events: none; display: inline-flex; align-items: center; gap: 12px; }
+  .deck-tag { position: fixed; top: 82px; left: clamp(56px, 6.67vw, 128px); font-family: var(--font-mono); font-size: clamp(12px, 0.9vw, 15px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); z-index: 130; opacity: 0; transition: opacity 500ms var(--ease-standard); pointer-events: none; display: inline-flex; align-items: center; gap: 12px; }
   .deck-tag.is-hidden { opacity: 0; }
   .deck-tag:not(.is-hidden) { opacity: 1; animation: revealFromTop 520ms var(--ease-spring) 180ms both; }
   .deck-tag:not(.is-hidden)::before { animation: expandWidth 420ms var(--ease-spring) 560ms both; }
@@ -236,7 +246,7 @@
     width: 100%;
     flex: 1;
     min-height: 0;
-    margin-top: clamp(28px, 4vw, 72px);
+    margin-top: clamp(28px, 2.3vw, 44px);
   }
   .trend-col-label {
     grid-row: 1;
@@ -247,10 +257,10 @@
     letter-spacing: -0.01em;
     text-align: center;
     color: var(--fg);
-    width: 100%;
+    width: min(280px, 100%);
     max-width: 100%;
     text-wrap: balance;
-    margin: 0;
+    margin: 0 auto;
     align-self: end;
   }
   .trend-col-sep {
@@ -274,11 +284,18 @@
     display: block;
     align-self: start;
     margin: 0 auto;
+    transform-origin: center;
+    transition: transform var(--motion-hover) var(--ease-spring), filter var(--motion-hover) var(--ease-standard);
+  }
+  .trend-panel:hover {
+    z-index: 2;
+    transform: translateY(-6px) scale(1.025);
+    filter: drop-shadow(0 28px 35px rgba(17,17,17,0.16));
   }
   .two-col h3 { font-family: var(--font-mono); font-size: clamp(11px, 0.82vw, 14px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; font-weight: 400; }
-  .pillar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 32px; max-width: 1664px; }
-  .pillar-grid .pill { border: 1px solid var(--border); border-radius: 16px; padding: 24px 26px 26px; background: var(--surface); color: var(--fg); display: flex; flex-direction: column; transition: border-color var(--motion-fast) var(--ease-standard), box-shadow var(--motion-fast) var(--ease-standard); }
-  .pillar-grid .pill:hover { border-color: color-mix(in oklab, var(--accent), transparent 55%); box-shadow: 0 4px 24px color-mix(in oklab, var(--accent), transparent 91%); }
+  .pillar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: clamp(34px, 2.2vw, 42px); max-width: 1664px; }
+  .pillar-grid .pill { position: relative; border: 1px solid var(--border); border-radius: 16px; padding: 24px 26px 26px; background: var(--surface); color: var(--fg); display: flex; flex-direction: column; transition: transform var(--motion-hover) var(--ease-spring), border-color var(--motion-hover) var(--ease-standard), box-shadow var(--motion-hover) var(--ease-standard); }
+  .pillar-grid .pill:hover { z-index: 2; border-color: var(--border); box-shadow: 0 28px 70px rgba(17,17,17,0.16); transform: translateY(-6px) scale(1.025); }
   .pill-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 14px; }
   .pill-tags span { display: inline-block; white-space: nowrap; padding: 3px 9px; border: 1px solid var(--border); border-radius: 999px; font-family: var(--font-mono); font-size: 0.62em; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--surface); line-height: 1.4; }
   .slide.dark .pillar-grid .pill { background: transparent; border-color: var(--border); color: var(--bg); }
@@ -286,15 +303,39 @@
   .pill h4 { font-family: var(--font-display); font-weight: 600; font-size: clamp(18px, 1.45vw, 26px); line-height: 1.15; letter-spacing: -0.015em; margin: 8px 0 4px; }
   .pill .subhead { font-family: var(--font-body); font-size: clamp(13px, 1vw, 16px); line-height: 1.45; color: var(--muted); margin-bottom: 14px; }
   .pill .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
-  .pill .tag { font-family: var(--font-mono); font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.02em; padding: 5px 11px; border-radius: 9999px; border: 1px solid var(--border); background: color-mix(in oklab, var(--accent), transparent 94%); color: var(--fg); white-space: nowrap; }
-  .ui-workflow-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 1.6vw, 32px); width: min(1500px, 100%); margin-top: clamp(16px, 1.4vw, 26px); }
-  .ui-lane { border: 1px solid var(--border); border-radius: 16px; background: var(--surface); padding: clamp(20px, 1.6vw, 30px); display: flex; flex-direction: column; }
+  .pill .tag { font-family: var(--font-mono); font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.02em; padding: 5px 11px; border-radius: 9999px; border: 1px solid var(--border); background: color-mix(in oklab, var(--accent), transparent 94%); color: var(--fg); white-space: nowrap; text-decoration: none; }
+  .ui-workflow-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 1.6vw, 32px); width: min(1500px, 100%); margin-top: clamp(34px, 2.2vw, 42px); }
+  .slide-ui .ui-workflow-grid { margin-top: clamp(-32px, -1.45vw, -18px); }
+  .ui-lane { position: relative; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); padding: clamp(20px, 1.6vw, 30px); display: flex; flex-direction: column; transition: transform var(--motion-hover) var(--ease-spring), border-color var(--motion-hover) var(--ease-standard), box-shadow var(--motion-hover) var(--ease-standard); }
+  .ui-lane:hover { z-index: 2; border-color: var(--border); box-shadow: 0 28px 70px rgba(17,17,17,0.16); transform: translateY(-6px) scale(1.025); }
   .ui-lane .lane-label { font-family: var(--font-mono); font-size: clamp(11px, 0.8vw, 14px); letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: clamp(8px, 0.7vw, 12px); }
   .ui-lane h3 { font-family: var(--font-display); font-size: clamp(16px, 1.3vw, 24px); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: clamp(12px, 1vw, 18px); }
   .lane-sub { margin-top: clamp(4px, 0.3vw, 6px); margin-bottom: clamp(8px, 0.6vw, 12px); font-size: clamp(11px, 0.85vw, 14px); color: var(--muted); font-family: var(--font-body); line-height: 1.4; }
   .ui-items { flex: 1; display: flex; flex-direction: column; gap: clamp(7px, 0.55vw, 10px); }
-  .ui-item { position: relative; border: 1px solid var(--border); border-radius: 8px; padding: clamp(8px, 0.65vw, 12px) clamp(10px, 0.8vw, 14px) clamp(8px, 0.65vw, 12px) clamp(34px, 2.6vw, 48px); font-family: var(--font-display); font-weight: 500; font-size: clamp(14px, 1.1vw, 20px); line-height: 1.3; letter-spacing: -0.008em; background: color-mix(in oklab, var(--accent), transparent 96%); display: flex; align-items: center; }
+  .ui-item { position: relative; border: 1px solid var(--border); border-radius: 8px; padding: clamp(8px, 0.65vw, 12px) clamp(10px, 0.8vw, 14px) clamp(8px, 0.65vw, 12px) clamp(34px, 2.6vw, 48px); font-family: var(--font-display); font-weight: 500; font-size: clamp(14px, 1.1vw, 20px); line-height: 1.3; letter-spacing: -0.008em; background: color-mix(in oklab, var(--accent), transparent 96%); display: flex; align-items: center; transition: background var(--motion-fast) var(--ease-standard), border-color var(--motion-fast) var(--ease-standard), box-shadow var(--motion-fast) var(--ease-standard); }
   .ui-item::before { content: "→"; position: absolute; left: clamp(10px, 0.85vw, 16px); top: 50%; transform: translateY(-50%); font-family: var(--font-mono); font-weight: 400; font-size: 0.9em; line-height: 1; color: var(--accent); }
+  .ui-item.has-link { padding: 0; overflow: hidden; }
+  .ui-item.has-link::before { z-index: 1; }
+  .ui-item.has-link:hover { background: color-mix(in oklab, var(--accent), transparent 92%); border-color: color-mix(in oklab, var(--accent), transparent 58%); box-shadow: 0 4px 18px color-mix(in oklab, var(--accent), transparent 92%); }
+  .deck-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+    padding: clamp(8px, 0.65vw, 12px) clamp(10px, 0.8vw, 14px) clamp(8px, 0.65vw, 12px) clamp(34px, 2.6vw, 48px);
+    color: inherit;
+    text-decoration: none;
+  }
+  .deck-link::after {
+    content: "🔗";
+    flex: 0 0 auto;
+    margin-left: auto;
+    font-size: 0.88em;
+    line-height: 1;
+    opacity: 0.78;
+    transform: translateY(-1px);
+  }
   .ui-note { margin-top: clamp(18px, 1.6vw, 28px); font-family: var(--font-body); font-size: clamp(17px, 1.2vw, 22px); line-height: 1.4; color: var(--muted); }
   .slide-mcp { --mcp-section-gap: clamp(28px, 2.6vw, 44px); --mcp-label-gap: 10px; }
   .slide-mcp .arrow-list,
@@ -314,26 +355,30 @@
   .slide-mcp .arrow-list { max-width: 60%; }
   .mcp-tags { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; }
   .mcp-tags-label { font-family: var(--font-mono); font-size: clamp(12px, 0.9vw, 15px); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin: var(--mcp-section-gap, clamp(20px, 2vw, 32px)) 0 var(--mcp-label-gap, 10px); display: block; }
-  .mcp-tags .tag { font-family: var(--font-mono); font-size: clamp(13px, 1.05vw, 18px); letter-spacing: 0.02em; padding: 8px 16px; border-radius: 9999px; border: 1px solid var(--border); background: color-mix(in oklab, var(--accent), transparent 92%); color: var(--fg); white-space: nowrap; text-decoration: none; transition: background var(--motion-fast) var(--ease-standard), border-color var(--motion-fast) var(--ease-standard); }
-  .mcp-tags a.tag:hover { background: color-mix(in oklab, var(--accent), transparent 80%); border-color: var(--accent); }
-  .mcp-tags .tag-link { font-size: 1em; margin-right: 4px; opacity: 0.8; display: inline-block; transform: translateY(-2px); vertical-align: middle; }
+  .mcp-tags .tag { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: clamp(13px, 1.05vw, 18px); letter-spacing: 0.02em; padding: 8px 16px; border-radius: 9999px; border: 1px solid var(--border); background: color-mix(in oklab, var(--accent), transparent 92%); color: var(--fg); white-space: nowrap; text-decoration: none; transition: background var(--motion-fast) var(--ease-standard), border-color var(--motion-fast) var(--ease-standard), box-shadow var(--motion-fast) var(--ease-standard), transform var(--motion-fast) var(--ease-standard); }
+  .mcp-tags a.tag:hover { background: color-mix(in oklab, var(--accent), transparent 86%); border-color: color-mix(in oklab, var(--accent), transparent 58%); box-shadow: 0 4px 18px color-mix(in oklab, var(--accent), transparent 92%); transform: translateY(-1px); }
+  .mcp-tags .tag-link { order: 2; font-size: 1em; opacity: 0.8; display: inline-block; transform: translateY(-1px); }
   .mcp-logo { position: absolute; right: clamp(64px, 7vw, 120px); top: 50%; transform: translateY(-50%); width: clamp(150px, 15vw, 240px); color: var(--fg); display: flex; flex-direction: column; align-items: center; gap: clamp(14px, 1.2vw, 22px); }
   .mcp-logo .mcp-mark { width: clamp(90px, 9vw, 150px); height: auto; display: block; color: var(--fg); }
   .mcp-logo .mcp-wordmark { width: 100%; height: auto; display: block; color: var(--fg); }
   .slide.dark .pill .tag { background: color-mix(in oklab, var(--bg), transparent 88%); color: var(--bg); border-color: color-mix(in oklab, var(--bg), transparent 70%); }
-  .progression { display: flex; flex-direction: column; gap: 18px; margin-top: 48px; max-width: 1500px; }
-  .progression .step { display: grid; grid-template-columns: 64px 1fr; align-items: center; gap: 20px; padding: 18px 24px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); font-family: var(--font-display); font-size: clamp(15px, 1.1vw, 21px); font-weight: 500; line-height: 1.2; letter-spacing: -0.01em; }
+  .progression { display: flex; flex-direction: column; gap: clamp(10px, 0.75vw, 14px); margin-top: 48px; max-width: 1500px; }
+  .slide-levels .deck-subhead { margin-bottom: clamp(18px, 1.4vw, 24px); }
+  .progression .step { position: relative; display: grid; grid-template-columns: 64px 1fr; align-items: center; gap: 20px; padding: 18px 24px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); font-family: var(--font-display); font-size: clamp(15px, 1.1vw, 21px); font-weight: 500; line-height: 1.2; letter-spacing: -0.01em; transition: border-color var(--motion-hover) var(--ease-standard), box-shadow var(--motion-hover) var(--ease-standard); }
+  .progression .step:hover { z-index: 2; border-color: var(--border); box-shadow: 0 28px 70px rgba(17,17,17,0.16); }
   .slide.dark .progression .step { background: transparent; }
   .progression .step .idx { font-family: var(--font-mono); font-size: 18px; color: var(--accent); letter-spacing: 0.08em; }
   .progression .step.here { border: 1px solid #15803d; background: color-mix(in oklab, #15803d, transparent 93%); position: relative; }
+  .progression .step.here:hover { border-color: #15803d; }
   .progression .step.here .idx { color: #15803d; }
   .progression .step.here::after { content: "WE ARE HERE"; position: absolute; right: 24px; top: 50%; transform: translateY(-50%); font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.22em; color: #15803d; background: color-mix(in oklab, #15803d, transparent 83%); padding: 4px 12px; border-radius: 999px; }
-  .slide-evolution .progression { gap: 14px; margin-top: 36px; }
+  .slide-evolution .progression { margin-top: 36px; }
   .pillars-venn { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; width: 100%; }
   .pillars-venn svg { width: auto; height: 100%; max-height: min(940px, 88vh); max-width: 96vw; display: block; overflow: visible; }
   .pillars-venn .venn-rings circle { mix-blend-mode: multiply; transition: opacity var(--motion-base) var(--ease-standard); }
   .pillars-venn .venn-label text { font-family: var(--font-display); font-weight: 600; font-size: 44px; letter-spacing: -0.01em; }
   .pillars-venn .venn-core { font-family: var(--font-display); font-weight: 800; font-size: 52px; letter-spacing: -0.02em; fill: #ffffff; }
+  .flow-graph svg { width: min(400px, 31vw, 64vh); height: auto; max-height: min(650px, calc(100vh - 240px)); }
   .notes { display: none; position: fixed; bottom: 24px; left: 24px; right: 24px; max-height: 36vh; overflow-y: auto; background: rgba(17,17,17,0.94); color: #fafafa; font-family: var(--font-body); font-size: 18px; line-height: 1.5; padding: 24px 32px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); z-index: 999; backdrop-filter: blur(14px); }
   .notes.on { display: block; }
   .notes b { color: var(--accent); display: block; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: 13px; }
@@ -345,7 +390,7 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    z-index: 100;
+    z-index: 130;
     padding: 7px 12px;
     border: 1px solid var(--border);
     border-radius: 999px;
@@ -384,8 +429,7 @@
       box-shadow 720ms var(--ease-standard),
       transform var(--motion-fast) var(--ease-standard);
   }
-  .nav-hint button:hover,
-  .nav-hint button:focus-visible {
+  .nav-hint button:hover {
     transform: translateY(-1px);
   }
   .nav-hint button:active {
@@ -418,8 +462,7 @@
     border-color: color-mix(in oklab, #f8f8f9, transparent 86%);
     box-shadow: 0 1px 0 rgba(255,255,255,0.08);
   }
-  body.chrome-on-dark .deck-back:hover,
-  body.chrome-on-dark .deck-back:focus-visible { color: #f8f8f9; opacity: 0.92; }
+  body.chrome-on-dark .deck-back:hover { color: #f8f8f9; opacity: 0.92; }
   body.chrome-on-dark .nav-hint {
     background: color-mix(in oklab, #111111, transparent 16%);
     border-color: color-mix(in oklab, #f8f8f9, transparent 86%);
@@ -442,10 +485,63 @@
   }
   body.chrome-on-dark .mobile-swipe-hint .swipe-counter { color: #f8f8f9; }
   body.chrome-on-dark .mobile-swipe-hint .swipe-counter .total { color: color-mix(in oklab, #f8f8f9, transparent 48%); }
+  body.chrome-boot .deck-back,
+  body.chrome-boot .nav-hint,
+  body.chrome-boot .deck-tag,
+  body.chrome-boot .deck-counter,
+  body.chrome-boot .deck-credit,
+  body.chrome-boot .mobile-swipe-hint { visibility: hidden !important; }
+
+  @media (min-width: 761px) {
+    .slide {
+      padding-bottom: clamp(160px, 12vh, 220px);
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+      scrollbar-width: none;
+    }
+    .slide::-webkit-scrollbar { display: none; }
+
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: 115;
+      pointer-events: none;
+      transition: none;
+    }
+    body::before {
+      top: 0;
+      height: 140px;
+      background: linear-gradient(to bottom, var(--bg) 0%, color-mix(in oklab, var(--bg), transparent 8%) 42%, transparent 100%);
+    }
+    body::after {
+      bottom: 0;
+      height: 150px;
+      background: linear-gradient(to top, var(--bg) 0%, color-mix(in oklab, var(--bg), transparent 5%) 36%, transparent 100%);
+    }
+    body.chrome-on-dark::before {
+      background: linear-gradient(to bottom, var(--fg) 0%, color-mix(in oklab, var(--fg), transparent 8%) 42%, transparent 100%);
+    }
+    body.chrome-on-dark::after {
+      background: linear-gradient(to top, var(--fg) 0%, color-mix(in oklab, var(--fg), transparent 5%) 36%, transparent 100%);
+    }
+    body.deck-is-sliding::before,
+    body.deck-is-sliding::after {
+      opacity: 0;
+      visibility: hidden;
+      transition: none;
+    }
+  }
+
   /* ── Slide content reveal ── */
   @keyframes fadeUp  { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
   @keyframes scaleIn { from { opacity:0; transform:scale(0.96) translateY(10px); } to { opacity:1; transform:none; } }
   @keyframes fadeOnly{ from { opacity:0; } to { opacity:1; } }
+  .deck-animations-pending .slide > *:not(.notes) { opacity: 0; }
+  .deck-animations-pending .cover-year { opacity: 0; }
   .animations-ready [data-anim] { opacity: 0; }
   .animations-ready .slide.is-visible [data-anim] {
     animation: var(--anim-name, fadeUp) 520ms var(--ease-spring) var(--anim-delay, 0ms) both;
@@ -453,6 +549,7 @@
   @media (prefers-reduced-motion: reduce) {
     .animations-ready [data-anim] { opacity: 1 !important; }
     .animations-ready .slide.is-visible [data-anim] { animation: none !important; }
+    .cover-year { opacity: 1 !important; clip-path: none !important; transform: none !important; transition: none !important; }
   }
 
   /* ── Venn diagram reveal ── */
@@ -470,18 +567,28 @@
     to   { opacity:1; transform:translateY(0); }
   }
   .animations-ready .venn-rings circle,
+  .animations-ready .venn-core-glow,
   .animations-ready .venn-core-circle,
+  .animations-ready .venn-intersection,
   .animations-ready .venn-label text,
-  .animations-ready .venn-core { opacity: 0; }
-  .animations-ready .venn-rings circle { transform-box:fill-box; transform-origin:center; }
-  .animations-ready .venn-core-circle  { transform-box:fill-box; transform-origin:center; }
+  .animations-ready .venn-core,
+  .animations-ready .orbit-dot { opacity: 0; }
+  .animations-ready .venn-rings circle,
+  .animations-ready .venn-core-glow,
+  .animations-ready .venn-core-circle,
+  .animations-ready .venn-intersection { transform-box:fill-box; transform-origin:center; }
   .animations-ready .slide.is-visible .venn-rings circle {
     animation: vennRing 680ms var(--ease-spring) var(--vd,0ms) both;
   }
-  .animations-ready .slide.is-visible .venn-core-circle {
+  .animations-ready .slide.is-visible .venn-core-glow {
+    animation: fadeOnly 520ms var(--ease-standard) 400ms both;
+  }
+  .animations-ready .slide.is-visible .venn-core-circle,
+  .animations-ready .slide.is-visible .venn-intersection {
     animation: vennCore 720ms cubic-bezier(0.34,1.56,0.64,1) var(--vd,0ms) both;
   }
-  .animations-ready .slide.is-visible .venn-label text {
+  .animations-ready .slide.is-visible .venn-label text,
+  .animations-ready .slide.is-visible .orbit-dot {
     animation: vennLabel 480ms var(--ease-spring) var(--vd,0ms) both;
   }
   .animations-ready .slide.is-visible .venn-core {
@@ -489,9 +596,12 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .animations-ready .venn-rings circle,
+    .animations-ready .venn-core-glow,
     .animations-ready .venn-core-circle,
+    .animations-ready .venn-intersection,
     .animations-ready .venn-label text,
-    .animations-ready .venn-core { opacity:1 !important; animation:none !important; }
+    .animations-ready .venn-core,
+    .animations-ready .orbit-dot { opacity:1 !important; animation:none !important; }
   }
 
   .animations-ready .venn-intersection { opacity: 0; }
@@ -743,12 +853,25 @@
   @media print {
     @page { size: 1920px 1080px; margin: 0; }
     html, body { background: #fff; display: block; overflow: visible; height: auto; }
-    .slide { width: 1920px; height: 1080px; page-break-after: always; }
+    body::before, body::after { display: none !important; }
+    .slide { width: 1920px; height: 1080px; overflow: hidden; page-break-after: always; }
     .deck-back, .nav-hint, .notes, .mobile-swipe-hint { display: none !important; }
   }
 </style>
 </head>
-<body class="chrome-on-dark">
+<body class="chrome-boot deck-animations-pending">
+<script>
+(function () {
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var preview = params.get('preview') === 'cover';
+    var saved = parseInt(localStorage.getItem('ai-unity-deck-position') || '0', 10);
+    if (preview || isNaN(saved) || saved === 0) document.body.classList.add('chrome-on-dark');
+  } catch (_) {
+    document.body.classList.add('chrome-on-dark');
+  }
+})();
+</script>
 <a class="deck-back" id="deckBack" href="../" aria-label="Back to main site">Back</a>
 <div class="deck-tag is-hidden" id="deckTag">Trend</div>
 <div class="deck-counter" id="deckCounter"><span class="num">01</span> &nbsp;/&nbsp; 17</div>
@@ -764,7 +887,7 @@
 <section class="slide hero center dark" data-screen-label="01 Cover" data-notes="Welcome. This talk is about how AI is reshaping Unity development — from autocomplete to agentic engineering. We'll cover what changed, what tools matter, and what skills you need now.">
   <div class="kicker">A Knowledge-Sharing Session</div>
   <h1 class="h-hero">AI for Unity<br/>Development</h1>
-  <span class="slide-tag inline">2026</span>
+  <span class="slide-tag inline"><span class="cover-year" data-cover-year aria-label="2026">0000</span></span>
   <div class="cover-meta"><span class="speaker">Timur Prokopiev</span><span class="cover-desc">Engineering · Tooling · Workflows</span></div>
 </section>
 
@@ -915,7 +1038,7 @@
   <div class="progression">
     <div class="step"><span class="idx">01</span><span>Pre-AI · autocomplete workflows</span></div>
     <div class="step"><span class="idx">02</span><span>ChatGPT assistance · copy/paste workflows</span></div>
-    <div class="step here"><span class="idx">03</span><span>IDE plugins / CLI tools · manual code writing</span></div>
+    <div class="step here"><span class="idx">03</span><span>IDE plugins / CLI tools · manual agent control</span></div>
     <div class="step"><span class="idx">04</span><span>Agentic systems · automated development lifecycle</span></div>
   </div>
 </section>
@@ -956,7 +1079,7 @@
         <circle cx="195" cy="475" r="340" fill="#eab308" fill-opacity="0.15" stroke="#c79406" stroke-opacity="0.55" stroke-width="2.5"/>
         <circle cx="565" cy="475" r="340" fill="#dc2626" fill-opacity="0.12" stroke="#dc2626" stroke-opacity="0.50" stroke-width="2.5"/>
       </g>
-      <circle cx="380" cy="315" r="210" fill="url(#coreGlow)"/>
+      <circle class="venn-core-glow" cx="380" cy="315" r="210" fill="url(#coreGlow)"/>
       <g class="venn-label" text-anchor="middle" dominant-baseline="middle">
         <text x="135" y="95" fill="#2f6feb">Tools</text>
         <text x="625" y="95" fill="#15803d">Context</text>
@@ -998,9 +1121,9 @@
   <div class="pillar-grid">
     <div class="pill"><div class="num">/01</div><h4>IDEs</h4><div class="subhead">Inline assistance while you code.</div><div class="tags"><span class="tag">JetBrains</span><span class="tag">VSCode</span><span class="tag">Cursor</span></div></div>
     <div class="pill"><div class="num">/02</div><h4>Desktop apps</h4><div class="subhead">Context-aware chat for projects.</div><div class="tags"><span class="tag">Codex</span><span class="tag">Claude</span></div></div>
-    <div class="pill"><div class="num">/03</div><h4>CLI agents</h4><div class="subhead">Headless agents for automation and pipelines.</div><div class="tags"><span class="tag">OpenCode</span><span class="tag">Hermes</span><span class="tag">PI</span></div></div>
+    <div class="pill"><div class="num">/03</div><h4>CLI agents</h4><div class="subhead">Headless agents for automation and pipelines.</div><div class="tags"><span class="tag">OpenCode</span><span class="tag">Hermes</span><a class="tag" href="https://pi.dev/" target="_blank" rel="noopener noreferrer">PI</a></div></div>
     <div class="pill"><div class="num">/04</div><h4>MCP-clients</h4><div class="subhead">AI inside the creative tool.</div><div class="tags"><span class="tag">Unity</span><span class="tag">Blender</span><span class="tag">Houdini</span></div></div>
-    <div class="pill"><div class="num">/05</div><h4>Design tools</h4><div class="subhead">Agentic design surfaces.</div><div class="tags"><span class="tag">Claude Design</span><span class="tag">Open Design</span></div></div>
+    <div class="pill"><div class="num">/05</div><h4>Design tools</h4><div class="subhead">Agentic design surfaces.</div><div class="tags"><span class="tag">Claude Design</span><a class="tag" href="https://open-design.ai/" target="_blank" rel="noopener noreferrer">Open Design</a></div></div>
     <div class="pill"><div class="num">/06</div><h4>Other</h4><div class="subhead">Emerging agent surfaces.</div><div class="tags"><span class="tag">CMUX</span><span class="tag">Wrap</span><span class="tag">OpenClaw</span></div></div>
   </div>
 </section>
@@ -1037,6 +1160,7 @@
   <ul class="arrow-list tight cons">
     <li>Burns context fast</li>
     <li>Not plug-and-play (stdio vs HTTP)</li>
+    <li>Not always stable (rapidly evolving stack)</li>
   </ul>
 </section>
 
@@ -1128,16 +1252,18 @@
   </ul>
 </section>
 
-<section class="slide" data-screen-label="15 Unity UI" data-notes="UI development stack: 2D — UITK (UXML+USS), OneJS. 3D — spatial layouts from reusable components. Keep both tracks modular so AI edits one component system instead of repainting one-off screens.">
+<section class="slide slide-ui" data-screen-label="15 Unity UI" data-notes="UI development stack: 2D — UITK (UXML+USS), OneJS. 3D — spatial layouts from reusable components. Code-based, component-driven UI scales better with AI.">
   <span class="slide-tag">Unity · UI</span>
   <h2 class="deck-headline">UI, the AI way</h2>
+  <p class="deck-subhead">Code-based, component-driven UI scales better with AI.</p>
   <div class="ui-workflow-grid" aria-label="UI workflow split between 2D and 3D systems">
     <article class="ui-lane">
       <span class="lane-label">2D UI</span>
       <h3>Screen systems</h3>
       <div class="ui-items">
         <div class="ui-item">UITK (UXML + USS)</div>
-        <div class="ui-item"><a href="https://v3.onejs.com/" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px solid currentColor;">OneJS (React + Tailwind)</a></div>
+        <div class="ui-item has-link"><a class="deck-link" href="https://v3.onejs.com/" target="_blank" rel="noopener noreferrer">OneJS (React + Tailwind)</a></div>
+        <div class="ui-item">Layout engine (Flexbox)</div>
       </div>
     </article>
     <article class="ui-lane">
@@ -1145,11 +1271,10 @@
       <h3>Spatial layouts</h3>
       <div class="ui-items">
         <div class="ui-item">Reusable components</div>
-        <div class="ui-item"><a href="https://www.flexalon.com/" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px solid currentColor;">Layout rules</a></div>
+        <div class="ui-item has-link"><a class="deck-link" href="https://www.flexalon.com/" target="_blank" rel="noopener noreferrer">Layout engine (Flexon)</a></div>
       </div>
     </article>
   </div>
-  <p class="ui-note">Keep both tracks modular so AI edits one component system instead of repainting one-off screens.</p>
 </section>
 
 <section class="slide" data-screen-label="16 Shifting" data-notes="Engineering isn't disappearing — it's shifting. Mindset: curiosity, experimentation, continuous learning, breadth plus depth. Engineering focus: orchestrate AI, build harnesses, design workflows, turn tasks into reusable systems.">
@@ -1158,7 +1283,7 @@
   <p class="deck-subhead">not disappearing</p>
   <div class="two-col" style="margin-top:0">
     <div>
-      <h3>Mindset <span style="font-weight:400;opacity:.55;font-size:.75em;">how you think</span></h3>
+      <h3>Mindset</h3>
       <ul class="arrow-list tight">
         <li>Curiosity over certainty</li>
         <li>Experiment — expect imperfect results</li>
@@ -1167,7 +1292,7 @@
       </ul>
     </div>
     <div>
-      <h3>Engineering focus <span style="font-weight:400;opacity:.55;font-size:.75em;">what you actually do</span></h3>
+      <h3>Engineering focus</h3>
       <ul class="arrow-list tight">
         <li>Orchestrate AI, don't just write code</li>
         <li>Build harnesses around models</li>
@@ -1179,7 +1304,7 @@
 </section>
 
 
-<section class="slide" data-screen-label="18 Progression" data-notes="Levels of abstraction: prompts, structured input (markdown, schemas), frameworks, higher-level orchestration. Moving up the stack increases leverage — and the cost of mistakes — at the same time.">
+<section class="slide slide-levels" data-screen-label="18 Progression" data-notes="Levels of abstraction: prompts, structured input (markdown, schemas), frameworks, higher-level orchestration. Moving up the stack increases leverage — and the cost of mistakes — at the same time.">
   <span class="slide-tag">Engineering · Progression</span>
   <h2 class="deck-headline">Levels of AI Engineering</h2>
   <p class="deck-subhead">From prompts to systems to orchestration</p>
@@ -1200,8 +1325,8 @@
     <li>The output is controlled, not random</li>
     <li>You refine the process until it's repeatable</li>
   </ul>
-  <div class="flow-graph" style="position:absolute;right:160px;top:80px;bottom:60px;display:flex;align-items:center;">
-      <svg viewBox="0 0 400 650" width="400" height="650" overflow="visible" xmlns="http://www.w3.org/2000/svg" style="font-family:var(--font-body);">
+  <div class="flow-graph" style="position:absolute;right:160px;top:140px;bottom:96px;display:flex;align-items:center;">
+      <svg viewBox="0 0 400 650" overflow="visible" xmlns="http://www.w3.org/2000/svg" style="font-family:var(--font-body);">
         <defs>
           <marker id="arrV" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
             <path d="M1,1 L7,4 L1,7 Z" fill="#2f6feb"/>
@@ -1285,14 +1410,15 @@
       <span class="lane-label">Orchestrator</span>
       <p class="lane-sub">Task definition, iteration loop</p>
       <div class="ui-items">
-        <div class="ui-item">Pi / Copilot</div>
+        <div class="ui-item has-link"><a class="deck-link" href="https://pi.dev/" target="_blank" rel="noopener noreferrer">Pi</a></div>
+        <div class="ui-item">Copilot</div>
       </div>
     </article>
     <article class="ui-lane">
       <span class="lane-label">Design</span>
       <p class="lane-sub">AI-driven UI / system design</p>
       <div class="ui-items">
-        <div class="ui-item">Open Design</div>
+        <div class="ui-item has-link"><a class="deck-link" href="https://open-design.ai/" target="_blank" rel="noopener noreferrer">Open Design</a></div>
         <div class="ui-item">Claude Design</div>
       </div>
     </article>
@@ -1328,7 +1454,7 @@
 
   function setupHero(slide) {
     [ ['.kicker','fadeUp',0], ['.h-hero','fadeUp',100],
-      ['.slide-tag.inline','fadeUp',300], ['.cover-meta','fadeUp',420] ]
+      ['.cover-meta','fadeUp',420] ]
       .forEach(function(r){ slide.querySelectorAll(r[0]).forEach(function(el){ mark(el,r[1],r[2]); }); });
   }
 
@@ -1363,6 +1489,7 @@
       { sel: '.deck-subhead',       anim: 'fadeUp',   base: 80,  step: 0  },
       { sel: '.mcp-tags-label',     anim: 'fadeUp',   base: 140, step: 0  },
       { sel: '.mcp-tags',           anim: 'fadeUp',   base: 200, step: 0  },
+      { sel: '.mcp-logo',           anim: 'fadeOnly', base: 240, step: 0  },
       { sel: '.mcp-prosconlabel',   anim: 'fadeUp',   base: 160, step: 80 },
       { sel: '.deck-section-label', anim: 'fadeUp',   base: 160, step: 60 },
       { sel: '.two-col > *',        anim: 'scaleIn',  base: 120, step: 90 },
@@ -1386,25 +1513,143 @@
     });
   }
 
+  function prepareSlideTitles() {
+    document.querySelectorAll('.slide .h-hero, .slide .deck-headline').forEach(function(el) {
+      // Titles should travel with the slide immediately. The rest of the slide
+      // waits for the fixed gradients/status chrome, then reveals with motion.
+      el.removeAttribute('data-anim');
+      el.style.removeProperty('--anim-name');
+      el.style.removeProperty('--anim-delay');
+      el.setAttribute('data-deck-title', '');
+    });
+  }
+
+  function setupCoverYearAnimation() {
+    var coverYear = document.querySelector('[data-cover-year]');
+    if (!coverYear) return function () {};
+
+    var targetText = coverYear.getAttribute('aria-label') || coverYear.textContent.trim() || '2026';
+    var targetYear = parseInt(targetText, 10) || 2026;
+    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var hasAnimated = false;
+
+    coverYear.textContent = '0'.repeat(targetText.length);
+    coverYear.setAttribute('aria-label', targetText);
+
+    function finish() {
+      coverYear.classList.add('is-visible');
+      coverYear.textContent = targetText;
+      if (coverYear.parentElement) coverYear.parentElement.classList.add('year-line-visible');
+    }
+
+    return function revealCoverYear() {
+      if (hasAnimated) return;
+      hasAnimated = true;
+      coverYear.classList.add('is-visible');
+
+      if (reducedMotion) {
+        finish();
+        return;
+      }
+
+      var duration = 1400;
+      var startTime = performance.now();
+      var easeOutCubic = function(progress) { return 1 - Math.pow(1 - progress, 3); };
+
+      function tick(now) {
+        var progress = Math.min((now - startTime) / duration, 1);
+        var value = Math.round(targetYear * easeOutCubic(progress));
+        coverYear.textContent = String(value).padStart(targetText.length, '0');
+
+        if (progress < 1) {
+          requestAnimationFrame(tick);
+          return;
+        }
+
+        finish();
+      }
+
+      requestAnimationFrame(tick);
+    };
+  }
+
   function setupAll() {
+    function isCoverInView() {
+      var left = Math.max(
+        Math.abs(document.documentElement.scrollLeft || 0),
+        Math.abs(document.body.scrollLeft || 0),
+        Math.abs((document.scrollingElement && document.scrollingElement.scrollLeft) || 0)
+      );
+      return left < (window.innerWidth || document.documentElement.clientWidth || 1920) * 0.5;
+    }
+
     document.querySelectorAll('.slide').forEach(function(slide) {
       if (slide.classList.contains('hero'))            setupHero(slide);
       else if (slide.classList.contains('slide-trend'))  setupTrend(slide);
       else if (slide.classList.contains('slide-evolution')) setupEvolution(slide);
       else                                              setupGeneric(slide);
     });
+    prepareSlideTitles();
 
-    document.body.classList.add('animations-ready');
+    var revealCoverYear = setupCoverYearAnimation();
+    var animationsStarted = false;
 
-    // Cover is always first in viewport — mark it immediately
-    var first = document.querySelector('.slide');
-    if (first) first.classList.add('is-visible');
+    function startAnimations() {
+      if (animationsStarted) return;
+      animationsStarted = true;
+      document.body.classList.remove('deck-animations-pending');
+      document.body.classList.add('animations-ready');
+
+      // Cover is always first in viewport — mark it after chrome/overlays are ready.
+      var first = document.querySelector('.slide');
+      if (first) {
+        first.classList.add('is-visible');
+        if (first.matches('.hero') && isCoverInView()) window.setTimeout(revealCoverYear, 280);
+      }
+    }
+
+    function startAfterChromePaint() {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(startAnimations);
+      });
+    }
+
+    window.addEventListener('deck-chrome-ready', startAfterChromePaint, { once: true });
+    if (!document.body.classList.contains('chrome-boot')) startAfterChromePaint();
+    window.setTimeout(startAnimations, 700);
+
+    var pendingVisibleSlides = new Set();
+
+    function revealWhenOverlaysAreReady(slide) {
+      if (document.body.classList.contains('deck-is-sliding')) {
+        slide.classList.remove('is-visible');
+        pendingVisibleSlides.add(slide);
+        return;
+      }
+      slide.classList.add('is-visible');
+    }
+
+    function flushPendingVisibleSlides() {
+      if (!pendingVisibleSlides.size) return;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          pendingVisibleSlides.forEach(function (slide) {
+            slide.classList.add('is-visible');
+          });
+          pendingVisibleSlides.clear();
+        });
+      });
+    }
+
+    window.addEventListener('deck-slide-settled', flushPendingVisibleSlides);
 
     var io = new IntersectionObserver(function(entries) {
       entries.forEach(function(e) {
         if (e.isIntersecting) {
-          e.target.classList.add('is-visible');
+          revealWhenOverlaysAreReady(e.target);
+          if (e.target.matches('.hero') && isCoverInView()) window.setTimeout(revealCoverYear, 280);
         } else {
+          pendingVisibleSlides.delete(e.target);
           e.target.classList.remove('is-visible');
         }
       });
@@ -1457,6 +1702,8 @@
   var active = 0;
   var programmaticTarget = null;
   var programmaticTimer = null;
+  var deckSlidingTimer = null;
+  var lastDeckScrollLeft = 0;
   var extendDeckNavHideTimer = function () {};
 
   function isMobileLayout() {
@@ -1525,8 +1772,19 @@
       programmaticTimer = null;
     }
   }
+  function markDeckSliding(settleDelay) {
+    if (PREVIEW_MODE) return;
+    document.body.classList.add('deck-is-sliding');
+    if (deckSlidingTimer) clearTimeout(deckSlidingTimer);
+    deckSlidingTimer = setTimeout(function () {
+      document.body.classList.remove('deck-is-sliding');
+      deckSlidingTimer = null;
+      window.dispatchEvent(new CustomEvent('deck-slide-settled'));
+    }, settleDelay || 180);
+  }
   function beginProgrammaticNavigation(i) {
     programmaticTarget = i;
+    markDeckSliding(920);
     if (programmaticTimer) clearTimeout(programmaticTimer);
     programmaticTimer = setTimeout(clearProgrammaticNavigation, 900);
   }
@@ -1568,6 +1826,11 @@
     // Visibility: only the cover (slide 0) and hero slides hide chrome.
     // Once revealed, chrome stays put across content slides — no per-slide flash.
     document.body.classList.toggle('chrome-on-dark', !!isDark);
+    var wasChromeBooting = document.body.classList.contains('chrome-boot');
+    document.body.classList.remove('chrome-boot');
+    if (wasChromeBooting) {
+      window.dispatchEvent(new CustomEvent('deck-chrome-ready'));
+    }
     if (dc) dc.classList.toggle('is-hidden', i === 0);
     if (cr) cr.classList.toggle('is-hidden', i === 0);
     if (dt) dt.classList.toggle('is-hidden', isHero || !inSlideTag);
@@ -1585,7 +1848,11 @@
     if (previous === 0 && next === 1) extendDeckNavHideTimer();
   }
   function syncFromScroll() {
-    var i = Math.round(activeScrollLeft() / slideWidth());
+    var left = activeScrollLeft();
+    if (Math.abs(left - lastDeckScrollLeft) > 1) markDeckSliding(180);
+    lastDeckScrollLeft = left;
+
+    var i = Math.round(left / slideWidth());
     if (programmaticTarget !== null) {
       if (i === programmaticTarget) clearProgrammaticNavigation();
       else return;
@@ -1604,7 +1871,7 @@
       go(active - 1);
     } else if (e.key === 'Home') {
       e.preventDefault();
-      go(0);
+      go(0, 'instant');
     } else if (e.key === 'End') {
       e.preventDefault();
       go(slides.length - 1);
@@ -1626,7 +1893,7 @@
     deckBack.addEventListener('click', function (e) {
       if (active === 0) return;
       e.preventDefault();
-      go(0);
+      go(0, 'instant');
     });
   }
 
@@ -1811,8 +2078,12 @@
     }
   }
 
+  lastDeckScrollLeft = activeScrollLeft();
+  setTimeout(function () { lastDeckScrollLeft = activeScrollLeft(); }, 0);
+
   window.addEventListener('resize', function () {
     scrollToSlide(active, 'instant');
+    lastDeckScrollLeft = activeScrollLeft();
   });
 })();
 </script>
