@@ -86,6 +86,26 @@
   .kicker { font-family: var(--font-mono); font-size: 22px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 48px; }
   .h-hero { font-family: var(--font-display); font-weight: 700; font-size: clamp(72px, 8.33vw, 160px); line-height: 0.96; letter-spacing: -0.035em; color: var(--fg); }
   .slide.dark .h-hero { color: var(--bg); }
+  .slide.hero .h-hero {
+    background: linear-gradient(110deg,
+      var(--bg) 0%,
+      var(--bg) 34%,
+      #ff4d6d 42%,
+      #ffd166 48%,
+      #38d996 54%,
+      #4cc9f0 60%,
+      #b56cff 66%,
+      var(--bg) 74%,
+      var(--bg) 100%);
+    background-size: 340% 100%;
+    background-position: 0% 50%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .animations-ready .slide.hero.is-visible .h-hero {
+    animation: heroRainbowSweep 11s ease-in-out 280ms infinite;
+  }
   .slide.dark .cover-meta { color: color-mix(in oklab, var(--bg), transparent 35%); }
   .slide.dark .cover-meta .speaker { color: var(--bg); }
   .slide.dark .kicker { color: color-mix(in oklab, var(--bg), transparent 45%); }
@@ -217,9 +237,14 @@
     from { transform: scaleX(0); }
     to   { transform: scaleX(1); }
   }
+  @keyframes heroRainbowSweep {
+    0%, 3%, 15.01%, 100% { background-position: 0% 50%; }
+    15% { background-position: 100% 50%; }
+  }
   @media (prefers-reduced-motion: reduce) {
     .deck-counter:not(.is-hidden), .deck-credit:not(.is-hidden), .deck-tag:not(.is-hidden) { animation-duration: 1ms; animation-delay: 0ms; }
     .deck-tag:not(.is-hidden)::before { animation-duration: 1ms; animation-delay: 0ms; }
+    .slide.hero .h-hero { animation: none; background: none; -webkit-text-fill-color: currentColor; }
   }
   .accent-rule { width: 36px; height: 3px; background: var(--accent); border-radius: 2px; margin-bottom: 28px; flex-shrink: 0; opacity: 0.9; }
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 96px; margin-top: 32px; max-width: 1664px; }
@@ -1453,8 +1478,8 @@
   }
 
   function setupHero(slide) {
-    [ ['.kicker','fadeUp',0], ['.h-hero','fadeUp',100],
-      ['.cover-meta','fadeUp',420] ]
+    [ ['.kicker','fadeUp',2100], ['.h-hero','fadeUp',100],
+      ['.cover-meta','fadeUp',2380] ]
       .forEach(function(r){ slide.querySelectorAll(r[0]).forEach(function(el){ mark(el,r[1],r[2]); }); });
   }
 
@@ -1539,7 +1564,11 @@
     function finish() {
       coverYear.classList.add('is-visible');
       coverYear.textContent = targetText;
-      if (coverYear.parentElement) coverYear.parentElement.classList.add('year-line-visible');
+      if (coverYear.parentElement) {
+        window.setTimeout(function () {
+          coverYear.parentElement.classList.add('year-line-visible');
+        }, 120);
+      }
     }
 
     return function revealCoverYear() {
@@ -1592,6 +1621,7 @@
     prepareSlideTitles();
 
     var revealCoverYear = setupCoverYearAnimation();
+    var coverYearRevealDelay = 2780;
     var animationsStarted = false;
 
     function startAnimations() {
@@ -1604,7 +1634,7 @@
       var first = document.querySelector('.slide');
       if (first) {
         first.classList.add('is-visible');
-        if (first.matches('.hero') && isCoverInView()) window.setTimeout(revealCoverYear, 280);
+        if (first.matches('.hero') && isCoverInView()) window.setTimeout(revealCoverYear, coverYearRevealDelay);
       }
     }
 
@@ -1647,7 +1677,7 @@
       entries.forEach(function(e) {
         if (e.isIntersecting) {
           revealWhenOverlaysAreReady(e.target);
-          if (e.target.matches('.hero') && isCoverInView()) window.setTimeout(revealCoverYear, 280);
+          if (e.target.matches('.hero') && isCoverInView()) window.setTimeout(revealCoverYear, coverYearRevealDelay);
         } else {
           pendingVisibleSlides.delete(e.target);
           e.target.classList.remove('is-visible');
