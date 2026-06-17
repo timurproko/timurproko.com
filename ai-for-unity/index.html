@@ -2068,13 +2068,16 @@
   }
 
   function setupAll() {
-    function isCoverInView() {
-      var left = Math.max(
+    function currentDeckScrollLeft() {
+      return Math.max(
         Math.abs(document.documentElement.scrollLeft || 0),
         Math.abs(document.body.scrollLeft || 0),
         Math.abs((document.scrollingElement && document.scrollingElement.scrollLeft) || 0)
       );
-      return left < (window.innerWidth || document.documentElement.clientWidth || 1920) * 0.5;
+    }
+
+    function isCoverInView() {
+      return currentDeckScrollLeft() < (window.innerWidth || document.documentElement.clientWidth || 1920) * 0.5;
     }
 
     document.querySelectorAll('.slide').forEach(function(slide) {
@@ -2096,12 +2099,15 @@
       document.body.classList.remove('deck-animations-pending');
       document.body.classList.add('animations-ready');
 
-      // Cover is always first in viewport — mark it after chrome/overlays are ready.
-      var first = document.querySelector('.slide');
-      if (first) {
-        first.classList.add('is-visible');
-        flowLoopMotion.onVisible(first);
-        if (first.matches('.hero') && isCoverInView()) coverYearAnimation.schedule(coverYearRevealDelay);
+      // Reveal only the slide that is actually in view. When the page restores
+      // to a saved non-cover slide, pre-marking the cover as visible lets its
+      // title animation finish offscreen, so it flashes instead of revealing
+      // when navigating back to slide 1.
+      var visibleIndex = Math.round(currentDeckScrollLeft() / (window.innerWidth || document.documentElement.clientWidth || 1920));
+      var visibleSlide = document.querySelectorAll('.slide')[Math.max(0, visibleIndex)];
+      if (visibleSlide) {
+        revealWhenOverlaysAreReady(visibleSlide);
+        if (visibleSlide.matches('.hero') && isCoverInView()) coverYearAnimation.schedule(coverYearRevealDelay);
       }
     }
 
