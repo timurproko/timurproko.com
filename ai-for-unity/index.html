@@ -1873,15 +1873,40 @@
 
   function setupCoverYearAnimation() {
     var coverYear = document.querySelector('[data-cover-year]');
-    if (!coverYear) return function () {};
+    var noopControls = { schedule: function () {}, reset: function () {} };
+    if (!coverYear) return noopControls;
 
     var targetText = coverYear.getAttribute('aria-label') || coverYear.textContent.trim() || '2026';
     var targetYear = parseInt(targetText, 10) || 2026;
     var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var revealTimer = null;
+    var rafId = null;
     var hasAnimated = false;
 
-    coverYear.textContent = '0'.repeat(targetText.length);
     coverYear.setAttribute('aria-label', targetText);
+
+    function hideYear() {
+      coverYear.classList.remove('is-visible');
+      coverYear.textContent = '0'.repeat(targetText.length);
+      if (coverYear.parentElement) coverYear.parentElement.classList.remove('year-line-visible');
+    }
+
+    function clearScheduledReveal() {
+      if (revealTimer) {
+        window.clearTimeout(revealTimer);
+        revealTimer = null;
+      }
+      if (rafId) {
+        window.cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+    }
+
+    function resetCoverYear() {
+      clearScheduledReveal();
+      hasAnimated = false;
+      hideYear();
+    }
 
     function showYearLine() {
       if (coverYear.parentElement) coverYear.parentElement.classList.add('year-line-visible');
@@ -1891,9 +1916,11 @@
       coverYear.classList.add('is-visible');
       coverYear.textContent = targetText;
       showYearLine();
+      rafId = null;
     }
 
-    return function revealCoverYear() {
+    function revealCoverYear() {
+      revealTimer = null;
       if (hasAnimated) return;
       hasAnimated = true;
       coverYear.classList.add('is-visible');
@@ -1914,15 +1941,23 @@
         coverYear.textContent = String(value).padStart(targetText.length, '0');
 
         if (progress < 1) {
-          requestAnimationFrame(tick);
+          rafId = requestAnimationFrame(tick);
           return;
         }
 
         finish();
       }
 
-      requestAnimationFrame(tick);
-    };
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function scheduleReveal(delayMs) {
+      clearScheduledReveal();
+      revealTimer = window.setTimeout(revealCoverYear, delayMs);
+    }
+
+    hideYear();
+    return { schedule: scheduleReveal, reset: resetCoverYear };
   }
 
   function setupAll() {
@@ -1943,7 +1978,7 @@
     });
     prepareSlideTitles();
 
-    var revealCoverYear = setupCoverYearAnimation();
+    var coverYearAnimation = setupCoverYearAnimation();
     var coverYearRevealDelay = 3360;
     var animationsStarted = false;
 
@@ -1957,7 +1992,7 @@
       var first = document.querySelector('.slide');
       if (first) {
         first.classList.add('is-visible');
-        if (first.matches('.hero') && isCoverInView()) window.setTimeout(revealCoverYear, coverYearRevealDelay);
+        if (first.matches('.hero') && isCoverInView()) coverYearAnimation.schedule(coverYearRevealDelay);
       }
     }
 
@@ -2000,10 +2035,14 @@
       entries.forEach(function(e) {
         if (e.isIntersecting) {
           revealWhenOverlaysAreReady(e.target);
-          if (e.target.matches('.hero') && isCoverInView()) window.setTimeout(revealCoverYear, coverYearRevealDelay);
+          if (e.target.matches('.hero') && isCoverInView()) {
+            coverYearAnimation.reset();
+            coverYearAnimation.schedule(coverYearRevealDelay);
+          }
         } else {
           pendingVisibleSlides.delete(e.target);
           e.target.classList.remove('is-visible');
+          if (e.target.matches('.hero')) coverYearAnimation.reset();
         }
       });
     }, { threshold: 0.5 });
