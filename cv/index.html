@@ -418,7 +418,21 @@
     .cert-source { display: block; color: var(--muted); font-size: 12px; }
     .compact-list li { padding-bottom: 10px; border-bottom: 1px solid var(--border); }
     .compact-list li:last-child { padding-bottom: 0; border-bottom: 0; }
-    .language-level::before { content: " — "; }
+    .language-list li {
+      display: grid;
+      grid-template-columns: minmax(0, auto) 1fr;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .language-name { color: var(--fg); font-size: 13px; letter-spacing: -0.005em; }
+    .language-level {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-align: right;
+      white-space: nowrap;
+    }
 
     footer {
       border-top: 1px solid var(--border);
