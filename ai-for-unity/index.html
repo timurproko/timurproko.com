@@ -465,7 +465,6 @@
     column-gap: clamp(28px, 4vw, 72px);
     row-gap: 0;
   }
-  .slide-goal .slide-scroll-content::before { grid-column: 1 / -1; }
   .slide-goal .arrow-list {
     min-width: 0;
     max-width: 100% !important;
@@ -631,18 +630,21 @@
     .scroll-split-owner > .deck-headline,
     .scroll-split-owner > .trend-intro {
       flex: 0 0 auto;
+      position: relative;
+      z-index: 6;
     }
+    /* Slide-tag sits in the same masked region above the title and must stay
+       above the fade so it does not get washed out. */
+    .scroll-split-owner > .slide-tag { z-index: 6; }
     .scroll-split-owner > .slide-scroll-content {
       display: block;
       position: relative;
       flex: 1 1 auto;
       min-height: 0;
-      --scroll-top-bleed: 72px;
-      --scroll-top-fade: 72px;
       width: calc(100% + (var(--slide-pad-x) * 2));
       max-width: none;
-      margin: calc(var(--scroll-top-bleed) * -1) calc(var(--slide-pad-x) * -1) 0;
-      padding: var(--scroll-top-bleed) var(--slide-pad-x) clamp(140px, 12vh, 200px);
+      margin: 0 calc(var(--slide-pad-x) * -1) 0;
+      padding: 0 var(--slide-pad-x) clamp(140px, 12vh, 200px);
       overflow-x: hidden;
       overflow-y: auto;
       overscroll-behavior-y: contain;
@@ -650,28 +652,37 @@
       scrollbar-width: none;
     }
     .scroll-split-owner > .slide-scroll-content::-webkit-scrollbar { display: none; }
-    .scroll-split-owner > .slide-scroll-content::before {
+    /* Top fade overlay: sits ABOVE the scroll content but BELOW the title.
+       Covers from the slide top down through the headline so content
+       scrolling up dissolves smoothly under the title region. The overlay
+       height intentionally stops a bit above the actual content-top: the
+       transparent end of the gradient lands inside the headline's bottom
+       margin, so at rest the artwork sits clearly below an unmasked gap. */
+    .scroll-split-owner::before {
       content: '';
-      position: sticky;
+      position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      z-index: 5;
-      display: block;
-      height: var(--scroll-top-fade);
-      margin-top: calc(var(--scroll-top-bleed) * -1);
-      margin-bottom: 0;
+      height: calc(clamp(112px, 8.5vw, 152px) + clamp(44px, min(4.6vw, 7.6vh), 88px) + 12px);
+      z-index: 4;
       pointer-events: none;
-      opacity: 1;
-      background: linear-gradient(to bottom, var(--bg) 0%, color-mix(in oklab, var(--bg), transparent 16%) 42%, transparent 100%);
-      transition: opacity 160ms var(--ease-standard);
+      background: linear-gradient(to bottom,
+        var(--bg) 0%,
+        var(--bg) 70%,
+        transparent 100%);
     }
-    .scroll-split-owner > .slide-scroll-content.hide-top-fade-at-top.is-at-top::before { opacity: 0; }
-    .slide.dark .scroll-split-owner > .slide-scroll-content::before {
-      background: linear-gradient(to bottom, var(--fg) 0%, color-mix(in oklab, var(--fg), transparent 16%) 42%, transparent 100%);
+    .slide.dark.scroll-split-owner::before {
+      background: linear-gradient(to bottom,
+        var(--fg) 0%,
+        var(--fg) 70%,
+        transparent 100%);
     }
-    .slide-zx-end .scroll-split-owner > .slide-scroll-content::before {
-      background: linear-gradient(to bottom, #050505 0%, rgba(5,5,5,0.84) 42%, transparent 100%);
+    .slide-zx-end.scroll-split-owner::before {
+      background: linear-gradient(to bottom,
+        #050505 0%,
+        #050505 70%,
+        transparent 100%);
     }
     .slide-goal.scroll-split-owner > .slide-scroll-content {
       display: grid;
@@ -1021,18 +1032,19 @@
     .scroll-split-owner > .deck-subhead,
     .scroll-split-owner > .trend-intro {
       flex: 0 0 auto;
+      position: relative;
+      z-index: 6;
     }
+    .scroll-split-owner > .slide-tag { z-index: 6; }
     .scroll-split-owner > .slide-scroll-content {
       display: block;
       position: relative;
       flex: 1 1 auto;
       min-height: 0;
-      --scroll-top-bleed: 42px;
-      --scroll-top-fade: 42px;
       width: calc(100% + (var(--slide-pad-x) * 2));
       max-width: none;
-      margin: calc(var(--scroll-top-bleed) * -1) calc(var(--slide-pad-x) * -1) 0;
-      padding: var(--scroll-top-bleed) var(--slide-pad-x) 96px;
+      margin: 0 calc(var(--slide-pad-x) * -1) 0;
+      padding: 0 var(--slide-pad-x) 96px;
       overflow-x: hidden;
       overflow-y: auto;
       overscroll-behavior-y: contain;
@@ -1040,32 +1052,32 @@
       scrollbar-width: none;
     }
     .scroll-split-owner > .slide-scroll-content::-webkit-scrollbar { display: none; }
-    .scroll-split-owner > .slide-scroll-content::before {
+    /* Mobile top fade overlay — same idea as desktop, scaled down. */
+    .scroll-split-owner::before {
       content: '';
-      position: sticky;
+      position: absolute;
+      top: 0;
       left: 0;
       right: 0;
-      z-index: 5;
-      display: block;
+      height: calc(112px + clamp(34px, 10vw, 48px) + 8px);
+      z-index: 4;
       pointer-events: none;
-      opacity: 1;
-      transition: opacity 160ms var(--ease-standard);
+      background: linear-gradient(to bottom,
+        var(--bg) 0%,
+        var(--bg) 70%,
+        transparent 100%);
     }
-    .scroll-split-owner > .slide-scroll-content.is-at-top::before {
-      opacity: 0;
+    .slide.dark.scroll-split-owner::before {
+      background: linear-gradient(to bottom,
+        var(--fg) 0%,
+        var(--fg) 70%,
+        transparent 100%);
     }
-    .scroll-split-owner > .slide-scroll-content::before {
-      top: 0;
-      height: var(--scroll-top-fade);
-      margin-top: calc(var(--scroll-top-bleed) * -1);
-      margin-bottom: 0;
-      background: linear-gradient(to bottom, var(--bg) 0%, color-mix(in oklab, var(--bg), transparent 58%) 38%, transparent 100%);
-    }
-    .slide.dark .scroll-split-owner > .slide-scroll-content::before {
-      background: linear-gradient(to bottom, var(--fg) 0%, color-mix(in oklab, var(--fg), transparent 58%) 38%, transparent 100%);
-    }
-    .slide-zx-end .scroll-split-owner > .slide-scroll-content::before {
-      background: linear-gradient(to bottom, #050505 0%, rgba(5,5,5,0.42) 38%, transparent 100%);
+    .slide-zx-end.scroll-split-owner::before {
+      background: linear-gradient(to bottom,
+        #050505 0%,
+        #050505 70%,
+        transparent 100%);
     }
     .deck-section-label { font-size: 11px; margin-bottom: 8px; }
     .lead { font-size: clamp(22px, 6vw, 32px); margin-top: 24px; max-width: 100%; }
@@ -2310,25 +2322,14 @@
       if (!hasElementContent) return;
 
       var scroller = document.createElement('div');
-      scroller.className = 'slide-scroll-content is-at-top';
+      scroller.className = 'slide-scroll-content';
       nodesToMove.forEach(function(child) { scroller.appendChild(child); });
       owner.appendChild(scroller);
       owner.classList.add('scroll-split-owner');
       slide.classList.add('has-scroll-content');
-
-      var firstContentElement = Array.from(scroller.children).find(function(child) {
-        return child.nodeType === 1 && !child.matches('script, style');
-      });
-      // Only hide the top fade at rest when it would wash out a subtitle. For
-      // graphic-first slides the fade must remain visible, otherwise the top of
-      // the illustration is clipped by a hard edge.
-      scroller.classList.toggle('hide-top-fade-at-top', !!(firstContentElement && firstContentElement.classList.contains('deck-subhead')));
-
-      function updateTopFade() {
-        scroller.classList.toggle('is-at-top', scroller.scrollTop <= 1);
-      }
-      scroller.addEventListener('scroll', updateTopFade, { passive: true });
-      updateTopFade();
+      // Top fade is a slide-level absolute overlay (`.scroll-split-owner::before`)
+      // sized to cover from the slide top down past the headline. Content
+      // scrolling up dissolves into it, no scroll listener required.
     });
   }
 
