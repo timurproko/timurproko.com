@@ -589,8 +589,15 @@
     color: color-mix(in oklab, #f8f8f9, transparent 48%);
     box-shadow: 0 8px 24px rgba(0,0,0,0.18);
   }
+  body.chrome-on-dark .mobile-swipe-hint .swipe-label { color: color-mix(in oklab, #f8f8f9, transparent 48%); }
   body.chrome-on-dark .mobile-swipe-hint .swipe-counter { color: #f8f8f9; }
   body.chrome-on-dark .mobile-swipe-hint .swipe-counter .total { color: color-mix(in oklab, #f8f8f9, transparent 48%); }
+  body.chrome-on-dark .mobile-swipe-hint .swipe-arrow {
+    color: #f8f8f9;
+    background: color-mix(in oklab, #f8f8f9, transparent 90%);
+    border-color: color-mix(in oklab, #f8f8f9, transparent 86%);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.08);
+  }
   body.chrome-on-dark .deck-counter,
   body.chrome-on-dark .deck-credit,
   body.chrome-on-dark .deck-tag {
@@ -1174,24 +1181,28 @@
     .deck-credit:not(.is-hidden) { animation: revealFromTop 520ms var(--ease-spring) 240ms both; }
     .mobile-swipe-hint {
       position: fixed;
-      left: 50%;
-      bottom: 12px;
-      transform: translateX(-50%);
+      top: 12px;
+      right: 12px;
+      bottom: auto;
+      left: auto;
+      transform: none;
       display: grid;
       grid-template-columns: auto auto auto;
       align-items: center;
       justify-content: center;
-      column-gap: clamp(10px, 3vw, 18px);
-      z-index: 100;
+      column-gap: clamp(8px, 2.6vw, 14px);
+      z-index: 130;
       width: fit-content;
-      max-width: calc(100vw - 32px);
-      padding: 8px 14px;
+      max-width: calc(100vw - 116px);
+      box-sizing: border-box;
+      min-height: 32px;
+      padding: 7px 10px;
       border: 1px solid var(--border);
       border-radius: 999px;
       background: color-mix(in oklab, var(--surface), transparent 10%);
       color: var(--muted);
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 10px;
       line-height: 1;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -1204,8 +1215,43 @@
         color 720ms var(--ease-standard),
         box-shadow 720ms var(--ease-standard);
     }
+    .mobile-swipe-hint .swipe-prev,
+    .mobile-swipe-hint .swipe-next {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
     .mobile-swipe-hint .swipe-prev { justify-self: start; }
     .mobile-swipe-hint .swipe-next { justify-self: end; }
+    .mobile-swipe-hint .swipe-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 6px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: color-mix(in oklab, var(--surface), var(--fg) 4%);
+      color: var(--fg);
+      font: inherit;
+      font-size: 1em;
+      font-weight: inherit;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1;
+      box-shadow: 0 1px 0 var(--border);
+      transition:
+        background-color 720ms var(--ease-standard),
+        border-color 720ms var(--ease-standard),
+        color 720ms var(--ease-standard),
+        box-shadow 720ms var(--ease-standard);
+    }
+    .mobile-swipe-hint .swipe-label,
+    .mobile-swipe-hint .swipe-counter {
+      display: inline-block;
+      line-height: 1;
+      transform: translateY(1px);
+    }
+    .mobile-swipe-hint .swipe-label { color: var(--muted); transition: color 720ms var(--ease-standard); }
     .mobile-swipe-hint .swipe-counter { color: var(--fg); letter-spacing: 0.1em; transition: color 720ms var(--ease-standard); }
     .mobile-swipe-hint .swipe-counter .total { color: var(--muted); transition: color 720ms var(--ease-standard); }
     .deck-counter { bottom: 46px; right: 16px; font-size: 12px; letter-spacing: 0.1em; }
@@ -1347,7 +1393,7 @@
 <div class="deck-tag is-hidden" id="deckTag">Trend</div>
 <div class="deck-counter" id="deckCounter"><span class="num">01</span><span class="sep"> / </span><span class="total">19</span></div>
 <div class="deck-credit is-hidden" id="deckCredit"><span class="speaker">Timur Prokopiev</span><span class="deck-credit-extra"> &nbsp;·&nbsp; AI for Unity Development</span></div>
-<div class="mobile-swipe-hint" id="mobileSwipeHint" aria-hidden="true"><span class="swipe-prev">← Swipe</span><span class="swipe-counter"><span class="num">01</span> / <span class="total">19</span></span><span class="swipe-next">Swipe →</span></div>
+<div class="mobile-swipe-hint" id="mobileSwipeHint" aria-hidden="true"><span class="swipe-prev"><span class="swipe-arrow">←</span><span class="swipe-label">Swipe</span></span><span class="swipe-counter"><span class="num">01</span> / <span class="total">19</span></span><span class="swipe-next"><span class="swipe-label">Swipe</span><span class="swipe-arrow">→</span></span></div>
 <div class="nav-hint" aria-label="Slide navigation">
   <button type="button" data-deck-action="prev" aria-label="Previous slide">←</button>
   <button type="button" data-deck-action="next" aria-label="Next slide">→</button>
