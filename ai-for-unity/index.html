@@ -2318,7 +2318,8 @@
     var isMobileFade = window.matchMedia('(max-width: 760px)').matches;
     var fadeLength = isMobileFade ? 80 : 96;
     document.querySelectorAll('.scroll-split-owner').forEach(function(owner) {
-      var fadeAnchor = owner.querySelector(':scope > .trend-intro')
+      var fadeAnchor = (owner.classList.contains('has-pinned-subhead') && owner.querySelector(':scope > .deck-subhead'))
+        || owner.querySelector(':scope > .trend-intro')
         || owner.querySelector(':scope > .deck-headline, :scope > .h-hero')
         || owner.querySelector(':scope > .deck-subhead');
       if (!fadeAnchor) return;
@@ -2330,8 +2331,9 @@
       var scroller = owner.querySelector(':scope > .slide-scroll-content');
       var scrollerTop = scroller ? Math.max(0, Math.round(scroller.getBoundingClientRect().top - ownerRect.top)) : headerBottom;
       var overlap = Math.max(0, scrollerTop - headerTop);
-      var fadeHeight = headerBottom;
-      var solidEnd = Math.max(0, headerBottom - fadeLength);
+      var fadeTail = isMobileFade ? 40 : 56;
+      var fadeHeight = headerBottom + fadeTail;
+      var solidEnd = headerBottom;
       owner.style.setProperty('--scroll-fade-length', fadeLength + 'px');
       owner.style.setProperty('--scroll-fade-overlap', (-overlap) + 'px');
       owner.style.setProperty('--scroll-fade-solid', solidEnd + 'px');
@@ -2358,6 +2360,12 @@
       }
 
       if (!owner || !owner.contains(headerEnd)) return;
+
+      var nextElement = headerEnd.nextElementSibling;
+      if (nextElement && nextElement.classList.contains('deck-subhead')) {
+        headerEnd = nextElement;
+        owner.classList.add('has-pinned-subhead');
+      }
 
       var nodesToMove = [];
       var node = headerEnd.nextSibling;
