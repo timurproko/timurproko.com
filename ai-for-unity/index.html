@@ -49,10 +49,10 @@
     --motion-hover: 520ms;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { height: 100%; overflow: hidden; }
+  html { height: 100%; overflow: hidden; background: var(--fg); }
   html, body { height: 100%; width: 100%; }
   body {
-    background: var(--bg);
+    background: var(--fg);
     color: var(--fg);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
@@ -63,6 +63,7 @@
     scroll-behavior: smooth;
     scrollbar-width: none;
   }
+  body:not(.chrome-on-dark) { background: var(--bg); }
   body::-webkit-scrollbar { display: none; }
   .slide {
     flex: 0 0 100vw;
@@ -911,14 +912,15 @@
   }
 </style>
 </head>
-<body class="chrome-boot deck-animations-pending">
+<body class="chrome-boot deck-animations-pending chrome-on-dark">
 <script>
 (function () {
   try {
     var params = new URLSearchParams(window.location.search);
     var preview = params.get('preview') === 'cover';
     var saved = parseInt(localStorage.getItem('ai-unity-deck-position') || '0', 10);
-    if (preview || isNaN(saved) || saved === 0) document.body.classList.add('chrome-on-dark');
+    var startsOnCover = preview || isNaN(saved) || saved === 0;
+    document.body.classList.toggle('chrome-on-dark', startsOnCover);
   } catch (_) {
     document.body.classList.add('chrome-on-dark');
   }
