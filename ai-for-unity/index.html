@@ -103,8 +103,16 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+  .animations-ready .slide.hero .h-hero {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    transform: translateY(8px);
+    will-change: opacity, clip-path, transform, background-position;
+  }
   .animations-ready .slide.hero.is-visible .h-hero {
-    animation: heroRainbowSweep 11s ease-in-out 280ms infinite;
+    animation:
+      coverTitleReveal 720ms var(--ease-spring) 120ms forwards,
+      heroRainbowSweep 11s ease-in-out 980ms infinite;
   }
   .slide.dark .cover-meta { color: color-mix(in oklab, var(--bg), transparent 35%); }
   .slide.dark .cover-meta .speaker { color: var(--bg); }
@@ -237,6 +245,18 @@
     from { transform: scaleX(0); }
     to   { transform: scaleX(1); }
   }
+  @keyframes coverTitleReveal {
+    from {
+      opacity: 0;
+      clip-path: inset(0 100% 0 0);
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+      transform: translateY(0);
+    }
+  }
   @keyframes heroRainbowSweep {
     0%, 3%, 15.01%, 100% { background-position: 0% 50%; }
     15% { background-position: 100% 50%; }
@@ -244,7 +264,14 @@
   @media (prefers-reduced-motion: reduce) {
     .deck-counter:not(.is-hidden), .deck-credit:not(.is-hidden), .deck-tag:not(.is-hidden) { animation-duration: 1ms; animation-delay: 0ms; }
     .deck-tag:not(.is-hidden)::before { animation-duration: 1ms; animation-delay: 0ms; }
-    .slide.hero .h-hero { animation: none; background: none; -webkit-text-fill-color: currentColor; }
+    .slide.hero .h-hero {
+      opacity: 1 !important;
+      clip-path: none !important;
+      transform: none !important;
+      animation: none !important;
+      background: none;
+      -webkit-text-fill-color: currentColor;
+    }
   }
   .accent-rule { width: 36px; height: 3px; background: var(--accent); border-radius: 2px; margin-bottom: 28px; flex-shrink: 0; opacity: 0.9; }
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 96px; margin-top: 32px; max-width: 1664px; }
@@ -1478,8 +1505,8 @@
   }
 
   function setupHero(slide) {
-    [ ['.kicker','fadeUp',2100], ['.h-hero','fadeUp',100],
-      ['.cover-meta','fadeUp',2380] ]
+    [ ['.kicker','fadeUp',2760],
+      ['.cover-meta','fadeUp',3060] ]
       .forEach(function(r){ slide.querySelectorAll(r[0]).forEach(function(el){ mark(el,r[1],r[2]); }); });
   }
 
@@ -1621,7 +1648,7 @@
     prepareSlideTitles();
 
     var revealCoverYear = setupCoverYearAnimation();
-    var coverYearRevealDelay = 2780;
+    var coverYearRevealDelay = 3360;
     var animationsStarted = false;
 
     function startAnimations() {
