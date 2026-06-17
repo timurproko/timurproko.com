@@ -90,7 +90,8 @@
     scroll-snap-align: start;
     scroll-snap-stop: always;
     position: relative;
-    padding: clamp(112px, 8.5vw, 152px) clamp(56px, 6.67vw, 128px);
+    --slide-pad-x: clamp(56px, 6.67vw, 128px);
+    padding: clamp(112px, 8.5vw, 152px) var(--slide-pad-x);
     display: flex;
     flex-direction: column;
     background: var(--bg);
@@ -636,10 +637,12 @@
       position: relative;
       flex: 1 1 auto;
       min-height: 0;
-      width: calc(100% + clamp(48px, 4vw, 72px));
+      --scroll-top-bleed: 72px;
+      --scroll-top-fade: 72px;
+      width: calc(100% + (var(--slide-pad-x) * 2));
       max-width: none;
-      margin: -8px calc(clamp(24px, 2vw, 36px) * -1) 0;
-      padding: 8px clamp(24px, 2vw, 36px) clamp(140px, 12vh, 200px);
+      margin: calc(var(--scroll-top-bleed) * -1) calc(var(--slide-pad-x) * -1) 0;
+      padding: var(--scroll-top-bleed) var(--slide-pad-x) clamp(140px, 12vh, 200px);
       overflow-x: hidden;
       overflow-y: auto;
       overscroll-behavior-y: contain;
@@ -655,14 +658,15 @@
       right: 0;
       z-index: 5;
       display: block;
-      height: 72px;
-      margin-bottom: -72px;
+      height: var(--scroll-top-fade);
+      margin-top: calc(var(--scroll-top-bleed) * -1);
+      margin-bottom: 0;
       pointer-events: none;
       opacity: 1;
       background: linear-gradient(to bottom, var(--bg) 0%, color-mix(in oklab, var(--bg), transparent 16%) 42%, transparent 100%);
       transition: opacity 160ms var(--ease-standard);
     }
-    .scroll-split-owner > .slide-scroll-content.is-at-top::before { opacity: 0; }
+    .scroll-split-owner > .slide-scroll-content.hide-top-fade-at-top.is-at-top::before { opacity: 0; }
     .slide.dark .scroll-split-owner > .slide-scroll-content::before {
       background: linear-gradient(to bottom, var(--fg) 0%, color-mix(in oklab, var(--fg), transparent 16%) 42%, transparent 100%);
     }
@@ -708,6 +712,13 @@
       opacity: 0;
       visibility: hidden;
       transition: none;
+    }
+  }
+
+  @media (min-width: 761px) and (max-width: 1200px) {
+    .slide-goal .arrow-list,
+    .slide-goal .flow-graph {
+      margin-top: -16px !important;
     }
   }
 
@@ -981,7 +992,8 @@
       width: 100vw;
       min-height: 100svh;
       height: 100svh;
-      padding: 112px clamp(20px, 6vw, 32px) 76px;
+      --slide-pad-x: clamp(20px, 6vw, 32px);
+      padding: 112px var(--slide-pad-x) 76px;
       overflow-x: hidden;
       overflow-y: auto;
       scroll-snap-align: start;
@@ -1015,10 +1027,12 @@
       position: relative;
       flex: 1 1 auto;
       min-height: 0;
-      width: calc(100% + 32px);
+      --scroll-top-bleed: 42px;
+      --scroll-top-fade: 42px;
+      width: calc(100% + (var(--slide-pad-x) * 2));
       max-width: none;
-      margin: -8px -16px 0;
-      padding: 8px 16px 96px;
+      margin: calc(var(--scroll-top-bleed) * -1) calc(var(--slide-pad-x) * -1) 0;
+      padding: var(--scroll-top-bleed) var(--slide-pad-x) 96px;
       overflow-x: hidden;
       overflow-y: auto;
       overscroll-behavior-y: contain;
@@ -1042,8 +1056,9 @@
     }
     .scroll-split-owner > .slide-scroll-content::before {
       top: 0;
-      height: 34px;
-      margin-bottom: -34px;
+      height: var(--scroll-top-fade);
+      margin-top: calc(var(--scroll-top-bleed) * -1);
+      margin-bottom: 0;
       background: linear-gradient(to bottom, var(--bg) 0%, color-mix(in oklab, var(--bg), transparent 58%) 38%, transparent 100%);
     }
     .slide.dark .scroll-split-owner > .slide-scroll-content::before {
@@ -1179,8 +1194,8 @@
     .pillars-venn .venn-core { font-size: 48px; }
     .slide > svg { max-width: 100%; height: auto; }
     .slide-goal .slide-scroll-content { display: block; }
-    .slide-goal .arrow-list { margin-top: clamp(48px, 12vw, 72px) !important; }
-    .slide-goal .flow-graph { margin-top: clamp(56px, 14vw, 84px) !important; }
+    .slide-goal .arrow-list { margin-top: 0 !important; }
+    .slide-goal .flow-graph { margin-top: clamp(32px, 8vw, 48px) !important; }
     .flow-graph { position: static !important; display: flex !important; width: 100%; justify-content: center; align-items: center; margin-top: 28px; }
     .flow-graph svg,
     .slide-goal .flow-graph svg { width: min(100%, 340px); height: auto; max-height: none; }
@@ -2300,6 +2315,14 @@
       owner.appendChild(scroller);
       owner.classList.add('scroll-split-owner');
       slide.classList.add('has-scroll-content');
+
+      var firstContentElement = Array.from(scroller.children).find(function(child) {
+        return child.nodeType === 1 && !child.matches('script, style');
+      });
+      // Only hide the top fade at rest when it would wash out a subtitle. For
+      // graphic-first slides the fade must remain visible, otherwise the top of
+      // the illustration is clipped by a hard edge.
+      scroller.classList.toggle('hide-top-fade-at-top', !!(firstContentElement && firstContentElement.classList.contains('deck-subhead')));
 
       function updateTopFade() {
         scroller.classList.toggle('is-at-top', scroller.scrollTop <= 1);
