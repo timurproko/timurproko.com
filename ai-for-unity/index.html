@@ -628,6 +628,7 @@
       overflow-y: hidden;
     }
     .scroll-split-owner > .deck-headline,
+    .scroll-split-owner > .deck-subhead,
     .scroll-split-owner > .trend-intro {
       flex: 0 0 auto;
       position: relative;
@@ -683,6 +684,16 @@
         #050505 0%,
         #050505 70%,
         transparent 100%);
+    }
+    .scroll-split-owner.has-pinned-subhead::before {
+      height: calc(
+        clamp(112px, 8.5vw, 152px)
+        + clamp(44px, min(4.6vw, 7.6vh), 88px)
+        + clamp(28px, 2.8vw, 52px)
+        + clamp(-18px, -1vw, -10px)
+        + clamp(24.8px, 1.9375vw, 37.2px)
+        + clamp(28px, 2.8vw, 52px)
+      );
     }
     .slide-goal.scroll-split-owner > .slide-scroll-content {
       display: grid;
@@ -1079,6 +1090,9 @@
         #050505 70%,
         transparent 100%);
     }
+    .scroll-split-owner.has-pinned-subhead::before {
+      height: calc(112px + clamp(34px, 10vw, 48px) + 24px + clamp(23.25px, 6.51vw, 31px) + 24px);
+    }
     .deck-section-label { font-size: 11px; margin-bottom: 8px; }
     .lead { font-size: clamp(22px, 6vw, 32px); margin-top: 24px; max-width: 100%; }
     .arrow-list { gap: 16px; margin-top: 24px; max-width: 100%; }
@@ -1155,6 +1169,10 @@
     .pill-tags span { font-size: 11px; }
 
     .trend-stack { flex: none; max-width: 100%; gap: 12px; margin: 0; }
+    .slide-trend.has-scroll-content .trend-stack.scroll-split-owner {
+      flex: 1 1 auto;
+      min-height: 0;
+    }
     .trend-columns { grid-template-columns: 1fr; grid-template-rows: none; gap: 12px; margin-top: 18px; align-items: start; }
     .trend-col-label,
     .trend-panel { grid-column: 1 !important; grid-row: auto !important; }
@@ -2310,6 +2328,12 @@
 
       if (!owner || !owner.contains(headerEnd)) return;
 
+      var pinnedSubhead = headerEnd.nextElementSibling;
+      if (pinnedSubhead && pinnedSubhead.classList && pinnedSubhead.classList.contains('deck-subhead')) {
+        headerEnd = pinnedSubhead;
+        owner.classList.add('has-pinned-subhead');
+      }
+
       var nodesToMove = [];
       var node = headerEnd.nextSibling;
       while (node) {
@@ -2328,7 +2352,7 @@
       owner.classList.add('scroll-split-owner');
       slide.classList.add('has-scroll-content');
       // Top fade is a slide-level absolute overlay (`.scroll-split-owner::before`)
-      // sized to cover from the slide top down past the headline. Content
+      // sized to cover from the slide top down past the pinned header. Content
       // scrolling up dissolves into it, no scroll listener required.
     });
   }
