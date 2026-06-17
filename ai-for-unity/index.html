@@ -457,6 +457,34 @@
   .pillars-venn .venn-label text { font-family: var(--font-display); font-weight: 600; font-size: 44px; letter-spacing: -0.01em; }
   .pillars-venn .venn-core { font-family: var(--font-display); font-weight: 800; font-size: 52px; letter-spacing: -0.02em; fill: #ffffff; }
   .flow-graph svg { width: min(400px, 31vw, 64vh); height: auto; max-height: min(650px, calc(100vh - 240px)); }
+  .slide-goal .slide-scroll-content {
+    display: grid;
+    grid-template-columns: minmax(0, 44%) minmax(300px, 1fr);
+    align-items: start;
+    column-gap: clamp(28px, 4vw, 72px);
+    row-gap: 0;
+  }
+  .slide-goal .slide-scroll-content::before { grid-column: 1 / -1; }
+  .slide-goal .arrow-list {
+    min-width: 0;
+    max-width: 100% !important;
+    margin-top: 0 !important;
+  }
+  .slide-goal .flow-graph {
+    position: static !important;
+    inset: auto !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: center;
+    justify-self: center;
+    width: 100%;
+    min-width: 0;
+    margin-top: 0;
+  }
+  .slide-goal .flow-graph svg {
+    width: min(360px, 32vw, 58vh);
+    max-height: min(600px, calc(100vh - 300px));
+  }
   .notes { display: none; position: fixed; bottom: 24px; left: 24px; right: 24px; max-height: 36vh; overflow-y: auto; background: rgba(17,17,17,0.94); color: #fafafa; font-family: var(--font-body); font-size: 18px; line-height: 1.5; padding: 24px 32px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); z-index: 999; backdrop-filter: blur(14px); }
   .notes.on { display: block; }
   .notes b { color: var(--accent); display: block; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: 13px; }
@@ -608,9 +636,10 @@
       position: relative;
       flex: 1 1 auto;
       min-height: 0;
-      width: 100%;
-      max-width: 100%;
-      padding-bottom: clamp(120px, 10vh, 180px);
+      width: calc(100% + clamp(48px, 4vw, 72px));
+      max-width: none;
+      margin: -8px calc(clamp(24px, 2vw, 36px) * -1) 0;
+      padding: 8px clamp(24px, 2vw, 36px) clamp(140px, 12vh, 200px);
       overflow-x: hidden;
       overflow-y: auto;
       overscroll-behavior-y: contain;
@@ -639,6 +668,13 @@
     }
     .slide-zx-end .scroll-split-owner > .slide-scroll-content::before {
       background: linear-gradient(to bottom, #050505 0%, rgba(5,5,5,0.84) 42%, transparent 100%);
+    }
+    .slide-goal.scroll-split-owner > .slide-scroll-content {
+      display: grid;
+      grid-template-columns: minmax(0, 44%) minmax(300px, 1fr);
+      align-items: start;
+      column-gap: clamp(28px, 4vw, 72px);
+      row-gap: 0;
     }
 
     body::before,
@@ -979,9 +1015,10 @@
       position: relative;
       flex: 1 1 auto;
       min-height: 0;
-      width: 100%;
-      max-width: 100%;
-      padding-bottom: 96px;
+      width: calc(100% + 32px);
+      max-width: none;
+      margin: -8px -16px 0;
+      padding: 8px 16px 96px;
       overflow-x: hidden;
       overflow-y: auto;
       overscroll-behavior-y: contain;
@@ -1141,8 +1178,12 @@
     .pillars-venn .venn-label text { font-size: 40px; }
     .pillars-venn .venn-core { font-size: 48px; }
     .slide > svg { max-width: 100%; height: auto; }
+    .slide-goal .slide-scroll-content { display: block; }
+    .slide-goal .arrow-list { margin-top: clamp(48px, 12vw, 72px) !important; }
+    .slide-goal .flow-graph { margin-top: clamp(56px, 14vw, 84px) !important; }
     .flow-graph { position: static !important; display: flex !important; width: 100%; justify-content: center; align-items: center; margin-top: 28px; }
-    .flow-graph svg { width: min(100%, 340px); height: auto; }
+    .flow-graph svg,
+    .slide-goal .flow-graph svg { width: min(100%, 340px); height: auto; max-height: none; }
     .slide-zx-end.scroll-split-owner > .slide-scroll-content { position: static; overflow: visible; }
     .zx-demo { position: relative; left: auto; top: auto; translate: none; width: min(100%, 560px); margin: 32px auto 0; }
 
@@ -1655,7 +1696,7 @@
   </div>
 </section>
 
-<section class="slide" data-screen-label="19 Goal" data-notes="Where this is all heading. Clear task understanding. Reliable execution — no hallucinations during runtime. Validation after execution. Testable, repeatable workflows. Parallel execution across agents. Thank you.">
+<section class="slide slide-goal" data-screen-label="19 Goal" data-notes="Where this is all heading. Clear task understanding. Reliable execution — no hallucinations during runtime. Validation after execution. Testable, repeatable workflows. Parallel execution across agents. Thank you.">
   <span class="slide-tag">Engineering · Goal</span>
   <h2 class="deck-headline">Agentic Engineering</h2>
   <ul class="arrow-list tight" style="margin-top:32px;max-width:560px;">
