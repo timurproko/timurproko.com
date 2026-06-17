@@ -1108,9 +1108,27 @@
     .cover-rule { width: 128px; height: 4px; margin-top: 32px; }
     .closing-stamp { margin-top: 32px; font-size: 12px; }
 
-    .deck-credit,
     .deck-counter,
     .nav-hint { display: none !important; }
+    .deck-credit {
+      top: 68px;
+      right: 20px;
+      bottom: auto;
+      left: auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      max-width: calc(100vw - 116px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      line-height: normal;
+      text-align: right;
+    }
+    .deck-credit .deck-credit-extra { display: none; }
+    .deck-credit:not(.is-hidden) { animation: revealFromTop 520ms var(--ease-spring) 240ms both; }
     .mobile-swipe-hint {
       position: fixed;
       left: 50%;
@@ -1279,7 +1297,7 @@
 <a class="deck-back" id="deckBack" href="../" aria-label="Back to main site"><span class="nav-action-label">Back</span></a>
 <div class="deck-tag is-hidden" id="deckTag">Trend</div>
 <div class="deck-counter" id="deckCounter"><span class="num">01</span><span class="sep"> / </span><span class="total">19</span></div>
-<div class="deck-credit is-hidden" id="deckCredit"><span class="speaker">Timur Prokopiev</span> &nbsp;·&nbsp; AI for Unity Development</div>
+<div class="deck-credit is-hidden" id="deckCredit"><span class="speaker">Timur Prokopiev</span><span class="deck-credit-extra"> &nbsp;·&nbsp; AI for Unity Development</span></div>
 <div class="mobile-swipe-hint" id="mobileSwipeHint" aria-hidden="true"><span class="swipe-prev">← Swipe</span><span class="swipe-counter"><span class="num">01</span> / <span class="total">19</span></span><span class="swipe-next">Swipe →</span></div>
 <div class="nav-hint" aria-label="Slide navigation">
   <button type="button" data-deck-action="prev" aria-label="Previous slide">←</button>
