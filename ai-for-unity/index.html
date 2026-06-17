@@ -62,6 +62,7 @@
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     scrollbar-width: none;
+    transition: background-color 720ms var(--ease-standard);
   }
   body:not(.chrome-on-dark) { background: var(--bg); }
   body::-webkit-scrollbar { display: none; }
@@ -137,12 +138,14 @@
   .cover-rule { width: 240px; height: 6px; background: var(--accent); margin-top: 56px; }
   .slide.center .cover-rule { margin-left: auto; margin-right: auto; }
   .closing-stamp { margin-top: 56px; font-family: var(--font-mono); font-size: 22px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
-  .deck-counter { position: fixed; bottom: 48px; right: 64px; font-family: var(--font-mono); font-size: 22px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); z-index: 130; pointer-events: none; opacity: 0; transition: opacity 500ms var(--ease-standard); }
-  .deck-counter .num { color: var(--fg); }
+  .deck-counter { position: fixed; bottom: 48px; right: 64px; font-family: var(--font-mono); font-size: 22px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); z-index: 130; pointer-events: none; opacity: 0; transition: opacity 500ms var(--ease-standard), color 720ms var(--ease-standard), text-shadow 720ms var(--ease-standard); }
+  .deck-counter .num { color: var(--fg); transition: color 720ms var(--ease-standard), text-shadow 720ms var(--ease-standard); }
+  .deck-counter .sep,
+  .deck-counter .total { color: var(--muted); transition: color 720ms var(--ease-standard), text-shadow 720ms var(--ease-standard); }
   .deck-counter.is-hidden { opacity: 0; }
   .deck-counter:not(.is-hidden) { opacity: 1; animation: revealFromBottom 520ms var(--ease-spring) 360ms both; }
-  .deck-credit { position: fixed; bottom: 48px; left: clamp(56px, 6.67vw, 128px); font-family: var(--font-mono); font-size: 13px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); z-index: 130; opacity: 0; transition: opacity 500ms var(--ease-standard); }
-  .deck-credit .speaker { color: var(--fg); }
+  .deck-credit { position: fixed; bottom: 48px; left: clamp(56px, 6.67vw, 128px); font-family: var(--font-mono); font-size: 13px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); z-index: 130; opacity: 0; transition: opacity 500ms var(--ease-standard), color 720ms var(--ease-standard), text-shadow 720ms var(--ease-standard); }
+  .deck-credit .speaker { color: var(--fg); transition: color 720ms var(--ease-standard), text-shadow 720ms var(--ease-standard); }
   .deck-credit.is-hidden { opacity: 0; pointer-events: none; }
   .deck-credit:not(.is-hidden) { opacity: 1; animation: revealFromBottom 520ms var(--ease-spring) 500ms both; }
   .deck-back {
@@ -230,7 +233,7 @@
   /* hide in-slide tags on non-hero content slides — chrome shows them dynamically */
   .slide:not(.hero) > .slide-tag { display: none; }
   /* fixed chrome tag — pinned under the back link, updates dynamically */
-  .deck-tag { position: fixed; top: 82px; left: clamp(56px, 6.67vw, 128px); font-family: var(--font-mono); font-size: clamp(12px, 0.9vw, 15px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); z-index: 130; opacity: 0; transition: opacity 500ms var(--ease-standard); pointer-events: none; display: inline-flex; align-items: center; gap: 12px; }
+  .deck-tag { position: fixed; top: 82px; left: clamp(56px, 6.67vw, 128px); font-family: var(--font-mono); font-size: clamp(12px, 0.9vw, 15px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); z-index: 130; opacity: 0; transition: opacity 500ms var(--ease-standard), color 720ms var(--ease-standard), text-shadow 720ms var(--ease-standard); pointer-events: none; display: inline-flex; align-items: center; gap: 12px; }
   .deck-tag.is-hidden { opacity: 0; }
   .deck-tag:not(.is-hidden) { opacity: 1; animation: revealFromTop 520ms var(--ease-spring) 180ms both; }
   .deck-tag:not(.is-hidden)::before { animation: expandWidth 420ms var(--ease-spring) 560ms both; }
@@ -538,6 +541,22 @@
   }
   body.chrome-on-dark .mobile-swipe-hint .swipe-counter { color: #f8f8f9; }
   body.chrome-on-dark .mobile-swipe-hint .swipe-counter .total { color: color-mix(in oklab, #f8f8f9, transparent 48%); }
+  body.chrome-on-dark .deck-counter,
+  body.chrome-on-dark .deck-credit,
+  body.chrome-on-dark .deck-tag {
+    color: color-mix(in oklab, #f8f8f9, transparent 42%);
+    text-shadow: 0 0 10px rgba(248,248,249,0.14);
+  }
+  body.chrome-on-dark .deck-counter .num,
+  body.chrome-on-dark .deck-credit .speaker {
+    color: #f8f8f9;
+    text-shadow: 0 0 12px rgba(248,248,249,0.18);
+  }
+  body.chrome-on-dark .deck-counter .sep,
+  body.chrome-on-dark .deck-counter .total {
+    color: color-mix(in oklab, #f8f8f9, transparent 42%);
+    text-shadow: 0 0 10px rgba(248,248,249,0.14);
+  }
   body.chrome-boot .deck-back,
   body.chrome-boot .nav-hint,
   body.chrome-boot .deck-tag,
@@ -733,6 +752,103 @@
     .animations-ready .mcp-wordmark { opacity: 1 !important; animation: none !important; transform: none !important; }
   }
 
+  /* ── ZX Spectrum-style end slide ── */
+  .slide-zx-end {
+    justify-content: flex-start;
+    align-items: stretch;
+    text-align: left;
+    background: #050505;
+    color: #f8f8f9;
+    isolation: isolate;
+  }
+  .slide-zx-end::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(circle at 50% 45%, rgba(77, 220, 255, 0.18), transparent 36%),
+      linear-gradient(180deg, #050505 0%, #101010 48%, #050505 100%);
+  }
+  .slide-zx-end::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(255,255,255,0.035), transparent 42%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.07) 0 1px, transparent 1px 5px);
+    mix-blend-mode: screen;
+    opacity: 0.26;
+    animation: crtFlicker 1250ms steps(7, end) infinite;
+  }
+  .zx-demo {
+    position: absolute;
+    left: 50%;
+    top: 56%;
+    translate: -50% -50%;
+    width: min(620px, 48vw, 58vh);
+    aspect-ratio: 1;
+  }
+  .zx-cube-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+    filter: drop-shadow(2px 0 #ff004d) drop-shadow(-2px 0 #00e5ff) drop-shadow(0 0 14px rgba(255,255,255,0.28));
+  }
+  .animations-ready .zx-cube-canvas,
+  .animations-ready .zx-word { opacity: 0; }
+  .animations-ready .slide-zx-end.is-visible .zx-cube-canvas {
+    animation:
+      zxPop 760ms var(--ease-spring) 120ms both,
+      zxHue 1900ms steps(6, end) 900ms infinite;
+  }
+  .animations-ready .slide-zx-end.is-visible .zx-word {
+    animation: fadeUp 520ms var(--ease-spring) var(--zx-delay, 0ms) both;
+  }
+  .zx-word {
+    display: inline-block;
+    align-self: center;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: clamp(11px, 0.9vw, 15px);
+    line-height: 1;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #f8f8f9;
+    text-shadow: 2px 0 #ff004d, -2px 0 #00e5ff, 0 0 18px rgba(255,255,255,0.35);
+  }
+  .slide-zx-end .deck-headline { color: #f8f8f9; }
+  .slide-zx-end .deck-subhead { color: color-mix(in oklab, #f8f8f9, transparent 30%); }
+  .zx-end-subhead { color: color-mix(in oklab, #f8f8f9, transparent 30%); }
+  @keyframes zxPop {
+    from { opacity: 0; transform: translateY(14px) scale(0.96); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes zxHue {
+    0%, 100% { filter: drop-shadow(2px 0 #ff004d) drop-shadow(-2px 0 #00e5ff) drop-shadow(0 0 12px rgba(255,255,255,0.30)); }
+    25% { filter: drop-shadow(2px 0 #ffdd00) drop-shadow(-2px 0 #00ff66) drop-shadow(0 0 12px rgba(255,255,255,0.30)); }
+    50% { filter: drop-shadow(2px 0 #00e5ff) drop-shadow(-2px 0 #7a5cff) drop-shadow(0 0 12px rgba(255,255,255,0.30)); }
+    75% { filter: drop-shadow(2px 0 #ff00ff) drop-shadow(-2px 0 #ff7a00) drop-shadow(0 0 12px rgba(255,255,255,0.30)); }
+  }
+  @keyframes crtFlicker {
+    0%, 100% { opacity: 0.22; transform: translateY(0); }
+    10% { opacity: 0.30; }
+    24% { opacity: 0.19; }
+    39% { opacity: 0.28; transform: translateY(0.75px); }
+    56% { opacity: 0.21; }
+    72% { opacity: 0.31; transform: translateY(-0.75px); }
+    88% { opacity: 0.24; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .slide-zx-end::after,
+    .animations-ready .zx-cube-canvas,
+    .animations-ready .zx-word { opacity: 1 !important; animation: none !important; transform: none !important; }
+    .slide-zx-end::after { opacity: 0.26 !important; }
+  }
+
   .mobile-swipe-hint { display: none; }
 
   @media (max-width: 760px) {
@@ -812,11 +928,16 @@
       white-space: nowrap;
       pointer-events: none;
       box-shadow: 0 8px 24px rgba(17,17,17,0.08);
+      transition:
+        background-color 720ms var(--ease-standard),
+        border-color 720ms var(--ease-standard),
+        color 720ms var(--ease-standard),
+        box-shadow 720ms var(--ease-standard);
     }
     .mobile-swipe-hint .swipe-prev { justify-self: start; }
     .mobile-swipe-hint .swipe-next { justify-self: end; }
-    .mobile-swipe-hint .swipe-counter { color: var(--fg); letter-spacing: 0.1em; }
-    .mobile-swipe-hint .swipe-counter .total { color: var(--muted); }
+    .mobile-swipe-hint .swipe-counter { color: var(--fg); letter-spacing: 0.1em; transition: color 720ms var(--ease-standard); }
+    .mobile-swipe-hint .swipe-counter .total { color: var(--muted); transition: color 720ms var(--ease-standard); }
     .deck-counter { bottom: 46px; right: 16px; font-size: 12px; letter-spacing: 0.1em; }
     .deck-back { top: 12px; left: 12px; padding: 7px 10px; font-size: 10px; letter-spacing: 0.08em; gap: 7px; }
     .deck-back::before { padding: 2px 7px; }
@@ -896,6 +1017,7 @@
     .slide > svg { max-width: 100%; height: auto; }
     .flow-graph { position: static !important; display: flex !important; width: 100%; justify-content: center; align-items: center; margin-top: 28px; }
     .flow-graph svg { width: min(100%, 340px); height: auto; }
+    .zx-demo { position: relative; left: auto; top: auto; translate: none; width: min(100%, 560px); margin: 32px auto 0; }
 
     .ui-lane { padding: 18px; border-radius: 14px; }
     .ui-item { padding: 10px 12px 10px 36px; font-size: 16px; }
@@ -919,8 +1041,10 @@
     var params = new URLSearchParams(window.location.search);
     var preview = params.get('preview') === 'cover';
     var saved = parseInt(localStorage.getItem('ai-unity-deck-position') || '0', 10);
-    var startsOnCover = preview || isNaN(saved) || saved === 0;
-    document.body.classList.toggle('chrome-on-dark', startsOnCover);
+    // Keep the very first paint dark for dark entry slides. This prevents the
+    // white overlay flash when refreshing on the cover or final end slide.
+    var startsOnDarkSlide = preview || isNaN(saved) || saved === 0 || saved >= 18;
+    document.body.classList.toggle('chrome-on-dark', startsOnDarkSlide);
   } catch (_) {
     document.body.classList.add('chrome-on-dark');
   }
@@ -928,9 +1052,9 @@
 </script>
 <a class="deck-back" id="deckBack" href="../" aria-label="Back to main site">Back</a>
 <div class="deck-tag is-hidden" id="deckTag">Trend</div>
-<div class="deck-counter" id="deckCounter"><span class="num">01</span> &nbsp;/&nbsp; 17</div>
+<div class="deck-counter" id="deckCounter"><span class="num">01</span><span class="sep"> / </span><span class="total">19</span></div>
 <div class="deck-credit is-hidden" id="deckCredit"><span class="speaker">Timur Prokopiev</span> &nbsp;·&nbsp; AI for Unity Development</div>
-<div class="mobile-swipe-hint" id="mobileSwipeHint" aria-hidden="true"><span class="swipe-prev">← Swipe</span><span class="swipe-counter"><span class="num">01</span> / <span class="total">17</span></span><span class="swipe-next">Swipe →</span></div>
+<div class="mobile-swipe-hint" id="mobileSwipeHint" aria-hidden="true"><span class="swipe-prev">← Swipe</span><span class="swipe-counter"><span class="num">01</span> / <span class="total">19</span></span><span class="swipe-next">Swipe →</span></div>
 <div class="nav-hint" aria-label="Slide navigation">
   <button type="button" data-deck-action="prev" aria-label="Previous slide">←</button>
   <button type="button" data-deck-action="next" aria-label="Next slide">→</button>
@@ -1496,6 +1620,175 @@
   </div>
 </section>
 
+<section class="slide slide-zx-end dark" data-screen-label="21 End" data-notes="Closing slide. A retro ZX Spectrum-inspired wireframe structure signals the end of the presentation.">
+  <span class="slide-tag">The End</span>
+  <h2 class="deck-headline">Thank you</h2>
+  <p class="deck-subhead zx-end-subhead">Questions</p>
+  <div class="zx-demo" aria-hidden="true">
+    <canvas class="zx-cube-canvas" id="zxCanvasCube" width="600" height="600"></canvas>
+  </div>
+</section>
+
+<script>
+(function () {
+  'use strict';
+
+  var canvas = document.getElementById('zxCanvasCube');
+  if (!canvas || !canvas.getContext) return;
+
+  // Adapted from anirudhkhanna/juspay-hackathon-canvas-cube: real 3D points
+  // projected and redrawn on HTML5 Canvas instead of the previous static SVG cube.
+  function Point3D(x, y, z) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
+  Point3D.prototype.rotateX = function (angle) {
+    var rad = angle * Math.PI / 180;
+    var cosa = Math.cos(rad);
+    var sina = Math.sin(rad);
+    return new Point3D(this.x, this.y * cosa - this.z * sina, this.y * sina + this.z * cosa);
+  };
+  Point3D.prototype.rotateY = function (angle) {
+    var rad = angle * Math.PI / 180;
+    var cosa = Math.cos(rad);
+    var sina = Math.sin(rad);
+    return new Point3D(this.z * sina + this.x * cosa, this.y, this.z * cosa - this.x * sina);
+  };
+  Point3D.prototype.project = function (viewWidth, viewHeight, fov, viewDistance) {
+    var factor = fov / (viewDistance + this.z);
+    return new Point3D(this.x * factor + viewWidth / 2, this.y * factor + viewHeight / 2, this.z);
+  };
+
+  var vertices = [
+    new Point3D(-1, 1, -1), new Point3D(1, 1, -1),
+    new Point3D(1, -1, -1), new Point3D(-1, -1, -1),
+    new Point3D(-1, 1, 1), new Point3D(1, 1, 1),
+    new Point3D(1, -1, 1), new Point3D(-1, -1, 1)
+  ];
+  var faces = [[0,1,2,3], [1,5,6,2], [5,4,7,6], [4,0,3,7], [0,4,5,1], [3,2,6,7]];
+  var diagonals = [[0,6], [1,7], [2,4], [3,5]];
+  var ctx = canvas.getContext('2d');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var drag = false;
+  var oldX = 0;
+  var oldY = 0;
+  var dX = reduceMotion ? 0 : 0.006;
+  var dY = reduceMotion ? 0 : 0.003;
+  var theta = -0.55;
+  var phi = 0.35;
+  var amortization = 0.95;
+
+  function resizeCanvas() {
+    var rect = canvas.getBoundingClientRect();
+    var size = Math.max(1, Math.round(Math.min(rect.width || 600, rect.height || 600)));
+    var ratio = Math.min(window.devicePixelRatio || 1, 2);
+    var pixelSize = Math.round(size * ratio);
+    if (canvas.width !== pixelSize || canvas.height !== pixelSize) {
+      canvas.width = pixelSize;
+      canvas.height = pixelSize;
+    }
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    return size;
+  }
+
+  function projectedPoints(size) {
+    var points = [];
+    for (var i = 0; i < vertices.length; i++) {
+      points.push(vertices[i]
+        .rotateX(phi * 50)
+        .rotateY(theta * 50)
+        .project(size, size, size * 0.72, 3.2));
+    }
+    return points;
+  }
+
+  function strokeSegment(points, a, b, width, alpha, dash) {
+    ctx.globalAlpha = alpha;
+    ctx.lineWidth = width;
+    ctx.setLineDash(dash || [1, 13]);
+    ctx.beginPath();
+    ctx.moveTo(points[a].x, points[a].y);
+    ctx.lineTo(points[b].x, points[b].y);
+    ctx.stroke();
+  }
+
+  function draw() {
+    var size = resizeCanvas();
+    if (!drag) {
+      dX *= amortization;
+      dY *= amortization;
+      if (!reduceMotion) {
+        dX += 0.00016;
+        dY += 0.00007;
+      }
+      theta += dX;
+      phi += dY;
+    }
+
+    ctx.clearRect(0, 0, size, size);
+    ctx.save();
+    ctx.strokeStyle = '#f8f8f9';
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.shadowColor = 'rgba(255,255,255,0.45)';
+    ctx.shadowBlur = 8;
+
+    var points = projectedPoints(size);
+    for (var i = 0; i < diagonals.length; i++) {
+      strokeSegment(points, diagonals[i][0], diagonals[i][1], 2.5, 0.32, [1, 18]);
+    }
+    for (var f = 0; f < faces.length; f++) {
+      var face = faces[f];
+      for (var e = 0; e < face.length; e++) {
+        strokeSegment(points, face[e], face[(e + 1) % face.length], 4, 0.86, [1, 12]);
+      }
+    }
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#f8f8f9';
+    ctx.globalAlpha = 0.96;
+    for (var p = 0; p < points.length; p++) {
+      ctx.beginPath();
+      ctx.arc(points[p].x, points[p].y, p === 6 ? 4.2 : 3.6, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+    window.requestAnimationFrame(draw);
+  }
+
+  function pointerPoint(e) {
+    var rect = canvas.getBoundingClientRect();
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  }
+  canvas.addEventListener('pointerdown', function (e) {
+    var p = pointerPoint(e);
+    drag = true;
+    oldX = p.x;
+    oldY = p.y;
+    try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
+  });
+  canvas.addEventListener('pointermove', function (e) {
+    if (!drag) return;
+    var p = pointerPoint(e);
+    dX = (p.x - oldX) * 2 * Math.PI / Math.max(1, canvas.clientWidth || 600);
+    dY = (p.y - oldY) * 2 * Math.PI / Math.max(1, canvas.clientHeight || 600);
+    theta += dX;
+    phi += dY;
+    oldX = p.x;
+    oldY = p.y;
+  });
+  function endDrag(e) {
+    drag = false;
+    try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
+  }
+  canvas.addEventListener('pointerup', endDrag);
+  canvas.addEventListener('pointercancel', endDrag);
+  canvas.addEventListener('pointerleave', endDrag);
+  window.addEventListener('resize', resizeCanvas);
+  draw();
+})();
+</script>
+
 <script>
 (function () {
   'use strict';
@@ -1848,16 +2141,24 @@
     if (programmaticTimer) clearTimeout(programmaticTimer);
     programmaticTimer = setTimeout(clearProgrammaticNavigation, 900);
   }
-  function setActive(i) {
-    active = i;
-    updateNotes();
+  function applyChromeTheme(i) {
+    var slideEl = slides[i];
+    var isDark = slideEl && slideEl.classList.contains('dark');
+    document.body.classList.toggle('chrome-on-dark', !!isDark);
+    var wasChromeBooting = document.body.classList.contains('chrome-boot');
+    document.body.classList.remove('chrome-boot');
+    if (wasChromeBooting) {
+      window.dispatchEvent(new CustomEvent('deck-chrome-ready'));
+    }
+  }
+
+  function applySlideChrome(i) {
     var dc = document.getElementById('deckCounter');
     var mh = document.getElementById('mobileSwipeHint');
     var cr = document.getElementById('deckCredit');
     var dt = document.getElementById('deckTag');
     var db = document.getElementById('deckBack');
     var slideEl = slides[i];
-    var isDark = slideEl && slideEl.classList.contains('dark');
     var isHero = slideEl && slideEl.classList.contains('hero');
     var inSlideTag = slideEl && slideEl.querySelector(':scope > .slide-tag');
 
@@ -1867,11 +2168,19 @@
     var t = String(slides.length);
     if (t.length < 2) t = '0' + t;
     if (dc) {
-      dc.innerHTML = '<span class="num">' + n + '</span> / ' + t;
+      var dcNum = dc.querySelector('.num');
+      var dcTotal = dc.querySelector('.total');
+      if (dcNum) dcNum.textContent = n;
+      if (dcTotal) dcTotal.textContent = t;
     }
     if (mh) {
       var counter = mh.querySelector('.swipe-counter');
-      if (counter) counter.innerHTML = '<span class="num">' + n + '</span> / <span class="total">' + t + '</span>';
+      if (counter) {
+        var mhNum = counter.querySelector('.num');
+        var mhTotal = counter.querySelector('.total');
+        if (mhNum) mhNum.textContent = n;
+        if (mhTotal) mhTotal.textContent = t;
+      }
     }
     if (dt && !isHero && inSlideTag) {
       dt.textContent = inSlideTag.textContent;
@@ -1883,17 +2192,19 @@
       db.setAttribute('href', isCover ? '../' : '#cover');
     }
 
-    // Visibility: only the cover (slide 0) and hero slides hide chrome.
-    // Once revealed, chrome stays put across content slides — no per-slide flash.
-    document.body.classList.toggle('chrome-on-dark', !!isDark);
-    var wasChromeBooting = document.body.classList.contains('chrome-boot');
-    document.body.classList.remove('chrome-boot');
-    if (wasChromeBooting) {
-      window.dispatchEvent(new CustomEvent('deck-chrome-ready'));
-    }
+    // Text/counter updates immediately, and chrome color now eases between
+    // light/dark themes instead of snapping or waiting until after the slide.
+    applyChromeTheme(i);
     if (dc) dc.classList.toggle('is-hidden', i === 0);
     if (cr) cr.classList.toggle('is-hidden', i === 0);
     if (dt) dt.classList.toggle('is-hidden', isHero || !inSlideTag);
+  }
+
+  function setActive(i) {
+    active = i;
+    updateNotes();
+
+    applySlideChrome(i);
 
     if (!PREVIEW_MODE) {
       try { localStorage.setItem(STORAGE_KEY, String(i)); } catch (_) {}
@@ -1917,7 +2228,9 @@
       if (i === programmaticTarget) clearProgrammaticNavigation();
       else return;
     }
-    if (i !== active && i >= 0 && i < slides.length) setActive(i);
+    if (i !== active && i >= 0 && i < slides.length) {
+      setActive(i);
+    }
   }
   function onKey(e) {
     if (e.defaultPrevented) return;
