@@ -418,6 +418,7 @@
     .cert-source { display: block; color: var(--muted); font-size: 12px; }
     .compact-list li { padding-bottom: 10px; border-bottom: 1px solid var(--border); }
     .compact-list li:last-child { padding-bottom: 0; border-bottom: 0; }
+    .language-level::before { content: " — "; }
 
     footer {
       border-top: 1px solid var(--border);
@@ -581,7 +582,25 @@
         break-after: avoid;
         page-break-after: avoid;
       }
-      h2 { font-size: 12.5px; line-height: 1.2; }
+      h2 {
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1.22;
+      }
+      .skill-group h3 {
+        margin-bottom: 7px;
+      }
+      .skill-group h3,
+      .role h3,
+      .project h3,
+      .cert-title {
+        color: black;
+        font-family: var(--font);
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+      }
       .section-kicker,
       .contact-label,
       .cert-date,
@@ -598,8 +617,6 @@
         break-inside: avoid;
         page-break-inside: avoid;
       }
-      .role h3,
-      .project h3 { font-size: 11.5px; line-height: 1.22; }
       .date {
         font-size: 8.8px;
         line-height: 1.35;
@@ -617,21 +634,54 @@
         line-height: 1.32;
       }
       .company,
-      .role p { color: black; }
+      .role p,
+      .project p,
+      .compact-list,
+      .contact-value,
+      .cert-title,
+      .cert-source { color: black; }
 
       .projects {
         grid-template-columns: 1fr;
         gap: 6px;
       }
       .project {
-        padding: 6px;
-        border-radius: 7px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 2px 8px;
+        padding: 0 0 6px;
+        border: 0;
+        border-bottom: 1px solid var(--border);
+        border-radius: 0;
         background: white;
         break-inside: avoid;
         page-break-inside: avoid;
       }
-      .project h3 { margin-bottom: 4px; }
-      .project-tag { margin-bottom: 4px; }
+      .project:last-child { padding-bottom: 0; border-bottom: 0; }
+      .project h3 {
+        grid-column: 1;
+        grid-row: 1;
+        margin-bottom: 0;
+      }
+      .project p {
+        grid-column: 1 / -1;
+        grid-row: 3;
+      }
+      .project-tag {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        justify-self: start;
+        align-self: start;
+        margin-bottom: 0;
+        color: black;
+        font-family: var(--font);
+        font-size: 9.3px;
+        font-weight: 500;
+        line-height: 1.32;
+        letter-spacing: 0;
+        text-transform: none;
+        white-space: nowrap;
+      }
 
       .contact-list,
       .compact-list,
@@ -640,10 +690,48 @@
       }
       .cert-list {
         grid-template-columns: 1fr;
+        gap: 6px;
+      }
+      .cert-list li {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 2px 8px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid var(--border);
+      }
+      .cert-list li:last-child { padding-bottom: 0; border-bottom: 0; }
+      .cert-title {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      .cert-date {
+        grid-column: 2;
+        grid-row: 1;
+        text-align: right;
+        white-space: nowrap;
+      }
+      .cert-source {
+        grid-column: 1 / -1;
+        grid-row: 2;
       }
       .compact-list li {
         padding-bottom: 5px;
       }
+      .language-list li {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 2px 8px;
+      }
+      .language-level {
+        color: oklch(46% 0.01 250);
+        font-family: var(--font-mono);
+        font-size: 8.5px;
+        line-height: 1.35;
+        letter-spacing: 0.1em;
+        text-align: right;
+        white-space: nowrap;
+      }
+      .language-level::before { content: none; }
       .cert-list li,
       .contact-list li,
       .compact-list li,
@@ -656,10 +744,8 @@
         color: black;
         text-decoration: none;
       }
-      .cert-source,
       .contact-label,
       .cert-date,
-      .project-tag,
       .section-kicker,
       .date {
         color: oklch(46% 0.01 250);
@@ -734,7 +820,7 @@
           <div class="card-inner">
             <div class="section-title">
               <h2 id="experience-title">Work Experience</h2>
-              <span class="section-kicker">2010—2025</span>
+              <span class="section-kicker">2010 – 2025</span>
             </div>
             <div class="timeline">
               <article class="role">
@@ -828,7 +914,7 @@
           <div class="card-inner">
             <div class="section-title">
               <h2 id="certificates-title">Certificates</h2>
-              <span class="section-kicker">2022—2026</span>
+              <span class="section-kicker">2022 – 2026</span>
             </div>
             <ul class="cert-list">
               <li><span class="cert-date">2026</span><a class="cert-title" href="https://www.udemy.com/certificate/UC-99698deb-c524-450b-b66d-41c434458186/" target="_blank" rel="noopener noreferrer">C# and .NET Design Patterns</a><span class="cert-source">Udemy</span></li>
@@ -895,7 +981,7 @@
           <div class="card-inner">
             <div class="section-title">
               <h2 id="education-title">Education</h2>
-              <span class="section-kicker">2000—2004</span>
+              <span class="section-kicker">2000 – 2004</span>
             </div>
             <ul class="compact-list">
               <li><strong>Vernadsky Taurida National University</strong><br>Computer Science • Bachelor’s degree</li>
@@ -909,11 +995,11 @@
               <h2 id="languages-title">Languages</h2>
               <span class="section-kicker">4</span>
             </div>
-            <ul class="compact-list">
-              <li>Ukrainian — Native</li>
-              <li>Russian — Native</li>
-              <li>English — Advanced (C1)</li>
-              <li>Polish — Basic (A2)</li>
+            <ul class="compact-list language-list">
+              <li><span class="language-name">Ukrainian</span><span class="language-level">Native</span></li>
+              <li><span class="language-name">Russian</span><span class="language-level">Native</span></li>
+              <li><span class="language-name">English</span><span class="language-level">Advanced (C1)</span></li>
+              <li><span class="language-name">Polish</span><span class="language-level">Basic (A2)</span></li>
             </ul>
           </div>
         </section>
