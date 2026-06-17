@@ -29,6 +29,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+(function () {
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var preview = params.get('preview') === 'cover';
+    var saved = parseInt(localStorage.getItem('ai-unity-deck-position') || '0', 10);
+    var startsOnDarkSlide = preview || isNaN(saved) || saved === 0 || saved === 18;
+    document.documentElement.classList.add(startsOnDarkSlide ? 'deck-starts-on-dark' : 'deck-starts-on-light');
+  } catch (_) {
+    document.documentElement.classList.add('deck-starts-on-dark');
+  }
+})();
+</script>
 <style>
   :root {
     --bg: #f8f8f9;
@@ -49,10 +62,11 @@
     --motion-hover: 220ms;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { height: 100%; overflow: hidden; background: var(--fg); }
+  html { height: 100%; overflow: hidden; background: var(--bg); }
+  html.deck-starts-on-dark { background: var(--fg); }
   html, body { height: 100%; width: 100%; }
   body {
-    background: var(--fg);
+    background: var(--bg);
     color: var(--fg);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
@@ -64,7 +78,9 @@
     scrollbar-width: none;
     transition: background-color 720ms var(--ease-standard);
   }
-  body:not(.chrome-on-dark) { background: var(--bg); }
+  body.chrome-on-dark,
+  html.deck-starts-on-dark body.chrome-boot { background: var(--fg); }
+  html.deck-starts-on-light body.chrome-boot .slide.dark { visibility: hidden; }
   body::-webkit-scrollbar { display: none; }
   .slide {
     flex: 0 0 100vw;
@@ -1040,7 +1056,7 @@
   }
 </style>
 </head>
-<body class="chrome-boot deck-animations-pending chrome-on-dark">
+<body class="chrome-boot deck-animations-pending">
 <script>
 (function () {
   try {
@@ -1049,7 +1065,7 @@
     var saved = parseInt(localStorage.getItem('ai-unity-deck-position') || '0', 10);
     // Keep the very first paint dark for dark entry slides. This prevents the
     // white overlay flash when refreshing on the cover or final end slide.
-    var startsOnDarkSlide = preview || isNaN(saved) || saved === 0 || saved >= 18;
+    var startsOnDarkSlide = preview || isNaN(saved) || saved === 0 || saved === 18;
     document.body.classList.toggle('chrome-on-dark', startsOnDarkSlide);
   } catch (_) {
     document.body.classList.add('chrome-on-dark');
@@ -1591,16 +1607,17 @@
   <h2 class="deck-headline">My agentic workflow stack</h2>
   <div class="ui-workflow-grid" style="grid-template-columns:repeat(4,minmax(0,1fr));" aria-label="Agentic workflow stack">
     <article class="ui-lane">
-      <span class="lane-label">Orchestrator</span>
+      <span class="lane-label">AGENT</span>
       <p class="lane-sub">Task definition, iteration loop</p>
       <div class="ui-items">
         <div class="ui-item has-link"><a class="deck-link" href="https://pi.dev/" target="_blank" rel="noopener noreferrer">Pi</a></div>
         <div class="ui-item">Copilot</div>
+        <div class="ui-item">Spec Driven Development</div>
       </div>
     </article>
     <article class="ui-lane">
       <span class="lane-label">Design</span>
-      <p class="lane-sub">AI-driven UI / system design</p>
+      <p class="lane-sub">AI-driven UI and design systems</p>
       <div class="ui-items">
         <div class="ui-item has-link"><a class="deck-link" href="https://open-design.ai/" target="_blank" rel="noopener noreferrer">Open Design</a></div>
         <div class="ui-item">Claude Design</div>
@@ -1608,7 +1625,7 @@
     </article>
     <article class="ui-lane">
       <span class="lane-label">Execution</span>
-      <p class="lane-sub">Real-time 3D & procedural pipelines</p>
+      <p class="lane-sub">Instant validation and analisys</p>
       <div class="ui-items">
         <div class="ui-item">Unity (MCP)</div>
         <div class="ui-item">Houdini (MCP)</div>
@@ -1616,7 +1633,7 @@
     </article>
     <article class="ui-lane">
       <span class="lane-label">UNITY</span>
-      <p class="lane-sub">Cross-platform UI system layer</p>
+      <p class="lane-sub">Code based architecture</p>
       <div class="ui-items">
         <div class="ui-item">UITK (UXML + USS)</div>
         <div class="ui-item">OneJS (React + Tailwind)</div>
@@ -1629,7 +1646,7 @@
 <section class="slide slide-zx-end dark" data-screen-label="21 End" data-notes="Closing slide. A retro ZX Spectrum-inspired wireframe structure signals the end of the presentation.">
   <span class="slide-tag">The End</span>
   <h2 class="deck-headline">Thank you</h2>
-  <p class="deck-subhead zx-end-subhead">Questions</p>
+  <p class="deck-subhead zx-end-subhead">Questions?</p>
   <div class="zx-demo" aria-hidden="true">
     <canvas class="zx-cube-canvas" id="zxCanvasCube" width="600" height="600"></canvas>
   </div>
@@ -2488,8 +2505,8 @@
     try {
       var saved = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
       if (!isNaN(saved) && saved >= 0 && saved < slides.length) {
-        setActive(saved);
         scrollToSlide(saved, 'instant');
+        setActive(saved);
       } else {
         setActive(0);
       }
