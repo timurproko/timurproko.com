@@ -644,8 +644,8 @@
       min-height: 0;
       width: calc(100% + (var(--slide-pad-x) * 2));
       max-width: none;
-      margin: 0 calc(var(--slide-pad-x) * -1) 0;
-      padding: 0 var(--slide-pad-x) clamp(140px, 12vh, 200px);
+      margin: var(--scroll-fade-overlap, -96px) calc(var(--slide-pad-x) * -1) 0;
+      padding: var(--scroll-fade-length, 96px) var(--slide-pad-x) clamp(140px, 12vh, 200px);
       overflow-x: hidden;
       overflow-y: auto;
       overscroll-behavior-y: contain;
@@ -665,35 +665,35 @@
       top: 0;
       left: 0;
       right: 0;
-      height: calc(clamp(112px, 8.5vw, 152px) + clamp(44px, min(4.6vw, 7.6vh), 88px) + 12px);
+      height: var(--scroll-fade-height, calc(clamp(112px, 8.5vw, 152px) + clamp(44px, min(4.6vw, 7.6vh), 88px) + 96px));
       z-index: 4;
       pointer-events: none;
       background: linear-gradient(to bottom,
         var(--bg) 0%,
-        var(--bg) 70%,
+        var(--bg) var(--scroll-fade-solid, calc(100% - 96px)), 
         transparent 100%);
     }
     .slide.dark.scroll-split-owner::before {
       background: linear-gradient(to bottom,
         var(--fg) 0%,
-        var(--fg) 70%,
+        var(--fg) var(--scroll-fade-solid, calc(100% - 96px)), 
         transparent 100%);
     }
     .slide-zx-end.scroll-split-owner::before {
       background: linear-gradient(to bottom,
         #050505 0%,
-        #050505 70%,
+        #050505 var(--scroll-fade-solid, calc(100% - 96px)), 
         transparent 100%);
     }
     .scroll-split-owner.has-pinned-subhead::before {
-      height: calc(
+      height: var(--scroll-fade-height, calc(
         clamp(112px, 8.5vw, 152px)
         + clamp(44px, min(4.6vw, 7.6vh), 88px)
         + clamp(28px, 2.8vw, 52px)
         + clamp(-18px, -1vw, -10px)
         + clamp(24.8px, 1.9375vw, 37.2px)
         + clamp(28px, 2.8vw, 52px)
-      );
+      ));
     }
     .slide-goal.scroll-split-owner > .slide-scroll-content {
       display: grid;
@@ -1054,8 +1054,8 @@
       min-height: 0;
       width: calc(100% + (var(--slide-pad-x) * 2));
       max-width: none;
-      margin: 0 calc(var(--slide-pad-x) * -1) 0;
-      padding: 0 var(--slide-pad-x) 96px;
+      margin: var(--scroll-fade-overlap, -80px) calc(var(--slide-pad-x) * -1) 0;
+      padding: var(--scroll-fade-length, 80px) var(--slide-pad-x) 96px;
       overflow-x: hidden;
       overflow-y: auto;
       overscroll-behavior-y: contain;
@@ -1070,28 +1070,28 @@
       top: 0;
       left: 0;
       right: 0;
-      height: calc(112px + clamp(34px, 10vw, 48px) + 8px);
+      height: var(--scroll-fade-height, calc(112px + clamp(34px, 10vw, 48px) + 80px));
       z-index: 4;
       pointer-events: none;
       background: linear-gradient(to bottom,
         var(--bg) 0%,
-        var(--bg) 70%,
+        var(--bg) var(--scroll-fade-solid, calc(100% - 80px)), 
         transparent 100%);
     }
     .slide.dark.scroll-split-owner::before {
       background: linear-gradient(to bottom,
         var(--fg) 0%,
-        var(--fg) 70%,
+        var(--fg) var(--scroll-fade-solid, calc(100% - 80px)), 
         transparent 100%);
     }
     .slide-zx-end.scroll-split-owner::before {
       background: linear-gradient(to bottom,
         #050505 0%,
-        #050505 70%,
+        #050505 var(--scroll-fade-solid, calc(100% - 80px)), 
         transparent 100%);
     }
     .scroll-split-owner.has-pinned-subhead::before {
-      height: calc(112px + clamp(34px, 10vw, 48px) + 24px + clamp(23.25px, 6.51vw, 31px) + 24px);
+      height: var(--scroll-fade-height, calc(112px + clamp(34px, 10vw, 48px) + 24px + clamp(23.25px, 6.51vw, 31px) + 24px));
     }
     .deck-section-label { font-size: 11px; margin-bottom: 8px; }
     .lead { font-size: clamp(22px, 6vw, 32px); margin-top: 24px; max-width: 100%; }
@@ -1468,7 +1468,7 @@
   </div>
 </section>
 
-<section class="slide" data-screen-label="04 Pillars" data-notes="The four pillars of any AI system: Tools (what AI can use), Context (what AI knows), Model (how AI reasons), Prompt (how AI is guided). Effective systems balance all four. People obsess over models and ignore the other three.">
+<section class="slide slide-no-scroll" data-screen-label="04 Pillars" data-notes="The four pillars of any AI system: Tools (what AI can use), Context (what AI knows), Model (how AI reasons), Prompt (how AI is guided). Effective systems balance all four. People obsess over models and ignore the other three.">
   <span class="slide-tag">Pillars</span>
   <h2 class="deck-headline">AI Engineering Pillars</h2>
   <div class="pillars-venn">
@@ -2308,8 +2308,34 @@
     return { onVisible: onVisible, onHidden: onHidden };
   }
 
+  function updateScrollFadeMasks() {
+    var isMobileFade = window.matchMedia('(max-width: 760px)').matches;
+    var fadeLength = isMobileFade ? 80 : 96;
+    var solidOffset = isMobileFade ? 30 : 36;
+    document.querySelectorAll('.scroll-split-owner').forEach(function(owner) {
+      var fadeAnchor = owner.querySelector(':scope > .trend-intro')
+        || owner.querySelector(':scope > .deck-headline, :scope > .h-hero')
+        || owner.querySelector(':scope > .deck-subhead');
+      if (!fadeAnchor) return;
+
+      var ownerRect = owner.getBoundingClientRect();
+      var headerRect = fadeAnchor.getBoundingClientRect();
+      var headerTop = Math.max(0, Math.round(headerRect.top - ownerRect.top));
+      var headerBottom = Math.max(0, Math.round(headerRect.bottom - ownerRect.top));
+      var scroller = owner.querySelector(':scope > .slide-scroll-content');
+      var scrollerTop = scroller ? Math.max(0, Math.round(scroller.getBoundingClientRect().top - ownerRect.top)) : headerBottom;
+      var overlap = Math.max(0, scrollerTop - headerTop);
+      var fadeHeight = headerBottom + 8 + fadeLength;
+      var solidEnd = Math.min(fadeHeight - 18, headerBottom + solidOffset);
+      owner.style.setProperty('--scroll-fade-length', fadeLength + 'px');
+      owner.style.setProperty('--scroll-fade-overlap', (-overlap) + 'px');
+      owner.style.setProperty('--scroll-fade-solid', solidEnd + 'px');
+      owner.style.setProperty('--scroll-fade-height', fadeHeight + 'px');
+    });
+  }
+
   function setupMobileScrollRegions() {
-    document.querySelectorAll('.slide:not(.hero)').forEach(function(slide) {
+    document.querySelectorAll('.slide:not(.hero):not(.slide-no-scroll)').forEach(function(slide) {
       if (slide.querySelector('.slide-scroll-content')) return;
 
       var title = slide.querySelector('.deck-headline, .h-hero');
@@ -2352,9 +2378,14 @@
       owner.classList.add('scroll-split-owner');
       slide.classList.add('has-scroll-content');
       // Top fade is a slide-level absolute overlay (`.scroll-split-owner::before`)
-      // sized to cover from the slide top down past the pinned header. Content
-      // scrolling up dissolves into it, no scroll listener required.
+      // sized to stay solid through the pinned header, then fade to transparent
+      // just below it so scrolling content dissolves smoothly under the title.
     });
+    updateScrollFadeMasks();
+    window.addEventListener('resize', updateScrollFadeMasks, { passive: true });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(updateScrollFadeMasks).catch(function() {});
+    }
   }
 
   function setupAll() {
