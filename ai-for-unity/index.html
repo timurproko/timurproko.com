@@ -155,7 +155,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 7px;
     z-index: 130;
     padding: 7px 12px;
     border: 1px solid var(--border);
@@ -184,7 +184,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 2px 8px;
+    padding: 2px 6px;
     border: 1px solid var(--border);
     border-radius: 6px;
     background: color-mix(in oklab, var(--surface), var(--fg) 4%);
@@ -198,6 +198,12 @@
       color var(--motion-fast) var(--ease-standard),
       box-shadow var(--motion-base) var(--ease-standard),
       transform var(--motion-fast) var(--ease-standard);
+  }
+  .deck-back .nav-action-label,
+  .nav-hint .nav-action-label {
+    display: inline-block;
+    line-height: 1;
+    transform: translateY(1px);
   }
   .slide-tag::before,
   .deck-tag::before {
@@ -940,7 +946,7 @@
     .mobile-swipe-hint .swipe-counter .total { color: var(--muted); transition: color 720ms var(--ease-standard); }
     .deck-counter { bottom: 46px; right: 16px; font-size: 12px; letter-spacing: 0.1em; }
     .deck-back { top: 12px; left: 12px; padding: 7px 10px; font-size: 10px; letter-spacing: 0.08em; gap: 7px; }
-    .deck-back::before { padding: 2px 7px; }
+    .deck-back::before { padding: 2px 6px; }
     .slide-tag::before,
     .deck-tag::before { width: 20px; height: 2px; }
     .deck-tag { top: 68px; left: 20px; font-size: 11px; letter-spacing: 0.12em; gap: 8px; }
@@ -1050,7 +1056,7 @@
   }
 })();
 </script>
-<a class="deck-back" id="deckBack" href="../" aria-label="Back to main site">Back</a>
+<a class="deck-back" id="deckBack" href="../" aria-label="Back to main site"><span class="nav-action-label">Back</span></a>
 <div class="deck-tag is-hidden" id="deckTag">Trend</div>
 <div class="deck-counter" id="deckCounter"><span class="num">01</span><span class="sep"> / </span><span class="total">19</span></div>
 <div class="deck-credit is-hidden" id="deckCredit"><span class="speaker">Timur Prokopiev</span> &nbsp;·&nbsp; AI for Unity Development</div>
@@ -1058,9 +1064,9 @@
 <div class="nav-hint" aria-label="Slide navigation">
   <button type="button" data-deck-action="prev" aria-label="Previous slide">←</button>
   <button type="button" data-deck-action="next" aria-label="Next slide">→</button>
-  Slides <span class="sep">·</span>
+  <span class="nav-action-label">Slides</span> <span class="sep">·</span>
   <button type="button" class="key-space" data-deck-action="next" aria-label="Next slide">Space</button>
-  Next
+  <span class="nav-action-label">Next</span>
 </div>
 <section class="slide hero center dark" data-screen-label="01 Cover" data-notes="Welcome. This talk is about how AI is reshaping Unity development — from autocomplete to agentic engineering. We'll cover what changed, what tools matter, and what skills you need now.">
   <div class="kicker">A Knowledge-Sharing Session</div>
@@ -2226,7 +2232,9 @@
     }
     if (db) {
       var isCover = i === 0;
-      db.textContent = isCover ? 'Back' : 'Home';
+      var dbLabel = db.querySelector('.nav-action-label');
+      if (dbLabel) dbLabel.textContent = isCover ? 'Back' : 'Home';
+      else db.textContent = isCover ? 'Back' : 'Home';
       db.setAttribute('aria-label', isCover ? 'Back to main site' : 'Go to first slide');
       db.setAttribute('href', isCover ? '../' : '#cover');
     }

@@ -222,6 +222,12 @@
     .print-shortcut:focus-visible kbd { transform: translateY(-1px); }
     .back-shortcut:active kbd,
     .print-shortcut:active kbd { transform: translateY(0); }
+    .back-shortcut .action-label,
+    .print-shortcut .action-label {
+      display: inline-block;
+      line-height: 1;
+      transform: translateY(1px);
+    }
     h1 {
       font-family: var(--font-display);
       font-size: clamp(36px, 5vw, 64px);
@@ -812,9 +818,9 @@
   <main class="shell">
     <section class="hero" aria-labelledby="page-title">
       <div class="hero-top">
-        <a class="back-shortcut" href="https://timurproko.com/" aria-label="Back to portfolio"><kbd>←</kbd> Back</a>
+        <a class="back-shortcut" href="https://timurproko.com/" aria-label="Back to portfolio"><kbd>←</kbd> <span class="action-label">Back</span></a>
         <p class="eyebrow">Curriculum Vitae</p>
-        <button class="print-shortcut" type="button" id="print-cv" aria-label="Print CV"><kbd>P</kbd> Print</button>
+        <button class="print-shortcut" type="button" id="print-cv" aria-label="Print CV"><kbd>P</kbd> <span class="action-label">Print</span></button>
       </div>
       <h1 id="page-title">Timur Prokopiev</h1>
       <p class="intro">
