@@ -588,6 +588,7 @@
     border-color: color-mix(in oklab, #f8f8f9, transparent 86%);
     color: color-mix(in oklab, #f8f8f9, transparent 48%);
     box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    opacity: 0.78;
   }
   body.chrome-on-dark .mobile-swipe-hint .swipe-label { color: color-mix(in oklab, #f8f8f9, transparent 48%); }
   body.chrome-on-dark .mobile-swipe-hint .swipe-arrow { color: #f8f8f9; }
@@ -1002,7 +1003,7 @@
   }
   .zx-tap-compute .mobile-label { display: none; }
   .animations-ready .slide-zx-end.is-visible .zx-tap-compute.is-active {
-    animation: zxTapComputeBurst 1120ms steps(7, end) both;
+    animation: zxTapComputeBurst 2600ms steps(7, end) both;
   }
   .slide-zx-end .deck-headline { color: #f8f8f9; }
   .slide-zx-end .deck-subhead { color: color-mix(in oklab, #f8f8f9, transparent 30%); }
@@ -1204,7 +1205,9 @@
       white-space: nowrap;
       pointer-events: none;
       box-shadow: 0 8px 24px rgba(17,17,17,0.08);
+      opacity: 0.92;
       transition:
+        opacity var(--motion-base) var(--ease-standard),
         background-color 720ms var(--ease-standard),
         border-color 720ms var(--ease-standard),
         color 720ms var(--ease-standard),
@@ -1243,6 +1246,8 @@
     .deck-counter { bottom: 46px; right: 16px; font-size: 12px; letter-spacing: 0.1em; }
     .deck-back { top: 12px; left: 12px; padding: 7px 10px; font-size: 10px; letter-spacing: 0.08em; gap: 7px; }
     .deck-back::before { padding: 2px 6px; }
+    body.deck-nav-idle .deck-back { opacity: 0.92; pointer-events: auto; }
+    body.chrome-on-dark.deck-nav-idle .deck-back { opacity: 0.78; }
     .slide-tag::before,
     .deck-tag::before { width: 20px; height: 2px; }
     .deck-tag { top: 68px; left: 20px; font-size: 11px; letter-spacing: 0.12em; gap: 8px; }
@@ -1964,8 +1969,8 @@
       <span class="lane-label">Execution</span>
       <p class="lane-sub">Instant validation and analisys</p>
       <div class="ui-items">
-        <div class="ui-item">Unity (MCP)</div>
-        <div class="ui-item">Houdini (MCP)</div>
+        <div class="ui-item has-link"><a class="deck-link" href="https://github.com/IvanMurzak/Unity-MCP" target="_blank" rel="noopener noreferrer">Unity (MCP)</a></div>
+        <div class="ui-item has-link"><a class="deck-link" href="https://github.com/healkeiser/fxhoudinimcp" target="_blank" rel="noopener noreferrer">Houdini (MCP)</a></div>
       </div>
     </article>
     <article class="ui-lane">
@@ -1973,7 +1978,7 @@
       <p class="lane-sub">Code based architecture</p>
       <div class="ui-items">
         <div class="ui-item">UITK (UXML + USS)</div>
-        <div class="ui-item">OneJS (React + Tailwind)</div>
+        <div class="ui-item has-link"><a class="deck-link" href="https://v3.onejs.com/" target="_blank" rel="noopener noreferrer">OneJS (React + Tailwind)</a></div>
         <div class="ui-item">HLS</div>
       </div>
     </article>
@@ -2221,7 +2226,7 @@
     tapCompute.classList.remove('is-active');
     void tapCompute.offsetWidth;
     tapCompute.classList.add('is-active');
-    tapComputeHideTimer = window.setTimeout(hideTapComputeText, 1180);
+    tapComputeHideTimer = window.setTimeout(hideTapComputeText, 2680);
   }
 
   if (tapCompute) {
