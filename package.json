@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "social:build": "node scripts/generate-social-previews.mjs"
+    "social:build": "node scripts/generate-social-previews.mjs",
+    "linkedin:square": "node scripts/generate-linkedin-square-previews.mjs"
   },
   "devDependencies": {
     "playwright": "^1.53.0"

@@ -34,6 +34,10 @@
   try {
     var params = new URLSearchParams(window.location.search);
     var preview = params.get('preview') === 'cover';
+    var layout = params.get('layout') || params.get('format');
+    if (layout === 'square' || params.get('linkedin') === 'square') {
+      document.documentElement.classList.add('deck-square-layout');
+    }
     var saved = parseInt(localStorage.getItem('ai-unity-deck-position') || '0', 10);
     var startsOnDarkSlide = preview || isNaN(saved) || saved === 0 || saved === 18;
     document.documentElement.classList.add(startsOnDarkSlide ? 'deck-starts-on-dark' : 'deck-starts-on-light');
@@ -1353,6 +1357,216 @@
     .ui-item { padding: 10px 12px 10px 36px; font-size: 16px; }
     .ui-note { font-size: 16px; }
     .notes { left: 12px; right: 12px; bottom: 12px; max-height: 48vh; padding: 16px 18px; font-size: 15px; }
+  }
+
+  /* Dedicated LinkedIn square export layout: append ?layout=square (or ?format=square).
+     The live deck remains 16:9-first; this mode reflows dense slides so 1080×1080
+     JPGs use the full canvas without clipping important content. */
+  html.deck-square-layout body::before,
+  html.deck-square-layout body::after { display: none !important; }
+  html.deck-square-layout .slide {
+    --slide-pad-x: 72px;
+    padding: 76px var(--slide-pad-x) 76px;
+    justify-content: center;
+    overflow: hidden;
+  }
+  html.deck-square-layout .has-scroll-content {
+    padding-bottom: 76px;
+    overflow: hidden;
+  }
+  html.deck-square-layout .scroll-split-owner::before { display: none !important; }
+  html.deck-square-layout .scroll-split-owner > .slide-scroll-content {
+    flex: 0 0 auto;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+  html.deck-square-layout .slide.hero {
+    padding: 96px 72px;
+    justify-content: center;
+  }
+  html.deck-square-layout .kicker {
+    font-size: 22px;
+    margin-bottom: 40px;
+  }
+  html.deck-square-layout .slide.hero .h-hero {
+    font-size: 104px;
+    line-height: 0.95;
+    max-width: 920px;
+  }
+  html.deck-square-layout .cover-meta {
+    margin-top: 44px;
+    font-size: 22px;
+  }
+  html.deck-square-layout .cover-meta .speaker { font-size: 22px; }
+  html.deck-square-layout .slide.hero.center .slide-tag.inline { margin-top: 38px; }
+  html.deck-square-layout .deck-headline {
+    font-size: 64px;
+    line-height: 0.98;
+    margin-bottom: 28px;
+    max-width: 100%;
+  }
+  html.deck-square-layout .deck-subhead {
+    font-size: 24px;
+    line-height: 1.38;
+    margin-top: -12px;
+    margin-bottom: 30px;
+    max-width: 100%;
+  }
+  html.deck-square-layout .deck-section-label,
+  html.deck-square-layout .mcp-tags-label,
+  html.deck-square-layout .slide-mcp .mcp-prosconlabel {
+    font-size: 14px;
+    letter-spacing: 0.16em;
+  }
+  html.deck-square-layout .arrow-list { gap: 24px; margin-top: 26px; }
+  html.deck-square-layout .arrow-list li {
+    grid-template-columns: 42px 1fr;
+    gap: 16px;
+    font-size: 32px;
+    line-height: 1.22;
+  }
+  html.deck-square-layout .slide-mcp .arrow-list,
+  html.deck-square-layout .arrow-list.tight { gap: 17px; }
+  html.deck-square-layout .slide-mcp .arrow-list li,
+  html.deck-square-layout .arrow-list.tight li {
+    grid-template-columns: 32px 1fr;
+    gap: 14px;
+    font-size: 27px;
+    line-height: 1.28;
+  }
+  html.deck-square-layout .arrow-list.tight li .products span,
+  html.deck-square-layout .pill-tags span {
+    font-size: 0.58em;
+  }
+  html.deck-square-layout .pillar-grid {
+    width: 100%;
+    max-width: 100%;
+    gap: 18px;
+    margin-top: 28px;
+  }
+  html.deck-square-layout .pillar-grid .pill {
+    padding: 26px 26px 28px;
+    border-radius: 18px;
+  }
+  html.deck-square-layout .pill .num { font-size: 15px; }
+  html.deck-square-layout .pill h4 { font-size: 28px; line-height: 1.1; }
+  html.deck-square-layout .pill .subhead { font-size: 18px; line-height: 1.35; }
+  html.deck-square-layout .pill .tag { font-size: 13px; padding: 6px 11px; }
+  html.deck-square-layout .trend-stack {
+    max-width: 100%;
+    justify-content: center;
+    gap: 18px;
+  }
+  html.deck-square-layout .slide-trend .deck-headline { margin-bottom: 18px; }
+  html.deck-square-layout .trend-columns {
+    grid-template-rows: 58px auto;
+    column-gap: 8px;
+    row-gap: 16px;
+    margin-top: 12px;
+  }
+  html.deck-square-layout .trend-col-label {
+    font-size: 22px;
+    line-height: 1.12;
+  }
+  html.deck-square-layout .trend-col-sep { font-size: 42px; padding: 0 2px; }
+  html.deck-square-layout .trend-panel {
+    max-width: 190px;
+    max-height: 320px;
+  }
+  html.deck-square-layout .progression {
+    width: 100%;
+    max-width: 100%;
+    gap: 18px;
+    margin-top: 30px;
+  }
+  html.deck-square-layout .progression .step {
+    grid-template-columns: 68px 1fr;
+    padding: 24px 28px;
+    font-size: 25px;
+    line-height: 1.22;
+  }
+  html.deck-square-layout .progression .step .idx { font-size: 20px; }
+  html.deck-square-layout .progression .step.here::after { font-size: 12px; right: 28px; }
+  html.deck-square-layout .pillars-venn {
+    flex: 0 0 auto;
+    padding-top: 6px;
+    margin-top: 0;
+  }
+  html.deck-square-layout .pillars-venn svg {
+    width: min(100%, 880px);
+    height: auto;
+    max-width: 880px;
+    max-height: 730px;
+  }
+  html.deck-square-layout .pillars-venn .venn-label text { font-size: 48px; }
+  html.deck-square-layout .pillars-venn .venn-core { font-size: 58px; }
+  html.deck-square-layout .slide-mcp { --mcp-section-gap: 26px; --mcp-label-gap: 10px; }
+  html.deck-square-layout .slide-mcp .deck-headline,
+  html.deck-square-layout .slide-mcp .mcp-tags,
+  html.deck-square-layout .slide-mcp .arrow-list,
+  html.deck-square-layout .slide-mcp .mcp-prosconlabel { max-width: 100%; }
+  html.deck-square-layout .mcp-logo { display: none; }
+  html.deck-square-layout .mcp-tags { gap: 10px; }
+  html.deck-square-layout .mcp-tags .tag { font-size: 17px; padding: 9px 16px; }
+  html.deck-square-layout .two-col {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 0;
+  }
+  html.deck-square-layout .two-col h3 { font-size: 15px; margin-bottom: 14px; }
+  html.deck-square-layout .slide:nth-of-type(15) .two-col,
+  html.deck-square-layout [data-screen-label="16 Shifting"] .two-col {
+    grid-template-columns: 1fr 1fr;
+    gap: 34px;
+  }
+  html.deck-square-layout .ui-workflow-grid {
+    width: 100%;
+    max-width: 100%;
+    gap: 20px;
+    margin-top: 26px;
+  }
+  html.deck-square-layout [data-screen-label="20 AI Workflow"] .ui-workflow-grid,
+  html.deck-square-layout .ui-workflow-grid[style*="repeat(4"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  html.deck-square-layout .ui-lane { padding: 24px; border-radius: 18px; }
+  html.deck-square-layout .ui-lane .lane-label { font-size: 14px; }
+  html.deck-square-layout .ui-lane h3 { font-size: 25px; }
+  html.deck-square-layout .lane-sub { font-size: 16px; }
+  html.deck-square-layout .ui-items { gap: 10px; }
+  html.deck-square-layout .ui-item {
+    font-size: 20px;
+    line-height: 1.25;
+    padding: 12px 14px 12px 46px;
+  }
+  html.deck-square-layout .deck-link { padding: 12px 14px 12px 46px; }
+  html.deck-square-layout .slide-goal .slide-scroll-content {
+    display: grid;
+    grid-template-columns: minmax(0, 0.98fr) minmax(320px, 1fr);
+    column-gap: 40px;
+  }
+  html.deck-square-layout .slide-goal .flow-graph svg {
+    width: min(360px, 100%);
+    max-height: 620px;
+  }
+  html.deck-square-layout .slide-goal .arrow-list li { font-size: 26px; }
+  html.deck-square-layout .slide-zx-end {
+    justify-content: flex-start;
+    padding-top: 76px;
+  }
+  html.deck-square-layout .slide-zx-end .deck-headline { margin-bottom: 18px; }
+  html.deck-square-layout .slide-zx-end .zx-demo {
+    position: absolute;
+    left: 50%;
+    top: 57%;
+    translate: -50% -50%;
+    width: 520px;
+    max-width: 74vw;
+    margin: 0;
   }
 
   @media print {
