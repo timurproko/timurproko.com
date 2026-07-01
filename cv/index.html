@@ -8,19 +8,19 @@
   <link rel="canonical" href="https://timurproko.com/cv/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Timur Prokopiev" />
-  <meta property="og:title" content="Unity Developer CV" />
+  <meta property="og:title" content="UX/XR Developer CV" />
   <meta property="og:description" content="Building interactive experiences with a focus on usability, performance, and real-time systems." />
   <meta property="og:url" content="https://timurproko.com/cv/" />
   <meta property="og:image" content="https://timurproko.com/assets/social/cv.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Unity Developer CV — social preview" />
+  <meta property="og:image:alt" content="UX/XR Developer CV — social preview" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Unity Developer CV" />
+  <meta name="twitter:title" content="UX/XR Developer CV" />
   <meta name="twitter:description" content="Building interactive experiences with a focus on usability, performance, and real-time systems." />
   <meta name="twitter:image" content="https://timurproko.com/assets/social/cv.png" />
   <!-- social-preview:end -->
-  <title>Unity Developer CV</title>
+  <title>UX/XR Developer CV</title>
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -28,6 +28,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    (function () {
+      try {
+        if (new URLSearchParams(window.location.search).get('preview') === 'cover') {
+          document.documentElement.classList.add('preview-cover');
+        }
+      } catch (_) {}
+    })();
+  </script>
   <style>
     :root {
       --bg:      oklch(99% 0.002 240);
@@ -783,6 +792,89 @@
       }
       #experience-title { break-before: avoid; }
     }
+    html.preview-cover,
+    html.preview-cover body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+    }
+    html.preview-cover body {
+      display: block;
+    }
+    html.preview-cover nav,
+    html.preview-cover .back-shortcut,
+    html.preview-cover .print-shortcut,
+    html.preview-cover .intro,
+    html.preview-cover .quick-meta,
+    html.preview-cover .layout,
+    html.preview-cover footer {
+      display: none !important;
+    }
+    html.preview-cover .shell {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      max-width: none;
+      width: 100vw;
+      height: min(100vh, 56.25vw);
+      padding: clamp(48px, 5vw, 96px) clamp(80px, 10vw, 192px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, oklch(100% 0 0), var(--bg));
+    }
+    html.preview-cover .shell::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: min(620px, 58vw);
+      aspect-ratio: 1;
+      left: 12%;
+      top: -28%;
+      border-radius: 50%;
+      background: radial-gradient(circle, oklch(78% 0.12 245 / 0.42) 0%, oklch(78% 0.12 245 / 0.18) 38%, transparent 68%);
+      filter: blur(18px);
+      animation: previewBlueSpotDrift 4.5s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    html.preview-cover .hero {
+      width: 100%;
+      margin: 0;
+      text-align: center;
+    }
+    html.preview-cover .hero-top {
+      display: flex;
+      justify-content: center;
+      margin: 0 0 clamp(18px, 2.2vw, 32px);
+    }
+    html.preview-cover .eyebrow {
+      display: inline-flex;
+      margin: 0;
+      font-size: clamp(28px, 3.2vw, 48px);
+      letter-spacing: 0.14em;
+      opacity: 1;
+      animation: none;
+    }
+    html.preview-cover .eyebrow::before {
+      display: none;
+    }
+    html.preview-cover .hero h1 {
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: clamp(84px, 10vw, 160px);
+      line-height: 0.96;
+      letter-spacing: -0.055em;
+      opacity: 1;
+      animation: none;
+    }
+    @keyframes previewBlueSpotDrift {
+      0% { transform: translate3d(-4%, -2%, 0) scale(1); }
+      35% { transform: translate3d(24%, 10%, 0) scale(1.08); }
+      70% { transform: translate3d(52%, -3%, 0) scale(0.96); }
+      100% { transform: translate3d(74%, 13%, 0) scale(1.12); }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .nav-logo,
       .eyebrow,
@@ -800,6 +892,9 @@
         transform: none;
         animation: none;
         transition: none;
+      }
+      html.preview-cover .shell::before {
+        animation: none;
       }
     }
   </style>
@@ -824,7 +919,7 @@
       </div>
       <h1 id="page-title">Timur Prokopiev</h1>
       <p class="intro">
-        Unity Developer with 15+ years of experience across real-time 3D development, UX, and technical art for Mobile, XR, and Desktop. I focus on scalable architectures, rendering pipeline optimization, custom editor tools, procedural generation, and spatial UI systems that accelerate production workflows.
+        UX/XR Developer with 15+ years of experience across real-time 3D development, UX, and technical art for Mobile, XR, and Desktop. I focus on scalable architectures, rendering pipeline optimization, custom editor tools, procedural generation, and spatial UI systems that accelerate production workflows.
       </p>
       <div class="quick-meta" aria-label="Profile highlights">
         <span class="chip">Gdańsk, Poland</span>

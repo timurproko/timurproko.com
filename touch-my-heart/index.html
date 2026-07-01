@@ -34,6 +34,9 @@
   try {
     var params = new URLSearchParams(window.location.search);
     var preview = params.get('preview') === 'cover';
+    if (preview) {
+      document.documentElement.classList.add('deck-preview-cover');
+    }
     var layout = params.get('layout') || params.get('format');
     if (layout === 'square' || params.get('linkedin') === 'square') {
       document.documentElement.classList.add('deck-square-layout');
@@ -1582,6 +1585,24 @@
     margin: 0;
   }
 
+  html.deck-preview-cover .deck-back,
+  html.deck-preview-cover .deck-tag,
+  html.deck-preview-cover .deck-counter,
+  html.deck-preview-cover .deck-credit,
+  html.deck-preview-cover .nav-hint,
+  html.deck-preview-cover .mobile-swipe-hint,
+  html.deck-preview-cover .notes,
+  html.deck-preview-cover .slide-tag,
+  html.deck-preview-cover .kicker,
+  html.deck-preview-cover .cover-meta,
+  html.deck-preview-cover .cover-rule {
+    display: none !important;
+  }
+
+  html.deck-preview-cover .slide.hero {
+    justify-content: center;
+  }
+
   @media print {
     @page { size: 1920px 1080px; margin: 0; }
     html, body { background: #fff; display: block; overflow: visible; height: auto; }
@@ -1818,11 +1839,16 @@
   </ul>
 </section>
 
-<section class="slide hero center dark" data-screen-label="12 Thank You" data-notes="Thank you. Happy to walk through any part of the process — from medical research to procedural modeling, shading, or the Unity runtime.">
-  <div class="kicker">Touch My Heart · Magic Leap XR</div>
-  <h1 class="h-hero">Thank you</h1>
-  <div class="cover-rule"></div>
-  <div class="cover-meta"><span class="speaker">Timur Prokopiev</span><span class="cover-desc">3D/UX Designer · Technical Artist · XR Developer</span></div>
+<section class="slide slide-zx-end slide-no-scroll dark" data-screen-label="12 End" data-notes="Thank you. Happy to walk through any part of the process — from medical research to procedural modeling, shading, or the Unity runtime.">
+  <span class="slide-tag">The End</span>
+  <h2 class="deck-headline">Thank You</h2>
+  <p class="deck-subhead zx-end-subhead">Questions?</p>
+  <div class="zx-demo" aria-hidden="true">
+    <div class="zx-cube-frame">
+      <canvas class="zx-cube-canvas" id="zxCanvasCube" width="600" height="600"></canvas>
+    </div>
+    <div class="zx-tap-compute"><span class="desktop-label">CLICK TO PULSE</span><span class="mobile-label">TAP TO PULSE</span></div>
+  </div>
 </section>
 
 <script>
@@ -1831,74 +1857,40 @@
 
   var canvas = document.getElementById('zxCanvasCube');
   if (!canvas || !canvas.getContext) return;
+  var ctx = canvas.getContext('2d');
   var tapCompute = document.querySelector('.zx-tap-compute');
   var endSlide = canvas.closest('.slide-zx-end');
-
-  // Adapted from anirudhkhanna/juspay-hackathon-canvas-cube: real 3D points
-  // projected and redrawn on HTML5 Canvas instead of the previous static SVG cube.
-  function Point3D(x, y, z) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
-  }
-  Point3D.prototype.rotateX = function (angle) {
-    var rad = angle * Math.PI / 180;
-    var cosa = Math.cos(rad);
-    var sina = Math.sin(rad);
-    return new Point3D(this.x, this.y * cosa - this.z * sina, this.y * sina + this.z * cosa);
-  };
-  Point3D.prototype.rotateY = function (angle) {
-    var rad = angle * Math.PI / 180;
-    var cosa = Math.cos(rad);
-    var sina = Math.sin(rad);
-    return new Point3D(this.z * sina + this.x * cosa, this.y, this.z * cosa - this.x * sina);
-  };
-  Point3D.prototype.project = function (viewWidth, viewHeight, fov, viewDistance) {
-    var factor = fov / (viewDistance + this.z);
-    return new Point3D(this.x * factor + viewWidth / 2, this.y * factor + viewHeight / 2, this.z);
-  };
-
-  var vertices = [
-    new Point3D(-1, 1, -1), new Point3D(1, 1, -1),
-    new Point3D(1, -1, -1), new Point3D(-1, -1, -1),
-    new Point3D(-1, 1, 1), new Point3D(1, 1, 1),
-    new Point3D(1, -1, 1), new Point3D(-1, -1, 1)
-  ];
-  var faces = [[0,1,2,3], [1,5,6,2], [5,4,7,6], [4,0,3,7], [0,4,5,1], [3,2,6,7]];
-  var diagonals = [[0,6], [1,7], [2,4], [3,5]];
-  var ctx = canvas.getContext('2d');
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var pointerDown = false;
-  var pointerMoved = false;
-  var oldX = 0;
-  var oldY = 0;
-  var baseX = reduceMotion ? 0 : 0.006;
-  var baseY = reduceMotion ? 0 : 0.003;
-  var targetX = baseX;
-  var targetY = baseY;
-  var spinX = 0;
-  var spinY = 0;
-  var nextSpeedShuffle = 0;
-  var theta = -0.55;
-  var phi = 0.35;
-  var spinAmortization = 0.982;
-  var tapComputePaused = false;
+  var particles = [];
+  var pulseBoost = 0;
   var tapComputeActive = false;
   var tapComputeHideTimer = 0;
-  var tapComputeMinResumeAt = 0;
-  var tapComputeSettleBurstQueued = false;
-  var tapComputeSettleThreshold = 0.010;
 
-  function randomSigned(min, max) {
-    var value = min + Math.random() * (max - min);
-    return (Math.random() < 0.5 ? -1 : 1) * value;
+  function heartInside(x, y) {
+    var a = x * x + y * y - 1;
+    return (a * a * a - x * x * y * y * y) <= 0;
   }
 
-  function shuffleBaseSpeed(now) {
-    if (reduceMotion || now < nextSpeedShuffle) return;
-    targetX = randomSigned(0.0045, 0.015);
-    targetY = randomSigned(0.0025, 0.010);
-    nextSpeedShuffle = now + 650 + Math.random() * 1350;
+  function buildParticles() {
+    particles = [];
+    var targetCount = 360;
+    var attempts = 0;
+    while (particles.length < targetCount && attempts < 12000) {
+      attempts++;
+      var x = -1.35 + Math.random() * 2.7;
+      var y = -1.22 + Math.random() * 2.58;
+      if (!heartInside(x, y)) continue;
+      var edge = Math.pow(Math.min(1, Math.hypot(x * 0.82, y * 0.9)), 1.35);
+      particles.push({
+        x: x,
+        y: y,
+        z: 0.42 + edge * 0.72 + Math.random() * 0.2,
+        r: 1.25 + Math.random() * 2.35,
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.75 + Math.random() * 1.35,
+        alpha: 0.42 + Math.random() * 0.46
+      });
+    }
   }
 
   function resizeCanvas() {
@@ -1914,139 +1906,19 @@
     return size;
   }
 
-  function projectedPoints(size) {
-    var points = [];
-    var minX = Infinity;
-    var maxX = -Infinity;
-    var minY = Infinity;
-    var maxY = -Infinity;
-    for (var i = 0; i < vertices.length; i++) {
-      var point = vertices[i]
-        .rotateX(phi * 50)
-        .rotateY(theta * 50)
-        .project(size, size, size * 0.72, 3.2);
-      points.push(point);
-      minX = Math.min(minX, point.x);
-      maxX = Math.max(maxX, point.x);
-      minY = Math.min(minY, point.y);
-      maxY = Math.max(maxY, point.y);
-    }
-
-    // Perspective can make the projected bounding box drift away from the
-    // canvas center. Recenter the actual visible cube so it sits in the halo.
-    var offsetX = size / 2 - (minX + maxX) / 2;
-    var offsetY = size / 2 - (minY + maxY) / 2;
-    for (var p = 0; p < points.length; p++) {
-      points[p].x += offsetX;
-      points[p].y += offsetY;
-    }
-    return points;
-  }
-
-  function strokeSegment(points, a, b, width, alpha, dash) {
-    ctx.globalAlpha = alpha;
-    ctx.lineWidth = width;
-    ctx.setLineDash(dash || [1, 13]);
-    ctx.beginPath();
-    ctx.moveTo(points[a].x, points[a].y);
-    ctx.lineTo(points[b].x, points[b].y);
-    ctx.stroke();
-  }
-
-  function draw() {
-    var size = resizeCanvas();
-    var now = performance.now();
-    shuffleBaseSpeed(now);
-    baseX += (targetX - baseX) * 0.018;
-    baseY += (targetY - baseY) * 0.018;
-    spinX *= spinAmortization;
-    spinY *= spinAmortization;
-    updateTapComputePause(now);
-    theta += baseX + spinX;
-    phi += baseY + spinY;
-
-    ctx.clearRect(0, 0, size, size);
-    ctx.save();
-    ctx.strokeStyle = '#f8f8f9';
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.shadowColor = 'rgba(255,255,255,0.45)';
-    ctx.shadowBlur = 8;
-
-    var points = projectedPoints(size);
-    for (var i = 0; i < diagonals.length; i++) {
-      strokeSegment(points, diagonals[i][0], diagonals[i][1], 2.5, 0.32, [1, 18]);
-    }
-    for (var f = 0; f < faces.length; f++) {
-      var face = faces[f];
-      for (var e = 0; e < face.length; e++) {
-        strokeSegment(points, face[e], face[(e + 1) % face.length], 4, 0.86, [1, 12]);
-      }
-    }
-    ctx.setLineDash([]);
-    ctx.fillStyle = '#f8f8f9';
-    ctx.globalAlpha = 0.96;
-    for (var p = 0; p < points.length; p++) {
-      ctx.beginPath();
-      ctx.arc(points[p].x, points[p].y, p === 6 ? 4.2 : 3.6, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.restore();
-    window.requestAnimationFrame(draw);
-  }
-
-  function pointerPoint(e) {
-    var rect = canvas.getBoundingClientRect();
-    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
-  }
-  function kickCube() {
-    if (reduceMotion) return;
-    var now = performance.now();
-    targetX = randomSigned(0.010, 0.024);
-    targetY = randomSigned(0.006, 0.018);
-    spinX += randomSigned(0.055, 0.115);
-    spinY += randomSigned(0.035, 0.085);
-    nextSpeedShuffle = now + 900 + Math.random() * 900;
-    hideTapComputeUntilSettled(now);
-  }
-
-  function hideTapComputeUntilSettled(now) {
-    tapComputePaused = true;
-    tapComputeSettleBurstQueued = false;
-    tapComputeMinResumeAt = now + 1400;
-    hideTapComputeText();
-  }
-
-  function updateTapComputePause(now) {
-    if (!tapComputePaused) return;
-    if (now < tapComputeMinResumeAt) return;
-    if ((Math.abs(spinX) + Math.abs(spinY)) > tapComputeSettleThreshold) return;
-    tapComputePaused = false;
-    if (tapComputeSettleBurstQueued) return;
-    tapComputeSettleBurstQueued = true;
-    window.setTimeout(function () {
-      tapComputeSettleBurstQueued = false;
-      burstTapCompute();
-    }, 900);
-  }
-
-  function isEndSlideVisible() {
-    return !!tapCompute && !!endSlide && endSlide.classList.contains('is-visible');
-  }
+  function isEndSlideVisible() { return !!endSlide && endSlide.classList.contains('is-visible'); }
 
   function hideTapComputeText() {
     if (!tapCompute) return;
     tapComputeActive = false;
-    if (tapComputeHideTimer) {
-      window.clearTimeout(tapComputeHideTimer);
-      tapComputeHideTimer = 0;
-    }
+    if (tapComputeHideTimer) window.clearTimeout(tapComputeHideTimer);
+    tapComputeHideTimer = 0;
     tapCompute.classList.remove('is-active');
     tapCompute.style.opacity = '0';
   }
 
   function burstTapCompute() {
-    if (reduceMotion || tapComputePaused || tapComputeActive || !isEndSlideVisible()) return;
+    if (!tapCompute || reduceMotion || tapComputeActive || !isEndSlideVisible()) return;
     tapComputeActive = true;
     tapCompute.style.opacity = '';
     tapCompute.style.setProperty('--tap-x', '50%');
@@ -2068,43 +1940,79 @@
     window.setTimeout(function () {
       if (!tapComputeActive) burstTapCompute();
       scheduleTapCompute();
-    }, 1600 + Math.random() * 2400);
+    }, 6200);
   }
   scheduleTapCompute();
 
+  function kickHeart() {
+    pulseBoost = Math.min(1, pulseBoost + 0.86);
+    burstTapCompute();
+  }
+
+  var pointerDown = false, pointerMoved = false, oldX = 0, oldY = 0;
   canvas.addEventListener('pointerdown', function (e) {
-    var p = pointerPoint(e);
-    pointerDown = true;
-    pointerMoved = false;
-    oldX = p.x;
-    oldY = p.y;
+    pointerDown = true; pointerMoved = false; oldX = e.clientX; oldY = e.clientY;
     try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
   });
   canvas.addEventListener('pointermove', function (e) {
     if (!pointerDown) return;
-    var p = pointerPoint(e);
-    var moveX = p.x - oldX;
-    var moveY = p.y - oldY;
-    if ((moveX * moveX + moveY * moveY) > 64) pointerMoved = true;
+    if (Math.abs(e.clientX - oldX) + Math.abs(e.clientY - oldY) > 6) pointerMoved = true;
   });
-  function endPointer(e) {
-    if (pointerDown && !pointerMoved) kickCube();
-    pointerDown = false;
-    pointerMoved = false;
+  canvas.addEventListener('pointerup', function (e) {
+    if (pointerDown && !pointerMoved) kickHeart();
+    pointerDown = false; pointerMoved = false;
     try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
-  }
-  canvas.addEventListener('pointerup', endPointer);
+  });
   canvas.addEventListener('pointercancel', function (e) {
-    pointerDown = false;
-    pointerMoved = false;
+    pointerDown = false; pointerMoved = false;
     try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
   });
-  canvas.addEventListener('pointerleave', function () {
-    pointerDown = false;
-    pointerMoved = false;
-  });
+  canvas.addEventListener('pointerleave', function () { pointerDown = false; pointerMoved = false; });
+
+  function drawGlow(cx, cy, size, beat) {
+    var glow = ctx.createRadialGradient(cx, cy, size * 0.04, cx, cy, size * (0.44 + beat * 0.05));
+    glow.addColorStop(0, 'rgba(224,36,94,0.24)');
+    glow.addColorStop(0.45, 'rgba(224,36,94,0.10)');
+    glow.addColorStop(1, 'rgba(224,36,94,0)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, size, size);
+  }
+
+  function draw(now) {
+    var size = resizeCanvas();
+    var t = now * 0.001;
+    ctx.clearRect(0, 0, size, size);
+    var heartbeat = reduceMotion ? 0 : Math.pow(Math.max(0, Math.sin(t * Math.PI * 1.42)), 10);
+    pulseBoost *= reduceMotion ? 0 : 0.93;
+    var beat = Math.min(1, heartbeat + pulseBoost);
+    var scale = size * (0.255 + beat * 0.018);
+    var cx = size * 0.5;
+    var cy = size * 0.52;
+    drawGlow(cx, cy, size, beat);
+    particles.sort(function (a, b) { return a.z - b.z; });
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      var shimmer = reduceMotion ? 0 : Math.sin(t * p.speed + p.phase);
+      var px = cx + p.x * scale * (1 + beat * 0.10) + (reduceMotion ? 0 : Math.sin(t * 1.7 + p.phase) * 2.4);
+      var py = cy - p.y * scale * (1 + beat * 0.10) + (reduceMotion ? 0 : Math.cos(t * 1.35 + p.phase * 1.2) * 2.1);
+      var alpha = Math.min(1, p.alpha + beat * 0.34 + shimmer * 0.12);
+      var radius = p.r * (0.82 + p.z * 0.34 + beat * 0.32);
+      ctx.beginPath();
+      ctx.arc(px, py, radius, 0, Math.PI * 2);
+      ctx.fillStyle = i % 7 === 0 ? 'rgba(255,143,171,' + (alpha * 0.82).toFixed(3) + ')' : 'rgba(248,248,249,' + alpha.toFixed(3) + ')';
+      ctx.fill();
+    }
+    ctx.beginPath();
+    ctx.arc(cx, cy, size * (0.16 + beat * 0.035), 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(224,36,94,' + (0.08 + beat * 0.14).toFixed(3) + ')';
+    ctx.lineWidth = 1.4;
+    ctx.stroke();
+    window.requestAnimationFrame(draw);
+  }
+
+  buildParticles();
   window.addEventListener('resize', resizeCanvas);
-  draw();
+  draw(0);
 })();
 </script>
 

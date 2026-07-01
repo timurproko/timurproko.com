@@ -34,6 +34,9 @@
   try {
     var params = new URLSearchParams(window.location.search);
     var preview = params.get('preview') === 'cover';
+    if (preview) {
+      document.documentElement.classList.add('deck-preview-cover');
+    }
     var layout = params.get('layout') || params.get('format');
     if (layout === 'square' || params.get('linkedin') === 'square') {
       document.documentElement.classList.add('deck-square-layout');
@@ -1567,6 +1570,24 @@
     width: 520px;
     max-width: 74vw;
     margin: 0;
+  }
+
+  html.deck-preview-cover .deck-back,
+  html.deck-preview-cover .deck-tag,
+  html.deck-preview-cover .deck-counter,
+  html.deck-preview-cover .deck-credit,
+  html.deck-preview-cover .nav-hint,
+  html.deck-preview-cover .mobile-swipe-hint,
+  html.deck-preview-cover .notes,
+  html.deck-preview-cover .slide-tag,
+  html.deck-preview-cover .kicker,
+  html.deck-preview-cover .cover-meta,
+  html.deck-preview-cover .cover-rule {
+    display: none !important;
+  }
+
+  html.deck-preview-cover .slide.hero {
+    justify-content: center;
   }
 
   @media print {
