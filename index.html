@@ -687,16 +687,17 @@
   <script>
     // Static fallback for hosts that do not expose a directory listing/API.
     // This list was generated from the current folder when index.html was created.
-    const FALLBACK_PRESENTATIONS = ["ai-for-unity", "cv"];
+    const FALLBACK_PRESENTATIONS = ["ai-for-unity", "touch-my-heart", "cv"];
     const TITLE_OVERRIDES = {
       "ai-for-unity": "AI for Unity\nDevelopment",
+      "touch-my-heart": "Touch My Heart\nXR Experience",
       "cv": "Unity Developer\nCV"
     };
     const DEFAULT_PREVIEW_VIEWPORT = { width: 1920, height: 1080 };
     const PREVIEW_VIEWPORTS = {
       cv: { width: 900, height: 900 }
     };
-    const DEFAULT_DESCRIPTION = "Agentic Engineering workflows for Unity Developers.";
+    const DEFAULT_DESCRIPTION = "An XR journey inside the human heart, built for Magic Leap.";
 
     const grid = document.getElementById("presentations");
     const count = document.getElementById("count");
