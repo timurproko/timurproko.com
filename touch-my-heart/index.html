@@ -53,7 +53,7 @@
     --fg: #111111;
     --muted: #72747a;
     --border: #e4e6ea;
-    --accent: #2f6feb;
+    --accent: #e0245e;
     --illo: #e0245e;
     --accent-on: #ffffff;
     --accent-dim: color-mix(in oklab, var(--accent), transparent 88%);
@@ -141,7 +141,7 @@
   .slide.dark .cover-meta { color: color-mix(in oklab, var(--bg), transparent 35%); }
   .slide.dark .cover-meta .speaker { color: var(--bg); }
   .slide.dark .kicker { color: color-mix(in oklab, var(--bg), transparent 45%); }
-  .slide.hero .h-hero { font-size: clamp(88px, 10.42vw, 200px); line-height: 0.94; letter-spacing: -0.04em; }
+  .slide.hero .h-hero { font-size: clamp(88px, 10.42vw, 200px); line-height: 0.94; letter-spacing: -0.04em; padding-bottom: 0.14em; }
   .deck-headline { font-family: var(--font-display); font-weight: 700; font-size: clamp(44px, min(4.6vw, 7.6vh), 88px); line-height: 0.98; letter-spacing: -0.03em; margin-bottom: clamp(28px, 2.8vw, 52px); max-width: min(1500px, 92vw); }
   .deck-subhead { font-family: var(--font-body); font-weight: 400; font-size: clamp(16px, 1.25vw, 24px); line-height: 1.55; color: var(--muted); margin-top: clamp(-18px, -1vw, -10px); margin-bottom: clamp(28px, 2.8vw, 52px); max-width: min(1500px, 92vw); }
   .slide.dark .deck-subhead { color: color-mix(in oklab, var(--bg), transparent 30%); }
@@ -151,13 +151,13 @@
   .arrow-list { list-style: none; display: flex; flex-direction: column; gap: 28px; margin-top: 32px; max-width: 1500px; }
   .arrow-list li { display: grid; grid-template-columns: clamp(40px, 3.33vw, 64px) 1fr; align-items: baseline; gap: clamp(16px, 1.25vw, 24px); font-family: var(--font-display); font-weight: 500; font-size: clamp(28px, 2.29vw, 44px); line-height: 1.25; letter-spacing: -0.012em; color: var(--fg); }
   .slide.dark .arrow-list li { color: var(--bg); }
-  .arrow-list li::before { content: "→"; font-family: var(--font-mono); font-weight: 400; color: var(--accent); font-size: 1.05em; line-height: 1.25; }
+  .arrow-list li::before { content: "→"; font-family: var(--font-mono); font-weight: 400; color: #c81d3f; font-size: 1.05em; line-height: 1.25; }
   .lead { font-family: var(--font-display); font-weight: 500; font-size: 56px; line-height: 1.2; color: var(--muted); max-width: 1500px; margin-top: 48px; }
   .slide.center .lead { margin-left: auto; margin-right: auto; }
   .cover-meta { margin-top: 56px; display: flex; flex-direction: column; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 24px; color: var(--muted); letter-spacing: 0.04em; text-align: center; }
   .cover-meta .speaker { font-family: var(--font-mono); font-weight: 500; font-size: 24px; color: var(--fg); letter-spacing: 0.16em; text-transform: uppercase; }
   .cover-desc { font-size: clamp(12px, 0.9vw, 15px); letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.65; }
-  .cover-rule { width: 240px; height: 6px; background: var(--accent); margin-top: 56px; }
+  .cover-rule { width: 240px; height: 6px; background: #c81d3f; margin-top: 56px; }
   .slide.center .cover-rule { margin-left: auto; margin-right: auto; }
   .closing-stamp { margin-top: 56px; font-family: var(--font-mono); font-size: 22px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
   .deck-counter { position: fixed; bottom: 48px; right: 64px; font-family: var(--font-mono); font-size: 22px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); z-index: 130; pointer-events: none; opacity: 0; transition: opacity 500ms var(--ease-standard), color 720ms var(--ease-standard), text-shadow 720ms var(--ease-standard); }
@@ -233,7 +233,7 @@
     display: block;
     width: 24px;
     height: 2px;
-    background: var(--accent);
+    background: #c81d3f;
     border-radius: 999px;
     flex: 0 0 auto;
     transform-origin: left center;
@@ -378,6 +378,7 @@
   }
   .two-col h3 { font-family: var(--font-mono); font-size: clamp(11px, 0.82vw, 14px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; font-weight: 400; }
   .pillar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: clamp(34px, 2.2vw, 42px); max-width: 1664px; }
+  [data-screen-label="02 About"] .pillar-grid { margin-top: clamp(8px, 0.8vw, 16px); }
   .pillar-grid .pill { position: relative; border: 1px solid var(--border); border-radius: 16px; padding: 24px 26px 26px; background: var(--surface); color: var(--fg); display: flex; flex-direction: column; transition: transform var(--motion-hover) var(--ease-spring), border-color var(--motion-fast) var(--ease-standard), box-shadow var(--motion-hover) var(--ease-standard); }
   .pillar-grid .pill:hover { z-index: 2; box-shadow: 0 14px 38px rgba(17,17,17,0.12); transform: translateY(-2px); }
   .pill-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 14px; }
@@ -386,7 +387,7 @@
   .pill .num { font-family: var(--font-mono); font-size: 14px; color: var(--accent); letter-spacing: 0.08em; }
   .pill h4 { font-family: var(--font-display); font-weight: 600; font-size: clamp(18px, 1.45vw, 26px); line-height: 1.15; letter-spacing: -0.015em; margin: 8px 0 4px; }
   .pill .subhead { font-family: var(--font-body); font-size: clamp(13px, 1vw, 16px); line-height: 1.45; color: var(--muted); margin-bottom: 14px; }
-  .pill .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+  .pill .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
   .pill .tag { font-family: var(--font-mono); font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.02em; padding: 5px 11px; border-radius: 9999px; border: 1px solid var(--border); background: color-mix(in oklab, var(--accent), transparent 94%); color: var(--fg); white-space: nowrap; text-decoration: none; }
   .ui-workflow-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 1.6vw, 32px); width: min(1500px, 100%); margin-top: clamp(34px, 2.2vw, 42px); }
   .slide-ui .ui-workflow-grid { margin-top: clamp(-32px, -1.45vw, -18px); }
@@ -689,7 +690,7 @@
     }
     .slide-zx-end.scroll-split-owner::before {
       background:
-        radial-gradient(circle at 50% 45%, rgba(77, 220, 255, 0.18), transparent 36%),
+        radial-gradient(circle at 50% 45%, rgba(224, 36, 94, 0.18), transparent 36%),
         linear-gradient(180deg, #050505 0%, #101010 48%, #050505 100%);
     }
     .scroll-split-owner.has-pinned-subhead::before {
@@ -918,7 +919,7 @@
     inset: 0;
     z-index: -2;
     background:
-      radial-gradient(circle at 50% 45%, rgba(77, 220, 255, 0.18), transparent 36%),
+      radial-gradient(circle at 50% 45%, rgba(224, 36, 94, 0.18), transparent 36%),
       linear-gradient(180deg, #050505 0%, #101010 48%, #050505 100%);
   }
   .slide-zx-end::after {
@@ -959,7 +960,7 @@
     width: 100%;
     height: 100%;
     touch-action: manipulation;
-    filter: drop-shadow(2px 0 #ff004d) drop-shadow(-2px 0 #00e5ff) drop-shadow(0 0 14px rgba(255,255,255,0.28));
+    filter: drop-shadow(2px 0 #ff004d) drop-shadow(-2px 0 #ff4d6d) drop-shadow(0 0 14px rgba(255,255,255,0.28));
   }
   .animations-ready .zx-cube-canvas,
   .animations-ready .zx-word { opacity: 0; }
@@ -981,7 +982,7 @@
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: #f8f8f9;
-    text-shadow: 2px 0 #ff004d, -2px 0 #00e5ff, 0 0 18px rgba(255,255,255,0.35);
+    text-shadow: 2px 0 #ff004d, -2px 0 #ff4d6d, 0 0 18px rgba(255,255,255,0.35);
   }
   .zx-tap-compute {
     --tap-x: 50%;
@@ -1018,19 +1019,19 @@
     to { opacity: 1; transform: none; }
   }
   @keyframes zxHue {
-    0%, 100% { filter: drop-shadow(2px 0 #ff004d) drop-shadow(-2px 0 #00e5ff) drop-shadow(0 0 12px rgba(255,255,255,0.30)); }
+    0%, 100% { filter: drop-shadow(2px 0 #ff004d) drop-shadow(-2px 0 #ff4d6d) drop-shadow(0 0 12px rgba(255,255,255,0.30)); }
     25% { filter: drop-shadow(2px 0 #ffdd00) drop-shadow(-2px 0 #00ff66) drop-shadow(0 0 12px rgba(255,255,255,0.30)); }
-    50% { filter: drop-shadow(2px 0 #00e5ff) drop-shadow(-2px 0 #7a5cff) drop-shadow(0 0 12px rgba(255,255,255,0.30)); }
+    50% { filter: drop-shadow(2px 0 #ff4d6d) drop-shadow(-2px 0 #ff8fab) drop-shadow(0 0 12px rgba(255,255,255,0.30)); }
     75% { filter: drop-shadow(2px 0 #ff00ff) drop-shadow(-2px 0 #ff7a00) drop-shadow(0 0 12px rgba(255,255,255,0.30)); }
   }
   @keyframes zxTapComputeBurst {
-    0% { opacity: 0; transform: translate(-50%, -50%) translateY(8px) scale(0.92); color: #00e5ff; text-shadow: 0.45px 0 #ff004d, -0.45px 0 #00e5ff, 0 0 5px rgba(255,255,255,0.12); }
-    12% { opacity: 1; transform: translate(-50%, -50%) translateY(0) scale(1); color: #f8f8f9; text-shadow: 0.45px 0 #ff004d, -0.45px 0 #00e5ff, 0 0 7px rgba(255,255,255,0.26); }
+    0% { opacity: 0; transform: translate(-50%, -50%) translateY(8px) scale(0.92); color: #ff4d6d; text-shadow: 0.45px 0 #ff004d, -0.45px 0 #ff4d6d, 0 0 5px rgba(255,255,255,0.12); }
+    12% { opacity: 1; transform: translate(-50%, -50%) translateY(0) scale(1); color: #f8f8f9; text-shadow: 0.45px 0 #ff004d, -0.45px 0 #ff4d6d, 0 0 7px rgba(255,255,255,0.26); }
     28% { opacity: 0.94; color: #ffdd00; text-shadow: 0.45px 0 #00ff66, -0.45px 0 #ff004d, 0 0 6px rgba(255,221,0,0.2); }
-    44% { opacity: 1; color: #00ff66; text-shadow: 0.45px 0 #00e5ff, -0.45px 0 #ff00ff, 0 0 6px rgba(0,255,102,0.22); }
-    62% { opacity: 0.95; color: #ff00ff; text-shadow: 0.45px 0 #ffdd00, -0.45px 0 #00e5ff, 0 0 7px rgba(255,0,255,0.2); }
-    78% { opacity: 1; color: #f8f8f9; text-shadow: 0.45px 0 #ff004d, -0.45px 0 #00e5ff, 0 0 7px rgba(255,255,255,0.24); }
-    100% { opacity: 0; transform: translate(-50%, -50%) translateY(-10px) scale(1.04); color: #ff7a00; text-shadow: 0.45px 0 #00e5ff, -0.45px 0 #ff004d, 0 0 1px rgba(255,255,255,0); }
+    44% { opacity: 1; color: #00ff66; text-shadow: 0.45px 0 #ff4d6d, -0.45px 0 #ff00ff, 0 0 6px rgba(0,255,102,0.22); }
+    62% { opacity: 0.95; color: #ff00ff; text-shadow: 0.45px 0 #ffdd00, -0.45px 0 #ff4d6d, 0 0 7px rgba(255,0,255,0.2); }
+    78% { opacity: 1; color: #f8f8f9; text-shadow: 0.45px 0 #ff004d, -0.45px 0 #ff4d6d, 0 0 7px rgba(255,255,255,0.24); }
+    100% { opacity: 0; transform: translate(-50%, -50%) translateY(-10px) scale(1.04); color: #ff7a00; text-shadow: 0.45px 0 #ff4d6d, -0.45px 0 #ff004d, 0 0 1px rgba(255,255,255,0); }
   }
   @keyframes crtFlicker {
     0%, 100% { opacity: 0.22; transform: translateY(0); }
@@ -1143,7 +1144,7 @@
     }
     .slide-zx-end.scroll-split-owner::before {
       background:
-        radial-gradient(circle at 50% 45%, rgba(77, 220, 255, 0.18), transparent 36%),
+        radial-gradient(circle at 50% 45%, rgba(224, 36, 94, 0.18), transparent 36%),
         linear-gradient(180deg, #050505 0%, #101010 48%, #050505 100%);
     }
     .scroll-split-owner.has-pinned-subhead::before {
@@ -1598,7 +1599,7 @@
   .cond-card p { font-family: var(--font-body); font-size: clamp(14px,1.05vw,20px); line-height: 1.45; color: var(--muted); margin: 10px 0 0; }
 
   /* ── Pillar illustrations ── */
-  .pill-illo { display: flex; align-items: flex-end; height: clamp(58px, 5vw, 82px); margin-bottom: clamp(14px, 1.1vw, 20px); }
+  .pill-illo { display: flex; align-items: center; justify-content: flex-start; height: clamp(48px, 4vw, 64px); margin-bottom: clamp(12px, 0.9vw, 16px); }
   .pill-illo .illo-svg { width: auto; height: 100%; color: var(--illo); display: block; overflow: visible; }
   .pill-illo .illo-svg .stroke { stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none; vector-effect: non-scaling-stroke; }
   .pill-illo .illo-svg .accent { stroke: var(--illo); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none; vector-effect: non-scaling-stroke; }
@@ -1630,7 +1631,7 @@
 <a class="deck-back" id="deckBack" href="../" aria-label="Back to main site"><span class="nav-action-label">Back</span></a>
 <div class="deck-tag is-hidden" id="deckTag">Trend</div>
 <div class="deck-counter" id="deckCounter"><span class="num">01</span><span class="sep"> / </span><span class="total">12</span></div>
-<div class="deck-credit is-hidden" id="deckCredit"><span class="speaker">Tymur Prokopiev</span><span class="deck-credit-extra"> &nbsp;·&nbsp; Touch My Heart</span></div>
+<div class="deck-credit is-hidden" id="deckCredit"><span class="speaker">Timur Prokopiev</span><span class="deck-credit-extra"> &nbsp;·&nbsp; Touch My Heart</span></div>
 <div class="mobile-swipe-hint" id="mobileSwipeHint" aria-hidden="true"><span class="swipe-prev"><span class="swipe-arrow">←</span><span class="swipe-label">Swipe</span></span><span class="swipe-counter"><span class="num">01</span> / <span class="total">12</span></span><span class="swipe-next"><span class="swipe-label">Swipe</span><span class="swipe-arrow">→</span></span></div>
 <div class="nav-hint" aria-label="Slide navigation">
   <button type="button" data-deck-action="prev" aria-label="Previous slide">←</button>
@@ -1644,7 +1645,7 @@
   <div class="kicker">XR Experience · Magic Leap</div>
   <h1 class="h-hero">Touch My Heart</h1>
   <div class="cover-rule"></div>
-  <div class="cover-meta"><span class="speaker">Tymur Prokopiev</span><span class="cover-desc">Experience Designer · Technical Artist</span></div>
+  <div class="cover-meta"><span class="speaker">Timur Prokopiev</span><span class="cover-desc">3D/UX Designer · Technical Artist · XR Developer</span></div>
 </section>
 
 <section class="slide" data-screen-label="02 About" data-notes="Touch My Heart is an immersive AR application on Magic Leap — a realistic, educational encounter with the heart's anatomy and the sounds of various diseases. Three pillars: the AR glasses, haptics, and medically accurate visualization and sound.">
@@ -1679,10 +1680,10 @@
   <h2 class="deck-headline">Learning from XR platforms</h2>
   <p class="deck-subhead">I studied design guidelines across the major platforms. With Apple Vision Pro freshly announced, its interaction patterns became a primary reference point.</p>
   <div class="pillar-grid" style="grid-template-columns:repeat(4,1fr)">
-    <div class="pill" style="border-color:var(--accent);background:color-mix(in oklab,var(--accent),transparent 94%)"><div class="num">PRIMARY</div><h4>Apple Vision Pro</h4><div class="subhead">Freshly announced, richly documented interaction model.</div></div>
-    <div class="pill"><div class="num">REFERENCE</div><h4>Meta Quest</h4><div class="subhead">Mature hand-tracking and comfort guidelines.</div></div>
-    <div class="pill"><div class="num">REFERENCE</div><h4>Microsoft HoloLens</h4><div class="subhead">Enterprise-grade spatial UX patterns.</div></div>
-    <div class="pill" style="border-color:var(--accent)"><div class="num" style="color:var(--accent)">TARGET</div><h4>Magic Leap</h4><div class="subhead">Our delivery device — the design had to fit its optics.</div></div>
+    <div class="pill"><div class="num" style="color:#c81d3f">REFERENCE</div><h4>Apple Vision Pro</h4><div class="subhead">Freshly announced, richly documented interaction model.</div></div>
+    <div class="pill"><div class="num" style="color:#c81d3f">REFERENCE</div><h4>Meta Quest</h4><div class="subhead">Mature hand-tracking and comfort guidelines.</div></div>
+    <div class="pill"><div class="num" style="color:#c81d3f">REFERENCE</div><h4>Microsoft HoloLens</h4><div class="subhead">Enterprise-grade spatial UX patterns.</div></div>
+    <div class="pill" style="border-color:#c81d3f;background:color-mix(in oklab,#c81d3f,transparent 94%)"><div class="num" style="color:#c81d3f">TARGET</div><h4>Magic Leap</h4><div class="subhead">Our delivery device — the design had to fit its optics.</div></div>
   </div>
 </section>
 
@@ -1700,7 +1701,7 @@
   <span class="slide-tag">Design · Experience Concept</span>
   <h2 class="deck-headline">Beyond the technology</h2>
   <p class="deck-subhead">The concept had to transcend the hardware — designing for the full spectrum of human interaction inside the application.</p>
-  <ul class="arrow-list">
+  <ul class="arrow-list tight">
     <li>Human-centered interaction, not device-centered</li>
     <li>Natural gestures paired with haptic feedback</li>
     <li>An experience that teaches through presence</li>
@@ -1770,7 +1771,7 @@
   <div class="kicker">Touch My Heart · Magic Leap XR</div>
   <h1 class="h-hero">Thank you</h1>
   <div class="cover-rule"></div>
-  <div class="cover-meta"><span class="speaker">Tymur Prokopiev</span><span class="cover-desc">Experience Designer · Technical Artist</span></div>
+  <div class="cover-meta"><span class="speaker">Timur Prokopiev</span><span class="cover-desc">3D/UX Designer · Technical Artist · XR Developer</span></div>
 </section>
 
 <script>
@@ -2942,7 +2943,7 @@ window.addEventListener("load", publishPageMeta);
 
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(34, w / h, 0.1, 100);
-    camera.position.set(0, 0, 13.5);
+    camera.position.set(0, 0, 10.2);
 
     var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
