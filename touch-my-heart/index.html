@@ -134,7 +134,7 @@
   }
   .animations-ready .slide.hero .h-hero {
     opacity: 0;
-    clip-path: inset(0 100% 0 0);
+    clip-path: inset(-0.16em 100% -0.2em 0);
     transform: translateY(8px);
     will-change: opacity, clip-path, transform, background-position;
   }
@@ -142,6 +142,11 @@
     animation:
       coverTitleReveal 720ms var(--ease-spring) 120ms forwards,
       heroRainbowSweep 11s ease-in-out 980ms infinite;
+  }
+  html.deck-preview-cover .animations-ready .slide.hero.is-visible .h-hero {
+    animation:
+      coverTitleReveal 720ms var(--ease-spring) 120ms forwards,
+      heroRainbowSweepPreview 3s ease-in-out 780ms infinite;
   }
   .slide.dark .cover-meta { color: color-mix(in oklab, var(--bg), transparent 35%); }
   .slide.dark .cover-meta .speaker { color: var(--bg); }
@@ -285,18 +290,22 @@
   @keyframes coverTitleReveal {
     from {
       opacity: 0;
-      clip-path: inset(0 100% 0 0);
+      clip-path: inset(-0.16em 100% -0.2em 0);
       transform: translateY(8px);
     }
     to {
       opacity: 1;
-      clip-path: inset(0 0 0 0);
+      clip-path: inset(-0.16em 0 -0.2em 0);
       transform: translateY(0);
     }
   }
   @keyframes heroRainbowSweep {
     0%, 3%, 15.01%, 100% { background-position: 0% 50%; }
     15% { background-position: 100% 50%; }
+  }
+  @keyframes heroRainbowSweepPreview {
+    0%, 3%, 55.01%, 100% { background-position: 0% 50%; }
+    55% { background-position: 100% 50%; }
   }
   @media (prefers-reduced-motion: reduce) {
     .deck-counter:not(.is-hidden), .deck-credit:not(.is-hidden), .deck-tag:not(.is-hidden) { animation-duration: 1ms; animation-delay: 0ms; }
@@ -1581,9 +1590,9 @@
   .media-ph.parallax-media.prototype-media:hover img,
   .media-ph.parallax-media.prototype-media.is-active img { transform: translate3d(var(--pan-x), var(--pan-y), 0) scale(1.82); }
   .media-ph.parallax-media:focus { outline: none; }
-  .split-media { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(36px, 4vw, 80px); align-items: center; flex: 1; min-height: 0; margin-top: clamp(24px, 2.2vw, 40px); }
-  .split-media .col-text { display: flex; flex-direction: column; min-width: 0; }
-  .split-media .col-media { position: relative; width: 100%; height: 100%; min-height: min(500px, 42vh); }
+  .split-media { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(36px, 4vw, 80px); align-items: start; flex: 1; min-height: 0; margin-top: clamp(24px, 2.2vw, 40px); }
+  .split-media .col-text { display: flex; flex-direction: column; justify-content: flex-start; align-self: start; min-width: 0; }
+  .split-media .col-media { align-self: start; position: relative; width: 100%; height: 100%; min-height: min(500px, 42vh); }
   .state-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 1.8vw, 28px); flex: 1; min-height: 0; margin-top: clamp(24px, 2.2vw, 40px); }
   .state-grid .state { display: flex; flex-direction: column; gap: clamp(14px, 1.3vw, 22px); min-height: 0; }
   .state-grid .state .media-ph { flex: 1; }
@@ -2298,6 +2307,19 @@
     var flowLoopMotion = setupFlowLoopMotion();
     var coverYearRevealDelay = 3360;
     var animationsStarted = false;
+    var previewCoverMode = new URLSearchParams(window.location.search).get('preview') === 'cover';
+
+    function visibleSlideForCurrentScroll() {
+      var visibleIndex = Math.round(currentDeckScrollLeft() / (window.innerWidth || document.documentElement.clientWidth || 1920));
+      return document.querySelectorAll('.slide')[Math.max(0, visibleIndex)];
+    }
+
+    function showPreviewCoverStill() {
+      if (!previewCoverMode || animationsStarted) return;
+      document.body.classList.remove('deck-animations-pending');
+      var visibleSlide = visibleSlideForCurrentScroll() || document.querySelector('.slide');
+      if (visibleSlide) visibleSlide.classList.add('is-visible');
+    }
 
     function startAnimations() {
       if (animationsStarted) return;
@@ -2309,23 +2331,57 @@
       // to a saved non-cover slide, pre-marking the cover as visible lets its
       // title animation finish offscreen, so it flashes instead of revealing
       // when navigating back to slide 1.
-      var visibleIndex = Math.round(currentDeckScrollLeft() / (window.innerWidth || document.documentElement.clientWidth || 1920));
-      var visibleSlide = document.querySelectorAll('.slide')[Math.max(0, visibleIndex)];
+      var visibleSlide = visibleSlideForCurrentScroll();
       if (visibleSlide) {
         revealWhenOverlaysAreReady(visibleSlide);
         if (visibleSlide.matches('.hero') && isCoverInView()) coverYearAnimation.schedule(coverYearRevealDelay);
       }
     }
 
+    function startPreviewCoverAnimation() {
+      if (!previewCoverMode) return false;
+      window.dispatchEvent(new CustomEvent('preview-cover-motion-start'));
+      if (!animationsStarted) {
+        startAnimations();
+        return true;
+      }
+      var visibleSlide = visibleSlideForCurrentScroll() || document.querySelector('.slide.is-visible') || document.querySelector('.slide');
+      if (visibleSlide) {
+        visibleSlide.classList.remove('is-visible');
+        void visibleSlide.offsetWidth;
+        visibleSlide.classList.add('is-visible');
+        flowLoopMotion.onVisible(visibleSlide);
+      }
+      return true;
+    }
+
+    function stopPreviewCoverAnimation() {
+      if (!previewCoverMode) return false;
+      animationsStarted = false;
+      document.body.classList.remove('animations-ready');
+      document.body.classList.remove('deck-animations-pending');
+      var visibleSlide = visibleSlideForCurrentScroll() || document.querySelector('.slide.is-visible') || document.querySelector('.slide');
+      if (visibleSlide) visibleSlide.classList.add('is-visible');
+      window.dispatchEvent(new CustomEvent('preview-cover-motion-stop'));
+      return true;
+    }
+
+    window.startPreviewCoverAnimation = startPreviewCoverAnimation;
+    window.stopPreviewCoverAnimation = stopPreviewCoverAnimation;
+    window.addEventListener('message', function (event) {
+      if (event.data && event.data.type === 'preview-cover:start') startPreviewCoverAnimation();
+      if (event.data && event.data.type === 'preview-cover:stop') stopPreviewCoverAnimation();
+    });
+
     function startAfterChromePaint() {
       requestAnimationFrame(function () {
-        requestAnimationFrame(startAnimations);
+        requestAnimationFrame(previewCoverMode ? showPreviewCoverStill : startAnimations);
       });
     }
 
     window.addEventListener('deck-chrome-ready', startAfterChromePaint, { once: true });
     if (!document.body.classList.contains('chrome-boot')) startAfterChromePaint();
-    window.setTimeout(startAnimations, 700);
+    window.setTimeout(previewCoverMode ? showPreviewCoverStill : startAnimations, 700);
 
     var pendingVisibleSlides = new Set();
 
@@ -2922,17 +2978,38 @@ window.addEventListener("load", publishPageMeta);
     var fill = new THREE.PointLight(0xff8fab, 0.9, 30); fill.position.set(0, 0, 4); scene.add(fill);
 
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var previewCoverMode = new URLSearchParams(window.location.search).get('preview') === 'cover';
+    var previewMotionEnabled = !previewCoverMode;
     var t0 = performance.now();
-    function frame(now) {
-      var t = (now - t0) / 1000;
+    function renderPose(t) {
       // Gentle rotation + heartbeat pulse
       heart.rotation.y = reduce ? -0.35 : Math.sin(t * 0.35) * 0.55 - 0.15;
       heart.rotation.x = reduce ? 0.12 : Math.sin(t * 0.5) * 0.08 + 0.08;
       var beat = reduce ? 1 : 1 + (Math.pow(Math.sin(t * 1.8), 8)) * 0.05 + (Math.pow(Math.sin(t * 1.8 - 0.28), 8)) * 0.03;
       heart.scale.setScalar(1.0 * beat);
       renderer.render(scene, camera);
-      if (!reduce) requestAnimationFrame(frame);
     }
+    function frame(now) {
+      renderPose((now - t0) / 1000);
+      if (!reduce && previewMotionEnabled) requestAnimationFrame(frame);
+    }
+    function startPreviewMotion() {
+      if (!previewCoverMode || previewMotionEnabled || reduce) return;
+      previewMotionEnabled = true;
+      t0 = performance.now();
+      requestAnimationFrame(frame);
+    }
+    function stopPreviewMotion() {
+      if (!previewCoverMode) return;
+      previewMotionEnabled = false;
+      renderPose(0);
+    }
+    window.addEventListener('preview-cover-motion-start', startPreviewMotion);
+    window.addEventListener('preview-cover-motion-stop', stopPreviewMotion);
+    window.addEventListener('message', function (event) {
+      if (event.data && event.data.type === 'preview-cover:start') startPreviewMotion();
+      if (event.data && event.data.type === 'preview-cover:stop') stopPreviewMotion();
+    });
     requestAnimationFrame(frame);
     if (reduce) renderer.render(scene, camera);
 

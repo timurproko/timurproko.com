@@ -687,15 +687,17 @@
   <script>
     // Static fallback for hosts that do not expose a directory listing/API.
     // This list was generated from the current folder when index.html was created.
-    const FALLBACK_PRESENTATIONS = ["ai-for-unity", "touch-my-heart", "cv"];
+    const FALLBACK_PRESENTATIONS = ["ai-for-unity", "touch-my-heart", "avatars", "cv"];
     const TITLE_OVERRIDES = {
       "ai-for-unity": "AI for Unity\nDevelopment",
       "touch-my-heart": "Touch My Heart\nXR Experience",
-      "cv": "UX/XR Developer\nCV"
+      "avatars": "Avatar Creation\nPipeline",
+      "cv": "UX/XR Developer"
     };
     const DESCRIPTION_OVERRIDES = {
       "ai-for-unity": "How AI is reshaping Unity development—from coding to fully agentic workflows.",
       "touch-my-heart": "An XR experience for Magic Leap that takes users deep inside the human heart — realistic anatomy and the sounds of heart disease.",
+      "avatars": "An overview of the avatar creation pipeline — from body and face capture to real-time AI-driven animation and rendering.",
       "cv": "Building interactive experiences with a focus on usability, performance, and real-time systems."
     };
     const DEFAULT_PREVIEW_VIEWPORT = { width: 1920, height: 1080 };
@@ -834,6 +836,10 @@
       iframe.style.width = `${previewViewport.width}px`;
       iframe.style.height = `${previewViewport.height}px`;
 
+      // Motion controller lives here; assigned once the deck iframe loads.
+      let previewMotion = null;
+      let previewSettleTimer = 0;
+
       // After the deck loads, lock it to slide 1 regardless of localStorage state.
       iframe.addEventListener("load", () => {
         try {
@@ -855,11 +861,153 @@
             idoc.querySelector("title")?.textContent?.trim(),
             idoc.querySelector('meta[name="description"]')?.content?.trim()
           );
+
+          // Let the deck finish its initial reveal, then freeze all motion so
+          // the preview sits perfectly still until the card is hovered.
+          previewMotion = setupPreviewMotionControl(iframe);
+          if (previewMotion) {
+            clearTimeout(previewSettleTimer);
+            previewSettleTimer = setTimeout(() => {
+              if (!card.matches(":hover")) previewMotion.pause();
+            }, 1600);
+          }
         } catch (_) {}
       });
       iframe.src = iframe.dataset.src;
 
+      // Motion runs only while the card is hovered/focused. On enter we resume
+      // the CSS + canvas animation and replay the slide's entry reveal; on
+      // leave we freeze everything again.
+      const startMotion = () => {
+        previewMotion?.resume();
+        if (!startPreviewCoverAnimation(iframe)) {
+          replayPreviewAnimation(iframe);
+        }
+      };
+      const stopMotion = () => {
+        stopPreviewCoverAnimation(iframe);
+        // postMessage is async (and is required for file:// iframe previews), so
+        // give the child preview a frame to remove its active animation class
+        // before freezing RAF/CSS. Otherwise the CV blue spot can be frozen at
+        // its last animated position instead of snapping back to the still pose.
+        window.setTimeout(() => previewMotion?.pause(), 700);
+      };
+      card.addEventListener("pointerenter", startMotion);
+      card.addEventListener("pointerleave", stopMotion);
+      card.addEventListener("focus", startMotion);
+      card.addEventListener("blur", stopMotion);
+
       return card;
+    }
+
+    // Freeze/thaw all motion inside a same-origin preview iframe. CSS animations
+    // are paused via `animation-play-state`; canvas render loops are stopped by
+    // gating the iframe's requestAnimationFrame so no new frames are drawn.
+    function setupPreviewMotionControl(iframe) {
+      let win, idoc;
+      try {
+        win = iframe.contentWindow;
+        idoc = win?.document;
+      } catch (_) {
+        return null; // cross-origin
+      }
+      if (!win || !idoc || !idoc.head) return null;
+
+      const style = idoc.createElement("style");
+      style.textContent =
+        "html.preview-motion-paused, html.preview-motion-paused *," +
+        "html.preview-motion-paused *::before, html.preview-motion-paused *::after" +
+        "{ animation-play-state: paused !important; }";
+      idoc.head.appendChild(style);
+
+      const rawRAF = win.requestAnimationFrame.bind(win);
+      let paused = false;
+      let queued = [];
+      win.requestAnimationFrame = function (cb) {
+        if (paused) {
+          // Hold the loop's next frame instead of running it; a paused loop
+          // schedules nothing further, so it settles after one frame.
+          queued.push(cb);
+          return 0;
+        }
+        return rawRAF(cb);
+      };
+
+      return {
+        pause() {
+          if (paused) return;
+          paused = true;
+          idoc.documentElement.classList.add("preview-motion-paused");
+        },
+        resume() {
+          idoc.documentElement.classList.remove("preview-motion-paused");
+          if (!paused) return;
+          paused = false;
+          const pending = queued;
+          queued = [];
+          pending.forEach(cb => rawRAF(cb));
+        }
+      };
+    }
+
+    function startPreviewCoverAnimation(iframe) {
+      if (!iframe?.contentWindow) return false;
+
+      // postMessage works even when the page is opened from file:// and direct
+      // iframe DOM/function access is blocked by the browser's origin rules.
+      try {
+        iframe.contentWindow.postMessage({ type: "preview-cover:start" }, "*");
+      } catch (_) {
+        return false;
+      }
+
+      try {
+        if (typeof iframe.contentWindow.startPreviewCoverAnimation === "function") {
+          iframe.contentWindow.startPreviewCoverAnimation();
+        }
+      } catch (_) {}
+
+      return true;
+    }
+
+    function stopPreviewCoverAnimation(iframe) {
+      if (!iframe?.contentWindow) return false;
+
+      try {
+        iframe.contentWindow.postMessage({ type: "preview-cover:stop" }, "*");
+      } catch (_) {
+        return false;
+      }
+
+      try {
+        if (typeof iframe.contentWindow.stopPreviewCoverAnimation === "function") {
+          iframe.contentWindow.stopPreviewCoverAnimation();
+        }
+      } catch (_) {}
+
+      return true;
+    }
+
+    function replayPreviewAnimation(iframe) {
+      if (!iframe) return;
+      if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+      let idoc;
+      try {
+        idoc = iframe.contentDocument || iframe.contentWindow?.document;
+      } catch (_) {
+        return; // cross-origin — cannot drive the animation
+      }
+      if (!idoc) return;
+      const slide =
+        idoc.querySelector(".slide.active") ||
+        idoc.querySelector(".slide.is-visible") ||
+        idoc.querySelector(".slide");
+      if (!slide) return;
+      // Toggling the visibility class and forcing a reflow restarts every
+      // CSS entry animation (hero title reveal, staggered [data-anim] items).
+      slide.classList.remove("is-visible");
+      void slide.offsetWidth;
+      slide.classList.add("is-visible");
     }
 
     window.addEventListener("message", event => {
