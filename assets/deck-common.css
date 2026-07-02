@@ -2,6 +2,45 @@
    Used by the presentation pages to keep mobile content behavior consistent.
    Load after each deck's inline CSS so these rules are the final source of truth. */
 
+@keyframes deckChromeTopGradientReveal {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes deckChromeBottomGradientReveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Reveal the fixed top/bottom cover chrome fades smoothly instead of popping in. */
+body::before,
+body::after {
+  opacity: 0;
+}
+
+body:not(.deck-animations-pending):not(.deck-is-sliding)::before {
+  animation: deckChromeTopGradientReveal 760ms var(--ease-standard) 160ms both;
+}
+
+body:not(.deck-animations-pending):not(.deck-is-sliding)::after {
+  animation: deckChromeBottomGradientReveal 760ms var(--ease-standard) 160ms both;
+}
+
+body.deck-is-sliding::before,
+body.deck-is-sliding::after {
+  opacity: 0;
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  body::after {
+    opacity: 1;
+    transform: none;
+    animation: none !important;
+  }
+}
+
 @media (max-width: 760px) {
   /* Mobile deck content should scroll under the pinned main title only. */
   .scroll-split-owner > .slide-scroll-content {
