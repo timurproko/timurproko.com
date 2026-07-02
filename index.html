@@ -941,6 +941,7 @@
       // Motion controller lives here; assigned once the deck iframe loads.
       let previewMotion = null;
       let previewSettleTimer = 0;
+      let previewPauseTimer = 0;
 
       // After the deck loads, lock it to slide 1 regardless of localStorage state.
       iframe.addEventListener("load", () => {
@@ -981,18 +982,19 @@
       // the CSS + canvas animation and replay the slide's entry reveal; on
       // leave we freeze everything again.
       const startMotion = () => {
+        clearTimeout(previewPauseTimer);
         previewMotion?.resume();
-        if (!startPreviewCoverAnimation(iframe)) {
-          replayPreviewAnimation(iframe);
-        }
+        startPreviewCoverAnimation(iframe);
+        replayPreviewAnimation(iframe);
       };
       const stopMotion = () => {
+        clearTimeout(previewPauseTimer);
         stopPreviewCoverAnimation(iframe);
         // postMessage is async (and is required for file:// iframe previews), so
         // give the child preview a frame to remove its active animation class
         // before freezing RAF/CSS. Otherwise the CV blue spot can be frozen at
         // its last animated position instead of snapping back to the still pose.
-        window.setTimeout(() => previewMotion?.pause(), 700);
+        previewPauseTimer = window.setTimeout(() => previewMotion?.pause(), 700);
       };
       card.addEventListener("pointerenter", startMotion);
       card.addEventListener("pointerleave", stopMotion);
