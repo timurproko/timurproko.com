@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="A UX case study on bringing CorelDRAW Graphics Suite to macOS — balancing business goals, user needs and technical reality." />
+  <!-- social-preview:start -->
+  <link rel="canonical" href="https://timurproko.com/corel-for-mac/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Timur Prokopiev" />
+  <meta property="og:title" content="UX Case Study" />
+  <meta property="og:description" content="A UX case study on bringing CorelDRAW Graphics Suite to macOS — balancing business goals, user needs and technical reality." />
+  <meta property="og:url" content="https://timurproko.com/corel-for-mac/" />
+  <meta property="og:image" content="https://timurproko.com/assets/social/corel-for-mac.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="UX Case Study — social preview" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="UX Case Study" />
+  <meta name="twitter:description" content="A UX case study on bringing CorelDRAW Graphics Suite to macOS — balancing business goals, user needs and technical reality." />
+  <meta name="twitter:image" content="https://timurproko.com/assets/social/corel-for-mac.png" />
+  <!-- social-preview:end -->
+<title>UX Case Study</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/assets/deck-common.css">
+<script>
+(function () {
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var preview = params.get('preview') === 'cover';
+    if (preview) {
+      document.documentElement.classList.add('deck-preview-cover');
+    }
+    var layout = params.get('layout') || params.get('format');
+    if (layout === 'square' || params.get('linkedin') === 'square') {
+      document.documentElement.classList.add('deck-square-layout');
+    }
+    var saved = parseInt(localStorage.getItem('coreldraw-macos-deck-position') || '0', 10);
+    var startsOnDarkSlide = preview || isNaN(saved) || [0,3,7,12,17,19].indexOf(saved) !== -1;
+    document.documentElement.classList.add(startsOnDarkSlide ? 'deck-starts-on-dark' : 'deck-starts-on-light');
+  } catch (_) {
+    document.documentElement.classList.add('deck-starts-on-dark');
+  }
+})();
+</script>
+<style>
+  /* Critical pre-mount paint: keep the first frame on-theme while the bundle loads. */
+  html.deck-starts-on-dark { background: #04150b; }
+  html.deck-starts-on-light { background: #f8f8f9; }
+</style>
+</head>
+<body class="chrome-boot deck-animations-pending">
+  <div id="root"></div>
+  <script type="module" src="./main.tsx"></script>
+</body>
+</html>

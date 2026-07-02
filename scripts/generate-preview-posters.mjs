@@ -14,7 +14,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
-const outDir = path.join(rootDir, 'assets', 'previews');
+const distDir = path.join(rootDir, 'dist');
+const outDir = path.join(rootDir, 'public', 'assets', 'previews');
 
 // Keep this in sync with FALLBACK_PRESENTATIONS + PREVIEW_VIEWPORTS in index.html.
 const PRESENTATIONS = [
@@ -41,7 +42,7 @@ async function main() {
   const browser = await chromium.launch({ headless: true });
   try {
     for (const { slug, width, height } of PRESENTATIONS) {
-      const indexPath = path.join(rootDir, slug, 'index.html');
+      const indexPath = path.join(distDir, slug, 'index.html');
       const url = `${pathToFileURL(indexPath).href}?preview=cover`;
       const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
       await page.goto(url, { waitUntil: 'load' });

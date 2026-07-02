@@ -4,11 +4,13 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
-const socialDir = path.join(rootDir, 'assets', 'social');
+const publicDir = path.join(rootDir, 'public');
+const srcDir = path.join(rootDir, 'src');
+const socialDir = path.join(publicDir, 'assets', 'social');
 const markerStart = '<!-- social-preview:start -->';
 const markerEnd = '<!-- social-preview:end -->';
 
-const SKIP_DIRS = new Set(['.git', 'node_modules', 'assets']);
+const SKIP_DIRS = new Set(['.git', 'node_modules', 'assets', 'dist', 'work', 'legacy']);
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -37,7 +39,7 @@ async function getSiteUrl() {
     return normalizeBaseUrl(process.env.SITE_URL);
   }
 
-  const cnamePath = path.join(rootDir, 'CNAME');
+  const cnamePath = path.join(publicDir, 'CNAME');
   if (await pathExists(cnamePath)) {
     const cname = (await fs.readFile(cnamePath, 'utf8')).trim();
     if (cname) return normalizeBaseUrl(`https://${cname}`);
@@ -55,7 +57,7 @@ function normalizeBaseUrl(value) {
   return url.toString();
 }
 
-async function findIndexPages(dir = rootDir) {
+async function findIndexPages(dir) {
   const entries = await fs.readdir(dir, { withFileTypes: true });
   const pages = [];
 
@@ -72,6 +74,19 @@ async function findIndexPages(dir = rootDir) {
   }
 
   return pages.sort((a, b) => a.localeCompare(b));
+}
+
+async function findSourceIndexPages() {
+  const publicPages = await findIndexPages(publicDir);
+  const deckPages = [];
+  const homePath = path.join(srcDir, 'index.html');
+  if (await pathExists(homePath)) deckPages.push(homePath);
+  for (const entry of await fs.readdir(srcDir, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    const indexPath = path.join(srcDir, entry.name, 'index.html');
+    if (await pathExists(indexPath)) deckPages.push(indexPath);
+  }
+  return [...publicPages, ...deckPages].sort((a, b) => pageRoute(a).localeCompare(pageRoute(b)));
 }
 
 function getMetaContent(html, name) {
@@ -96,6 +111,16 @@ function decodeEntities(value) {
 }
 
 function pageRoute(filePath) {
+  if (filePath.startsWith(publicDir)) {
+    const relativeDir = path.relative(publicDir, path.dirname(filePath)).replaceAll(path.sep, '/');
+    return relativeDir === '' ? '/' : `/${relativeDir}/`;
+  }
+
+  if (filePath.startsWith(srcDir)) {
+    const relativeDir = path.relative(srcDir, path.dirname(filePath)).replaceAll(path.sep, '/');
+    return relativeDir === '' ? '/' : `/${relativeDir}/`;
+  }
+
   const relativeDir = path.relative(rootDir, path.dirname(filePath)).replaceAll(path.sep, '/');
   return relativeDir === '' ? '/' : `/${relativeDir}/`;
 }
@@ -261,7 +286,7 @@ async function main() {
 
   await fs.mkdir(socialDir, { recursive: true });
 
-  for (const filePath of await findIndexPages()) {
+  for (const filePath of await findSourceIndexPages()) {
     const html = await fs.readFile(filePath, 'utf8');
     const title = getTitle(html);
     const description = getMetaContent(html, 'description') || title;
@@ -284,7 +309,7 @@ async function main() {
   const manifest = pages.map(page => ({
     title: page.title,
     url: page.url,
-    image: pathToFileURL(page.imagePath).href.replace(pathToFileURL(rootDir).href, ''),
+    image: pathToFileURL(page.imagePath).href.replace(pathToFileURL(publicDir).href, ''),
   }));
   await fs.writeFile(path.join(socialDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
 

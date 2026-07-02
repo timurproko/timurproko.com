@@ -1,8 +1,8 @@
-name: Deploy GitHub Pages
+name: Deploy static site to GitHub Pages
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -15,10 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -28,41 +25,26 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Install browser for preview rendering
-        run: npx playwright install --with-deps chromium
+      - name: Build static site
+        run: npm run build
 
-      - name: Generate social previews and metadata
-        env:
-          SITE_URL: https://timurproko.com
-          SITE_NAME: Timur Prokopiev
-        run: npm run social:build
-
-      - name: Stage static site
-        run: |
-          mkdir _site
-          rsync -av \
-            --exclude='.git/' \
-            --exclude='.github/' \
-            --exclude='node_modules/' \
-            --exclude='scripts/' \
-            --exclude='package.json' \
-            --exclude='package-lock.json' \
-            --exclude='.gitignore' \
-            --exclude='_site/' \
-            ./ _site/
-
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload site artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: dist
 
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

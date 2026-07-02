@@ -5,7 +5,7 @@ import { chromium } from 'playwright';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
-const deckPath = path.join(rootDir, 'ai-for-unity', 'index.html');
+const deckPath = path.join(rootDir, 'dist', 'ai-for-unity', 'index.html');
 const outDir = process.env.LINKEDIN_OUT_DIR || String.raw`C:\Users\tprokopiev\Desktop\LinkedIn`;
 const width = 1080;
 const height = 1080;
