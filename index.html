@@ -1372,8 +1372,12 @@
         if (!response.ok) throw new Error("Unable to fetch presentation");
         const html = await response.text();
         const doc = new DOMParser().parseFromString(html, "text/html");
-        const title = doc.querySelector("title")?.textContent?.trim() || fallbackTitle;
+        const title =
+          TITLE_OVERRIDES[file] ||
+          doc.querySelector("title")?.textContent?.trim() ||
+          fallbackTitle;
         const description =
+          DESCRIPTION_OVERRIDES[file] ||
           doc.querySelector('meta[name="description"]')?.content?.trim() ||
           doc.querySelector("h1")?.textContent?.trim() ||
           fallbackDescription;
