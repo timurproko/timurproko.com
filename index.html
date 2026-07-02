@@ -351,8 +351,9 @@
       margin-top: 10px;
       margin-bottom: 24px;
       border-bottom: 1px solid var(--border);
-      transition: border-color 0.15s;
+      transition: border-color 0.15s, margin-bottom 0.15s;
     }
+    .toolbar.has-query { margin-bottom: 32px; }
     .toolbar:focus-within { border-bottom-color: var(--accent); }
     .count {
       flex-shrink: 0;
@@ -1144,16 +1145,10 @@
 
       document.querySelectorAll(".intro-chip").forEach(chip => {
         chip.addEventListener("click", () => {
-          const query = chip.dataset.query || chip.textContent.trim();
-          // Toggle: clicking an active chip clears the search.
-          const isActive = search.value.trim().toLowerCase() === query.toLowerCase();
-          if (isActive) {
-            search.value = "";
-            applySearch({ blur: true });
-          } else {
-            search.value = query;
-            applySearch({ focus: true });
-          }
+          const chipQuery = (chip.dataset.query || chip.textContent).trim();
+          const nextTerms = toggleSearchTerm(chipQuery);
+          search.value = nextTerms.length ? `${nextTerms.join(" ")} ` : "";
+          applySearch(nextTerms.length ? { focus: true } : { blur: true });
         });
       });
     }
@@ -1162,24 +1157,66 @@
     // the presentation list. Used by the input event, the focus chips, and the
     // clear button.
     function applySearch({ focus = false, blur = false } = {}) {
-      const query = search.value.trim().toLowerCase();
+      const query = search.value.trim();
+      const queryTerms = getSearchTerms(query);
       const filtered = presentations.filter(item =>
-        [item.title, item.description, item.file].join(" ").toLowerCase().includes(query)
+        matchesSearchTerms([item.title, item.description, item.file].join(" "), queryTerms)
       );
       updateSearchState();
-      render(filtered, query);
-      // Reflect the active focus-area chip.
+      render(filtered, query.toLowerCase());
+      // Reflect the active focus-area chips.
       document.querySelectorAll(".intro-chip").forEach(chip => {
         const chipQuery = (chip.dataset.query || chip.textContent).trim().toLowerCase();
-        chip.setAttribute("aria-pressed", String(query === chipQuery));
+        chip.setAttribute("aria-pressed", String(queryTerms.includes(chipQuery)));
       });
       if (blur) {
         // Drop focus so mobile returns to its initial header/hero state.
         search.blur();
         updateSearchState();
       } else if (focus) {
-        requestAnimationFrame(() => search.focus({ preventScroll: true }));
+        requestAnimationFrame(() => {
+          search.focus({ preventScroll: true });
+          search.setSelectionRange(search.value.length, search.value.length);
+        });
       }
+    }
+
+    function toggleSearchTerm(term) {
+      const normalizedTerm = term.trim().toLowerCase();
+      const terms = getSearchTerms(search.value);
+      const isActive = terms.includes(normalizedTerm);
+      const nextTerms = isActive
+        ? terms.filter(existingTerm => existingTerm !== normalizedTerm)
+        : [...terms, normalizedTerm];
+      return nextTerms.map(searchTerm => getDisplaySearchTerm(searchTerm));
+    }
+
+    function getSearchTerms(value) {
+      return value
+        .trim()
+        .split(/\s+/)
+        .map(term => term.trim().toLowerCase())
+        .filter(Boolean);
+    }
+
+    function getDisplaySearchTerm(term) {
+      const chip = [...document.querySelectorAll(".intro-chip")]
+        .find(item => (item.dataset.query || item.textContent).trim().toLowerCase() === term);
+      return chip ? (chip.dataset.query || chip.textContent).trim() : term;
+    }
+
+    function matchesSearchTerms(value, queryTerms) {
+      if (!queryTerms.length) return true;
+
+      const searchableText = value.toLowerCase();
+      const chipTerms = new Set([...document.querySelectorAll(".intro-chip")]
+        .map(chip => (chip.dataset.query || chip.textContent).trim().toLowerCase())
+        .filter(Boolean));
+      const isChipOnlyQuery = queryTerms.every(term => chipTerms.has(term));
+
+      return isChipOnlyQuery
+        ? queryTerms.some(term => searchableText.includes(term))
+        : queryTerms.every(term => searchableText.includes(term));
     }
 
     function setupMobileSearchInteractions() {
@@ -1422,9 +1459,7 @@
         `;
         empty.querySelector(".empty-action").addEventListener("click", () => {
           search.value = "";
-          search.blur();
-          updateSearchState();
-          render(presentations);
+          applySearch({ blur: true });
         });
         grid.appendChild(empty);
         return;
