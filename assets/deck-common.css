@@ -1,0 +1,129 @@
+/* Shared deck content layout
+   Used by the presentation pages to keep mobile content behavior consistent.
+   Load after each deck's inline CSS so these rules are the final source of truth. */
+
+@media (max-width: 760px) {
+  /* Mobile deck content should scroll under the pinned main title only. */
+  .scroll-split-owner > .slide-scroll-content {
+    padding-bottom: 180px;
+  }
+
+  /* Shared one-column media/card layouts. */
+  .split-media,
+  .state-grid,
+  .cond-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px;
+    flex: none;
+    min-height: auto;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 4px;
+  }
+
+  .split-media .col-media,
+  [data-screen-label="07 Face Reconstruction"] .split-media .col-media,
+  [data-screen-label="07 Prototype"] .split-media .col-media,
+  [data-screen-label="08 Mesh Retopology"] .split-media .col-media,
+  [data-screen-label="08 Modelling"] .split-media .col-media,
+  [data-screen-label="09 Character Design"] .split-media .col-media,
+  [data-screen-label="10 Shading"] .split-media .col-media {
+    height: clamp(300px, 64vh, 520px);
+    min-height: clamp(300px, 64vh, 520px);
+  }
+
+  /* Avatar pipeline: keep list rhythm consistent while subtitle still starts 40px below title. */
+  .pipeline {
+    margin-top: 48px;
+  }
+
+  /* AI for Unity MCP slide has no subtitle; align its first label like content subtitles. */
+  .slide-mcp .slide-scroll-content > .mcp-tags-label:first-child,
+  .slide-mcp .deck-headline + .mcp-tags-label {
+    margin-top: 4px;
+  }
+
+  /* Touch My Heart condition cards. */
+  .cond-card .cond-media {
+    flex-basis: clamp(140px, 24vh, 220px);
+  }
+
+  /* Touch My Heart heart-state videos: dark media surface with no placeholder stripes. */
+  .state-grid .state .media-ph {
+    background-color: #020202;
+    background-image: none;
+  }
+
+  .state-grid .state .media-ph video {
+    object-fit: cover;
+    background-color: #020202;
+  }
+
+  [data-screen-label="10 Shading"] .media-ph video {
+    object-fit: contain;
+  }
+
+  /* Mobile tabs for condition/state slides. Hidden on desktop by default. */
+  .state-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin: 4px 0 14px;
+  }
+
+  .state-tab {
+    appearance: none;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--surface), var(--fg) 2%);
+    color: var(--muted);
+    padding: 9px 8px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1.1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    box-shadow: 0 8px 24px rgba(17,17,17,0.06);
+  }
+
+  .state-tab.is-active {
+    border-color: color-mix(in oklab, var(--accent), transparent 36%);
+    background: color-mix(in oklab, var(--accent), transparent 88%);
+    color: var(--fg);
+  }
+
+  [data-screen-label="09 Heart States"] .state-tabs {
+    margin: 4px 0 14px;
+  }
+
+  [data-screen-label="09 Heart States"] .state-grid {
+    display: block;
+    margin-top: 0;
+  }
+
+  [data-screen-label="09 Heart States"] .state-grid .state {
+    display: none;
+    min-height: auto;
+  }
+
+  [data-screen-label="09 Heart States"] .state-grid .state.is-active {
+    display: flex;
+  }
+
+  [data-screen-label="09 Heart States"] .state-grid .state-label {
+    display: none;
+  }
+
+  [data-screen-label="09 Heart States"] .state-grid .media-ph {
+    height: clamp(320px, calc(100svh - 310px), 500px);
+    min-height: clamp(320px, calc(100svh - 310px), 500px);
+    flex: none;
+  }
+}
+
+@media (min-width: 761px) {
+  .state-tabs {
+    display: none;
+  }
+}

@@ -1123,7 +1123,7 @@
       width: calc(100% + (var(--slide-pad-x) * 2));
       max-width: none;
       margin: var(--scroll-fade-overlap, -80px) calc(var(--slide-pad-x) * -1) 0;
-      padding: var(--scroll-fade-length, 80px) var(--slide-pad-x) 96px;
+      padding: var(--scroll-fade-length, 80px) var(--slide-pad-x) 180px;
       overflow-x: hidden;
       overflow-y: auto;
       overscroll-behavior-y: contain;
@@ -1321,6 +1321,10 @@
     .trend-panel:nth-of-type(4) { grid-row: 11 !important; }
 
     .slide-mcp { --mcp-section-gap: 22px; }
+    .slide-mcp .slide-scroll-content > .mcp-tags-label:first-child,
+    .slide-mcp .deck-headline + .mcp-tags-label {
+      margin-top: 4px;
+    }
     .slide-mcp .deck-headline,
     .slide-mcp .mcp-tags,
     .slide-mcp .arrow-list,
@@ -1606,7 +1610,13 @@
     .slide { width: 1920px; height: 1080px; overflow: hidden; page-break-after: always; }
     .deck-back, .nav-hint, .notes, .mobile-swipe-hint { display: none !important; }
   }
+  @media (max-width: 760px) {
+    [data-screen-label="07 Harness"] .harness-content {
+      padding-bottom: 140px;
+    }
+  }
 </style>
+<link rel="stylesheet" href="../assets/deck-common.css">
 </head>
 <body class="chrome-boot deck-animations-pending">
 <script>
@@ -1953,14 +1963,16 @@
 <section class="slide" data-screen-label="07 Harness" data-notes="The harness is the orchestrator — the layer that wires agents, tools, and workflows together. Whoever controls the harness controls outcomes. Black-box harnesses limit you. Open ones let you customize and scale.">
   <span class="slide-tag">Tools · Harness</span>
   <h2 class="deck-headline">AI’s Core Power</h2>
-  <p class="deck-subhead">The harness defines what the model can actually do.</p>
-  <ul class="arrow-list tight">
-    <li><div class="row"><span>Harness — orchestration layer around an AI model</span><span class="products"><span>tools</span><span>workflows</span><span>integrations</span></span></div></li>
-    <li>The harness defines what the AI can actually do</li>
-    <li>Who controls the harness controls outcomes</li>
-    <li><div class="row"><span>Closed systems limit control</span><span class="products"><span>OpenAI</span><span>Anthropic</span><span>Google</span><span>Cursor</span></span></div></li>
-    <li><div class="row"><span>Open systems let you build and scale your harness</span><span class="products"><span>Pi</span><span>OpenCode</span></span></div></li>
-  </ul>
+  <div class="harness-content">
+    <p class="deck-subhead">The harness defines what the model can actually do.</p>
+    <ul class="arrow-list tight">
+      <li><div class="row"><span>Harness — orchestration layer around an AI model</span><span class="products"><span>tools</span><span>workflows</span><span>integrations</span></span></div></li>
+      <li>The harness defines what the AI can actually do</li>
+      <li>Who controls the harness controls outcomes</li>
+      <li><div class="row"><span>Closed systems limit control</span><span class="products"><span>OpenAI</span><span>Anthropic</span><span>Google</span><span>Cursor</span></span></div></li>
+      <li><div class="row"><span>Open systems let you build and scale your harness</span><span class="products"><span>Pi</span><span>OpenCode</span></span></div></li>
+    </ul>
+  </div>
 </section>
 
 <section class="slide" data-screen-label="08 Build Tools" data-notes="The shift everyone misses: stop only USING tools — start BUILDING them. AI is most effective when wired into your workflow. Custom toolchains unlock real productivity. This is the prerequisite for true agentic engineering.">
@@ -2747,7 +2759,7 @@
 
   function updateScrollFadeMasks() {
     var isMobileFade = window.matchMedia('(max-width: 760px)').matches;
-    var fadeLength = isMobileFade ? 80 : 96;
+    var baseFadeLength = isMobileFade ? 80 : 96;
     document.querySelectorAll('.scroll-split-owner').forEach(function(owner) {
       var fadeAnchor = (owner.classList.contains('has-pinned-subhead') && owner.querySelector(':scope > .deck-subhead'))
         || owner.querySelector(':scope > .trend-intro')
@@ -2757,11 +2769,14 @@
 
       var ownerRect = owner.getBoundingClientRect();
       var headerRect = fadeAnchor.getBoundingClientRect();
+      var fadeLength = isMobileFade ? Math.max(baseFadeLength, Math.round(headerRect.height) + 36) : baseFadeLength;
       var headerTop = Math.max(0, Math.round(headerRect.top - ownerRect.top));
       var headerBottom = Math.max(0, Math.round(headerRect.bottom - ownerRect.top));
       var scroller = owner.querySelector(':scope > .slide-scroll-content');
       var scrollerTop = scroller ? Math.max(0, Math.round(scroller.getBoundingClientRect().top - ownerRect.top)) : headerBottom;
-      var overlap = Math.max(0, scrollerTop - headerTop);
+      var currentOverlap = Math.max(0, -parseFloat(getComputedStyle(owner).getPropertyValue('--scroll-fade-overlap')) || 0);
+      var naturalScrollerTop = scrollerTop + currentOverlap;
+      var overlap = Math.max(0, naturalScrollerTop - headerTop);
       var fadeTail = isMobileFade ? 40 : 56;
       var fadeHeight = headerBottom + fadeTail;
       var solidEnd = headerBottom;
@@ -2791,12 +2806,6 @@
       }
 
       if (!owner || !owner.contains(headerEnd)) return;
-
-      var nextElement = headerEnd.nextElementSibling;
-      if (nextElement && nextElement.classList.contains('deck-subhead')) {
-        headerEnd = nextElement;
-        owner.classList.add('has-pinned-subhead');
-      }
 
       var nodesToMove = [];
       var node = headerEnd.nextSibling;
