@@ -758,6 +758,10 @@
     // Static fallback for hosts that do not expose a directory listing/API.
     // This list was generated from the current folder when index.html was created.
     const FALLBACK_PRESENTATIONS = ["ai-for-unity", "touch-my-heart", "avatars", "corel-for-mac", "cv"];
+    const GITHUB_CONTENTS_API_BY_HOST = {
+      "timurproko.com": "https://api.github.com/repos/timurproko/timurproko.com/contents",
+      "www.timurproko.com": "https://api.github.com/repos/timurproko/timurproko.com/contents"
+    };
     const TITLE_OVERRIDES = {
       "ai-for-unity": "AI Development\nWorkflow",
       "touch-my-heart": "XR Experience",
@@ -1395,6 +1399,7 @@
 
     function githubContentsApiUrl() {
       const host = location.hostname;
+      if (GITHUB_CONTENTS_API_BY_HOST[host]) return GITHUB_CONTENTS_API_BY_HOST[host];
       if (!host.endsWith(".github.io")) return null;
 
       const owner = host.replace(/\.github\.io$/, "");

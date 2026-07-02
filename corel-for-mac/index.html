@@ -56,6 +56,7 @@
     --fg: #111111;
     --landing-bg: #04150b;
     --muted: #72747a;
+    --section-label-color: #7a7d82;
     --border: #e4e6ea;
     --accent: #0f9d4f;
     --illo: #0f9d4f;
@@ -391,7 +392,7 @@
     transform: translateY(-2px);
     filter: drop-shadow(0 14px 38px rgba(17,17,17,0.12));
   }
-  .two-col h3 { font-family: var(--font-mono); font-size: clamp(11px, 0.82vw, 14px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; font-weight: 400; }
+  .two-col h3 { position: relative; z-index: 10; font-family: var(--font-mono); font-size: clamp(11px, 0.82vw, 14px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--section-label-color) !important; -webkit-text-fill-color: var(--section-label-color); margin-bottom: 20px; font-weight: 500; opacity: 1 !important; text-shadow: none; }
   .pillar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: clamp(34px, 2.2vw, 42px); max-width: 1664px; }
   [data-screen-label="02 About"] .pillar-grid { margin-top: clamp(8px, 0.8vw, 16px); }
   [data-screen-label="04 Platforms"] .pillar-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: clamp(8px, 0.8vw, 16px); }
@@ -2808,7 +2809,8 @@
     var isMobileFade = window.matchMedia('(max-width: 760px)').matches;
     var baseFadeLength = isMobileFade ? 80 : 96;
     document.querySelectorAll('.scroll-split-owner').forEach(function(owner) {
-      var fadeAnchor = (owner.classList.contains('has-pinned-subhead') && owner.querySelector(':scope > .deck-subhead'))
+      var hasPinnedSubhead = owner.classList.contains('has-pinned-subhead') && owner.querySelector(':scope > .deck-subhead');
+      var fadeAnchor = (hasPinnedSubhead && owner.querySelector(':scope > .deck-subhead'))
         || owner.querySelector(':scope > .trend-intro')
         || owner.querySelector(':scope > .deck-headline, :scope > .h-hero')
         || owner.querySelector(':scope > .deck-subhead');
@@ -2816,7 +2818,9 @@
 
       var ownerRect = owner.getBoundingClientRect();
       var headerRect = fadeAnchor.getBoundingClientRect();
-      var fadeLength = isMobileFade ? Math.max(baseFadeLength, Math.round(headerRect.height) + 36) : baseFadeLength;
+      var fadeLength = hasPinnedSubhead
+        ? (isMobileFade ? 52 : 48)
+        : (isMobileFade ? Math.max(baseFadeLength, Math.round(headerRect.height) + 36) : baseFadeLength);
       var headerTop = Math.max(0, Math.round(headerRect.top - ownerRect.top));
       var headerBottom = Math.max(0, Math.round(headerRect.bottom - ownerRect.top));
       var scroller = owner.querySelector(':scope > .slide-scroll-content');
@@ -2843,6 +2847,16 @@
 
       var headerEnd = title;
       var owner = title.parentElement;
+
+      // Keep the subhead pinned with the title. The scroll/fade layer starts
+      // below it, so incoming content never passes over the subhead.
+      var directSubhead = title.nextElementSibling && title.nextElementSibling.classList && title.nextElementSibling.classList.contains('deck-subhead')
+        ? title.nextElementSibling
+        : null;
+      if (directSubhead) {
+        headerEnd = directSubhead;
+        owner.classList.add('has-pinned-subhead');
+      }
 
       // Some slides keep the title in a tiny intro wrapper while the real
       // content is a sibling of that wrapper. Treat that intro wrapper as the
