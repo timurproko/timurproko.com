@@ -1599,6 +1599,17 @@
   [data-screen-label="09 Character Design"] .media-ph.parallax-media:hover img,
   [data-screen-label="09 Character Design"] .media-ph.parallax-media.is-active img { transform: translate3d(var(--pan-x), var(--pan-y), 0) scale(2.5); }
   .media-ph.parallax-media:focus { outline: none; }
+  @media (hover: none), (pointer: coarse) {
+    .media-ph.parallax-media { touch-action: manipulation; }
+    .media-ph.parallax-media.is-active { cursor: zoom-out; }
+    .media-ph.parallax-media:not(.is-active):hover {
+      border-color: var(--border);
+      box-shadow: none;
+    }
+    .media-ph.parallax-media:not(.is-active):hover img { transform: translate3d(0,0,0) scale(1.34); filter: none; }
+    .media-ph.parallax-media.prototype-media:not(.is-active):hover img { transform: translate3d(0,0,0) scale(1.64); }
+    [data-screen-label="09 Character Design"] .media-ph.parallax-media:not(.is-active):hover img { transform: translate3d(0,0,0) scale(1.08); }
+  }
   .mesh-compare-media { background: #101010; background-image: none; cursor: ew-resize; touch-action: none; }
   .mesh-compare { --compare-pos: 50%; position: absolute; inset: 0; overflow: hidden; }
   .mesh-compare img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; }
@@ -2020,9 +2031,11 @@
   }
 
   function setupParallaxMedia() {
-    if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
+    var isCoarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
     document.querySelectorAll('.parallax-media').forEach(function (media) {
-      function update(e) {
+      var tapStart = null;
+
+      function updatePan(e) {
         var rect = media.getBoundingClientRect();
         if (!rect.width || !rect.height) return;
         var nx = ((e.clientX - rect.left) / rect.width) - 0.5;
@@ -2031,13 +2044,54 @@
         var multY = parseFloat(getComputedStyle(media).getPropertyValue('--pan-mult-y')) || 1;
         media.style.setProperty('--pan-x', (nx * -150 * multX).toFixed(1) + 'px');
         media.style.setProperty('--pan-y', (ny * -44 * multY).toFixed(1) + 'px');
-        media.classList.add('is-active');
       }
+
       function reset() {
         media.classList.remove('is-active');
         media.style.setProperty('--pan-x', '0px');
         media.style.setProperty('--pan-y', '0px');
       }
+
+      if (isCoarsePointer) {
+        media.addEventListener('pointerdown', function (e) {
+          if (e.pointerType && e.pointerType !== 'touch' && e.pointerType !== 'pen') return;
+          tapStart = { x: e.clientX, y: e.clientY };
+        }, { passive: true });
+
+        media.addEventListener('pointerup', function (e) {
+          if (e.pointerType && e.pointerType !== 'touch' && e.pointerType !== 'pen') return;
+          if (!tapStart) return;
+          var dx = e.clientX - tapStart.x;
+          var dy = e.clientY - tapStart.y;
+          tapStart = null;
+          if (Math.hypot(dx, dy) > 12) return;
+
+          if (media.classList.contains('is-active')) {
+            reset();
+            return;
+          }
+
+          document.querySelectorAll('.parallax-media.is-active').forEach(function (activeMedia) {
+            if (activeMedia !== media) {
+              activeMedia.classList.remove('is-active');
+              activeMedia.style.setProperty('--pan-x', '0px');
+              activeMedia.style.setProperty('--pan-y', '0px');
+            }
+          });
+          updatePan(e);
+          media.classList.add('is-active');
+        }, { passive: true });
+
+        media.addEventListener('pointercancel', function () { tapStart = null; }, { passive: true });
+        media.addEventListener('blur', reset);
+        return;
+      }
+
+      function update(e) {
+        updatePan(e);
+        media.classList.add('is-active');
+      }
+
       media.addEventListener('pointerenter', update);
       media.addEventListener('pointermove', update);
       media.addEventListener('pointerleave', reset);
