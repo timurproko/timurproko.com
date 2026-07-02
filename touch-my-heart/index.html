@@ -1595,8 +1595,8 @@
   .split-media .col-media { align-self: start; position: relative; width: 100%; height: 100%; min-height: min(500px, 42vh); }
   .state-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 1.8vw, 28px); flex: 1; min-height: 0; margin-top: clamp(24px, 2.2vw, 40px); }
   .state-grid .state { display: flex; flex-direction: column; gap: clamp(14px, 1.3vw, 22px); min-height: 0; }
-  .state-grid .state .media-ph { flex: 1; }
-  .state-grid .state .media-ph video,
+  .state-grid .state .media-ph { flex: 1; background-color: #020202; background-image: none; }
+  .state-grid .state .media-ph video { object-fit: cover; background-color: #020202; }
   [data-screen-label="10 Shading"] .media-ph video { object-fit: contain; }
   [data-screen-label="10 Shading"] .media-ph {
     background-color: #d8d8d8;
@@ -1634,6 +1634,80 @@
   @media (prefers-reduced-motion: reduce) {
     .av-flow, .av-closed, .av-open, .af-heart, .af-ecg-lit { animation: none; }
     .av-open { opacity: 0; }
+  }
+
+  .state-tabs { display: none; }
+
+  @media (max-width: 760px) {
+    .split-media,
+    .state-grid,
+    .cond-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      flex: none;
+      min-height: auto;
+      width: 100%;
+      max-width: 100%;
+      margin-top: 12px;
+    }
+    .split-media .col-media,
+    [data-screen-label="07 Prototype"] .split-media .col-media,
+    [data-screen-label="08 Modelling"] .split-media .col-media,
+    [data-screen-label="10 Shading"] .split-media .col-media {
+      height: clamp(300px, 64vh, 520px);
+      min-height: clamp(300px, 64vh, 520px);
+    }
+    .state-grid .state {
+      min-height: clamp(300px, 64vh, 520px);
+    }
+    .cond-card .cond-media {
+      flex-basis: clamp(140px, 24vh, 220px);
+    }
+    [data-screen-label="09 Heart States"] .state-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin: 0 0 14px;
+    }
+    [data-screen-label="09 Heart States"] .state-tab {
+      appearance: none;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: color-mix(in oklab, var(--surface), var(--fg) 2%);
+      color: var(--muted);
+      padding: 9px 8px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      line-height: 1.1;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      box-shadow: 0 8px 24px rgba(17,17,17,0.06);
+    }
+    [data-screen-label="09 Heart States"] .state-tab.is-active {
+      border-color: color-mix(in oklab, var(--accent), transparent 36%);
+      background: color-mix(in oklab, var(--accent), transparent 88%);
+      color: var(--fg);
+    }
+    [data-screen-label="09 Heart States"] .state-grid {
+      display: block;
+      margin-top: 0;
+    }
+    [data-screen-label="09 Heart States"] .state-grid .state {
+      display: none;
+      min-height: auto;
+    }
+    [data-screen-label="09 Heart States"] .state-grid .state.is-active {
+      display: flex;
+    }
+    [data-screen-label="09 Heart States"] .state-grid .state-label {
+      display: none;
+    }
+    [data-screen-label="09 Heart States"] .state-grid .media-ph {
+      height: clamp(320px, calc(100svh - 310px), 500px);
+      min-height: clamp(320px, calc(100svh - 310px), 500px);
+      flex: none;
+    }
   }
 
   /* ── Pillar illustrations ── */
@@ -1689,11 +1763,13 @@
 <section class="slide" data-screen-label="02 About" data-notes="Touch My Heart is an immersive AR application on Magic Leap — a realistic, educational encounter with the heart's anatomy and the sounds of various diseases. Three pillars: the AR glasses, haptics, and medically accurate visualization and sound.">
   <span class="slide-tag">About · Project</span>
   <h2 class="deck-headline">Inside the human heart</h2>
-  <p class="deck-subhead">A cutting-edge XR experience that takes users deep into the inner workings of the human heart —<br>a realistic, educational encounter with its anatomy and the sound of various diseases.</p>
-  <div class="pillar-grid">
-    <div class="pill"><div class="pill-illo"><svg class="illo-svg" viewBox="0 0 92 60" aria-hidden="true"><path class="stroke faint" d="M12 20 Q46 4 80 20"/><path class="stroke" d="M10 34 h72 a4 4 0 0 1 4 4 v6 a10 10 0 0 1 -10 10 H16 a10 10 0 0 1 -10 -10 v-6 a4 4 0 0 1 4 -4 Z"/><path class="stroke faint" d="M46 34 V54"/><circle class="accent fill" cx="27" cy="44" r="7"/><circle class="accent fill" cx="65" cy="44" r="7"/></svg></div><div class="num">/01</div><h4>Magic Leap AR glasses</h4><div class="subhead">Spatial anatomy rendered in the user's real environment.</div><div class="tags"><span class="tag">AR</span><span class="tag">Spatial</span></div></div>
-    <div class="pill"><div class="pill-illo"><svg class="illo-svg" viewBox="0 0 76 60" aria-hidden="true"><path class="stroke" d="M38 58 V34"/><circle class="accent fill" cx="38" cy="28" r="6"/><path class="accent" d="M24 27 a14 14 0 0 1 28 0"/><path class="accent faint" d="M16 26 a22 22 0 0 1 44 0"/><path class="accent faint" d="M8 25 a30 30 0 0 1 60 0"/></svg></div><div class="num">/02</div><h4>Ultraleap haptics</h4><div class="subhead">Mid-air touch — feel the heartbeat with your bare hands.</div><div class="tags"><span class="tag">Haptics</span><span class="tag">Hand tracking</span></div></div>
-    <div class="pill"><div class="pill-illo"><svg class="illo-svg" viewBox="0 0 78 60" aria-hidden="true"><path class="stroke fill" d="M39 53 C15 37 9 24 18 15 C24 9 33 11 39 20 C45 11 54 9 60 15 C69 24 63 37 39 53 Z"/><path class="accent" d="M12 34 H27 l4 -11 5 22 4 -15 3 8 H66"/></svg></div><div class="num">/03</div><h4>Accurate visuals &amp; sound</h4><div class="subhead">Medically correct anatomy paired with true disease sounds.</div><div class="tags"><span class="tag">Medical</span><span class="tag">Audio</span></div></div>
+  <div class="about-content">
+    <p class="deck-subhead">A cutting-edge XR experience that takes users deep into the inner workings of the human heart —<br>a realistic, educational encounter with its anatomy and the sound of various diseases.</p>
+    <div class="pillar-grid">
+      <div class="pill"><div class="pill-illo"><svg class="illo-svg" viewBox="0 0 92 60" aria-hidden="true"><path class="stroke faint" d="M12 20 Q46 4 80 20"/><path class="stroke" d="M10 34 h72 a4 4 0 0 1 4 4 v6 a10 10 0 0 1 -10 10 H16 a10 10 0 0 1 -10 -10 v-6 a4 4 0 0 1 4 -4 Z"/><path class="stroke faint" d="M46 34 V54"/><circle class="accent fill" cx="27" cy="44" r="7"/><circle class="accent fill" cx="65" cy="44" r="7"/></svg></div><div class="num">/01</div><h4>Magic Leap AR glasses</h4><div class="subhead">Spatial anatomy rendered in the user's real environment.</div><div class="tags"><span class="tag">AR</span><span class="tag">Spatial</span></div></div>
+      <div class="pill"><div class="pill-illo"><svg class="illo-svg" viewBox="0 0 76 60" aria-hidden="true"><path class="stroke" d="M38 58 V34"/><circle class="accent fill" cx="38" cy="28" r="6"/><path class="accent" d="M24 27 a14 14 0 0 1 28 0"/><path class="accent faint" d="M16 26 a22 22 0 0 1 44 0"/><path class="accent faint" d="M8 25 a30 30 0 0 1 60 0"/></svg></div><div class="num">/02</div><h4>Ultraleap haptics</h4><div class="subhead">Mid-air touch — feel the heartbeat with your bare hands.</div><div class="tags"><span class="tag">Haptics</span><span class="tag">Hand tracking</span></div></div>
+      <div class="pill"><div class="pill-illo"><svg class="illo-svg" viewBox="0 0 78 60" aria-hidden="true"><path class="stroke fill" d="M39 53 C15 37 9 24 18 15 C24 9 33 11 39 20 C45 11 54 9 60 15 C69 24 63 37 39 53 Z"/><path class="accent" d="M12 34 H27 l4 -11 5 22 4 -15 3 8 H66"/></svg></div><div class="num">/03</div><h4>Accurate visuals &amp; sound</h4><div class="subhead">Medically correct anatomy paired with true disease sounds.</div><div class="tags"><span class="tag">Medical</span><span class="tag">Audio</span></div></div>
+    </div>
   </div>
 </section>
 
@@ -1716,22 +1792,26 @@
 <section class="slide" data-screen-label="04 Platforms" data-notes="To stay current with the XR industry I surveyed design guidelines across the major platforms. Apple Vision Pro had just been announced with detailed design material, so it became a primary reference. Magic Leap was our delivery target.">
   <span class="slide-tag">Process · Platforms Research</span>
   <h2 class="deck-headline">Learning from XR platforms</h2>
-  <p class="deck-subhead">I studied design guidelines across the major platforms. With Apple Vision Pro freshly announced,<br>its interaction patterns became a primary reference point.</p>
-  <div class="pillar-grid platform-grid">
-    <div class="pill"><div class="device-preview"><img src="assets/apple-vision.webp" alt="Apple Vision Pro device preview" loading="lazy"></div><div class="num" style="color:#c81d3f">REFERENCE</div><h4>Apple Vision Pro</h4><div class="subhead">Freshly announced, richly documented interaction model.</div></div>
-    <div class="pill"><div class="device-preview"><img src="assets/meta-quest.webp" alt="Meta Quest device preview" loading="lazy"></div><div class="num" style="color:#c81d3f">REFERENCE</div><h4>Meta Quest</h4><div class="subhead">Mature hand-tracking and comfort guidelines.</div></div>
-    <div class="pill"><div class="device-preview"><img src="assets/microsoft-hololens2.webp" alt="Microsoft HoloLens 2 device preview" loading="lazy"></div><div class="num" style="color:#c81d3f">REFERENCE</div><h4>Microsoft HoloLens</h4><div class="subhead">Enterprise-grade spatial UX patterns.</div></div>
-    <div class="pill" style="border-color:#c81d3f;background:color-mix(in oklab,#c81d3f,transparent 94%)"><div class="device-preview"><img src="assets/magic-leap2.webp" alt="Magic Leap 2 device preview" loading="lazy"></div><div class="num" style="color:#c81d3f">TARGET</div><h4>Magic Leap</h4><div class="subhead">Our delivery device — the design had to fit its optics.</div></div>
+  <div class="platforms-content">
+    <p class="deck-subhead">I studied design guidelines across the major platforms. With Apple Vision Pro freshly announced,<br>its interaction patterns became a primary reference point.</p>
+    <div class="pillar-grid platform-grid">
+      <div class="pill"><div class="device-preview"><img src="assets/apple-vision.webp" alt="Apple Vision Pro device preview" loading="lazy"></div><div class="num" style="color:#c81d3f">REFERENCE</div><h4>Apple Vision Pro</h4><div class="subhead">Freshly announced, richly documented interaction model.</div></div>
+      <div class="pill"><div class="device-preview"><img src="assets/meta-quest.webp" alt="Meta Quest device preview" loading="lazy"></div><div class="num" style="color:#c81d3f">REFERENCE</div><h4>Meta Quest</h4><div class="subhead">Mature hand-tracking and comfort guidelines.</div></div>
+      <div class="pill"><div class="device-preview"><img src="assets/microsoft-hololens2.webp" alt="Microsoft HoloLens 2 device preview" loading="lazy"></div><div class="num" style="color:#c81d3f">REFERENCE</div><h4>Microsoft HoloLens</h4><div class="subhead">Enterprise-grade spatial UX patterns.</div></div>
+      <div class="pill" style="border-color:#c81d3f;background:color-mix(in oklab,#c81d3f,transparent 94%)"><div class="device-preview"><img src="assets/magic-leap2.webp" alt="Magic Leap 2 device preview" loading="lazy"></div><div class="num" style="color:#c81d3f">TARGET</div><h4>Magic Leap</h4><div class="subhead">Our delivery device — the design had to fit its optics.</div></div>
+    </div>
   </div>
 </section>
 
 <section class="slide" data-screen-label="05 Medical Research" data-notes="My role was to generate precise, medically-correct 3D representations of the two most prevalent heart diseases — creating shapes and animations for aortic stenosis and atrial fibrillation.">
   <span class="slide-tag">Process · Medical Research</span>
   <h2 class="deck-headline">Two conditions, medically accurate</h2>
-  <p class="deck-subhead">I produced precise 3D representations — shape, motion and sound — for the two most prevalent heart conditions.</p>
-  <div class="cond-grid">
-    <div class="cond-card"><div class="cond-media"><svg class="cond-svg" viewBox="0 0 320 220" role="img" aria-label="Aortic valve opening and closing"><circle class="ln" cx="160" cy="122" r="80" stroke-width="1.4" opacity="0.28"/><circle class="ln" cx="160" cy="122" r="72" stroke-width="3" opacity="0.9"/><g class="av-closed"><path class="ln" fill="color-mix(in oklab, var(--accent), transparent 78%)" stroke-width="2.6" d="M160 50 A72 72 0 0 0 98 158 Q 120 142 160 122 Q 168 84 160 50 Z"/><path class="ln" fill="color-mix(in oklab, var(--accent), transparent 78%)" stroke-width="2.6" d="M98 158 A72 72 0 0 0 222 158 Q 190 152 160 122 Q 130 152 98 158 Z"/><path class="ln" fill="color-mix(in oklab, var(--accent), transparent 78%)" stroke-width="2.6" d="M222 158 A72 72 0 0 0 160 50 Q 152 84 160 122 Q 200 142 222 158 Z"/></g><g class="av-open"><path class="av-lumen" d="M160 94 L192 140 L128 140 Z"/><path class="ln" fill="color-mix(in oklab, var(--accent), transparent 80%)" stroke-width="2.6" d="M160 50 A72 72 0 0 0 98 158 Q 112 152 128 140 Q 150 114 160 94 Q 164 72 160 50 Z"/><path class="ln" fill="color-mix(in oklab, var(--accent), transparent 80%)" stroke-width="2.6" d="M98 158 A72 72 0 0 0 222 158 Q 208 152 192 140 Q 160 130 128 140 Q 112 152 98 158 Z"/><path class="ln" fill="color-mix(in oklab, var(--accent), transparent 80%)" stroke-width="2.6" d="M222 158 A72 72 0 0 0 160 50 Q 156 72 160 94 Q 172 114 192 140 Q 208 152 222 158 Z"/></g></svg></div><div class="cond-meta"><span class="cond-num">Condition 01</span><h3>Aortic Stenosis</h3><p>A narrowed aortic valve — modeled with its characteristic restricted flow and murmur.</p></div></div>
-    <div class="cond-card"><div class="cond-media"><svg class="cond-svg" viewBox="0 0 320 220" role="img" aria-label="Fibrillating heart with an irregular ECG rhythm"><g class="af-heart"><path class="ln" fill="color-mix(in oklab, var(--accent), transparent 80%)" stroke-width="3" d="M160 130 C 116 98, 92 72, 116 50 C 132 36, 152 42, 160 60 C 168 42, 188 36, 204 50 C 228 72, 204 98, 160 130 Z"/></g><path class="ln" stroke-width="2" opacity="0.24" d="M24 182 c4 -4 8 4 12 0 c4 -4 8 4 12 0 l3 2 3 -30 3 40 3 -12 c5 4 9 -2 14 0 c4 -3 7 3 11 0 l3 1 3 -26 3 34 3 -9 c6 4 10 -3 16 0 c6 4 10 -3 16 0 c5 3 9 -2 13 0 l3 2 3 -34 3 44 3 -12 c4 3 8 -2 12 0 l3 1 3 -22 3 30 3 -8 c6 4 11 -3 17 0 c6 4 11 -3 17 0 l3 2 3 -30 3 40 3 -11 c5 3 10 -2 15 0 c6 4 10 -3 16 0 l3 1 3 -26 3 34 3 -9 c6 4 11 -3 17 0 L296 182"/><path class="ln af-ecg-lit" stroke-width="2.8" d="M24 182 c4 -4 8 4 12 0 c4 -4 8 4 12 0 l3 2 3 -30 3 40 3 -12 c5 4 9 -2 14 0 c4 -3 7 3 11 0 l3 1 3 -26 3 34 3 -9 c6 4 10 -3 16 0 c6 4 10 -3 16 0 c5 3 9 -2 13 0 l3 2 3 -34 3 44 3 -12 c4 3 8 -2 12 0 l3 1 3 -22 3 30 3 -8 c6 4 11 -3 17 0 c6 4 11 -3 17 0 l3 2 3 -30 3 40 3 -11 c5 3 10 -2 15 0 c6 4 10 -3 16 0 l3 1 3 -26 3 34 3 -9 c6 4 11 -3 17 0 L296 182"/></svg></div><div class="cond-meta"><span class="cond-num">Condition 02</span><h3>Atrial Fibrillation</h3><p>An irregular, rapid rhythm — captured in both the motion and the sound of the beat.</p></div></div>
+  <div class="medical-content">
+    <p class="deck-subhead">I produced precise 3D representations — shape, motion and sound — for the two most prevalent heart conditions.</p>
+    <div class="cond-grid">
+      <div class="cond-card"><div class="cond-media"><svg class="cond-svg" viewBox="0 0 320 220" role="img" aria-label="Aortic valve opening and closing"><circle class="ln" cx="160" cy="122" r="80" stroke-width="1.4" opacity="0.28"/><circle class="ln" cx="160" cy="122" r="72" stroke-width="3" opacity="0.9"/><g class="av-closed"><path class="ln" fill="color-mix(in oklab, var(--accent), transparent 78%)" stroke-width="2.6" d="M160 50 A72 72 0 0 0 98 158 Q 120 142 160 122 Q 168 84 160 50 Z"/><path class="ln" fill="color-mix(in oklab, var(--accent), transparent 78%)" stroke-width="2.6" d="M98 158 A72 72 0 0 0 222 158 Q 190 152 160 122 Q 130 152 98 158 Z"/><path class="ln" fill="color-mix(in oklab, var(--accent), transparent 78%)" stroke-width="2.6" d="M222 158 A72 72 0 0 0 160 50 Q 152 84 160 122 Q 200 142 222 158 Z"/></g><g class="av-open"><path class="av-lumen" d="M160 94 L192 140 L128 140 Z"/><path class="ln" fill="color-mix(in oklab, var(--accent), transparent 80%)" stroke-width="2.6" d="M160 50 A72 72 0 0 0 98 158 Q 112 152 128 140 Q 150 114 160 94 Q 164 72 160 50 Z"/><path class="ln" fill="color-mix(in oklab, var(--accent), transparent 80%)" stroke-width="2.6" d="M98 158 A72 72 0 0 0 222 158 Q 208 152 192 140 Q 160 130 128 140 Q 112 152 98 158 Z"/><path class="ln" fill="color-mix(in oklab, var(--accent), transparent 80%)" stroke-width="2.6" d="M222 158 A72 72 0 0 0 160 50 Q 156 72 160 94 Q 172 114 192 140 Q 208 152 222 158 Z"/></g></svg></div><div class="cond-meta"><span class="cond-num">Condition 01</span><h3>Aortic Stenosis</h3><p>A narrowed aortic valve — modeled with its characteristic restricted flow and murmur.</p></div></div>
+      <div class="cond-card"><div class="cond-media"><svg class="cond-svg" viewBox="0 0 320 220" role="img" aria-label="Fibrillating heart with an irregular ECG rhythm"><g class="af-heart"><path class="ln" fill="color-mix(in oklab, var(--accent), transparent 80%)" stroke-width="3" d="M160 130 C 116 98, 92 72, 116 50 C 132 36, 152 42, 160 60 C 168 42, 188 36, 204 50 C 228 72, 204 98, 160 130 Z"/></g><path class="ln" stroke-width="2" opacity="0.24" d="M24 182 c4 -4 8 4 12 0 c4 -4 8 4 12 0 l3 2 3 -30 3 40 3 -12 c5 4 9 -2 14 0 c4 -3 7 3 11 0 l3 1 3 -26 3 34 3 -9 c6 4 10 -3 16 0 c6 4 10 -3 16 0 c5 3 9 -2 13 0 l3 2 3 -34 3 44 3 -12 c4 3 8 -2 12 0 l3 1 3 -22 3 30 3 -8 c6 4 11 -3 17 0 c6 4 11 -3 17 0 l3 2 3 -30 3 40 3 -11 c5 3 10 -2 15 0 c6 4 10 -3 16 0 l3 1 3 -26 3 34 3 -9 c6 4 11 -3 17 0 L296 182"/><path class="ln af-ecg-lit" stroke-width="2.8" d="M24 182 c4 -4 8 4 12 0 c4 -4 8 4 12 0 l3 2 3 -30 3 40 3 -12 c5 4 9 -2 14 0 c4 -3 7 3 11 0 l3 1 3 -26 3 34 3 -9 c6 4 10 -3 16 0 c6 4 10 -3 16 0 c5 3 9 -2 13 0 l3 2 3 -34 3 44 3 -12 c4 3 8 -2 12 0 l3 1 3 -22 3 30 3 -8 c6 4 11 -3 17 0 c6 4 11 -3 17 0 l3 2 3 -30 3 40 3 -11 c5 3 10 -2 15 0 c6 4 10 -3 16 0 l3 1 3 -26 3 34 3 -9 c6 4 11 -3 17 0 L296 182"/></svg></div><div class="cond-meta"><span class="cond-num">Condition 02</span><h3>Atrial Fibrillation</h3><p>An irregular, rapid rhythm — captured in both the motion and the sound of the beat.</p></div></div>
+    </div>
   </div>
 </section>
 
@@ -2702,6 +2782,7 @@
 
   setupDeckNavigationAutoHide();
   setupHoverVideoPreviews();
+  setupHeartStateTabs();
 
   window.addEventListener('keydown', onKey, true);
   document.addEventListener('keydown', onKey, true);
@@ -2718,6 +2799,78 @@
     document.addEventListener('pointerdown', focusDeck, { passive: true });
     window.addEventListener('load', focusDeck);
     focusDeck();
+  }
+
+  function setupHeartStateTabs() {
+    var slide = document.querySelector('[data-screen-label="09 Heart States"]');
+    if (!slide) return;
+
+    var grid = slide.querySelector('.state-grid');
+    if (!grid || grid.querySelector('.state-tabs')) return;
+
+    var states = Array.from(grid.querySelectorAll('.state'));
+    if (!states.length) return;
+
+    var tabs = document.createElement('div');
+    tabs.className = 'state-tabs';
+    tabs.setAttribute('role', 'tablist');
+    tabs.setAttribute('aria-label', 'Heart condition');
+
+    function playVideo(video) {
+      if (!video) return;
+      video.muted = true;
+      video.playsInline = true;
+      video.setAttribute('muted', '');
+      video.setAttribute('playsinline', '');
+      video.setAttribute('autoplay', '');
+      video.setAttribute('preload', 'auto');
+      try {
+        if (video.networkState === HTMLMediaElement.NETWORK_EMPTY) video.load();
+        var promise = video.play();
+        if (promise && typeof promise.catch === 'function') promise.catch(function () {});
+      } catch (_) {}
+    }
+
+    function pauseVideo(video) {
+      if (!video) return;
+      video.removeAttribute('autoplay');
+      video.pause();
+      try { video.currentTime = 0; } catch (_) {}
+    }
+
+    function selectState(index) {
+      states.forEach(function (state, i) {
+        var selected = i === index;
+        var video = state.querySelector('video');
+        state.classList.toggle('is-active', selected);
+        state.setAttribute('aria-hidden', selected ? 'false' : 'true');
+        if (tabs.children[i]) {
+          tabs.children[i].classList.toggle('is-active', selected);
+          tabs.children[i].setAttribute('aria-selected', selected ? 'true' : 'false');
+          tabs.children[i].setAttribute('tabindex', selected ? '0' : '-1');
+        }
+        if (selected) playVideo(video);
+        else pauseVideo(video);
+      });
+    }
+
+    states.forEach(function (state, i) {
+      var label = state.querySelector('.state-label');
+      var title = label ? label.textContent.trim() : ('Condition ' + (i + 1));
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'state-tab';
+      button.setAttribute('role', 'tab');
+      button.textContent = title
+        .replace('Normal heart', 'Normal')
+        .replace('Aortic stenosis', 'Stenosis')
+        .replace('Atrial fibrillation', 'Fibrillation');
+      button.addEventListener('click', function () { selectState(i); });
+      tabs.appendChild(button);
+    });
+
+    grid.parentNode.insertBefore(tabs, grid);
+    selectState(0);
   }
 
   function setupHoverVideoPreviews() {
