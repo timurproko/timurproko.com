@@ -238,6 +238,24 @@
       font-size: 13px;
       line-height: 1;
       letter-spacing: 0.01em;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+    }
+    .intro-chip:hover {
+      background: var(--accent-dim, oklch(93% 0.03 250));
+      border-color: var(--accent, oklch(60% 0.15 250));
+      color: var(--accent, oklch(45% 0.15 250));
+    }
+    .intro-chip:active { transform: translateY(1px); }
+    .intro-chip:focus-visible {
+      outline: 2px solid var(--accent, oklch(60% 0.15 250));
+      outline-offset: 2px;
+    }
+    .intro-chip[aria-pressed="true"] {
+      background: var(--accent, oklch(55% 0.15 250));
+      border-color: var(--accent, oklch(55% 0.15 250));
+      color: #fff;
     }
 
     /* Profile card — grid variant */
@@ -361,6 +379,35 @@
     .search::placeholder {
       color: var(--subtle);
       font-size: 13px;
+    }
+    .search-clear {
+      flex-shrink: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      margin-bottom: 6px;
+      padding: 0;
+      border: 1px solid oklch(88% 0.01 250);
+      border-radius: 999px;
+      background: oklch(96% 0.006 250);
+      color: oklch(30% 0.012 250);
+      font-size: 13px;
+      line-height: 1;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+    }
+    .toolbar.has-query .search-clear { display: inline-flex; }
+    .search-clear:hover {
+      background: var(--accent-dim, oklch(93% 0.03 250));
+      border-color: var(--accent, oklch(60% 0.15 250));
+      color: var(--accent, oklch(45% 0.15 250));
+    }
+    .search-clear:active { transform: translateY(1px); }
+    .search-clear:focus-visible {
+      outline: 2px solid var(--accent, oklch(60% 0.15 250));
+      outline-offset: 2px;
     }
 
     /* Grid */
@@ -686,15 +733,16 @@
       <p class="intro">
         A collection of my work, experiments, and ideas across technologies.
         <span class="intro-chips" aria-label="Focus areas">
-          <span class="intro-chip">UX</span>
-          <span class="intro-chip">XR</span>
-          <span class="intro-chip">AI</span>
+          <button type="button" class="intro-chip" data-query="UX" aria-pressed="false">UX</button>
+          <button type="button" class="intro-chip" data-query="XR" aria-pressed="false">XR</button>
+          <button type="button" class="intro-chip" data-query="AI" aria-pressed="false">AI</button>
         </span>
       </p>
     </section>
 
     <div class="toolbar" aria-label="Presentation controls">
       <input class="search" id="search" type="text" role="searchbox" placeholder="Search content" autocomplete="off" />
+      <button type="button" class="search-clear" id="search-clear" aria-label="Clear search" title="Clear search">✕</button>
       <div class="count" id="count">Finding presentations…</div>
     </div>
 
@@ -741,6 +789,7 @@
     const grid = document.getElementById("presentations");
     const count = document.getElementById("count");
     const search = document.getElementById("search");
+    const searchClear = document.getElementById("search-clear");
     const toolbar = document.querySelector(".toolbar");
     const footerYear = document.querySelector("[data-footer-year]");
     let presentations = [];
@@ -1084,15 +1133,51 @@
       scheduleFooterYearAnimationSetup();
       setupMobileSearchInteractions();
       updateSearchState();
-      search.addEventListener("input", () => {
-        const query = search.value.trim().toLowerCase();
-        const filtered = presentations.filter(item =>
-          [item.title, item.description, item.file].join(" ").toLowerCase().includes(query)
-        );
-        updateSearchState();
-        render(filtered, query);
-        requestAnimationFrame(() => search.focus({ preventScroll: true }));
+      search.addEventListener("input", () => applySearch({ focus: true }));
+
+      searchClear?.addEventListener("click", () => {
+        search.value = "";
+        applySearch({ blur: true });
       });
+
+      document.querySelectorAll(".intro-chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+          const query = chip.dataset.query || chip.textContent.trim();
+          // Toggle: clicking an active chip clears the search.
+          const isActive = search.value.trim().toLowerCase() === query.toLowerCase();
+          if (isActive) {
+            search.value = "";
+            applySearch({ blur: true });
+          } else {
+            search.value = query;
+            applySearch({ focus: true });
+          }
+        });
+      });
+    }
+
+    // Single source of truth for running the current search box value against
+    // the presentation list. Used by the input event, the focus chips, and the
+    // clear button.
+    function applySearch({ focus = false, blur = false } = {}) {
+      const query = search.value.trim().toLowerCase();
+      const filtered = presentations.filter(item =>
+        [item.title, item.description, item.file].join(" ").toLowerCase().includes(query)
+      );
+      updateSearchState();
+      render(filtered, query);
+      // Reflect the active focus-area chip.
+      document.querySelectorAll(".intro-chip").forEach(chip => {
+        const chipQuery = (chip.dataset.query || chip.textContent).trim().toLowerCase();
+        chip.setAttribute("aria-pressed", String(query === chipQuery));
+      });
+      if (blur) {
+        // Drop focus so mobile returns to its initial header/hero state.
+        search.blur();
+        updateSearchState();
+      } else if (focus) {
+        requestAnimationFrame(() => search.focus({ preventScroll: true }));
+      }
     }
 
     function setupMobileSearchInteractions() {
@@ -1188,6 +1273,7 @@
       const isFocused = document.activeElement === search;
       const isActiveMobileSearch = (hasSearchText || isFocused) && window.matchMedia("(max-width: 760px)").matches;
       toolbar?.classList.toggle("is-search-active", hasSearchText || isFocused);
+      toolbar?.classList.toggle("has-query", hasSearchText);
       document.body.classList.toggle("mobile-search-active", isActiveMobileSearch);
       scheduleMobileViewportOffsetUpdate();
       window.setTimeout(scheduleMobileViewportOffsetUpdate, 120);
