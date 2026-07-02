@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "social:build": "node scripts/generate-social-previews.mjs",
+    "previews:build": "node scripts/generate-preview-posters.mjs",
     "linkedin:square": "node scripts/generate-linkedin-square-previews.mjs"
   },
   "devDependencies": {
