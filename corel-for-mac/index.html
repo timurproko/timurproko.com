@@ -1636,6 +1636,36 @@
   .architecture-graph .dash { stroke-dasharray: 2 2; }
   .architecture-graph text { font-family: Arial, Helvetica, sans-serif; font-size: 11px; fill: #969696; dominant-baseline: middle; text-anchor: middle; }
   .architecture-graph .vertical { writing-mode: vertical-rl; glyph-orientation-vertical: 0deg; }
+  .breakdown-stage { width: min(1320px, 100%); margin-top: clamp(18px, 1.7vw, 30px); flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; }
+  .breakdown-svg { display: block; width: 100%; height: min(560px, 52vh); overflow: visible; }
+  .breakdown-svg .window { fill: #fff; stroke: #171717; stroke-width: 2.1; }
+  .breakdown-svg .window-outline { fill: none; stroke: #171717; stroke-width: 2.1; pointer-events: none; }
+  .breakdown-svg .bar { fill: #f2f2f2; stroke: #8f8f8f; stroke-width: 1; }
+  .breakdown-svg .panel { fill: #fff; stroke: #8f8f8f; stroke-width: 1; }
+  .breakdown-svg .soft-panel { fill: #fafafa; stroke: #c7c7c7; stroke-width: 1; }
+  .breakdown-svg .touch { fill: #d9d9d9; stroke: #1f1f1f; stroke-width: 1; }
+  .breakdown-svg text { font-family: var(--font-mono); fill: #353535; font-size: 15px; letter-spacing: 0.02em; }
+  .breakdown-svg .ui-label { fill: #444; font-size: 15px; text-anchor: middle; dominant-baseline: middle; text-transform: uppercase; }
+  .breakdown-svg .vertical-label { writing-mode: vertical-rl; glyph-orientation-vertical: 0deg; }
+  .breakdown-hotspot { cursor: help; outline: none; }
+  .breakdown-hotspot .hotspot-fill { fill: transparent; stroke: transparent; stroke-width: 2.5; transition: fill var(--motion-fast) var(--ease-standard), stroke var(--motion-fast) var(--ease-standard); pointer-events: all; }
+  .breakdown-hotspot:hover .hotspot-fill,
+  .breakdown-hotspot:focus .hotspot-fill { fill: color-mix(in oklab, var(--accent), transparent 84%); stroke: var(--accent); }
+  .breakdown-tip { opacity: 0; pointer-events: none; transition: opacity var(--motion-fast) var(--ease-standard), transform var(--motion-fast) var(--ease-standard); transform: translateY(6px); }
+  .breakdown-hotspot:hover .breakdown-tip,
+  .breakdown-hotspot:focus .breakdown-tip { opacity: 1; transform: translateY(0); }
+  .breakdown-tip rect { fill: rgba(255,255,255,0.96); stroke: #9ca3af; stroke-width: 1; rx: 8; filter: drop-shadow(0 12px 24px rgba(17,17,17,0.14)); }
+  .breakdown-tip .tip-title { font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: -0.01em; fill: #111; }
+  .breakdown-tip .tip-copy { font-family: var(--font-body); font-size: 15px; letter-spacing: 0; fill: #5f6368; }
+  .pdf-page-slide { background: #f8f8f9; }
+  .pdf-preview-block { --pdf-preview-height: min(600px, 56vh); width: min(1100px, 100%); height: var(--pdf-preview-height); margin-top: clamp(8px, 1vw, 18px); border: 1px solid var(--border); border-radius: 22px; background: #fff; box-shadow: 0 24px 70px rgba(17,17,17,0.12); overflow: hidden; display: block; }
+  .pdf-preview-block img { display: block; width: 100%; height: auto; min-height: 100%; object-fit: cover; user-select: none; animation: pdfPreviewPan 6s ease-in-out infinite alternate; will-change: transform; }
+  .pdf-preview-block:hover img { animation-play-state: paused; }
+  @keyframes pdfPreviewPan {
+    0%, 16% { transform: translateY(0); }
+    84%, 100% { transform: translateY(calc(var(--pdf-preview-height) - 100%)); }
+  }
+  @media (prefers-reduced-motion: reduce) { .pdf-preview-block img { animation: none; } }
   .split-media { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(36px, 4vw, 80px); align-items: start; flex: 1; min-height: 0; margin-top: clamp(24px, 2.2vw, 40px); }
   .split-media .col-text { display: flex; flex-direction: column; min-width: 0; }
   .split-media .col-media { position: relative; width: 100%; height: 100%; min-height: min(500px, 42vh); }
@@ -2150,7 +2180,163 @@
   </div>
 </section>
 
-<section class="slide slide-zx-end slide-no-scroll dark" data-screen-label="20 End" data-notes="Thank you — happy to dig into any lens: business strategy, user research, or the technical path to a native macOS experience.">
+<section class="slide" data-screen-label="20 UI Breakdown" data-notes="The UI breakdown makes each current interface region inspectable: hover over a zone to see the design questions and simplification work attached to it.">
+  <span class="slide-tag">Vision · UI Breakdown</span>
+  <h2 class="deck-headline">Interactive UI breakdown</h2>
+  <p class="deck-subhead">Hover over each Corel UI region to reveal the workstream behind it.</p>
+  <div class="breakdown-stage">
+    <svg class="breakdown-svg" viewBox="0 0 1320 560" role="img" aria-labelledby="breakdown-title breakdown-desc">
+      <title id="breakdown-title">Interactive CorelDRAW UI breakdown graph</title>
+      <desc id="breakdown-desc">A schematic CorelDRAW interface with hoverable regions for menu bar, tool bar, property bar, framework, document work area, dockers, tool box, colour palettes, context menus, status bar and Touch Bar.</desc>
+      <defs>
+        <clipPath id="breakdown-window-clip">
+          <rect x="280" y="96" width="780" height="384" rx="10"/>
+        </clipPath>
+      </defs>
+
+      <rect class="bar" x="240" y="36" width="840" height="30"/>
+      <text class="ui-label" x="660" y="51">MENU BAR</text>
+
+      <rect class="window" x="280" y="96" width="780" height="384" rx="10"/>
+      <g clip-path="url(#breakdown-window-clip)">
+      <circle cx="302" cy="116" r="6" fill="#e6e7e8" stroke="#b8b8b8"/>
+      <circle cx="320" cy="116" r="6" fill="#e6e7e8" stroke="#b8b8b8"/>
+      <circle cx="338" cy="116" r="6" fill="#e6e7e8" stroke="#b8b8b8"/>
+      <text class="ui-label" x="670" y="122" style="font-family:var(--font-display);font-weight:700;font-size:17px;letter-spacing:-0.01em;text-transform:none">CorelDRAW</text>
+
+      <rect class="bar" x="280" y="146" width="780" height="48"/>
+      <text class="ui-label" x="670" y="170">TOOL BAR</text>
+      <rect class="bar" x="280" y="194" width="780" height="34"/>
+      <text class="ui-label" x="670" y="211">PROPERTY BAR</text>
+      <rect class="panel" x="280" y="228" width="42" height="229"/>
+      <text class="ui-label vertical-label" x="301" y="342.5">TOOL BOX</text>
+      <rect class="panel" x="322" y="228" width="548" height="229"/>
+      <text class="ui-label" x="596" y="342.5">DOCUMENT WORK AREA</text>
+      <rect class="panel" x="870" y="228" width="150" height="229"/>
+      <text class="ui-label" x="945" y="342.5">DOCKERS</text>
+      <rect class="panel" x="1020" y="228" width="40" height="229"/>
+      <text class="ui-label vertical-label" x="1040" y="342.5">COLOUR PALETTES</text>
+      <rect class="bar" x="280" y="457" width="780" height="23"/>
+      <text class="ui-label" x="670" y="469" style="font-size:13px">STATUS BAR</text>
+
+      <rect class="panel" x="348" y="328" width="140" height="130" rx="7"/>
+      <text class="ui-label" x="418" y="393" style="font-size:13px">CONTEXT MENUS</text>
+      </g>
+      <rect class="window-outline" x="280" y="96" width="780" height="384" rx="10"/>
+      <rect class="touch" x="280" y="510" width="780" height="34"/>
+      <text class="ui-label" x="670" y="527">TOUCH BAR</text>
+
+      <g class="breakdown-hotspot" tabindex="0" aria-label="Framework details">
+        <rect class="hotspot-fill" x="280" y="96" width="780" height="384" rx="10"/>
+        <g class="breakdown-tip">
+          <rect x="34" y="166" width="250" height="112"/>
+          <text class="tip-title" x="48" y="188">Framework</text>
+          <text class="tip-copy" x="48" y="210"><tspan x="48">Cursors, document tabs,</tspan><tspan x="48" dy="16">dialogs, split-screen views</tspan><tspan x="48" dy="16">and multi-window behaviour.</tspan></text>
+        </g>
+      </g>
+
+      <g class="breakdown-hotspot" tabindex="0" aria-label="Menu bar details">
+        <rect class="hotspot-fill" x="240" y="36" width="840" height="30"/>
+        <g class="breakdown-tip">
+          <rect x="382" y="30" width="218" height="86"/>
+          <text class="tip-title" x="396" y="51">Menu Bar</text>
+          <text class="tip-copy" x="396" y="72"><tspan x="396">Re-organisation, renaming</tspan><tspan x="396" dy="16">and shortcut-key cleanup.</tspan></text>
+        </g>
+      </g>
+
+      <g class="breakdown-hotspot" tabindex="0" aria-label="Tool bar details">
+        <rect class="hotspot-fill" x="280" y="146" width="780" height="48"/>
+        <g class="breakdown-tip">
+          <rect x="790" y="72" width="238" height="94"/>
+          <text class="tip-title" x="804" y="94">Tool Bar</text>
+          <text class="tip-copy" x="804" y="116"><tspan x="804">Mac-oriented controls,</tspan><tspan x="804" dy="16">customisability and icon/text</tspan><tspan x="804" dy="16">standardisation.</tspan></text>
+        </g>
+      </g>
+
+      <g class="breakdown-hotspot" tabindex="0" aria-label="Property bar details">
+        <rect class="hotspot-fill" x="280" y="194" width="780" height="34"/>
+        <g class="breakdown-tip">
+          <rect x="450" y="238" width="250" height="94"/>
+          <text class="tip-title" x="464" y="260">Property Bar</text>
+          <text class="tip-copy" x="464" y="282"><tspan x="464">Advanced drop-downs,</tspan><tspan x="464" dy="16">context sensitivity and</tspan><tspan x="464" dy="16">simplification.</tspan></text>
+        </g>
+      </g>
+
+      <g class="breakdown-hotspot" tabindex="0" aria-label="Document work area details">
+        <rect class="hotspot-fill" x="322" y="228" width="548" height="229"/>
+        <g class="breakdown-tip">
+          <rect x="48" y="306" width="238" height="96"/>
+          <text class="tip-title" x="62" y="328">Document Work Area</text>
+          <text class="tip-copy" x="62" y="350"><tspan x="62">Drag and drop, input gestures</tspan><tspan x="62" dy="16">and real-time previews.</tspan></text>
+        </g>
+      </g>
+
+      <g class="breakdown-hotspot" tabindex="0" aria-label="Docker framework and dockers details">
+        <rect class="hotspot-fill" x="870" y="228" width="150" height="229"/>
+        <g class="breakdown-tip">
+          <rect x="1058" y="164" width="246" height="112"/>
+          <text class="tip-title" x="1072" y="186">Dockers</text>
+          <text class="tip-copy" x="1072" y="208"><tspan x="1072">Tabs, freeform docking,</tspan><tspan x="1072" dy="16">show/hide, consolidation and</tspan><tspan x="1072" dy="16">context-sensitive controls.</tspan></text>
+        </g>
+      </g>
+
+      <g class="breakdown-hotspot" tabindex="0" aria-label="Tool box details">
+        <rect class="hotspot-fill" x="280" y="228" width="42" height="229"/>
+        <g class="breakdown-tip">
+          <rect x="54" y="426" width="224" height="80"/>
+          <text class="tip-title" x="68" y="448">Tool Box</text>
+          <text class="tip-copy" x="68" y="470"><tspan x="68">Tool consolidation, grouping</tspan><tspan x="68" dy="16">and customisability.</tspan></text>
+        </g>
+      </g>
+
+      <g class="breakdown-hotspot" tabindex="0" aria-label="Context menus details">
+        <rect class="hotspot-fill" x="348" y="328" width="140" height="130" rx="7"/>
+        <g class="breakdown-tip">
+          <rect x="56" y="488" width="236" height="64"/>
+          <text class="tip-title" x="70" y="510">Context Menus</text>
+          <text class="tip-copy" x="70" y="532">Basic transliteration and simplification.</text>
+        </g>
+      </g>
+
+      <g class="breakdown-hotspot" tabindex="0" aria-label="Colour palettes details">
+        <rect class="hotspot-fill" x="1020" y="228" width="40" height="229"/>
+        <g class="breakdown-tip">
+          <rect x="1082" y="398" width="218" height="86"/>
+          <text class="tip-title" x="1096" y="420">Colour Palettes</text>
+          <text class="tip-copy" x="1096" y="442"><tspan x="1096">Basic transliteration,</tspan><tspan x="1096" dy="16">simplification and standards.</tspan></text>
+        </g>
+      </g>
+
+      <g class="breakdown-hotspot" tabindex="0" aria-label="Status bar details">
+        <rect class="hotspot-fill" x="280" y="457" width="780" height="23"/>
+        <g class="breakdown-tip">
+          <rect x="1082" y="462" width="222" height="72"/>
+          <text class="tip-title" x="1096" y="484">Status Bar</text>
+          <text class="tip-copy" x="1096" y="506"><tspan x="1096">Basic transliteration,</tspan><tspan x="1096" dy="16">simplification and standards.</tspan></text>
+        </g>
+      </g>
+
+      <g class="breakdown-hotspot" tabindex="0" aria-label="Touch Bar details">
+        <rect class="hotspot-fill" x="280" y="510" width="780" height="34"/>
+        <g class="breakdown-tip">
+          <rect x="1082" y="504" width="218" height="50"/>
+          <text class="tip-title" x="1096" y="526">Touch Bar</text>
+          <text class="tip-copy" x="1096" y="546">Avoid property-bar duplication.</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<section class="slide slide-no-scroll pdf-page-slide" data-screen-label="21 CorelDRAW on macOS" data-notes="Page capture from the source presentation PDF, page 4, shown inside a preview block.">
+  <span class="slide-tag">Vision · Reference</span>
+  <h2 class="deck-headline">CorelDRAW on macOS</h2>
+  <div class="pdf-preview-block">
+    <img src="../assets/corel-for-mac/counterpoint-page-4.png" alt="Counterpoint presentation page 4 showing CorelDRAW on macOS full-screen interface screenshot">
+  </div>
+</section>
+
+<section class="slide slide-zx-end slide-no-scroll dark" data-screen-label="22 End" data-notes="Thank you — happy to dig into any lens: business strategy, user research, or the technical path to a native macOS experience.">
   <span class="slide-tag">The End</span>
   <h2 class="deck-headline">Thank You</h2>
   <p class="deck-subhead zx-end-subhead">Questions?</p>
