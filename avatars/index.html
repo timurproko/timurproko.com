@@ -1695,6 +1695,25 @@
   .pipe-tools { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
   .pipe-tools span { white-space: nowrap; padding: 4px 11px; border: 1px solid var(--border); border-radius: 999px; font-family: var(--font-mono); font-size: clamp(9.5px, 0.72vw, 12px); letter-spacing: 0.05em; text-transform: uppercase; color: color-mix(in oklab, var(--accent), var(--fg) 22%); background: color-mix(in oklab, var(--accent), transparent 93%); line-height: 1.4; }
   @media (max-width: 900px) { .pipe-step { grid-template-columns: clamp(40px, 8vw, 56px) 1fr; } .pipe-tools { grid-column: 1 / -1; justify-content: flex-start; margin-top: 6px; } }
+  @media (max-width: 760px) {
+    .split-media {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      flex: none;
+      min-height: auto;
+      margin-top: 12px;
+    }
+    .split-media .col-media,
+    [data-screen-label="07 Face Reconstruction"] .split-media .col-media,
+    [data-screen-label="07 Prototype"] .split-media .col-media,
+    [data-screen-label="08 Mesh Retopology"] .split-media .col-media,
+    [data-screen-label="08 Modelling"] .split-media .col-media,
+    [data-screen-label="09 Character Design"] .split-media .col-media,
+    [data-screen-label="10 Shading"] .split-media .col-media {
+      height: clamp(300px, 64vh, 520px);
+      min-height: clamp(300px, 64vh, 520px);
+    }
+  }
 </style>
 </head>
 <body class="chrome-boot deck-animations-pending">
@@ -1736,14 +1755,16 @@
 <section class="slide" data-screen-label="04 Pipeline" data-notes="Six stages take a real person to a fully rigged, real-time avatar. Body creation blocks the base shape; face reconstruction rebuilds the face in 3D; retopology cleans the geometry; cloth is designed and simulated; character design adds expressions, hair and makeup; and finally AI-driven facial animation and real-time rendering bring the avatar to life.">
   <span class="slide-tag">Overview · Pipeline</span>
   <h2 class="deck-headline">Avatar creation pipeline</h2>
-  <p class="deck-subhead">Six stages take a real person to a fully rigged, real-time avatar — each backed by dedicated tools.</p>
-  <div class="pipeline">
-    <div class="pipe-step" data-anim style="--anim-delay:60ms"><div class="pipe-idx">01</div><div class="pipe-body"><div class="pipe-title">Body Creation</div><div class="pipe-desc">Base shape of the face and body.</div></div><div class="pipe-tools"><span>Character Creator</span><span>Houdini</span></div></div>
-    <div class="pipe-step" data-anim style="--anim-delay:110ms"><div class="pipe-idx">02</div><div class="pipe-body"><div class="pipe-title">Face Reconstruction</div><div class="pipe-desc">3D reconstruction of the face from captured imagery.</div></div><div class="pipe-tools"><span>Reality Capture</span></div></div>
-    <div class="pipe-step" data-anim style="--anim-delay:160ms"><div class="pipe-idx">03</div><div class="pipe-body"><div class="pipe-title">Mesh Retopology</div><div class="pipe-desc">Geometry retopology and projection onto the base mesh.</div></div><div class="pipe-tools"><span>Wrap4D</span></div></div>
-    <div class="pipe-step" data-anim style="--anim-delay:210ms"><div class="pipe-idx">04</div><div class="pipe-body"><div class="pipe-title">Cloth Creation</div><div class="pipe-desc">Garment design and cloth simulation.</div></div><div class="pipe-tools"><span>Marvelous Designer</span></div></div>
-    <div class="pipe-step" data-anim style="--anim-delay:260ms"><div class="pipe-idx">05</div><div class="pipe-body"><div class="pipe-title">Character Design</div><div class="pipe-desc">Facial expressions, makeup, hair and animation.</div></div><div class="pipe-tools"><span>Character Creator</span><span>iClone</span></div></div>
-    <div class="pipe-step" data-anim style="--anim-delay:310ms"><div class="pipe-idx">06</div><div class="pipe-body"><div class="pipe-title">Animate &amp; Render</div><div class="pipe-desc">AI-based facial animation and real-time rendering.</div></div><div class="pipe-tools"><span>Omniverse</span><span>Audio2Face</span></div></div>
+  <div class="pipeline-content">
+    <p class="deck-subhead">Six stages take a real person to a fully rigged, real-time avatar — each backed by dedicated tools.</p>
+    <div class="pipeline">
+      <div class="pipe-step" data-anim style="--anim-delay:60ms"><div class="pipe-idx">01</div><div class="pipe-body"><div class="pipe-title">Body Creation</div><div class="pipe-desc">Base shape of the face and body.</div></div><div class="pipe-tools"><span>Character Creator</span><span>Houdini</span></div></div>
+      <div class="pipe-step" data-anim style="--anim-delay:110ms"><div class="pipe-idx">02</div><div class="pipe-body"><div class="pipe-title">Face Reconstruction</div><div class="pipe-desc">3D reconstruction of the face from captured imagery.</div></div><div class="pipe-tools"><span>Reality Capture</span></div></div>
+      <div class="pipe-step" data-anim style="--anim-delay:160ms"><div class="pipe-idx">03</div><div class="pipe-body"><div class="pipe-title">Mesh Retopology</div><div class="pipe-desc">Geometry retopology and projection onto the base mesh.</div></div><div class="pipe-tools"><span>Wrap4D</span></div></div>
+      <div class="pipe-step" data-anim style="--anim-delay:210ms"><div class="pipe-idx">04</div><div class="pipe-body"><div class="pipe-title">Cloth Creation</div><div class="pipe-desc">Garment design and cloth simulation.</div></div><div class="pipe-tools"><span>Marvelous Designer</span></div></div>
+      <div class="pipe-step" data-anim style="--anim-delay:260ms"><div class="pipe-idx">05</div><div class="pipe-body"><div class="pipe-title">Character Design</div><div class="pipe-desc">Facial expressions, makeup, hair and animation.</div></div><div class="pipe-tools"><span>Character Creator</span><span>iClone</span></div></div>
+      <div class="pipe-step" data-anim style="--anim-delay:310ms"><div class="pipe-idx">06</div><div class="pipe-body"><div class="pipe-title">Animate &amp; Render</div><div class="pipe-desc">AI-based facial animation and real-time rendering.</div></div><div class="pipe-tools"><span>Omniverse</span><span>Audio2Face</span></div></div>
+    </div>
   </div>
 </section>
 
