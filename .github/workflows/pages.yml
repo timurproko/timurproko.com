@@ -30,7 +30,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Chromium for preview rendering
+        run: npx playwright install --with-deps chromium
+
       - name: Build static site
+        run: npm run build
+
+      - name: Generate mobile preview posters
+        run: npm run previews:build
+
+      - name: Rebuild static site with fresh previews
         run: npm run build
 
       - name: Upload Pages artifact
