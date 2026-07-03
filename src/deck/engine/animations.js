@@ -8,6 +8,45 @@ export function initAnimations() {
     el.style.setProperty('--anim-delay', delayMs + 'ms');
   }
 
+  function setupPreviewLoadingStates() {
+    document.querySelectorAll('.media-ph, .pdf-preview-block').forEach(function(host) {
+      if (host.dataset.previewLoadingBound === '1') return;
+      var media = Array.from(host.querySelectorAll('img, video'));
+      if (!media.length) return;
+      host.dataset.previewLoadingBound = '1';
+
+      var pending = new Set(media.filter(function(el) {
+        if (el.tagName === 'IMG') return !(el.complete && el.naturalWidth > 0);
+        if (el.tagName === 'VIDEO') return el.readyState < 2;
+        return false;
+      }));
+
+      function finish(el) {
+        pending.delete(el);
+        if (!pending.size) host.classList.remove('is-loading');
+      }
+
+      if (pending.size) {
+        host.classList.add('is-loading');
+        pending.forEach(function(el) {
+          if (el.tagName === 'IMG') {
+            el.addEventListener('load', function() { finish(el); }, { once: true });
+            el.addEventListener('error', function() { finish(el); }, { once: true });
+          } else if (el.tagName === 'VIDEO') {
+            el.addEventListener('loadeddata', function() { finish(el); }, { once: true });
+            el.addEventListener('canplay', function() { finish(el); }, { once: true });
+            el.addEventListener('error', function() { finish(el); }, { once: true });
+            try { if (el.networkState === HTMLMediaElement.NETWORK_EMPTY) el.load(); } catch (_) {}
+          }
+        });
+        window.setTimeout(function() { host.classList.remove('is-loading'); pending.clear(); }, 12000);
+        return;
+      }
+
+      host.classList.remove('is-loading');
+    });
+  }
+
   function setupParallaxMedia() {
     var isCoarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
     document.querySelectorAll('.parallax-media').forEach(function (media) {
@@ -392,6 +431,7 @@ export function initAnimations() {
   }
 
   function setupAll() {
+    setupPreviewLoadingStates();
     setupParallaxMedia();
     setupMobileScrollRegions();
 

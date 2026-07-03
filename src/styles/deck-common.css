@@ -12,6 +12,73 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes deckPreviewRainbowLoad {
+  from { background-position: 0% 50%; }
+  to { background-position: 260% 50%; }
+}
+
+@keyframes deckPreviewShineLoad {
+  from { background-position: 0 0, 180% 0; }
+  to { background-position: 0 0, -80% 0; }
+}
+
+/* Universal preview/media loading state. Mirrors the portfolio card preview
+   loader and applies to images, videos, compare widgets, and PDF preview blocks. */
+.media-ph.is-loading,
+.pdf-preview-block.is-loading {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+.media-ph.is-loading > *,
+.pdf-preview-block.is-loading > * {
+  opacity: 0 !important;
+}
+
+.media-ph.is-loading::before,
+.pdf-preview-block.is-loading::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.82;
+  pointer-events: none;
+  background:
+    linear-gradient(115deg,
+      oklch(68% 0.24 25) 0%,
+      oklch(78% 0.18 80) 15%,
+      oklch(76% 0.2 145) 30%,
+      oklch(70% 0.22 220) 48%,
+      oklch(70% 0.24 300) 66%,
+      oklch(76% 0.22 350) 82%,
+      oklch(68% 0.24 25) 100%);
+  background-size: 260% 100%;
+  animation: deckPreviewRainbowLoad 1.4s linear infinite;
+}
+
+.media-ph.is-loading::after,
+.pdf-preview-block.is-loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(to top, rgba(255,255,255,0.34), transparent 64%),
+    linear-gradient(90deg, transparent, rgba(255,255,255,0.34), transparent);
+  background-size: 100% 100%, 180% 100%;
+  animation: deckPreviewShineLoad 1.1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media-ph.is-loading::before,
+  .media-ph.is-loading::after,
+  .pdf-preview-block.is-loading::before,
+  .pdf-preview-block.is-loading::after {
+    animation: none !important;
+  }
+}
+
 /* Reveal the fixed top/bottom cover chrome fades smoothly instead of popping in. */
 body::before,
 body::after {
