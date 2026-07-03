@@ -84,7 +84,7 @@ export function initAnimations() {
   }
 
   function setupTrend(slide) {
-    var hl = slide.querySelector('.trend-intro .deck-headline');
+    var hl = slide.querySelector(':scope > .deck-headline, .trend-intro .deck-headline');
     if (hl) mark(hl, 'fadeUp', 0);
     var labels = Array.from(slide.querySelectorAll('.trend-col-label'));
     var panels = Array.from(slide.querySelectorAll('.trend-panel'));
@@ -332,9 +332,31 @@ export function initAnimations() {
         owner = owner.parentElement;
       }
 
-      // Only the main title stays pinned. Subheads are content and should
-      // scroll away with the rest of the slide body on desktop and mobile.
+      // Shared Slide renders a component-level body rail. Use it as the
+      // scrollable content region directly so headline/subhead remain header
+      // content and the body starts from the universal rail.
       if (!owner || !owner.contains(headerEnd)) return;
+
+      var existingBody = owner.querySelector(':scope > .deck-body');
+      if (existingBody) {
+        existingBody.classList.add('slide-scroll-content');
+        if (!owner.querySelector(':scope > .slide-scroll-fade')) {
+          var existingFade = document.createElement('div');
+          existingFade.className = 'slide-scroll-fade';
+          existingFade.setAttribute('aria-hidden', 'true');
+          owner.appendChild(existingFade);
+        }
+        owner.classList.add('scroll-split-owner');
+        slide.classList.add('has-scroll-content');
+        existingBody.addEventListener('scroll', function() { updateScrollFadeMasks(); }, { passive: true });
+        return;
+      }
+
+      // Legacy fallback: if a direct subhead follows the title, keep it pinned
+      // with the title instead of moving it into the content scroller.
+      if (headerEnd.nextElementSibling && headerEnd.nextElementSibling.matches && headerEnd.nextElementSibling.matches('.deck-subhead')) {
+        headerEnd = headerEnd.nextElementSibling;
+      }
 
       var nodesToMove = [];
       var node = headerEnd.nextSibling;

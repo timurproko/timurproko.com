@@ -13,7 +13,6 @@ import {
   Img,
   Media,
   MeshCompare,
-  Note,
   Pipeline,
   SplitMedia,
   Subhead,
@@ -87,7 +86,6 @@ export const slides = [
               'Text-to-speech voice synthesis',
             ]}
           />
-          <Note style={{ marginTop: 18 }}>Applied across gaming, entertainment, virtual reality and voice assistants.</Note>
         </>
       }
       media={

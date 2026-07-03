@@ -50,7 +50,11 @@ body::-webkit-scrollbar {
   --slide-pad-x: clamp(56px, 6.67vw, 128px);
   --slide-content-gap: 72px;
   --slide-body-gap: clamp(36px, 4.5vh, 52px);
-  padding: clamp(112px, 8.5vw, 152px) var(--slide-pad-x);
+  --deck-header-start-y: clamp(112px, 8.5vw, 152px);
+  --deck-content-start-y: clamp(244px, 24vh, 268px);
+  --deck-content-bottom-y: clamp(84px, 10vh, 132px);
+  --deck-header-gap: clamp(20px, 2.2vh, 34px);
+  padding: var(--deck-header-start-y) var(--slide-pad-x);
   display: flex;
   flex-direction: column;
   background: var(--bg);
@@ -63,6 +67,35 @@ body::-webkit-scrollbar {
   color: var(--bg);
   --border: #2a2a2a;
   --muted: #a0a0a0;
+}
+.deck-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-width: 100%;
+}
+.deck-body > :first-child {
+  margin-top: 0 !important;
+}
+.deck-body > :first-child > :first-child:is(.pipeline, .agenda, .arrow-list, .progression, .pillar-grid, .ui-workflow-grid, .split-media, .state-grid, .cond-grid, .two-col, .split, .pillars-venn) {
+  margin-top: 0 !important;
+}
+@media (min-width: 761px) {
+  .slide.has-body:not(.hero):not(.slide-section):not(.slide-zx-end):not(.pdf-page-slide) > .deck-body {
+    position: absolute;
+    top: var(--deck-content-start-y);
+    left: var(--slide-pad-x);
+    right: var(--slide-pad-x);
+    bottom: var(--deck-content-bottom-y);
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+  .slide.has-body.compact-header {
+    --deck-content-start-y: clamp(236px, 23vh, 258px);
+  }
 }
 .slide.hero {
   justify-content: center;
@@ -615,6 +648,11 @@ html.deck-preview-cover .animations-ready .slide.hero.is-visible .h-hero {
 .split .arrow-list {
   margin-top: 0;
 }
+.split-media .col-text > .deck-subhead + .arrow-list,
+.split-media .col-text > .deck-subhead + .arrow-list.tight,
+.split-media .col-text > .arrow-list + .mcp-tags {
+  margin-top: clamp(22px, 2.2vh, 30px) !important;
+}
 .split .arrow-list li {
   white-space: nowrap;
 }
@@ -666,7 +704,7 @@ html.deck-preview-cover .animations-ready .slide.hero.is-visible .h-hero {
 .trend-columns {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
-  grid-template-rows: clamp(22px, 2.6vw, 46px) auto;
+  grid-template-rows: clamp(58px, 4.2vw, 72px) auto;
   align-content: start;
   align-items: stretch;
   justify-content: center;
@@ -677,8 +715,7 @@ html.deck-preview-cover .animations-ready .slide.hero.is-visible .h-hero {
   min-height: 0;
   margin-top: clamp(28px, 2.3vw, 44px);
 }
-.trend-col-label {
-  grid-row: 1;
+.deck-item-heading {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: clamp(17px, 1.35vw, 26px);
@@ -686,10 +723,17 @@ html.deck-preview-cover .animations-ready .slide.hero.is-visible .h-hero {
   letter-spacing: -0.01em;
   text-align: center;
   color: var(--fg);
+  text-wrap: balance;
+}
+.trend-col-label {
+  grid-row: 1;
   width: min(280px, 100%);
   max-width: 100%;
-  text-wrap: balance;
   margin: 0 auto;
+  min-height: 2.4em;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
   align-self: end;
 }
 .trend-col-sep {
@@ -1143,7 +1187,7 @@ html.deck-preview-cover .animations-ready .slide.hero.is-visible .h-hero {
 }
 .slide-goal .arrow-list {
   min-width: 0;
-  max-width: 100% !important;
+  max-width: 560px !important;
   margin-top: 0 !important;
 }
 .slide-goal .flow-graph {
@@ -1155,11 +1199,11 @@ html.deck-preview-cover .animations-ready .slide.hero.is-visible .h-hero {
   justify-self: center;
   width: 100%;
   min-width: 0;
-  margin-top: 0;
+  margin-top: var(--flow-graph-offset-y, clamp(20px, 2.4vh, 28px));
 }
 .slide-goal .flow-graph svg {
   width: min(360px, 32vw, 58vh);
-  max-height: min(600px, calc(100vh - 300px));
+  max-height: min(560px, calc(100vh - 340px));
 }
 .notes {
   display: none;
@@ -1475,12 +1519,6 @@ body.deck-is-sliding::before,
 @media (min-width: 1400px) {
 .scroll-split-owner:not(.slide-goal):not(.slide-trend):not(.slide-mcp) > .slide-scroll-content > :is(p, ul, ol, .arrow-list, .deck-link) {
   max-width: min(1120px, 66vw) !important;
-}
-}
-@media (min-width: 761px) and (max-width: 1200px) {
-.slide-goal .arrow-list,
-    .slide-goal .flow-graph {
-  margin-top: -16px !important;
 }
 }
 @keyframes fadeUp {
@@ -2420,6 +2458,8 @@ html.deck-square-layout body::before,
 }
 html.deck-square-layout .slide {
   --slide-pad-x: 72px;
+  --deck-content-start-y: 282px;
+  --deck-content-bottom-y: 92px;
   padding: 76px var(--slide-pad-x) 76px;
   justify-content: center;
   overflow: hidden;
@@ -2535,14 +2575,14 @@ html.deck-square-layout .pill .tag {
 }
 html.deck-square-layout .trend-stack {
   max-width: 100%;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 18px;
 }
 html.deck-square-layout .slide-trend .deck-headline {
   margin-bottom: 18px;
 }
 html.deck-square-layout .trend-columns {
-  grid-template-rows: 58px auto;
+  grid-template-rows: 64px auto;
   column-gap: 8px;
   row-gap: 16px;
   margin-top: 12px;

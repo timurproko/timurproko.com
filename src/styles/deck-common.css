@@ -41,10 +41,86 @@ body.deck-is-sliding::after {
   }
 }
 
+/* Universal content rail. This file is loaded after each deck's page.css, so
+   these rules are the final component-level authority for where slide bodies
+   begin. Titles/subheads stay in the header slot; graphs, cards, lists and
+   media bodies all start on the same rail. */
+@media (min-width: 761px) {
+  .slide.has-body:not(.hero):not(.slide-section):not(.slide-zx-end):not(.pdf-page-slide) > .deck-body,
+  .slide.has-body.scroll-split-owner:not(.hero):not(.slide-section):not(.slide-zx-end):not(.pdf-page-slide) > .deck-body.slide-scroll-content {
+    position: absolute !important;
+    top: var(--deck-content-start-y) !important;
+    left: var(--slide-pad-x) !important;
+    right: var(--slide-pad-x) !important;
+    bottom: var(--deck-content-bottom-y) !important;
+    width: auto !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .slide.has-body > .deck-body::-webkit-scrollbar {
+    display: none;
+  }
+
+  .slide.has-body > .deck-body > :first-child,
+  .slide.has-body > .deck-body > :first-child > :first-child:is(.pipeline, .agenda, .arrow-list, .progression, .pillar-grid, .ui-workflow-grid, .split-media, .state-grid, .cond-grid, .two-col, .split, .pillars-venn, .pdf-preview-block, .architecture-tabs, .architecture-stage, .breakdown-stage) {
+    margin-top: 0 !important;
+  }
+
+  .slide.has-body > .deck-body > :is(.split-media, .state-grid, .cond-grid, .pipeline, .agenda, .progression, .pillar-grid, .ui-workflow-grid, .two-col, .split, .pillars-venn, .architecture-tabs, .architecture-stage, .breakdown-stage):first-child {
+    margin-top: 0 !important;
+  }
+
+  .slide.has-body > .deck-body:has(> .architecture-tabs) {
+    overflow: visible !important;
+  }
+
+  .slide.has-body > .deck-body > .trend-stack:first-child {
+    flex: none !important;
+    justify-content: flex-start !important;
+    margin: 0 !important;
+  }
+
+  .slide.has-body > .deck-body > .trend-stack:first-child > .trend-columns:first-child {
+    grid-template-rows: auto auto !important;
+    margin-top: 0 !important;
+  }
+
+  .slide.has-body > .deck-body > .trend-stack:first-child > .trend-columns:first-child > .trend-col-label {
+    align-self: start !important;
+    align-items: flex-start !important;
+    min-height: 0 !important;
+  }
+}
+
 @media (max-width: 760px) {
-  /* Mobile deck content should scroll under the pinned main title only. */
-  .scroll-split-owner > .slide-scroll-content {
-    padding-bottom: 180px;
+  /* Mobile uses natural flow after the shared header, while the body still owns
+     scrolling/fade behavior when the deck engine promotes it to a scroller. */
+  .slide.has-body > .deck-body,
+  .scroll-split-owner > .deck-body.slide-scroll-content {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: var(--slide-body-gap) 0 0 !important;
+    padding: 0 0 180px !important;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+  }
+
+  .slide.has-body > .deck-body > :first-child,
+  .slide.has-body > .deck-body > :first-child > :first-child:is(.pipeline, .agenda, .arrow-list, .progression, .pillar-grid, .ui-workflow-grid, .split-media, .state-grid, .cond-grid, .two-col, .split, .pillars-venn) {
+    margin-top: 0 !important;
   }
 
   /* Shared one-column media/card layouts. */

@@ -70,6 +70,12 @@ export function SplitMedia({ text, media }: { text: ReactNode; media: ReactNode 
 
 /* ------------------------------------------------------------ primitives */
 
+/** Reusable heading for card/grid item labels above media/cards. */
+export function DeckItemHeading({ children, className, style }: { children: ReactNode; className?: string; style?: CSSProperties }) {
+  const cls = ['deck-item-heading', className ?? ''].filter(Boolean).join(' ');
+  return <div className={cls} style={style}>{children}</div>;
+}
+
 /** Standard media frame. Wraps an image, video or custom content. */
 export function Media(props: {
   ariaLabel?: string;

@@ -8,7 +8,7 @@
 import { CSSProperties } from 'react';
 import { DeckConfig } from '../deck/Deck';
 import { Slide } from '../deck/Slide';
-import { CoverArt3D, CoverSlide } from '../components';
+import { CoverArt3D, CoverSlide, DeckItemHeading } from '../components';
 import { initHeroCanvas } from './hero.js';
 import { initCover3d } from './cover3d.js';
 
@@ -163,9 +163,9 @@ export const slides = [
     headline="One model, three conditions"
   >
     <div className="state-grid">
-        <div className="state"><div className="media-ph" aria-label="Normal heart condition video preview"><video src="assets/condition_normal.mp4" muted loop playsInline preload="metadata"></video></div><div className="state-label">Normal heart</div></div>
-        <div className="state"><div className="media-ph" aria-label="Aortic stenosis condition video preview"><video src="assets/condition_as.mp4" muted loop playsInline preload="metadata"></video></div><div className="state-label">Aortic stenosis</div></div>
-        <div className="state"><div className="media-ph" aria-label="Atrial fibrillation condition video preview"><video src="assets/condition_af.mp4" muted loop playsInline preload="metadata"></video></div><div className="state-label">Atrial fibrillation</div></div>
+        <div className="state"><div className="media-ph" aria-label="Normal heart condition video preview"><video src="assets/condition_normal.mp4" muted loop playsInline preload="metadata"></video></div><DeckItemHeading className="state-label">Normal heart</DeckItemHeading></div>
+        <div className="state"><div className="media-ph" aria-label="Aortic stenosis condition video preview"><video src="assets/condition_as.mp4" muted loop playsInline preload="metadata"></video></div><DeckItemHeading className="state-label">Aortic stenosis</DeckItemHeading></div>
+        <div className="state"><div className="media-ph" aria-label="Atrial fibrillation condition video preview"><video src="assets/condition_af.mp4" muted loop playsInline preload="metadata"></video></div><DeckItemHeading className="state-label">Atrial fibrillation</DeckItemHeading></div>
       </div>
   </Slide>,
 

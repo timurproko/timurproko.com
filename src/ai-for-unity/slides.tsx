@@ -8,7 +8,7 @@
 import { CSSProperties } from 'react';
 import { DeckConfig } from '../deck/Deck';
 import { Slide } from '../deck/Slide';
-import { CoverArt3D, CoverSlide } from '../components';
+import { CoverArt3D, CoverSlide, DeckItemHeading } from '../components';
 import { initHeroCanvas } from './hero.js';
 import { initCover3d } from './cover3d.js';
 
@@ -37,16 +37,14 @@ export const slides = [
     notes="The industry is moving from traditional engineering to vibe coding to agentic engineering. AI is no longer just a tool you call — it's a collaborator inside your loop. Development is shifting from manual control to guided automation."
     className="slide-trend"
     tag="Trend"
+    headline="The shift to agents"
   >
     <div className="trend-stack">
-        <div className="trend-intro">
-          <h2 className="deck-headline">The shift to agents</h2>
-        </div>
         <div className="trend-columns" role="img" aria-label="Evolution from traditional engineering to agentic engineering">
-          <p className="trend-col-label" style={{ gridColumn: '1' }}>Traditional engineering</p>
-          <p className="trend-col-label" style={{ gridColumn: '3' }}>Auto-complete</p>
-          <p className="trend-col-label" style={{ gridColumn: '5' }}>Vibe coding</p>
-          <p className="trend-col-label" style={{ gridColumn: '7' }}>Agentic engineering</p>
+          <DeckItemHeading className="trend-col-label" style={{ gridColumn: '1' }}>Traditional engineering</DeckItemHeading>
+          <DeckItemHeading className="trend-col-label" style={{ gridColumn: '3' }}>Auto-complete</DeckItemHeading>
+          <DeckItemHeading className="trend-col-label" style={{ gridColumn: '5' }}>Vibe coding</DeckItemHeading>
+          <DeckItemHeading className="trend-col-label" style={{ gridColumn: '7' }}>Agentic engineering</DeckItemHeading>
           <svg className="trend-panel" style={{ gridColumn: '1', gridRow: '2' }} viewBox="0 0 195 250" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <defs><clipPath id="panelClip1"><rect width="195" height="250" rx="14" /></clipPath></defs>
               <rect width="195" height="250" rx="14" fill="#ffffff" stroke="#e5e5e5" />
@@ -567,13 +565,13 @@ export const slides = [
     tag="Engineering · Goal"
     headline="Agentic engineering"
   >
-    <ul className="arrow-list tight" style={{ marginTop: '32px', maxWidth: '560px' }}>
+    <ul className="arrow-list tight">
         <li>You make AI understand your intent</li>
         <li>You know exactly what it will produce</li>
         <li>The output is controlled, not random</li>
         <li>You refine the process until it's repeatable</li>
       </ul>
-      <div className="flow-graph" style={{ position: 'absolute', right: '160px', top: '140px', bottom: '96px', display: 'flex', alignItems: 'center' }}>
+      <div className="flow-graph">
           <svg viewBox="0 0 400 650" overflow="visible" xmlns="http://www.w3.org/2000/svg" style={{ fontFamily: 'var(--font-body)' } as CSSProperties}>
             <defs>
               <marker id="arrV" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">

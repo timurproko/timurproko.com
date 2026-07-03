@@ -167,9 +167,6 @@ html.deck-starts-on-dark body.chrome-boot {
   margin-bottom: 12px;
 }
 }
-[data-screen-label="02 UX Fusion"] .slide-scroll-content > .deck-subhead:first-child + .pillars-venn {
-  margin-top: 22px !important;
-}
 [data-screen-label="02 UX Fusion"] .pillars-venn {
   --venn-label-font-size: 28px;
   --venn-core-font-size: 34px;
