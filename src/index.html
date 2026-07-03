@@ -1691,7 +1691,10 @@
     }
 
     function posterUrl(file) {
-      return `assets/previews/${encodeURIComponent(normalizePresentationRoute(file))}.jpg`;
+      // Preview posters are regenerated during GitHub Actions builds. Cache-bust
+      // them on load so mobile does not keep showing stale/blank posters from
+      // a previous deploy while the page HTML has already updated.
+      return `assets/previews/${encodeURIComponent(normalizePresentationRoute(file))}.jpg?v=${Date.now()}`;
     }
 
     function presentationUrl(file) {
