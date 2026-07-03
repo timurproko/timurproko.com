@@ -1933,6 +1933,13 @@ body::-webkit-scrollbar {
 .slide.hero.center {
   align-items: center;
   text-align: center;
+  /* Keep the mobile cover text as the same compact stack as desktop.
+     The title is shorter on narrow screens, so the rule/meta need to be
+     tied to the title position instead of staying at desktop viewport Y. */
+  --cover-kicker-y: 27.6svh;
+  --cover-title-y: 33.3svh;
+  --cover-rule-y: calc(var(--cover-title-y) + clamp(148px, 43vw, 188px));
+  --cover-meta-y: calc(var(--cover-rule-y) + clamp(36px, 8vw, 48px));
 }
 .kicker {
   font-size: clamp(12px, 3.4vw, 16px);
@@ -2072,6 +2079,10 @@ body::-webkit-scrollbar {
   width: 128px;
   height: 4px;
   margin-top: 32px;
+}
+.slide.hero.center > .cover-rule,
+.slide.hero.center > .cover-meta {
+  margin-top: 0;
 }
 .closing-stamp {
   margin-top: 32px;
