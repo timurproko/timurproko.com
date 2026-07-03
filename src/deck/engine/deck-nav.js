@@ -190,10 +190,21 @@ export function initDeckNav(config) {
       setActive(i);
     }
   }
+  function isInteractiveKeyboardTarget(t) {
+    if (!t) return false;
+    if (t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.tagName === 'BUTTON') return true;
+    if (t.tagName !== 'INPUT') return false;
+
+    // Hidden deck-local radio controls can receive focus after their labels are
+    // clicked. They should not trap the global slide keyboard shortcuts.
+    if (t.type === 'radio' && t.tabIndex < 0) return false;
+
+    return true;
+  }
   function onKey(e) {
     if (e.defaultPrevented) return;
     var t = e.target;
-    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.tagName === 'BUTTON')) return;
+    if (isInteractiveKeyboardTarget(t)) return;
     if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
       e.preventDefault();
       go(active + 1);
