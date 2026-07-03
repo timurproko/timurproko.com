@@ -15,35 +15,42 @@ export function initAnimations() {
       if (!media.length) return;
       host.dataset.previewLoadingBound = '1';
 
+      var minLoaderMs = 720;
+      var loaderStartedAt = performance.now ? performance.now() : Date.now();
       var pending = new Set(media.filter(function(el) {
         if (el.tagName === 'IMG') return !(el.complete && el.naturalWidth > 0);
         if (el.tagName === 'VIDEO') return el.readyState < 2;
         return false;
       }));
 
+      host.classList.add('is-loading');
+
+      function clearWhenReady() {
+        if (pending.size) return;
+        var now = performance.now ? performance.now() : Date.now();
+        var remaining = Math.max(0, minLoaderMs - (now - loaderStartedAt));
+        window.setTimeout(function() { host.classList.remove('is-loading'); }, remaining);
+      }
+
       function finish(el) {
         pending.delete(el);
-        if (!pending.size) host.classList.remove('is-loading');
+        clearWhenReady();
       }
 
-      if (pending.size) {
-        host.classList.add('is-loading');
-        pending.forEach(function(el) {
-          if (el.tagName === 'IMG') {
-            el.addEventListener('load', function() { finish(el); }, { once: true });
-            el.addEventListener('error', function() { finish(el); }, { once: true });
-          } else if (el.tagName === 'VIDEO') {
-            el.addEventListener('loadeddata', function() { finish(el); }, { once: true });
-            el.addEventListener('canplay', function() { finish(el); }, { once: true });
-            el.addEventListener('error', function() { finish(el); }, { once: true });
-            try { if (el.networkState === HTMLMediaElement.NETWORK_EMPTY) el.load(); } catch (_) {}
-          }
-        });
-        window.setTimeout(function() { host.classList.remove('is-loading'); pending.clear(); }, 12000);
-        return;
-      }
+      pending.forEach(function(el) {
+        if (el.tagName === 'IMG') {
+          el.addEventListener('load', function() { finish(el); }, { once: true });
+          el.addEventListener('error', function() { finish(el); }, { once: true });
+        } else if (el.tagName === 'VIDEO') {
+          el.addEventListener('loadeddata', function() { finish(el); }, { once: true });
+          el.addEventListener('canplay', function() { finish(el); }, { once: true });
+          el.addEventListener('error', function() { finish(el); }, { once: true });
+          try { if (el.networkState === HTMLMediaElement.NETWORK_EMPTY) el.load(); } catch (_) {}
+        }
+      });
 
-      host.classList.remove('is-loading');
+      clearWhenReady();
+      window.setTimeout(function() { pending.clear(); host.classList.remove('is-loading'); }, 12000);
     });
   }
 
