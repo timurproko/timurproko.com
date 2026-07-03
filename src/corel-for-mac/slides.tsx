@@ -522,9 +522,9 @@ export const slides = [
           <g className="breakdown-hotspot" tabIndex={0} aria-label="Framework details">
             <rect className="hotspot-fill" x="280" y="96" width="780" height="384" rx="10" />
             <g className="breakdown-tip">
-              <rect x="34" y="166" width="250" height="112" />
-              <text className="tip-title" x="48" y="188">Framework</text>
-              <text className="tip-copy" x="48" y="210"><tspan x="48">Cursors, document tabs,</tspan><tspan x="48" dy="16">dialogs, split-screen views</tspan><tspan x="48" dy="16">and multi-window behaviour.</tspan></text>
+              <rect x="170" y="166" width="250" height="112" />
+              <text className="tip-title" x="184" y="188">Framework</text>
+              <text className="tip-copy" x="184" y="210"><tspan x="184">Cursors, document tabs,</tspan><tspan x="184" dy="16">dialogs, split-screen views</tspan><tspan x="184" dy="16">and multi-window behaviour.</tspan></text>
             </g>
           </g>
 
@@ -558,63 +558,63 @@ export const slides = [
           <g className="breakdown-hotspot" tabIndex={0} aria-label="Document work area details">
             <rect className="hotspot-fill" x="322" y="228" width="548" height="229" />
             <g className="breakdown-tip">
-              <rect x="48" y="306" width="238" height="96" />
-              <text className="tip-title" x="62" y="328">Document Work Area</text>
-              <text className="tip-copy" x="62" y="350"><tspan x="62">Drag and drop, input gestures</tspan><tspan x="62" dy="16">and real-time previews.</tspan></text>
+              <rect x="170" y="306" width="238" height="96" />
+              <text className="tip-title" x="184" y="328">Document Work Area</text>
+              <text className="tip-copy" x="184" y="350"><tspan x="184">Drag and drop, input gestures</tspan><tspan x="184" dy="16">and real-time previews.</tspan></text>
             </g>
           </g>
 
           <g className="breakdown-hotspot" tabIndex={0} aria-label="Docker framework and dockers details">
             <rect className="hotspot-fill" x="870" y="228" width="150" height="229" />
             <g className="breakdown-tip">
-              <rect x="1058" y="164" width="246" height="112" />
-              <text className="tip-title" x="1072" y="186">Dockers</text>
-              <text className="tip-copy" x="1072" y="208"><tspan x="1072">Tabs, freeform docking,</tspan><tspan x="1072" dy="16">show/hide, consolidation and</tspan><tspan x="1072" dy="16">context-sensitive controls.</tspan></text>
+              <rect x="900" y="164" width="246" height="112" />
+              <text className="tip-title" x="914" y="186">Dockers</text>
+              <text className="tip-copy" x="914" y="208"><tspan x="914">Tabs, freeform docking,</tspan><tspan x="914" dy="16">show/hide, consolidation and</tspan><tspan x="914" dy="16">context-sensitive controls.</tspan></text>
             </g>
           </g>
 
           <g className="breakdown-hotspot" tabIndex={0} aria-label="Tool box details">
             <rect className="hotspot-fill" x="280" y="228" width="42" height="229" />
             <g className="breakdown-tip">
-              <rect x="54" y="426" width="224" height="80" />
-              <text className="tip-title" x="68" y="448">Tool Box</text>
-              <text className="tip-copy" x="68" y="470"><tspan x="68">Tool consolidation, grouping</tspan><tspan x="68" dy="16">and customisability.</tspan></text>
+              <rect x="170" y="340" width="224" height="80" />
+              <text className="tip-title" x="184" y="362">Tool Box</text>
+              <text className="tip-copy" x="184" y="384"><tspan x="184">Tool consolidation, grouping</tspan><tspan x="184" dy="16">and customisability.</tspan></text>
             </g>
           </g>
 
           <g className="breakdown-hotspot" tabIndex={0} aria-label="Context menus details">
             <rect className="hotspot-fill" x="348" y="328" width="140" height="130" rx="7" />
             <g className="breakdown-tip">
-              <rect x="56" y="488" width="236" height="64" />
-              <text className="tip-title" x="70" y="510">Context Menus</text>
-              <text className="tip-copy" x="70" y="532">Basic transliteration and simplification.</text>
+              <rect x="500" y="384" width="236" height="64" />
+              <text className="tip-title" x="514" y="406">Context Menus</text>
+              <text className="tip-copy" x="514" y="428">Basic transliteration and simplification.</text>
             </g>
           </g>
 
           <g className="breakdown-hotspot" tabIndex={0} aria-label="Colour palettes details">
             <rect className="hotspot-fill" x="1020" y="228" width="40" height="229" />
             <g className="breakdown-tip">
-              <rect x="1082" y="398" width="218" height="86" />
-              <text className="tip-title" x="1096" y="420">Colour Palettes</text>
-              <text className="tip-copy" x="1096" y="442"><tspan x="1096">Basic transliteration,</tspan><tspan x="1096" dy="16">simplification and standards.</tspan></text>
+              <rect x="900" y="352" width="218" height="86" />
+              <text className="tip-title" x="914" y="374">Colour Palettes</text>
+              <text className="tip-copy" x="914" y="396"><tspan x="914">Basic transliteration,</tspan><tspan x="914" dy="16">simplification and standards.</tspan></text>
             </g>
           </g>
 
           <g className="breakdown-hotspot" tabIndex={0} aria-label="Status bar details">
             <rect className="hotspot-fill" x="280" y="457" width="780" height="23" />
             <g className="breakdown-tip">
-              <rect x="1082" y="462" width="222" height="72" />
-              <text className="tip-title" x="1096" y="484">Status Bar</text>
-              <text className="tip-copy" x="1096" y="506"><tspan x="1096">Basic transliteration,</tspan><tspan x="1096" dy="16">simplification and standards.</tspan></text>
+              <rect x="900" y="400" width="222" height="72" />
+              <text className="tip-title" x="914" y="422">Status Bar</text>
+              <text className="tip-copy" x="914" y="444"><tspan x="914">Basic transliteration,</tspan><tspan x="914" dy="16">simplification and standards.</tspan></text>
             </g>
           </g>
 
           <g className="breakdown-hotspot" tabIndex={0} aria-label="Touch Bar details">
             <rect className="hotspot-fill" x="280" y="510" width="780" height="34" />
             <g className="breakdown-tip">
-              <rect x="1082" y="504" width="218" height="50" />
-              <text className="tip-title" x="1096" y="526">Touch Bar</text>
-              <text className="tip-copy" x="1096" y="546">Avoid property-bar duplication.</text>
+              <rect x="830" y="430" width="218" height="50" />
+              <text className="tip-title" x="844" y="452">Touch Bar</text>
+              <text className="tip-copy" x="844" y="472">Avoid property-bar duplication.</text>
             </g>
           </g>
         </svg>

@@ -337,6 +337,31 @@ html.deck-square-layout [data-screen-label="20 AI Workflow"] .ui-workflow-grid,
   .architecture-graph .dash { stroke-dasharray: 2 2; }
   .architecture-graph text { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.02em; fill: #353535; dominant-baseline: middle; text-anchor: middle; text-transform: uppercase; }
   .architecture-graph .vertical { writing-mode: vertical-rl; glyph-orientation-vertical: 0deg; }
+  @media (max-width: 760px) {
+    .architecture-tabs {
+      flex: 0 0 auto;
+      margin-top: 36px;
+    }
+    .architecture-tab-controls {
+      align-items: stretch;
+    }
+    .architecture-tab-controls label {
+      display: grid;
+      min-width: 126px;
+      min-height: 32px;
+      place-items: center;
+      padding: 8px 18px;
+      text-align: center;
+      white-space: nowrap;
+      font-size: 14px;
+    }
+    .architecture-stage {
+      flex: 0 0 auto;
+      aspect-ratio: 725 / 436;
+      height: auto;
+      margin-top: 42px;
+    }
+  }
   .breakdown-stage { width: min(1320px, 100%); margin-top: clamp(34px, 2.2vw, 42px); flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; }
   .breakdown-svg { display: block; width: 100%; height: min(560px, 52vh); overflow: visible; }
   .breakdown-svg .window { fill: #fff; stroke: #171717; stroke-width: 2.1; }
@@ -358,18 +383,80 @@ html.deck-square-layout [data-screen-label="20 AI Workflow"] .ui-workflow-grid,
   .breakdown-tip rect { fill: rgba(255,255,255,0.96); stroke: #9ca3af; stroke-width: 1; rx: 8; filter: drop-shadow(0 12px 24px rgba(17,17,17,0.14)); }
   .breakdown-tip .tip-title { font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: -0.01em; fill: #111; }
   .breakdown-tip .tip-copy { font-family: var(--font-body); font-size: 15px; letter-spacing: 0; fill: #5f6368; }
+  .breakdown-mobile-detail { display: none; }
+  @media (max-width: 760px) {
+    .breakdown-stage {
+      width: calc(100% + 48px);
+      margin: var(--slide-body-gap) -24px 0;
+      gap: 16px;
+    }
+    .breakdown-svg {
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+    .breakdown-svg text { font-size: 18px; }
+    .breakdown-svg .ui-label { font-size: 18px; }
+    .breakdown-svg .breakdown-tip { display: none; }
+    .breakdown-hotspot.is-selected .hotspot-fill,
+    .breakdown-hotspot:focus .hotspot-fill {
+      fill: color-mix(in oklab, var(--accent), transparent 84%);
+      stroke: var(--accent);
+    }
+    .breakdown-mobile-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: calc(100% - 48px);
+      margin: 0 24px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: color-mix(in oklab, var(--surface), var(--accent) 4%);
+      box-shadow: 0 10px 28px rgba(17,17,17,0.06);
+    }
+    .breakdown-mobile-detail strong {
+      font-family: var(--font-display);
+      font-size: 18px;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--fg);
+    }
+    .breakdown-mobile-detail span {
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+  }
   @property --pdf-preview-scale {
     syntax: "<number>";
     inherits: true;
     initial-value: 1;
   }
   .pdf-page-slide { background: #f8f8f9; }
-  .pdf-preview-block { --pdf-preview-height: min(600px, 56vh); --pdf-preview-scale: 1; width: min(1100px, 100%); height: var(--pdf-preview-height); margin-top: clamp(8px, 1vw, 18px); border: 1px solid var(--border); border-radius: 22px; background: #fff; box-shadow: 0 24px 70px rgba(17,17,17,0.12); overflow: hidden; display: block; cursor: zoom-in; transition: --pdf-preview-scale 520ms var(--ease-spring), border-color var(--motion-fast) var(--ease-standard), box-shadow var(--motion-hover) var(--ease-standard); }
+  .pdf-preview-block { --pdf-preview-height: min(600px, 56vh); --pdf-preview-scale: 1; width: min(1100px, 100%); height: var(--pdf-preview-height); margin-top: clamp(8px, 1vw, 18px); border: 1px solid var(--border); border-radius: 22px; background: #fff; box-shadow: 0 24px 70px rgba(17,17,17,0.12); overflow: hidden; display: block; cursor: zoom-in; container-type: inline-size; transition: --pdf-preview-scale 520ms var(--ease-spring), border-color var(--motion-fast) var(--ease-standard), box-shadow var(--motion-hover) var(--ease-standard); }
   .pdf-preview-block:hover { --pdf-preview-scale: 1.06; z-index: 2; border-color: oklch(85% 0.005 250); box-shadow: 0 22px 70px rgba(17,17,17,0.30), 0 4px 18px rgba(17,17,17,0.14); }
   .pdf-preview-block img { display: block; width: 100%; height: auto; min-height: 100%; object-fit: cover; user-select: none; animation: pdfPreviewPan 6s ease-in-out infinite alternate; transform-origin: center top; will-change: transform; }
   @keyframes pdfPreviewPan {
     0%, 16% { transform: translateY(0) scale(var(--pdf-preview-scale)); }
     84%, 100% { transform: translateY(calc(var(--pdf-preview-height) - 100%)) scale(var(--pdf-preview-scale)); }
+  }
+  @media (max-width: 760px) {
+    .pdf-preview-block img {
+      width: auto;
+      max-width: none;
+      height: 100%;
+      min-width: 100%;
+      min-height: 0;
+      object-position: left top;
+      transform-origin: left top;
+      animation-name: pdfPreviewPanMobile;
+    }
+    @keyframes pdfPreviewPanMobile {
+      0%, 16% { transform: translateX(0) scale(var(--pdf-preview-scale)); }
+      84%, 100% { transform: translateX(calc(100cqw - 100%)) scale(var(--pdf-preview-scale)); }
+    }
   }
   @media (prefers-reduced-motion: reduce) { .pdf-preview-block img { animation: none; transform: scale(var(--pdf-preview-scale)); } }
   .split-media { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(36px, 4vw, 80px); align-items: start; flex: 1; min-height: 0; margin-top: clamp(24px, 2.2vw, 40px); }

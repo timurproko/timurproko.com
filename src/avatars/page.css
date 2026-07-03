@@ -447,4 +447,15 @@ html.deck-square-layout [data-screen-label="20 AI Workflow"] .ui-workflow-grid,
     .pipeline {
       margin-top: 48px;
     }
+    .pipe-step {
+      grid-template-columns: clamp(40px, 8vw, 56px) minmax(0, 1fr);
+      align-items: start;
+      row-gap: 8px;
+    }
+    .pipe-tools {
+      grid-column: 2;
+      justify-content: flex-start;
+      align-self: start;
+      margin-top: 0;
+    }
   }

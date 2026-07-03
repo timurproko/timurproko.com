@@ -9,8 +9,9 @@
 // (the exact cover the iframe shows), saved as an optimized JPEG.
 
 import fs from 'node:fs/promises';
+import { createServer } from 'node:http';
 import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
@@ -39,13 +40,14 @@ async function main() {
 
   await fs.mkdir(outDir, { recursive: true });
 
+  const server = await startStaticServer(distDir);
   const browser = await chromium.launch({ headless: true });
   try {
     for (const { slug, width, height } of PRESENTATIONS) {
-      const indexPath = path.join(distDir, slug, 'index.html');
-      const url = `${pathToFileURL(indexPath).href}?preview=cover`;
+      const url = `${server.origin}/${encodeURIComponent(slug)}/?preview=cover`;
       const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
-      await page.goto(url, { waitUntil: 'load' });
+      await page.goto(url, { waitUntil: 'networkidle' });
+      await page.waitForSelector('.slide.hero, .hero', { timeout: 10000 });
       await page.waitForTimeout(SETTLE_MS);
       const outPath = path.join(outDir, `${slug}.jpg`);
       await page.screenshot({ path: outPath, type: 'jpeg', quality: 82 });
@@ -55,9 +57,63 @@ async function main() {
     }
   } finally {
     await browser.close();
+    await server.close();
   }
 
   console.log(`Generated ${PRESENTATIONS.length} preview poster(s) in ${path.relative(rootDir, outDir)}`);
+}
+
+async function startStaticServer(root) {
+  const server = createServer(async (req, res) => {
+    try {
+      const requestUrl = new URL(req.url || '/', 'http://localhost');
+      const pathname = decodeURIComponent(requestUrl.pathname);
+      const relativePath = pathname.endsWith('/') ? `${pathname}index.html` : pathname;
+      const filePath = path.resolve(root, `.${relativePath}`);
+
+      if (!filePath.startsWith(root)) {
+        res.writeHead(403).end('Forbidden');
+        return;
+      }
+
+      const stat = await fs.stat(filePath).catch(() => null);
+      if (!stat || !stat.isFile()) {
+        res.writeHead(404).end('Not found');
+        return;
+      }
+
+      res.writeHead(200, { 'Content-Type': contentType(filePath) });
+      res.end(await fs.readFile(filePath));
+    } catch (error) {
+      res.writeHead(500).end(error instanceof Error ? error.message : 'Server error');
+    }
+  });
+
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const address = server.address();
+  if (!address || typeof address === 'string') throw new Error('Failed to start preview server');
+
+  return {
+    origin: `http://127.0.0.1:${address.port}`,
+    close: () => new Promise((resolve, reject) => server.close((error) => error ? reject(error) : resolve())),
+  };
+}
+
+function contentType(filePath) {
+  const ext = path.extname(filePath).toLowerCase();
+  return {
+    '.css': 'text/css; charset=utf-8',
+    '.html': 'text/html; charset=utf-8',
+    '.js': 'text/javascript; charset=utf-8',
+    '.json': 'application/json; charset=utf-8',
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.mp4': 'video/mp4',
+    '.png': 'image/png',
+    '.svg': 'image/svg+xml',
+    '.webm': 'video/webm',
+    '.webp': 'image/webp',
+  }[ext] || 'application/octet-stream';
 }
 
 main().catch(error => {

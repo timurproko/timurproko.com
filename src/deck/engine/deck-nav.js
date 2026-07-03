@@ -251,6 +251,7 @@ export function initDeckNav(config) {
   setupHoverVideoPreviews();
   setupMeshComparePreviews();
   setupHeartStateTabs();
+  setupBreakdownMobileDetails();
 
   window.addEventListener('keydown', onKey, true);
   document.addEventListener('keydown', onKey, true);
@@ -283,6 +284,9 @@ export function initDeckNav(config) {
     tabs.className = 'state-tabs';
     tabs.setAttribute('role', 'tablist');
     tabs.setAttribute('aria-label', 'Heart condition');
+    tabs.setAttribute('data-anim', 'fadeUp');
+    tabs.style.setProperty('--anim-name', 'fadeUp');
+    tabs.style.setProperty('--anim-delay', '110ms');
 
     function playVideo(video) {
       if (!video) return;
@@ -339,6 +343,45 @@ export function initDeckNav(config) {
 
     grid.parentNode.insertBefore(tabs, grid);
     selectState(0);
+  }
+
+  function setupBreakdownMobileDetails() {
+    document.querySelectorAll('.breakdown-stage').forEach(function (stage) {
+      var svg = stage.querySelector('.breakdown-svg');
+      if (!svg || stage.querySelector('.breakdown-mobile-detail')) return;
+
+      var detail = document.createElement('div');
+      detail.className = 'breakdown-mobile-detail';
+      detail.setAttribute('aria-live', 'polite');
+      stage.appendChild(detail);
+
+      var hotspots = Array.from(stage.querySelectorAll('.breakdown-hotspot'));
+      if (!hotspots.length) return;
+
+      function textFrom(hotspot, selector) {
+        var node = hotspot.querySelector(selector);
+        return node ? node.textContent.trim().replace(/\s+/g, ' ') : '';
+      }
+
+      function selectHotspot(hotspot) {
+        hotspots.forEach(function (item) { item.classList.toggle('is-selected', item === hotspot); });
+        var title = textFrom(hotspot, '.tip-title') || hotspot.getAttribute('aria-label') || 'Details';
+        var copy = textFrom(hotspot, '.tip-copy');
+        detail.innerHTML = '<strong>' + escapeHtml(title) + '</strong>' + (copy ? '<span>' + escapeHtml(copy) + '</span>' : '');
+      }
+
+      hotspots.forEach(function (hotspot) {
+        hotspot.addEventListener('click', function () { selectHotspot(hotspot); });
+        hotspot.addEventListener('focus', function () { selectHotspot(hotspot); });
+      });
+      selectHotspot(hotspots[0]);
+    });
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"]/g, function (char) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char] || char;
+    });
   }
 
   function setupHoverVideoPreviews() {

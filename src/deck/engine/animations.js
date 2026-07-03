@@ -122,8 +122,13 @@ export function initAnimations() {
       { sel: '.progression .step',  anim: 'scaleIn',  base: 120, step: 75 },
       { sel: '.ui-lane',            anim: 'scaleIn',  base: 120, step: 75 },
       { sel: '.cond-card',          anim: 'scaleIn',  base: 110, step: 90 },
+      { sel: '.state-tabs',         anim: 'fadeUp',   base: 110, step: 0  },
       { sel: '.state-grid .state',  anim: 'scaleIn',  base: 120, step: 90 },
       { sel: '.split-media .col-media', anim: 'fadeOnly', base: 220, step: 0 },
+      { sel: '.architecture-tab-controls', anim: 'fadeOnly', base: 120, step: 0 },
+      { sel: '.architecture-stage', anim: 'scaleIn',  base: 180, step: 0  },
+      { sel: '.breakdown-stage',    anim: 'scaleIn',  base: 180, step: 0  },
+      { sel: '.pdf-preview-block',  anim: 'scaleIn',  base: 160, step: 0  },
       { sel: '.pillars-venn',       anim: 'fadeOnly', base: 160, step: 0  },
       { sel: '.lead',               anim: 'fadeUp',   base: 120, step: 0  },
       { sel: '.closing-stamp',      anim: 'fadeUp',   base: 200, step: 0  },
@@ -305,11 +310,12 @@ export function initAnimations() {
       }
       if (owner && fade) {
         var ownerRect = owner.getBoundingClientRect();
-        var title = owner.querySelector(':scope > .deck-headline, :scope > .trend-intro .deck-headline, :scope > [data-deck-title]');
-        var scrollerRect = scroller.getBoundingClientRect();
+        var title = owner.querySelector('.deck-headline, .trend-intro .deck-headline, [data-deck-title]');
         var titleRect = title && title.getBoundingClientRect ? title.getBoundingClientRect() : null;
-        var fadeTop = titleRect ? (titleRect.top - ownerRect.top - 4) : (scrollerRect.top - ownerRect.top);
-        fade.style.setProperty('--scroll-fade-top', Math.max(0, fadeTop) + 'px');
+        var solidY = titleRect ? Math.max(0, titleRect.bottom - ownerRect.top + 8) : 96;
+        var fadeTail = window.matchMedia && window.matchMedia('(max-width: 760px)').matches ? 78 : 92;
+        fade.style.setProperty('--scroll-fade-solid-y', solidY + 'px');
+        fade.style.setProperty('--scroll-fade-height', (solidY + fadeTail) + 'px');
       }
     });
   }
@@ -350,12 +356,6 @@ export function initAnimations() {
         slide.classList.add('has-scroll-content');
         existingBody.addEventListener('scroll', function() { updateScrollFadeMasks(); }, { passive: true });
         return;
-      }
-
-      // Legacy fallback: if a direct subhead follows the title, keep it pinned
-      // with the title instead of moving it into the content scroller.
-      if (headerEnd.nextElementSibling && headerEnd.nextElementSibling.matches && headerEnd.nextElementSibling.matches('.deck-subhead')) {
-        headerEnd = headerEnd.nextElementSibling;
       }
 
       var nodesToMove = [];

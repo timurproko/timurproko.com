@@ -41,10 +41,60 @@ body.deck-is-sliding::after {
   }
 }
 
+/* Unified scroll fade. Every promoted content scroller uses one slide-level
+   overlay instead of per-content masks/sticky pseudo elements, so the fade
+   starts and looks identical across cards, lists, media, and text slides. */
+.scroll-split-owner.is-content-scrolled > .slide-scroll-content,
+.scroll-split-owner.is-content-scrolled > .deck-body.slide-scroll-content {
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}
+
+.scroll-split-owner > .slide-scroll-content::before,
+.scroll-split-owner > .deck-body.slide-scroll-content::before {
+  content: none !important;
+}
+
+.scroll-split-owner > .slide-scroll-fade {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0;
+  right: 0;
+  height: var(--scroll-fade-height, var(--deck-scroll-fade-height, clamp(132px, 16vh, 196px)));
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 180ms var(--ease-standard);
+  background: linear-gradient(to bottom,
+      var(--bg) 0,
+      color-mix(in oklab, var(--bg), transparent 3%) var(--scroll-fade-solid-y, 58%),
+      color-mix(in oklab, var(--bg), transparent 40%) calc(var(--scroll-fade-solid-y, 58%) + 38px),
+      transparent 100%) !important;
+}
+
+.slide.dark.scroll-split-owner > .slide-scroll-fade,
+.slide.dark .scroll-split-owner > .slide-scroll-fade {
+  background: linear-gradient(to bottom,
+      var(--fg) 0,
+      color-mix(in oklab, var(--fg), transparent 3%) var(--scroll-fade-solid-y, 58%),
+      color-mix(in oklab, var(--fg), transparent 40%) calc(var(--scroll-fade-solid-y, 58%) + 38px),
+      transparent 100%) !important;
+}
+
+.scroll-split-owner.is-content-scrolled > .slide-scroll-fade {
+  opacity: 1;
+}
+
+@media (max-width: 760px) {
+  .scroll-split-owner > .slide-scroll-fade {
+    --deck-scroll-fade-height: clamp(170px, 24svh, 240px);
+  }
+}
+
 /* Universal content rail. This file is loaded after each deck's page.css, so
    these rules are the final component-level authority for where slide bodies
-   begin. Titles/subheads stay in the header slot; graphs, cards, lists and
-   media bodies all start on the same rail. */
+   begin. Titles stay in the header slot; subheads, graphs, cards, lists and
+   media bodies scroll together from the same rail. */
 @media (min-width: 761px) {
   .slide.has-body:not(.hero):not(.slide-section):not(.slide-zx-end):not(.pdf-page-slide) > .deck-body,
   .slide.has-body.scroll-split-owner:not(.hero):not(.slide-section):not(.slide-zx-end):not(.pdf-page-slide) > .deck-body.slide-scroll-content {
@@ -64,6 +114,12 @@ body.deck-is-sliding::after {
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+  }
+
+  .slide.has-body.scroll-split-owner:not(.hero):not(.slide-section):not(.slide-zx-end):not(.pdf-page-slide) > .deck-body.slide-scroll-content {
+    --deck-scroll-underlap: clamp(48px, 6vh, 78px);
+    top: calc(var(--deck-content-start-y) - var(--deck-content-bleed) - var(--deck-scroll-underlap)) !important;
+    padding-top: calc(var(--deck-content-bleed) + var(--deck-scroll-underlap)) !important;
   }
 
   .slide.has-body > .deck-body::-webkit-scrollbar {
@@ -124,6 +180,14 @@ body.deck-is-sliding::after {
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior-y: contain;
+  }
+
+  .scroll-split-owner > .deck-body.slide-scroll-content {
+    --scroll-underlap: clamp(42px, 8vh, 64px);
+    width: calc(100% + (var(--slide-pad-x) * 2)) !important;
+    max-width: none !important;
+    margin: calc(var(--scroll-underlap) * -1) calc(var(--slide-pad-x) * -1) 0 !important;
+    padding: calc(var(--slide-body-gap) + var(--scroll-underlap)) var(--slide-pad-x) 180px !important;
   }
 
   .slide.has-body > .deck-body.slide-scroll-content:not(.is-scrollable) {

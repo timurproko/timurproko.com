@@ -28,7 +28,7 @@ export interface SlideProps {
 
 const SPECIAL_LAYOUT_CLASS = /(?:^|\s)(?:hero|slide-section|slide-zx-end|pdf-page-slide)(?:\s|$)/;
 
-/** Standard slide: section.slide + optional tag + headline + subhead + shared body rail. */
+/** Standard slide: section.slide + optional tag + headline + shared body rail. */
 export function Slide({
   label,
   notes,
@@ -57,8 +57,17 @@ export function Slide({
     >
       {tag && <span className="slide-tag">{tag}</span>}
       {headline && <h2 className="deck-headline">{headline}</h2>}
-      {subhead && <p className="deck-subhead">{subhead}</p>}
-      {shouldWrapBody ? <div className="deck-body" data-body-variant={bodyVariant}>{children}</div> : children}
+      {shouldWrapBody ? (
+        <div className="deck-body" data-body-variant={bodyVariant}>
+          {subhead && <p className="deck-subhead">{subhead}</p>}
+          {children}
+        </div>
+      ) : (
+        <>
+          {subhead && <p className="deck-subhead">{subhead}</p>}
+          {children}
+        </>
+      )}
     </section>
   );
 }
