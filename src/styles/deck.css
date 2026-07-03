@@ -146,6 +146,9 @@ body::-webkit-scrollbar {
   padding-bottom: 0.14em;
   color: var(--fg);
 }
+html.deck-preview-cover .h-hero {
+  font-size: clamp(96.8px, min(11.46vw, 15.4vh), 220px);
+}
 .slide.hero.center > .h-hero {
   position: absolute;
   top: var(--cover-title-y);
