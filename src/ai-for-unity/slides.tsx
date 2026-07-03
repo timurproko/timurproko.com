@@ -8,7 +8,7 @@
 import { CSSProperties } from 'react';
 import { DeckConfig } from '../deck/Deck';
 import { Slide } from '../deck/Slide';
-import { CoverArt3D, CoverSlide, DeckItemHeading } from '../components';
+import { Chip, CoverArt3D, CoverSlide, DeckItemHeading, DeckList } from '../components';
 import { initHeroCanvas } from './hero.js';
 import { initCover3d } from './cover3d.js';
 
@@ -217,12 +217,15 @@ export const slides = [
     tag="Evolution"
     headline="Evolution of AI dev"
   >
-    <div className="progression">
-        <div className="step"><span className="idx">01</span><span>Pre-AI · autocomplete workflows</span></div>
-        <div className="step"><span className="idx">02</span><span>ChatGPT assistance · copy/paste workflows</span></div>
-        <div className="step here"><span className="idx">03</span><span>IDE plugins / CLI tools · manual agent control</span></div>
-        <div className="step"><span className="idx">04</span><span>Agentic systems · automated development lifecycle</span></div>
-      </div>
+    <DeckList
+      variant="rows"
+      items={[
+        { label: 'Pre-AI · autocomplete workflows' },
+        { label: 'ChatGPT assistance · copy/paste workflows' },
+        { label: 'IDE plugins / CLI tools · manual agent control', active: true },
+        { label: 'Agentic systems · automated development lifecycle' },
+      ]}
+    />
   </Slide>,
 
   <Slide
@@ -312,9 +315,9 @@ export const slides = [
     <div className="pillar-grid">
         <div className="pill"><div className="num">/01</div><h4>IDEs</h4><div className="subhead">Inline assistance while you code.</div><div className="tags"><span className="tag">JetBrains</span><span className="tag">VSCode</span><span className="tag">Cursor</span></div></div>
         <div className="pill"><div className="num">/02</div><h4>Desktop apps</h4><div className="subhead">Context-aware chat for projects.</div><div className="tags"><span className="tag">Codex</span><span className="tag">Claude</span></div></div>
-        <div className="pill"><div className="num">/03</div><h4>CLI agents</h4><div className="subhead">Headless agents for automation and pipelines.</div><div className="tags"><span className="tag">OpenCode</span><span className="tag">Hermes</span><a className="tag" href="https://pi.dev/" target="_blank" rel="noopener noreferrer">PI</a></div></div>
+        <div className="pill"><div className="num">/03</div><h4>CLI agents</h4><div className="subhead">Headless agents for automation and pipelines.</div><div className="tags"><span className="tag">OpenCode</span><span className="tag">Hermes</span><Chip className="tag" href="https://pi.dev/" icon="link" label="PI" /></div></div>
         <div className="pill"><div className="num">/04</div><h4>MCP-clients</h4><div className="subhead">AI inside the creative tool.</div><div className="tags"><span className="tag">Unity</span><span className="tag">Blender</span><span className="tag">Houdini</span></div></div>
-        <div className="pill"><div className="num">/05</div><h4>Design tools</h4><div className="subhead">Agentic design surfaces.</div><div className="tags"><span className="tag">Claude Design</span><a className="tag" href="https://open-design.ai/" target="_blank" rel="noopener noreferrer">Open Design</a></div></div>
+        <div className="pill"><div className="num">/05</div><h4>Design tools</h4><div className="subhead">Agentic design surfaces.</div><div className="tags"><span className="tag">Claude Design</span><Chip className="tag" href="https://open-design.ai/" icon="link" label="Open Design" /></div></div>
         <div className="pill"><div className="num">/06</div><h4>Other</h4><div className="subhead">Emerging agent surfaces.</div><div className="tags"><span className="tag">CMUX</span><span className="tag">Wrap</span><span className="tag">OpenClaw</span></div></div>
       </div>
   </Slide>,
@@ -549,12 +552,15 @@ export const slides = [
     headline="AI engineering levels"
     subhead={<>From prompting to building orchestrated systems.</>}
   >
-    <div className="progression">
-        <div className="step"><span className="idx">L1</span><span>Prompts — raw interaction</span></div>
-        <div className="step"><span className="idx">L2</span><span>Structured context — defined inputs, rules, and reusable skills</span></div>
-        <div className="step"><span className="idx">L3</span><span>Tools &amp; pipelines — CLIs, automation, workflows</span></div>
-        <div className="step"><span className="idx">L4</span><span>Orchestration — multi-agent systems</span></div>
-      </div>
+    <DeckList
+      variant="rows"
+      items={[
+        { index: 'L1', label: 'Prompts — raw interaction' },
+        { index: 'L2', label: 'Structured context — defined inputs, rules, and reusable skills' },
+        { index: 'L3', label: 'Tools & pipelines — CLIs, automation, workflows' },
+        { index: 'L4', label: 'Orchestration — multi-agent systems' },
+      ]}
+    />
   </Slide>,
 
   <Slide

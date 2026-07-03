@@ -308,7 +308,7 @@ export function initAnimations() {
         var title = owner.querySelector(':scope > .deck-headline, :scope > .trend-intro .deck-headline, :scope > [data-deck-title]');
         var scrollerRect = scroller.getBoundingClientRect();
         var titleRect = title && title.getBoundingClientRect ? title.getBoundingClientRect() : null;
-        var fadeTop = titleRect ? (titleRect.top - ownerRect.top - 4) : (scrollerRect.top - ownerRect.top);
+        var fadeTop = titleRect ? (titleRect.bottom - ownerRect.top + 2) : (scrollerRect.top - ownerRect.top);
         fade.style.setProperty('--scroll-fade-top', Math.max(0, fadeTop) + 'px');
       }
     });

@@ -1,4 +1,6 @@
 import { CSSProperties, ReactNode } from 'react';
+import { DeckList, Tag } from './presentation';
+export * from './presentation';
 
 /* ---------------------------------------------------------------- slides */
 
@@ -101,11 +103,7 @@ export function VideoLoop({ src }: { src: string }) {
 
 /** Arrow bullet list. */
 export function ArrowList({ tight, style, items }: { tight?: boolean; style?: CSSProperties; items: ReactNode[] }) {
-  return (
-    <ul className={tight ? 'arrow-list tight' : 'arrow-list'} style={style}>
-      {items.map((item, i) => <li key={i}>{item}</li>)}
-    </ul>
-  );
+  return <DeckList variant="bullet" tight={tight} style={style} items={items} />;
 }
 
 /** Standard slide subhead paragraph. */
@@ -123,7 +121,7 @@ export function TagRow(props: { label?: string; tags?: string[]; style?: CSSProp
   return (
     <div className="mcp-tags" style={props.style}>
       {props.label && <span className="mcp-tags-label">{props.label}</span>}
-      {(props.tags ?? []).map((t) => <span key={t} className="tag">{t}</span>)}
+      {(props.tags ?? []).map((label) => <Tag key={label} className="tag" label={label} />)}
     </div>
   );
 }

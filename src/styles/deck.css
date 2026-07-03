@@ -1,3 +1,5 @@
+@import '../components/presentation/presentation.css';
+
 /* Shared deck design system — extracted & deduplicated from the four deck pages. */
 * {
   box-sizing: border-box;
@@ -1420,10 +1422,10 @@ body.chrome-boot .deck-back,
     .scroll-split-owner > .trend-intro {
   flex: 0 0 auto;
   position: relative;
-  z-index: 6;
+  z-index: 30;
 }
 .scroll-split-owner > .slide-tag {
-  z-index: 6;
+  z-index: 30;
 }
 .scroll-split-owner > .slide-scroll-content {
   --scroll-underlap: clamp(46px, 6vh, 76px);
@@ -1442,8 +1444,8 @@ body.chrome-boot .deck-back,
   scrollbar-width: none;
 }
 .scroll-split-owner.is-content-scrolled > .slide-scroll-content {
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, rgba(0,0,0,0.2) 28px, #000 96px);
-  mask-image: linear-gradient(to bottom, transparent 0, rgba(0,0,0,0.2) 28px, #000 96px);
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 .scroll-split-owner > .deck-headline + .slide-scroll-content:has(> .deck-subhead:first-child) {
   margin-top: calc(var(--scroll-underlap) * -1);
@@ -1855,22 +1857,22 @@ body.deck-is-sliding::before,
   top: var(--scroll-fade-top, 0px);
   left: 0;
   right: 0;
-  height: clamp(88px, 12vh, 150px);
-  z-index: 5;
+  height: clamp(112px, 16vh, 190px);
+  z-index: 20;
   pointer-events: none;
   opacity: 0;
   transition: opacity 180ms var(--ease-standard);
   background: linear-gradient(to bottom,
         var(--bg) 0%,
-        color-mix(in oklab, var(--bg), transparent 4%) 34%,
-        color-mix(in oklab, var(--bg), transparent 42%) 68%,
+        var(--bg) 46%,
+        color-mix(in oklab, var(--bg), transparent 10%) 62%,
         transparent 100%);
 }
 .slide.dark .slide-scroll-fade {
   background: linear-gradient(to bottom,
         var(--fg) 0%,
-        color-mix(in oklab, var(--fg), transparent 4%) 34%,
-        color-mix(in oklab, var(--fg), transparent 42%) 68%,
+        var(--fg) 46%,
+        color-mix(in oklab, var(--fg), transparent 10%) 62%,
         transparent 100%);
 }
 .scroll-split-owner.is-content-scrolled > .slide-scroll-fade {
@@ -1967,10 +1969,10 @@ body::-webkit-scrollbar {
     .scroll-split-owner > .trend-intro {
   flex: 0 0 auto;
   position: relative;
-  z-index: 6;
+  z-index: 30;
 }
 .scroll-split-owner > .slide-tag {
-  z-index: 6;
+  z-index: 30;
 }
 .scroll-split-owner > .slide-scroll-content {
   --scroll-underlap: clamp(42px, 8vh, 64px);
@@ -1989,8 +1991,8 @@ body::-webkit-scrollbar {
   scrollbar-width: none;
 }
 .scroll-split-owner.is-content-scrolled > .slide-scroll-content {
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, rgba(0,0,0,0.2) 24px, #000 82px);
-  mask-image: linear-gradient(to bottom, transparent 0, rgba(0,0,0,0.2) 24px, #000 82px);
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 .scroll-split-owner > .deck-headline + .slide-scroll-content:has(> .deck-subhead:first-child) {
   margin-top: calc(var(--scroll-underlap) * -1);
@@ -2013,23 +2015,7 @@ body::-webkit-scrollbar {
   margin-top: var(--slide-body-gap) !important;
 }
 .scroll-split-owner > .slide-scroll-content::before {
-  content: '';
-  position: sticky;
-  top: 0;
-  display: block;
-  height: 36px;
-  margin-bottom: -36px;
-  z-index: 5;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 180ms var(--ease-standard);
-  background: linear-gradient(to bottom, var(--bg) 0%, color-mix(in oklab, var(--bg), transparent 10%) 38%, transparent 100%);
-}
-.slide.dark.scroll-split-owner > .slide-scroll-content::before {
-  background: linear-gradient(to bottom, var(--fg) 0%, color-mix(in oklab, var(--fg), transparent 10%) 38%, transparent 100%);
-}
-.scroll-split-owner > .slide-scroll-content.is-scrolled::before {
-  opacity: 1;
+  content: none !important;
 }
 .deck-text-label,
 .two-col h3,

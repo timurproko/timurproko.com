@@ -48,16 +48,17 @@ body.deck-is-sliding::after {
 @media (min-width: 761px) {
   .slide.has-body:not(.hero):not(.slide-section):not(.slide-zx-end):not(.pdf-page-slide) > .deck-body,
   .slide.has-body.scroll-split-owner:not(.hero):not(.slide-section):not(.slide-zx-end):not(.pdf-page-slide) > .deck-body.slide-scroll-content {
+    --deck-content-bleed: clamp(20px, 2vw, 38px);
     position: absolute !important;
-    top: var(--deck-content-start-y) !important;
-    left: var(--slide-pad-x) !important;
-    right: var(--slide-pad-x) !important;
-    bottom: var(--deck-content-bottom-y) !important;
+    top: calc(var(--deck-content-start-y) - var(--deck-content-bleed)) !important;
+    left: calc(var(--slide-pad-x) - var(--deck-content-bleed)) !important;
+    right: calc(var(--slide-pad-x) - var(--deck-content-bleed)) !important;
+    bottom: calc(var(--deck-content-bottom-y) - var(--deck-content-bleed)) !important;
     width: auto !important;
     max-width: none !important;
     min-height: 0 !important;
     margin: 0 !important;
-    padding: 0 !important;
+    padding: var(--deck-content-bleed) !important;
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior-y: contain;
@@ -67,6 +68,13 @@ body.deck-is-sliding::after {
 
   .slide.has-body > .deck-body::-webkit-scrollbar {
     display: none;
+  }
+
+  /* When a slide body fits without scrolling, let card/list hover shadows bleed
+     naturally. The deck engine adds .is-scrollable only when a real scroll rail
+     is needed, so non-scrollable slides should not clip component fades/shadows. */
+  .slide.has-body > .deck-body.slide-scroll-content:not(.is-scrollable) {
+    overflow: visible !important;
   }
 
   .slide.has-body > .deck-body > :first-child,
@@ -116,6 +124,10 @@ body.deck-is-sliding::after {
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior-y: contain;
+  }
+
+  .slide.has-body > .deck-body.slide-scroll-content:not(.is-scrollable) {
+    overflow: visible !important;
   }
 
   .slide.has-body > .deck-body > :first-child,

@@ -8,7 +8,7 @@
 import { CSSProperties } from 'react';
 import { DeckConfig } from '../deck/Deck';
 import { Slide } from '../deck/Slide';
-import { CoverArt3D, CoverSlide } from '../components';
+import { CoverArt3D, CoverSlide, DeckList } from '../components';
 import { initHeroCanvas } from './hero.js';
 
 export const deckConfig: DeckConfig = {
@@ -158,11 +158,14 @@ export const slides = [
     headline="Unifying the roadmap"
     subhead={<>Separate Windows and macOS tracks converge on a shared core UX team and a unified release.</>}
   >
-    <div className="progression">
-        <div className="step"><span className="idx">P1</span><span>Resolve technical debt, prepare the macOS MVP</span></div>
-        <div className="step"><span className="idx">P2</span><span>Ship Windows &amp; macOS releases, begin cross-platform simplification</span></div>
-        <div className="step"><span className="idx">P3</span><span>Unified Windows / macOS release led by a shared core UX team</span></div>
-      </div>
+    <DeckList
+      variant="rows"
+      items={[
+        { index: 'P1', label: 'Resolve technical debt, prepare the macOS MVP' },
+        { index: 'P2', label: 'Ship Windows & macOS releases, begin cross-platform simplification' },
+        { index: 'P3', label: 'Unified Windows / macOS release led by a shared core UX team' },
+      ]}
+    />
   </Slide>,
 
   <Slide
