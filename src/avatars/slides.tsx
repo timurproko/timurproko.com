@@ -36,9 +36,9 @@ export const slides = [
     key="cover"
     label="01 Cover"
     notes="This is the Design COE overview of our avatar creation pipeline — from body and face through to real-time animation and rendering — followed by process details and a case study."
-    kicker="Avatar Creation Pipeline"
+    kicker="Digital Human Pipeline"
     title={<>Avatar<br />Solutions</>}
-    description="3D Designer · Technical Artist · XR Developer"
+    description="3D Design · Technical Art · XR Development"
     art={<CoverArt3D />}
   />,
 

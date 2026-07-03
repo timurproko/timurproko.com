@@ -67,15 +67,6 @@ html.deck-starts-on-dark body.chrome-boot {
   flex: 0 0 auto;
   transform-origin: left center;
 }
-.two-col h3 {
-  font-family: var(--font-mono);
-  font-size: clamp(11px, 0.82vw, 14px);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 20px;
-  font-weight: 400;
-}
 [data-screen-label="02 About"] .pillar-grid {
   margin-top: clamp(8px, 0.8vw, 16px);
 }
@@ -279,7 +270,8 @@ html.deck-square-layout [data-screen-label="20 AI Workflow"] .ui-workflow-grid,
   }
 
   @media print {
-    @page { size: 1920px 1080px; margin: 0; }
+    @page { size: 1920px 1080px; margin: 0; }
+
     .slide { width: 1920px; height: 1080px; overflow: hidden; page-break-after: always; }
     .deck-back, .nav-hint, .notes, .mobile-swipe-hint { display: none !important; }
   }
@@ -404,7 +396,8 @@ html.deck-square-layout [data-screen-label="20 AI Workflow"] .ui-workflow-grid,
   /* ── Cover 3D heart ── */
   .cover-heart { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
   .cover-heart canvas { display: block; width: 100% !important; height: 100% !important; }
-  .cover-heart::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 46% 44% at 50% 52%, rgba(17,17,17,0.74), rgba(17,17,17,0.42) 52%, rgba(17,17,17,0) 76%); }
+  .cover-heart::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 46% 44% at 50% 52%, rgba(17,17,17,0.74), rgba(17,17,17,0.42) 52%, rgba(17,17,17,0) 76%); }
+
 
   /* ── Avatar Solutions — section dividers ── */
   .slide-section { justify-content: center; align-items: center; text-align: center; }

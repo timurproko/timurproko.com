@@ -743,6 +743,7 @@
         <span class="intro-chips" aria-label="Focus areas">
           <button type="button" class="intro-chip" data-query="UX" aria-pressed="false">UX</button>
           <button type="button" class="intro-chip" data-query="XR" aria-pressed="false">XR</button>
+          <button type="button" class="intro-chip" data-query="3D" aria-pressed="false">3D</button>
           <button type="button" class="intro-chip" data-query="AI" aria-pressed="false">AI</button>
         </span>
       </p>
@@ -782,6 +783,13 @@
       "avatars": "Design overview of the avatar creation pipeline — from body and face capture to real-time AI-driven animation and rendering.",
       "corel-for-mac": "A UX case study on bringing CorelDRAW Graphics Suite to macOS — balancing business goals, user needs, and technical reality.",
       "cv": "Building interactive experiences with a focus on usability, performance, and real-time systems."
+    };
+    const SEARCH_TAG_OVERRIDES = {
+      "ai-for-unity": ["ai"],
+      "touch-my-heart": ["xr"],
+      "avatars": ["3d"],
+      "corel-for-mac": ["ux"],
+      "cv": []
     };
     const DEFAULT_PREVIEW_VIEWPORT = { width: 1920, height: 1080 };
     const PREVIEW_VIEWPORTS = {
@@ -1172,9 +1180,9 @@
     function applySearch({ focus = false, blur = false } = {}) {
       const query = search.value.trim();
       const queryTerms = getSearchTerms(query);
-      const filtered = presentations.filter(item =>
-        matchesSearchTerms([item.title, item.description, item.file].join(" "), queryTerms)
-      );
+      const filtered = prioritizeSearchResults(presentations.filter(item =>
+        matchesSearchTerms(item, queryTerms)
+      ));
       updateSearchState();
       render(filtered, query.toLowerCase());
       // Reflect the active focus-area chips.
@@ -1192,6 +1200,13 @@
           search.setSelectionRange(search.value.length, search.value.length);
         });
       }
+    }
+
+    function prioritizeSearchResults(items) {
+      return [
+        ...items.filter(item => item.file === "cv"),
+        ...items.filter(item => item.file !== "cv")
+      ];
     }
 
     function toggleSearchTerm(term) {
@@ -1218,17 +1233,21 @@
       return chip ? (chip.dataset.query || chip.textContent).trim() : term;
     }
 
-    function matchesSearchTerms(value, queryTerms) {
+    function matchesSearchTerms(item, queryTerms) {
       if (!queryTerms.length) return true;
 
-      const searchableText = value.toLowerCase();
+      const searchTags = (item.searchTags || []).map(tag => String(tag).toLowerCase());
+      const searchableText = [item.title, item.description, item.file, searchTags.join(" ")]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
       const chipTerms = new Set([...document.querySelectorAll(".intro-chip")]
         .map(chip => (chip.dataset.query || chip.textContent).trim().toLowerCase())
         .filter(Boolean));
       const isChipOnlyQuery = queryTerms.every(term => chipTerms.has(term));
 
       return isChipOnlyQuery
-        ? queryTerms.some(term => searchableText.includes(term))
+        ? queryTerms.some(term => searchTags.includes(term))
         : queryTerms.every(term => searchableText.includes(term));
     }
 
@@ -1420,6 +1439,7 @@
     async function loadPresentationMeta(file) {
       const fallbackTitle = TITLE_OVERRIDES[file] || titleFromFile(file);
       const fallbackDescription = DESCRIPTION_OVERRIDES[file] || DEFAULT_DESCRIPTION;
+      const searchTags = SEARCH_TAG_OVERRIDES[file] || [];
       try {
         const response = await fetch(cacheBustedUrl(file, "meta"), { cache: "no-store" });
         if (!response.ok) throw new Error("Unable to fetch presentation");
@@ -1434,9 +1454,9 @@
           doc.querySelector('meta[name="description"]')?.content?.trim() ||
           doc.querySelector("h1")?.textContent?.trim() ||
           fallbackDescription;
-        return { file, title, description };
+        return { file, title, description, searchTags };
       } catch (error) {
-        return { file, title: fallbackTitle, description: fallbackDescription };
+        return { file, title: fallbackTitle, description: fallbackDescription, searchTags };
       }
     }
 

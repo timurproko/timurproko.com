@@ -376,8 +376,8 @@ export const slides = [
     subhead={<>Re-map today's Windows-first structure onto common macOS UI architecture.</>}
   >
     <div className="architecture-tabs" aria-label="UI architecture comparison">
-        <input type="radio" name="architecture-view" id="arch-macos" checked />
-        <input type="radio" name="architecture-view" id="arch-corel" />
+        <input type="radio" name="architecture-view" id="arch-macos" checked tabIndex={-1} onKeyDown={(event) => { if (event.key.startsWith('Arrow')) event.preventDefault(); }} />
+        <input type="radio" name="architecture-view" id="arch-corel" tabIndex={-1} onKeyDown={(event) => { if (event.key.startsWith('Arrow')) event.preventDefault(); }} />
         <div className="architecture-tab-controls" role="tablist" aria-label="Switch architecture graph">
           <label htmlFor="arch-macos" role="tab">macOS UI</label>
           <label htmlFor="arch-corel" role="tab">Corel UI</label>
@@ -475,7 +475,7 @@ export const slides = [
     subhead={<>Hover over each Corel UI region to reveal the workstream behind it.</>}
   >
     <div className="breakdown-stage">
-        <svg className="breakdown-svg" viewBox="0 0 1320 560" role="img" aria-labelledby="breakdown-title breakdown-desc">
+        <svg className="breakdown-svg" viewBox="0 36 1320 524" role="img" aria-labelledby="breakdown-title breakdown-desc">
           <title id="breakdown-title">Interactive CorelDRAW UI breakdown graph</title>
           <desc id="breakdown-desc">A schematic CorelDRAW interface with hoverable regions for menu bar, tool bar, property bar, framework, document work area, dockers, tool box, colour palettes, context menus, status bar and Touch Bar.</desc>
           <defs>

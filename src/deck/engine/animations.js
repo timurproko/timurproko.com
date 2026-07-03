@@ -295,13 +295,27 @@ export function initAnimations() {
     document.querySelectorAll('.slide-scroll-content').forEach(function(scroller) {
       var isScrollable = scroller.scrollHeight - scroller.clientHeight > 2;
       var isScrolled = scroller.scrollTop > 2;
+      var owner = scroller.parentElement;
+      var fade = owner && owner.querySelector(':scope > .slide-scroll-fade');
       scroller.classList.toggle('is-scrollable', isScrollable);
       scroller.classList.toggle('is-scrolled', isScrollable && isScrolled);
+      if (owner) {
+        owner.classList.toggle('is-content-scrollable', isScrollable);
+        owner.classList.toggle('is-content-scrolled', isScrollable && isScrolled);
+      }
+      if (owner && fade) {
+        var ownerRect = owner.getBoundingClientRect();
+        var title = owner.querySelector(':scope > .deck-headline, :scope > .trend-intro .deck-headline, :scope > [data-deck-title]');
+        var scrollerRect = scroller.getBoundingClientRect();
+        var titleRect = title && title.getBoundingClientRect ? title.getBoundingClientRect() : null;
+        var fadeTop = titleRect ? (titleRect.top - ownerRect.top - 4) : (scrollerRect.top - ownerRect.top);
+        fade.style.setProperty('--scroll-fade-top', Math.max(0, fadeTop) + 'px');
+      }
     });
   }
 
   function setupMobileScrollRegions() {
-    document.querySelectorAll('.slide:not(.hero):not(.slide-no-scroll)').forEach(function(slide) {
+    document.querySelectorAll('.slide:not(.hero):not(.slide-section):not(.slide-zx-end):not(.pdf-page-slide)').forEach(function(slide) {
       if (slide.querySelector('.slide-scroll-content')) return;
 
       var title = slide.querySelector('.deck-headline, .h-hero');
@@ -318,16 +332,8 @@ export function initAnimations() {
         owner = owner.parentElement;
       }
 
-      // Keep the subhead pinned with the title. The scroll/fade layer starts
-      // below it, so incoming content never passes over the subhead.
-      var directSubhead = title.nextElementSibling && title.nextElementSibling.classList && title.nextElementSibling.classList.contains('deck-subhead')
-        ? title.nextElementSibling
-        : null;
-      if (directSubhead) {
-        headerEnd = directSubhead;
-        owner.classList.add('has-pinned-subhead');
-      }
-
+      // Only the main title stays pinned. Subheads are content and should
+      // scroll away with the rest of the slide body on desktop and mobile.
       if (!owner || !owner.contains(headerEnd)) return;
 
       var nodesToMove = [];
@@ -345,6 +351,12 @@ export function initAnimations() {
       scroller.className = 'slide-scroll-content';
       nodesToMove.forEach(function(child) { scroller.appendChild(child); });
       owner.appendChild(scroller);
+      if (!owner.querySelector(':scope > .slide-scroll-fade')) {
+        var fade = document.createElement('div');
+        fade.className = 'slide-scroll-fade';
+        fade.setAttribute('aria-hidden', 'true');
+        owner.appendChild(fade);
+      }
       owner.classList.add('scroll-split-owner');
       slide.classList.add('has-scroll-content');
       function syncScrollerFade() { updateScrollFadeMasks(); }

@@ -27,7 +27,7 @@ export const slides = [
     notes="Welcome. Touch My Heart is an XR experience for Magic Leap that takes users deep inside the human heart. I led experience design and technical art on the project."
     kicker="XR Experience · Magic Leap"
     title={<>Touch<br />My Heart</>}
-    description="3D/UX Designer · Technical Artist · XR Developer"
+    description="3D/UX Design · Technical Art · XR Development"
     art={<CoverArt3D />}
   />,
 
@@ -37,7 +37,7 @@ export const slides = [
     notes="Touch My Heart is an immersive AR application on Magic Leap — a realistic, educational encounter with the heart's anatomy and the sounds of various diseases. Three pillars: the AR glasses, haptics, and medically accurate visualization and sound."
     tag="About · Project"
     headline="Inside the human heart"
-    subhead={<>A cutting-edge XR experience that takes users deep into the inner workings of the human heart —<br />a realistic, educational encounter with its anatomy and the sound of various diseases.</>}
+    subhead={<>A cutting-edge XR experience that takes users deep into the inner workings of the human heart — a realistic, educational encounter with its anatomy and the sound of various diseases.</>}
   >
     <div className="about-content">
     
@@ -75,7 +75,7 @@ export const slides = [
     notes="To stay current with the XR industry I surveyed design guidelines across the major platforms. Apple Vision Pro had just been announced with detailed design material, so it became a primary reference. Magic Leap was our delivery target."
     tag="Process · Platforms Research"
     headline="Learning from XR platforms"
-    subhead={<>I studied design guidelines across the major platforms. With Apple Vision Pro freshly announced,<br />its interaction patterns became a primary reference point.</>}
+    subhead={<>I studied design guidelines across the major platforms. With Apple Vision Pro freshly announced, its interaction patterns became a primary reference point.</>}
   >
     <div className="platforms-content">
     
@@ -111,7 +111,7 @@ export const slides = [
     notes="I focused on a concept of user experience that transcends the technology and encompasses the full spectrum of human interaction within the application."
     tag="Design · Experience Concept"
     headline="Beyond the technology"
-    subhead={<>The concept had to transcend the hardware — designing for the full spectrum<br />of human interaction inside the application.</>}
+    subhead={<>The concept had to transcend the hardware — designing for the full spectrum of human interaction inside the application.</>}
   >
     <ul className="arrow-list tight">
         <li>Human-centered interaction, not device-centered</li>

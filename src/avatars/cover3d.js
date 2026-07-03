@@ -44,28 +44,71 @@ export function initCover3d() {
     var previewCoverMode = new URLSearchParams(window.location.search).get('preview') === 'cover';
     var previewMotionEnabled = !previewCoverMode;
     var t0 = performance.now();
-    function renderPose(t) {
+    var motionFrame = 0;
+    var returnFrame = 0;
+    var currentPose = poseAt(0);
+    function poseAt(t) {
       // Gentle rotation + heartbeat pulse
-      heart.rotation.y = reduce ? -0.35 : Math.sin(t * 0.35) * 0.55 - 0.15;
-      heart.rotation.x = reduce ? 0.12 : Math.sin(t * 0.5) * 0.08 + 0.08;
       var beat = reduce ? 1 : 1 + (Math.pow(Math.sin(t * 1.8), 8)) * 0.05 + (Math.pow(Math.sin(t * 1.8 - 0.28), 8)) * 0.03;
-      heart.scale.setScalar(1.0 * beat);
+      return {
+        ry: reduce ? -0.35 : Math.sin(t * 0.35) * 0.55 - 0.15,
+        rx: reduce ? 0.12 : Math.sin(t * 0.5) * 0.08 + 0.08,
+        scale: 1.0 * beat
+      };
+    }
+    function applyPose(pose) {
+      currentPose = pose;
+      heart.rotation.y = pose.ry;
+      heart.rotation.x = pose.rx;
+      heart.scale.setScalar(pose.scale);
       renderer.render(scene, camera);
     }
+    function renderPose(t) {
+      applyPose(poseAt(t));
+    }
+    function lerpPose(from, to, eased) {
+      return {
+        ry: from.ry + (to.ry - from.ry) * eased,
+        rx: from.rx + (to.rx - from.rx) * eased,
+        scale: from.scale + (to.scale - from.scale) * eased
+      };
+    }
     function frame(now) {
+      motionFrame = 0;
+      if (!previewMotionEnabled && previewCoverMode) return;
       renderPose((now - t0) / 1000);
-      if (!reduce && previewMotionEnabled) requestAnimationFrame(frame);
+      if (!reduce && previewMotionEnabled) motionFrame = requestAnimationFrame(frame);
     }
     function startPreviewMotion() {
       if (!previewCoverMode || previewMotionEnabled || reduce) return;
+      cancelAnimationFrame(returnFrame);
+      returnFrame = 0;
       previewMotionEnabled = true;
       t0 = performance.now();
-      requestAnimationFrame(frame);
+      if (!motionFrame) motionFrame = requestAnimationFrame(frame);
     }
     function stopPreviewMotion() {
       if (!previewCoverMode) return;
       previewMotionEnabled = false;
-      renderPose(0);
+      cancelAnimationFrame(motionFrame);
+      motionFrame = 0;
+      cancelAnimationFrame(returnFrame);
+      var from = currentPose;
+      var to = poseAt(0);
+      var startTime = performance.now();
+      var duration = 560;
+      function tick(now) {
+        var progress = Math.min((now - startTime) / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        applyPose(lerpPose(from, to, eased));
+        if (progress < 1) {
+          returnFrame = requestAnimationFrame(tick);
+          return;
+        }
+        returnFrame = 0;
+        renderPose(0);
+      }
+      returnFrame = requestAnimationFrame(tick);
     }
     window.addEventListener('preview-cover-motion-start', startPreviewMotion);
     window.addEventListener('preview-cover-motion-stop', stopPreviewMotion);
@@ -73,8 +116,11 @@ export function initCover3d() {
       if (event.data && event.data.type === 'preview-cover:start') startPreviewMotion();
       if (event.data && event.data.type === 'preview-cover:stop') stopPreviewMotion();
     });
-    requestAnimationFrame(frame);
-    if (reduce) renderer.render(scene, camera);
+    if (previewCoverMode || reduce) {
+      renderPose(0);
+    } else {
+      motionFrame = requestAnimationFrame(frame);
+    }
 
     function onResize() {
       var nw = host.clientWidth || w, nh = host.clientHeight || h;
