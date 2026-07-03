@@ -696,6 +696,11 @@
       text-transform: uppercase;
       text-align: center;
     }
+    body:not(.content-loaded) footer {
+      visibility: hidden;
+      opacity: 0;
+      border-top-color: transparent;
+    }
     .footer-year {
       display: inline-block;
       min-width: 4ch;
@@ -1215,6 +1220,7 @@
       const files = await discoverPresentationFiles();
       presentations = await Promise.all(files.map(loadPresentationMeta));
       render(presentations);
+      document.body.classList.add("content-loaded");
       scheduleFooterYearAnimationSetup();
       setupMobileSearchInteractions();
       updateSearchState();
