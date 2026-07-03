@@ -417,15 +417,15 @@ html.deck-square-layout [data-screen-label="20 AI Workflow"] .ui-workflow-grid,
 
   /* ── Pipeline flow ── */
   .pipeline { display: flex; flex-direction: column; gap: clamp(8px, 0.7vw, 12px); margin-top: clamp(-28px, -1.45vw, -18px); max-width: 1640px; width: 100%; }
-  .pipe-step { position: relative; display: grid; grid-template-columns: clamp(46px, 3.2vw, 62px) minmax(0, 1fr) minmax(0, auto); align-items: center; gap: clamp(14px, 1.3vw, 26px); padding: clamp(14px, 1.1vw, 20px) clamp(18px, 1.4vw, 26px); border: 1px solid var(--border); border-radius: 14px; background: var(--surface); transition: border-color var(--motion-fast) var(--ease-standard), box-shadow var(--motion-hover) var(--ease-standard), transform var(--motion-hover) var(--ease-spring); }
-  .pipe-step:hover { z-index: 2; box-shadow: 0 14px 38px rgba(17,17,17,0.10); transform: translateY(-2px); }
+  .pipe-step { position: relative; display: grid; grid-template-columns: clamp(46px, 3.2vw, 62px) minmax(0, 1fr) minmax(120px, auto); align-items: center; gap: clamp(14px, 1.3vw, 26px); padding: clamp(14px, 1.1vw, 20px) clamp(18px, 1.4vw, 26px); border: 1px solid var(--border); border-radius: 14px; background: var(--surface); transition: border-color var(--motion-fast) var(--ease-standard), box-shadow var(--motion-hover) var(--ease-standard), transform var(--motion-hover) var(--ease-spring); }
+  .pipe-step:hover { z-index: 2; box-shadow: var(--deck-shadow-soft, 0 14px 38px rgba(17,17,17,0.12)); transform: translateY(-2px); }
   .pipe-idx { font-family: var(--font-mono); font-size: clamp(14px, 1vw, 18px); color: var(--accent); letter-spacing: 0.06em; }
   .pipe-body { min-width: 0; }
   .pipe-title { font-family: var(--font-display); font-weight: 600; font-size: clamp(18px, 1.5vw, 28px); line-height: 1.08; letter-spacing: -0.015em; color: var(--fg); }
   .pipe-desc { font-family: var(--font-body); font-size: clamp(12.5px, 0.95vw, 16px); line-height: 1.4; color: var(--muted); margin-top: clamp(3px, 0.3vw, 6px); }
-  .pipe-tools { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+  .pipe-tools { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; align-items: center; align-self: center; }
   .pipe-tools span { white-space: nowrap; padding: 4px 11px; border: 1px solid var(--border); border-radius: 999px; font-family: var(--font-mono); font-size: clamp(9.5px, 0.72vw, 12px); letter-spacing: 0.05em; text-transform: uppercase; color: color-mix(in oklab, var(--accent), var(--fg) 22%); background: color-mix(in oklab, var(--accent), transparent 93%); line-height: 1.4; }
-  @media (max-width: 900px) { .pipe-step { grid-template-columns: clamp(40px, 8vw, 56px) 1fr; } .pipe-tools { grid-column: 1 / -1; justify-content: flex-start; margin-top: 6px; } }
+  @media (max-width: 900px) { .pipe-step { grid-template-columns: clamp(40px, 8vw, 56px) minmax(0, 1fr) minmax(94px, auto); } .pipe-tools { grid-column: auto; justify-content: flex-end; margin-top: 0; } }
   @media (max-width: 760px) {
     .split-media {
       grid-template-columns: 1fr;
