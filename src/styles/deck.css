@@ -102,7 +102,9 @@ body::-webkit-scrollbar {
 .h-hero {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(88px, 10.42vw, 200px);
+  /* Keep the shared cover title clear of the shared rule/meta stack on
+     shorter browser viewports, instead of page-specific cover offsets. */
+  font-size: clamp(88px, min(10.42vw, 14vh), 200px);
   line-height: 0.94;
   letter-spacing: -0.04em;
   padding-bottom: 0.14em;
@@ -1448,7 +1450,7 @@ body.deck-is-sliding::before,
 }
 }
 @media (min-width: 1400px) {
-.scroll-split-owner:not(.slide-goal):not(.slide-trend):not(.slide-mcp) > .slide-scroll-content > :not(.deck-subhead) {
+.scroll-split-owner:not(.slide-goal):not(.slide-trend):not(.slide-mcp) > .slide-scroll-content > :is(p, ul, ol, .arrow-list, .deck-link) {
   max-width: min(1120px, 66vw) !important;
 }
 }
@@ -1762,6 +1764,9 @@ body.deck-is-sliding::before,
 }
 .scroll-split-owner {
   position: relative;
+}
+.scroll-split-owner > .slide-scroll-content > .state-tabs:first-child + .state-grid {
+  margin-top: 0 !important;
 }
 .mobile-swipe-hint {
   display: none;

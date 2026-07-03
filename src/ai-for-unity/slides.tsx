@@ -8,15 +8,16 @@
 import { CSSProperties } from 'react';
 import { DeckConfig } from '../deck/Deck';
 import { Slide } from '../deck/Slide';
-import { CoverSlide } from '../components';
+import { CoverArt3D, CoverSlide } from '../components';
 import { initHeroCanvas } from './hero.js';
+import { initCover3d } from './cover3d.js';
 
 export const deckConfig: DeckConfig = {
   storageKey: 'ai-unity-deck-position',
   darkSlides: [0, 18],
   tag: 'Trend',
   deckTitle: 'AI for Unity Development',
-  fx: [initHeroCanvas],
+  fx: [initHeroCanvas, initCover3d],
 };
 
 export const slides = [
@@ -27,6 +28,7 @@ export const slides = [
     kicker="From hype to production"
     title={<>AI for Unity<br />Development</>}
     description="Engineering · Tooling · Workflows"
+    art={<CoverArt3D />}
   />,
 
   <Slide

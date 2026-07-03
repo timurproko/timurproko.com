@@ -24,6 +24,26 @@ body.chrome-on-dark,
   html.deck-starts-on-dark body.chrome-boot {
   background: var(--fg);
 }
+.cover-heart {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.cover-heart canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+.cover-heart::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+      radial-gradient(ellipse 42% 40% at 50% 49%, rgba(17,17,17,0.50), rgba(17,17,17,0.34) 54%, rgba(17,17,17,0) 78%),
+      linear-gradient(180deg, rgba(17,17,17,0.16), rgba(17,17,17,0.06) 46%, rgba(17,17,17,0.18));
+}
 .slide.hero .h-hero {
   background: linear-gradient(110deg,
       var(--bg) 0%,
@@ -343,7 +363,7 @@ html.deck-square-layout [data-screen-label="20 AI Workflow"] .ui-workflow-grid,
   }
 
   @media print {
-    @page { size: 1920px 1080px; margin: 0; }
+    @page { size: 1920px 1080px; margin: 0; }
     .slide { width: 1920px; height: 1080px; overflow: hidden; page-break-after: always; }
     .deck-back, .nav-hint, .notes, .mobile-swipe-hint { display: none !important; }
   }
