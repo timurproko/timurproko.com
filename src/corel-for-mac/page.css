@@ -326,7 +326,7 @@ html.deck-square-layout [data-screen-label="20 AI Workflow"] .ui-workflow-grid,
   .architecture-tab-controls label { cursor: pointer; border-radius: 999px; padding: 9px 18px; font-family: var(--font-mono); font-size: clamp(11px, 0.86vw, 14px); line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); transition: background-color var(--motion-fast) var(--ease-standard), color var(--motion-fast) var(--ease-standard), box-shadow var(--motion-fast) var(--ease-standard); user-select: none; }
   #arch-corel:checked ~ .architecture-tab-controls label[for="arch-corel"],
   #arch-macos:checked ~ .architecture-tab-controls label[for="arch-macos"] { background: var(--accent); color: #fff; box-shadow: 0 8px 20px color-mix(in oklab, var(--accent), transparent 78%); }
-  .architecture-stage { position: relative; flex: 0 0 min(540px, 52vh); min-height: 0; margin-top: 22px; }
+  .architecture-stage { position: relative; flex: 0 0 min(510px, 49vh); min-height: 0; margin-top: 34px; }
   .architecture-panel { display: none; width: 100%; height: 100%; }
   #arch-corel:checked ~ .architecture-stage .architecture-panel.corel,
   #arch-macos:checked ~ .architecture-stage .architecture-panel.macos { display: block; }
@@ -334,14 +334,14 @@ html.deck-square-layout [data-screen-label="20 AI Workflow"] .ui-workflow-grid,
   .architecture-stage .media-ph:hover,
   .architecture-stage .media-ph:focus-within { border-color: transparent; box-shadow: none; }
   .architecture-graph { display: block; width: 100%; height: 100%; min-height: 0; background: transparent; overflow: visible; }
-  .architecture-graph .frame { fill: #fff; stroke: #666; stroke-width: 1.2; }
-  .architecture-graph .line { fill: none; stroke: #8a8a8a; stroke-width: 1; }
-  .architecture-graph .soft-line { fill: none; stroke: #c8c8c8; stroke-width: 1; }
+  .architecture-graph .frame { fill: #fff; stroke: #171717; stroke-width: 2.1; }
+  .architecture-graph .line { fill: none; stroke: #8f8f8f; stroke-width: 1; }
+  .architecture-graph .soft-line { fill: none; stroke: #c7c7c7; stroke-width: 1; }
   .architecture-graph .dash { stroke-dasharray: 2 2; }
-  .architecture-graph text { font-family: Arial, Helvetica, sans-serif; font-size: 13px; fill: #969696; dominant-baseline: middle; text-anchor: middle; }
+  .architecture-graph text { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.02em; fill: #353535; dominant-baseline: middle; text-anchor: middle; text-transform: uppercase; }
   .architecture-graph .vertical { writing-mode: vertical-rl; glyph-orientation-vertical: 0deg; }
   .breakdown-stage { width: min(1320px, 100%); margin-top: clamp(34px, 2.2vw, 42px); flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; }
-  .breakdown-svg { display: block; width: 100%; height: min(524px, 49vh); overflow: visible; }
+  .breakdown-svg { display: block; width: 100%; height: min(560px, 52vh); overflow: visible; }
   .breakdown-svg .window { fill: #fff; stroke: #171717; stroke-width: 2.1; }
   .breakdown-svg .window-outline { fill: none; stroke: #171717; stroke-width: 2.1; pointer-events: none; }
   .breakdown-svg .bar { fill: #f2f2f2; stroke: #8f8f8f; stroke-width: 1; }

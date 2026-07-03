@@ -420,16 +420,16 @@ export const slides = [
                 <g clipPath="url(#macos-arch-clip)">
                 <line className="line" x1="0" y1="19" x2="725" y2="19" />
                 <line className="line" x1="0" y1="50" x2="725" y2="50" />
-                <line className="soft-line" x1="175" y1="50" x2="175" y2="374" />
-                <line className="line" x1="552" y1="50" x2="552" y2="374" />
+                <line className="soft-line" x1="175" y1="50" x2="175" y2="412" />
+                <line className="line" x1="552" y1="50" x2="552" y2="412" />
                 <line className="soft-line dash" x1="175" y1="68" x2="552" y2="68" />
-                <line className="line" x1="0" y1="374" x2="725" y2="374" />
+                <line className="line" x1="0" y1="412" x2="725" y2="412" />
                 <text x="362.5" y="10">Menu bar</text>
                 <text x="362.5" y="35">Tool bar</text>
                 <text x="363.5" y="60">Hierarchy Navigation (contextual)</text>
-                <text x="87.5" y="213">Document Navigation</text>
+                <text x="87.5" y="206"><tspan x="87.5">Document</tspan><tspan x="87.5" dy="16">Navigation</tspan></text>
                 <text x="363.5" y="213">Working Area</text>
-                <text x="638.5" y="213">Properties (contextual)</text>
+                <text x="638.5" y="206"><tspan x="638.5">Properties</tspan><tspan x="638.5" dy="16">(contextual)</tspan></text>
                 </g>
               </svg>
             </div>
@@ -475,7 +475,7 @@ export const slides = [
     subhead={<>Hover over each Corel UI region to reveal the workstream behind it.</>}
   >
     <div className="breakdown-stage">
-        <svg className="breakdown-svg" viewBox="0 36 1320 524" role="img" aria-labelledby="breakdown-title breakdown-desc">
+        <svg className="breakdown-svg" viewBox="160 36 1000 524" role="img" aria-labelledby="breakdown-title breakdown-desc">
           <title id="breakdown-title">Interactive CorelDRAW UI breakdown graph</title>
           <desc id="breakdown-desc">A schematic CorelDRAW interface with hoverable regions for menu bar, tool bar, property bar, framework, document work area, dockers, tool box, colour palettes, context menus, status bar and Touch Bar.</desc>
           <defs>
