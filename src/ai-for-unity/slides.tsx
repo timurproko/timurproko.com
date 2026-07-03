@@ -457,7 +457,7 @@ export const slides = [
         <li>Automate domain knowledge injection</li>
         <li>Define task oriented knowlage</li>
       </ul>
-      <span className="deck-section-label" style={{ marginTop: 'var(--mcp-section-gap,clamp(28px,2.6vw,44px))' } as CSSProperties}>Cons</span>
+      <span className="deck-section-label">Cons</span>
       <ul className="arrow-list tight cons">
         <li>Skill not the silver bullet &mdash; ate context</li>
         <li>Too generic skill not adds much to code quality</li>
@@ -518,7 +518,7 @@ export const slides = [
     headline="Engineering shift"
     subhead={<>Engineering is not disappearing — it’s evolving.</>}
   >
-    <div className="two-col" style={{ marginTop: '0' }}>
+    <div className="two-col">
         <div>
           <h3>Mindset</h3>
           <ul className="arrow-list tight">
@@ -549,7 +549,7 @@ export const slides = [
     headline="AI engineering levels"
     subhead={<>From prompting to building orchestrated systems.</>}
   >
-    <div className="progression" style={{ marginTop: '0' }}>
+    <div className="progression">
         <div className="step"><span className="idx">L1</span><span>Prompts — raw interaction</span></div>
         <div className="step"><span className="idx">L2</span><span>Structured context — defined inputs, rules, and reusable skills</span></div>
         <div className="step"><span className="idx">L3</span><span>Tools &amp; pipelines — CLIs, automation, workflows</span></div>

@@ -58,8 +58,8 @@ export const slides = [
   >
     <div className="split-media">
         <div className="col-text">
-          <p className="deck-subhead" style={{ marginTop: '0' }}>From day one my role was to understand every dimension of the project — and turn scattered inputs into a clear design direction, fast.</p>
-          <ul className="arrow-list tight" style={{ marginTop: '8px' }}>
+          <p className="deck-subhead">From day one my role was to understand every dimension of the project — and turn scattered inputs into a clear design direction, fast.</p>
+          <ul className="arrow-list tight">
             <li>Mapped the project boundaries and constraints</li>
             <li>Gathered early ideas from team and stakeholders</li>
             <li>Conceptualized the design direction quickly</li>
@@ -129,8 +129,8 @@ export const slides = [
   >
     <div className="split-media">
         <div className="col-text">
-          <p className="deck-subhead" style={{ marginTop: '0' }}>A prototype of the forthcoming experience aligned the whole team early — and turned feedback into a better final product.</p>
-          <ul className="arrow-list tight" style={{ marginTop: '8px' }}>
+          <p className="deck-subhead">A prototype of the forthcoming experience aligned the whole team early — and turned feedback into a better final product.</p>
+          <ul className="arrow-list tight">
             <li>Aligns team and stakeholders early</li>
             <li>Speeds up collaboration and development</li>
             <li>Collects user feedback before the build</li>
@@ -149,7 +149,7 @@ export const slides = [
   >
     <div className="split-media">
         <div className="col-text">
-          <p className="deck-subhead" style={{ marginTop: '0' }}>A non-destructive procedural workflow drives the heart model — realistic enough for medicine, flexible enough to refine each disease animation without rebuilding.</p>
+          <p className="deck-subhead">A non-destructive procedural workflow drives the heart model — realistic enough for medicine, flexible enough to refine each disease animation without rebuilding.</p>
         </div>
         <div className="col-media"><div className="media-ph" aria-label="Procedural heart wireframe modelling video"><video src="assets/wireframe.mp4" muted loop playsInline preload="metadata"></video></div></div>
       </div>
@@ -178,7 +178,7 @@ export const slides = [
   >
     <div className="split-media">
         <div className="col-text">
-          <p className="deck-subhead" style={{ marginTop: '0' }}>Procedural shader graphs defined the ultimate appearance and texture for real-time — including interactive slicing of the heart across any axis.</p>
+          <p className="deck-subhead">Procedural shader graphs defined the ultimate appearance and texture for real-time — including interactive slicing of the heart across any axis.</p>
         </div>
         <div className="col-media"><div className="media-ph" aria-label="Real-time rendered heart shader preview video"><video src="assets/render.mp4" muted loop playsInline preload="metadata"></video></div></div>
       </div>

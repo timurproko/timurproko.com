@@ -215,8 +215,8 @@ export const slides = [
   >
     <div className="two-col">
         <div>
-          <div style={{ fontFamily: 'var(--font-display)', fontWeight: '800', fontSize: 'clamp(92px,10.5vw,176px)', lineHeight: '0.88', letterSpacing: '-0.04em', color: 'var(--accent)' } as CSSProperties}>40%</div>
-          <p style={{ fontFamily: 'var(--font-display)', fontWeight: '600', fontSize: 'clamp(20px,1.7vw,32px)', lineHeight: '1.18', letterSpacing: '-0.015em', marginTop: '14px', maxWidth: '22ch' } as CSSProperties}>of prospects are lost on the very first engagement</p>
+          <div className="stat-number">40%</div>
+          <p className="stat-caption">of prospects are lost on the very first engagement</p>
         </div>
         <div>
           <h3>The rest of the picture</h3>
@@ -308,7 +308,7 @@ export const slides = [
     headline="The technical reality"
     subhead={<>A shared codebase and heavy debt mean we can't expect dramatic change overnight — so we sequence carefully.</>}
   >
-    <ul className="arrow-list tight" style={{ marginTop: '8px', maxWidth: '1100px' }}>
+    <ul className="arrow-list tight">
         <li>One unified source code across platforms</li>
         <li>Significant accumulated technical debt</li>
         <li>Framework limitations (Qt)</li>

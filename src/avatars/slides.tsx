@@ -73,13 +73,12 @@ export const slides = [
     <SplitMedia
       text={
         <>
-          <Subhead style={{ marginTop: 0 }}>
+          <Subhead>
             AI-driven facial animation and voice synthesis produce lifelike facial expressions and human-like
             speech — the foundation for believable avatars and immersive interaction.
           </Subhead>
           <ArrowList
             tight
-            style={{ marginTop: 8 }}
             items={[
               <>Facial recognition &amp; 3D modeling</>,
               'Emotion analysis for expression',
@@ -106,13 +105,12 @@ export const slides = [
     <SplitMedia
       text={
         <>
-          <Subhead style={{ marginTop: 0 }}>
+          <Subhead>
             Image-to-3D reconstruction turns 2D photographs and video into detailed, accurate 3D representations
             of a human face.
           </Subhead>
           <ArrowList
             tight
-            style={{ marginTop: 8 }}
             items={[
               'Multi-view capture to dense point cloud',
               'Lifelike 3D facial models from 2D source',
@@ -139,13 +137,12 @@ export const slides = [
     <SplitMedia
       text={
         <>
-          <Subhead style={{ marginTop: 0 }}>
+          <Subhead>
             Retopology rebuilds a dense scan as a simplified, optimized base mesh — clean edge flow that is
             efficient and ready for animation.
           </Subhead>
           <ArrowList
             tight
-            style={{ marginTop: 8 }}
             items={[
               'Simplified, optimized topology',
               'Deformation-friendly edge flow',
@@ -174,12 +171,11 @@ export const slides = [
     <SplitMedia
       text={
         <>
-          <Subhead style={{ marginTop: 0 }}>
+          <Subhead>
             Lifelike textures are authored and applied to the model, then rendered to achieve a high level of realism.
           </Subhead>
           <ArrowList
             tight
-            style={{ marginTop: 8 }}
             items={[
               <>Skin, hair, makeup &amp; garment materials</>,
               'Physically based texturing & lighting',
@@ -206,20 +202,19 @@ export const slides = [
     <SplitMedia
       text={
         <>
-          <Subhead style={{ marginTop: 0 }}>
+          <Subhead>
             A digital avatar built for the Singapore Fintech Festival — an innovative, intelligent digital
             assistant with a radiant, holographic presence.
           </Subhead>
           <ArrowList
             tight
-            style={{ marginTop: 8 }}
             items={[
               'Sleek, futuristic, holographic design',
               <>Modern &amp; traditional elements in balance</>,
               "Reflects Singapore's cultural heritage",
             ]}
           />
-          <TagRow label="Delivered for" style={{ marginTop: 0 }} />
+          <TagRow label="Delivered for" />
           <TagRow tags={['Singapore Fintech Festival', 'Digital Assistant', 'Real-time']} />
         </>
       }
