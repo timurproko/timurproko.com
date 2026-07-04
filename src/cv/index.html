@@ -314,9 +314,10 @@
     }
     h2 {
       font-family: var(--font-display);
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: -0.015em;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.025em;
     }
     .section-kicker {
       color: var(--subtle);
@@ -337,8 +338,10 @@
     }
     .role:last-child { padding-bottom: 0; border-bottom: 0; }
     .role h3 {
+      grid-column: 1 / 2;
       font-size: 15px;
       line-height: 1.35;
+      font-weight: 600;
       letter-spacing: -0.015em;
     }
     .date {
@@ -349,14 +352,37 @@
       text-align: right;
       white-space: nowrap;
     }
-    .company,
-    .role p {
+    .role p:not(.company) {
       grid-column: 1 / -1;
       color: var(--muted);
       font-size: 13px;
       line-height: 1.6;
     }
-    .company strong { color: var(--fg); font-weight: 500; }
+    .company {
+      grid-column: 1 / -1;
+      color: var(--accent);
+      line-height: 1.7;
+    }
+    .company strong {
+      display: inline-flex;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    @media screen {
+      .education-name {
+        display: inline-flex;
+        color: var(--accent);
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+    }
 
     .projects {
       display: grid;
@@ -370,9 +396,10 @@
       background: oklch(99% 0.002 240);
     }
     .project h3 {
-      font-size: 14px;
+      font-size: 15px;
       line-height: 1.35;
-      letter-spacing: -0.01em;
+      font-weight: 600;
+      letter-spacing: -0.015em;
       margin-bottom: 8px;
     }
     .project p,
@@ -487,6 +514,12 @@
     @media (max-width: 760px) {
       .shell { padding: 72px 20px 64px; }
       .nav-inner { padding: 0 20px; }
+      .nav-logo {
+        font-size: 14px;
+      }
+      .nav-link {
+        font-size: 15px;
+      }
       .nav-links { gap: 12px; }
       .projects,
       .side-column { grid-template-columns: 1fr; }
@@ -496,6 +529,56 @@
       .print-shortcut { top: 68px; }
       .back-shortcut { left: 20px; }
       .print-shortcut { right: 20px; }
+
+      h2 {
+        font-size: 21px;
+        line-height: 1.18;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+      }
+      .section-kicker {
+        font-size: 12px;
+      }
+      .role h3,
+      .project h3 {
+        font-size: 17px;
+        line-height: 1.32;
+        font-weight: 650;
+      }
+      .date {
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .role p:not(.company),
+      .project p,
+      .compact-list,
+      .cert-list,
+      .contact-value {
+        font-size: 16px;
+        line-height: 1.6;
+      }
+      .company {
+        line-height: 1.6;
+      }
+      .skill-group h3,
+      .cert-title,
+      .language-name {
+        font-size: 16px;
+        line-height: 1.4;
+      }
+      .cert-source,
+      .language-level {
+        font-size: 14px;
+        line-height: 1.45;
+      }
+      .project-tag,
+      .company strong,
+      .education-name,
+      .contact-label,
+      .cert-date {
+        font-size: 13px;
+        line-height: 1.45;
+      }
     }
     @media print {
       @page { size: A4; margin: 7mm; }
@@ -545,7 +628,7 @@
       .eyebrow {
         font-size: 9.5px;
         letter-spacing: 0.14em;
-        color: var(--accent);
+        color: black;
       }
       .eyebrow::before { width: 14px; height: 1px; }
       h1 {
@@ -561,16 +644,18 @@
         line-height: 1.36;
       }
       .quick-meta {
-        gap: 4px;
-        margin-top: 8px;
+        gap: 3px;
+        margin-top: 4px;
       }
-      .chip {
-        min-height: 18px;
-        padding: 0 7px;
+      .chip,
+      .side-card .chip {
+        min-height: 15px;
+        padding: 0 5px;
         border-color: oklch(84% 0.006 250);
         background: white;
         color: black;
-        font-size: 9.5px;
+        font-size: 7.8px;
+        line-height: 1;
       }
       .github-chip .screen-label {
         display: none;
@@ -652,23 +737,34 @@
         text-align: right;
       }
       .company,
-      .role p,
+      .role p:not(.company),
       .project p,
       .compact-list,
       .cert-list,
       .contact-value,
       .cert-title,
-      .cert-source {
+      .cert-source,
+      .language-name {
         font-size: 9.3px;
         line-height: 1.32;
       }
       .company,
-      .role p,
+      .role p:not(.company),
       .project p,
       .compact-list,
       .contact-value,
       .cert-title,
-      .cert-source { color: black; }
+      .cert-source,
+      .language-name { color: black; }
+      .company strong {
+        color: black;
+        font-family: var(--font-mono);
+        font-size: 8.5px;
+        font-weight: 500;
+        line-height: 1.32;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
 
       .projects {
         grid-template-columns: 1fr;
@@ -746,21 +842,34 @@
       .compact-list li {
         padding-bottom: 5px;
       }
-      .language-list li {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 2px 8px;
+      .language-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3px;
       }
-      .language-level {
-        color: oklch(46% 0.01 250);
-        font-family: var(--font-mono);
-        font-size: 8.5px;
-        line-height: 1.35;
-        letter-spacing: 0.1em;
-        text-align: right;
+      .language-list li {
+        display: inline-flex;
+        align-items: center;
+        gap: 0;
+        min-height: 17px;
+        padding: 1px 6px 2px;
+        border: 1px solid oklch(84% 0.006 250);
+        border-radius: 999px;
         white-space: nowrap;
       }
-      .language-level::before { content: none; }
+      .language-name,
+      .language-level {
+        color: black;
+        font-family: var(--font);
+        font-size: 8.8px;
+        line-height: 1.15;
+        letter-spacing: 0;
+        text-align: left;
+        white-space: nowrap;
+      }
+      .language-level::before { content: " ("; }
+      .language-level::after { content: ")"; }
+      .language-code { display: none; }
       .cert-list li,
       .contact-list li,
       .compact-list li,
@@ -918,6 +1027,7 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="/styles/chips.css" />
 </head>
 <body>
   <nav>
@@ -959,63 +1069,60 @@
             </div>
             <div class="timeline">
               <article class="role">
+                <p class="company"><strong>AMERIA AG</strong></p>
                 <h3>UX/XR Developer</h3>
                 <div class="date"><span data-current-role-duration data-start-date="2026-02-01">Feb 2026 – Present</span></div>
-                <p class="company"><strong>AMERIA AG</strong> • Contract</p>
                 <p>Designing and developing interactive UX/XR experiences, real-time 3D prototypes, and spatial interface systems.</p>
               </article>
               <article class="role">
+                <p class="company"><strong>Vital Sports</strong></p>
                 <h3>XR Developer</h3>
                 <div class="date">Aug 2025 – Dec 2025</div>
-                <p class="company"><strong>Vital Sports</strong> • Contract</p>
                 <p>Led the design and engineering of a market-ready MVP, managing the full product lifecycle.</p>
               </article>
               <article class="role">
+                <p class="company"><strong>Code Craft</strong></p>
                 <h3>Unity Developer</h3>
                 <div class="date">Sep 2024 – Aug 2025</div>
-                <p class="company"><strong>Code Craft</strong> • Contract</p>
                 <p>Developed cross-platform solutions for Android and iOS devices.</p>
               </article>
               <article class="role">
+                <p class="company"><strong>SoftServe</strong></p>
                 <h3>XR Developer</h3>
                 <div class="date">Oct 2022 – Jun 2024</div>
-                <p class="company"><strong>SoftServe</strong> • Full-time</p>
                 <p>Developed enterprise-grade real-time training simulations for medical and automotive industries, focusing on reliability, performance, and R&amp;D-driven solutions.</p>
               </article>
               <article class="role">
                 <h3>Technical Artist</h3>
                 <div class="date">Oct 2020 – Sep 2022</div>
-                <p class="company"><strong>SoftServe</strong> • Full-time</p>
                 <p>Created real-time 3D content and technical art workflows for enterprise XR and interactive experiences.</p>
               </article>
               <article class="role">
                 <h3>Lead User Experience Designer</h3>
                 <div class="date">Nov 2018 – Oct 2020</div>
-                <p class="company"><strong>SoftServe</strong> • Full-time</p>
                 <p>Led user experience strategy for large-scale design systems and managed design teams.</p>
               </article>
               <article class="role">
+                <p class="company"><strong>Corel Corporation</strong></p>
                 <h3>Lead User Experience Designer</h3>
                 <div class="date">Nov 2016 – Nov 2018</div>
-                <p class="company"><strong>Corel Corporation</strong> • Contract</p>
                 <p>Led UX design for desktop creative software, aligning complex product workflows with platform-specific user needs.</p>
               </article>
               <article class="role">
+                <p class="company"><strong>EPAM Systems</strong></p>
                 <h3>Lead User Experience Designer</h3>
                 <div class="date">Aug 2014 – Nov 2016</div>
-                <p class="company"><strong>EPAM Systems</strong> • Full-time</p>
                 <p>Led the EPAM design studio, managing designers, design delivery, and UX direction across multiple client product teams.</p>
               </article>
               <article class="role">
                 <h3>User Experience Designer</h3>
                 <div class="date">Sep 2012 – Aug 2014</div>
-                <p class="company"><strong>EPAM Systems</strong> • Full-time</p>
                 <p>Designed user experiences, wireframes, and interaction flows for enterprise and product teams.</p>
               </article>
               <article class="role">
+                <p class="company"><strong>Adility</strong></p>
                 <h3>User Experience Designer</h3>
                 <div class="date">Aug 2010 – Apr 2012</div>
-                <p class="company"><strong>Adility</strong> • Full-time</p>
                 <p>Designed end-to-end user experience for the platform.</p>
               </article>
             </div>
@@ -1137,7 +1244,7 @@
               <span class="section-kicker">2000 – 2004</span>
             </div>
             <ul class="compact-list">
-              <li><strong>Vernadsky Taurida National University</strong><br>Computer Science • Bachelor’s degree</li>
+              <li><strong class="education-name">Vernadsky Taurida National University</strong><br>Computer Science • Bachelor’s degree</li>
             </ul>
           </div>
         </section>
@@ -1151,8 +1258,8 @@
             <ul class="compact-list language-list">
               <li><span class="language-name">Ukrainian</span><span class="language-level">Native</span></li>
               <li><span class="language-name">Russian</span><span class="language-level">Native</span></li>
-              <li><span class="language-name">English</span><span class="language-level">Advanced (C1)</span></li>
-              <li><span class="language-name">Polish</span><span class="language-level">Basic (A2)</span></li>
+              <li><span class="language-name">English</span><span class="language-level">Advanced <span class="language-code">(C1)</span></span></li>
+              <li><span class="language-name">Polish</span><span class="language-level">Basic <span class="language-code">(A2)</span></span></li>
             </ul>
           </div>
         </section>

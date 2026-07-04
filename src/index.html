@@ -722,6 +722,12 @@
     @media (max-width: 760px) {
       .shell { padding: 72px 20px 64px; }
       .nav-inner { padding: 0 20px; }
+      .nav-logo {
+        font-size: 14px;
+      }
+      .nav-link {
+        font-size: 15px;
+      }
       .toolbar {
         position: relative;
         padding-top: 4px;
@@ -760,6 +766,47 @@
       body.mobile-search-active .toolbar.is-search-active {
         margin-top: 0;
       }
+      .eyebrow {
+        font-size: 13px;
+      }
+      h1 {
+        font-size: clamp(36px, 5vw, 64px);
+        line-height: 1.04;
+        letter-spacing: -0.04em;
+      }
+      .intro {
+        max-width: 78ch;
+        margin-top: 18px;
+        font-size: 16px;
+        line-height: 1.65;
+      }
+      .count,
+      .search::placeholder,
+      .search-clear {
+        font-size: 14px;
+      }
+      .profile-card strong,
+      .title {
+        font-size: 18px;
+        line-height: 1.25;
+      }
+      .profile-roles,
+      .open-row {
+        font-size: 15px;
+        line-height: 1.5;
+      }
+      .profile-about,
+      .description {
+        font-size: 16px;
+        line-height: 1.55;
+      }
+      .description {
+        min-height: calc(2 * 1.55em);
+        max-height: calc(2 * 1.55em);
+      }
+      .open-row .open-label {
+        font-size: 15px;
+      }
       .grid {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -778,6 +825,7 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="/styles/chips.css" />
 </head>
 <body>
   <nav>

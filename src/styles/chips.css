@@ -1,0 +1,37 @@
+/* Shared chip component spacing/sizing for the home and CV pages.
+   Change these variables once to keep both pages aligned. */
+:root {
+  --chip-group-margin-top: 18px;
+  --chip-gap: 8px;
+
+  --mobile-chip-group-margin-top: 18px;
+  --mobile-chip-gap: 8px;
+  --mobile-chip-min-height: 30px;
+  --mobile-chip-padding-x: 15px;
+  --mobile-chip-font-size: 14px;
+}
+
+@media screen {
+  .intro-chips,
+  .quick-meta {
+    gap: var(--chip-gap);
+    margin-top: var(--chip-group-margin-top);
+  }
+}
+
+@media screen and (max-width: 760px) {
+  .intro-chips,
+  .quick-meta {
+    gap: var(--mobile-chip-gap);
+    margin-top: var(--mobile-chip-group-margin-top);
+  }
+
+  .intro-chip,
+  .quick-meta .chip,
+  .side-card .chip {
+    min-height: var(--mobile-chip-min-height);
+    padding-left: var(--mobile-chip-padding-x);
+    padding-right: var(--mobile-chip-padding-x);
+    font-size: var(--mobile-chip-font-size);
+  }
+}
