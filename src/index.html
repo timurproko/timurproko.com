@@ -874,7 +874,6 @@
     let profileHeightFrame = 0;
     let footerRevealSetupFrame = 0;
     let footerRevealSetupTimer = 0;
-    let blockNextCardClick = false;
     let pendingMobileSearchBlur = null;
     let mobileViewportFrame = 0;
 
@@ -1351,7 +1350,6 @@
           target: event.target,
           startX: event.clientX,
           startY: event.clientY,
-          shouldBlockCardClick: Boolean(event.target.closest?.(".card")),
           timer: window.setTimeout(commitPendingMobileSearchBlur, 260)
         };
       }, true);
@@ -1373,17 +1371,6 @@
         clearPendingMobileSearchBlur();
       }, true);
 
-      document.addEventListener("click", event => {
-        if (!blockNextCardClick) return;
-        if (!event.target.closest?.(".card")) {
-          blockNextCardClick = false;
-          return;
-        }
-
-        event.preventDefault();
-        event.stopPropagation();
-        blockNextCardClick = false;
-      }, true);
     }
 
     function clearPendingMobileSearchBlur() {
@@ -1394,14 +1381,10 @@
 
     function commitPendingMobileSearchBlur() {
       if (!pendingMobileSearchBlur) return;
-      const { shouldBlockCardClick, timer } = pendingMobileSearchBlur;
+      const { timer } = pendingMobileSearchBlur;
       window.clearTimeout(timer);
       pendingMobileSearchBlur = null;
 
-      blockNextCardClick = shouldBlockCardClick;
-      if (blockNextCardClick) {
-        window.setTimeout(() => { blockNextCardClick = false; }, 700);
-      }
       search.blur();
       updateSearchState();
     }
