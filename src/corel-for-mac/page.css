@@ -317,13 +317,13 @@ html.deck-square-layout [data-screen-label="20 AI Workflow"] .ui-workflow-grid,
   .mesh-compare-label { position: absolute; z-index: 3; top: 16px; padding: 7px 11px; border-radius: 999px; background: rgba(255,255,255,0.84); color: var(--muted); border: 1px solid rgba(255,255,255,0.52); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; pointer-events: none; }
   .mesh-compare-label.before { right: 16px; }
   .mesh-compare-label.after { left: 16px; }
-  .architecture-tabs { position: relative; width: min(1266px, 100%); margin-top: clamp(24px, 2.2vw, 40px); display: flex; flex-direction: column; gap: 0; flex: 1; min-height: 0; }
+  .architecture-tabs { --architecture-tab-offset: clamp(21px, 1.6vw, 24px); position: relative; width: min(1266px, 100%); margin-top: 0; display: flex; flex-direction: column; gap: 0; flex: 1; min-height: 0; }
   .architecture-tabs input { position: absolute; opacity: 0; pointer-events: none; }
-  .architecture-tab-controls { position: absolute; top: 0; left: 50%; z-index: 3; transform: translate(-50%, -50%); display: inline-flex; align-self: center; padding: 4px; gap: 4px; border: 1px solid var(--border); border-radius: 999px; background: color-mix(in oklab, var(--surface), transparent 6%); box-shadow: 0 10px 28px rgba(17,17,17,0.06); }
+  .architecture-tab-controls { position: absolute; top: var(--architecture-tab-offset); left: 50%; z-index: 3; transform: translate(-50%, -50%); display: inline-flex; align-self: center; padding: 4px; gap: 4px; border: 1px solid var(--border); border-radius: 999px; background: color-mix(in oklab, var(--surface), transparent 6%); box-shadow: 0 10px 28px rgba(17,17,17,0.06); }
   .architecture-tab-controls label { cursor: pointer; border-radius: 999px; padding: 9px 18px; font-family: var(--font-mono); font-size: clamp(11px, 0.86vw, 14px); line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); transition: background-color var(--motion-fast) var(--ease-standard), color var(--motion-fast) var(--ease-standard), box-shadow var(--motion-fast) var(--ease-standard); user-select: none; }
   #arch-corel:checked ~ .architecture-tab-controls label[for="arch-corel"],
   #arch-macos:checked ~ .architecture-tab-controls label[for="arch-macos"] { background: var(--accent); color: #fff; box-shadow: 0 8px 20px color-mix(in oklab, var(--accent), transparent 78%); }
-  .architecture-stage { position: relative; flex: 0 0 min(510px, 49vh); min-height: 0; margin-top: 34px; }
+  .architecture-stage { position: relative; flex: 0 0 min(510px, 49vh); min-height: 0; margin-top: calc(var(--architecture-tab-offset) + 34px); }
   .architecture-panel { display: none; width: 100%; height: 100%; }
   #arch-corel:checked ~ .architecture-stage .architecture-panel.corel,
   #arch-macos:checked ~ .architecture-stage .architecture-panel.macos { display: block; }
@@ -339,8 +339,9 @@ html.deck-square-layout [data-screen-label="20 AI Workflow"] .ui-workflow-grid,
   .architecture-graph .vertical { writing-mode: vertical-rl; glyph-orientation-vertical: 0deg; }
   @media (max-width: 760px) {
     .architecture-tabs {
+      --architecture-tab-offset: 25px;
       flex: 0 0 auto;
-      margin-top: 36px;
+      margin-top: 0;
     }
     .architecture-tab-controls {
       align-items: stretch;
@@ -359,7 +360,7 @@ html.deck-square-layout [data-screen-label="20 AI Workflow"] .ui-workflow-grid,
       flex: 0 0 auto;
       aspect-ratio: 725 / 436;
       height: auto;
-      margin-top: 42px;
+      margin-top: calc(var(--architecture-tab-offset) + 34px);
     }
   }
   .breakdown-stage { width: min(1320px, 100%); margin-top: clamp(34px, 2.2vw, 42px); flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; }
