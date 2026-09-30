@@ -1,230 +1,309 @@
 // Cover 3D object (three.js), page-specific.
+//
+// Unity Development deck: a miniature scene view — a ground grid receding to
+// the horizon, three wireframe primitives standing on it, and a camera frustum
+// looking down at them. It is the deck's thesis as one image: an engine is a
+// world, a clock and a camera pointed at it.
+//
+// The home page shows this cover rendered at desktop size and scaled down to a
+// small card, so plain WebGL lines (always 1px) end up a fraction of a pixel
+// wide and strobe as the scene sways. So shapes are solid faceted steel, and all
+// lines are "fat" screen-space lines (LineSegments2) that get thicker — and the
+// grid sparser — in that preview mode. Depth is faked with per-vertex colour
+// (lines darken toward the background) rather than fog, so the renderer can
+// stay alpha:true over the page gradient.
 import * as THREE from 'three';
+import { LineSegments2 } from 'three/examples/jsm/lines/LineSegments2.js';
+import { LineSegmentsGeometry } from 'three/examples/jsm/lines/LineSegmentsGeometry.js';
+import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
+
+const PREVIEW = new URLSearchParams(window.location.search).get('preview') === 'cover';
+// Line width in CSS px of the rendered page; the preview is shown at ~1/4–1/5 scale.
+const LINE_WIDTH = PREVIEW ? 3.4 : 1.2;
+// Fat-line materials need the canvas size; initCover3d keeps it up to date.
+const lineMaterials = [];
+
+/** Screen-space thick line segments. `colors` (per vertex) or a flat `color`. */
+function fatLines(positions, { colors, color = 0xffffff, opacity = 1, width = 1 }) {
+  const geometry = new LineSegmentsGeometry();
+  geometry.setPositions(positions);
+  if (colors) geometry.setColors(colors);
+  const material = new LineMaterial({
+    color: colors ? 0xffffff : color,
+    vertexColors: Boolean(colors),
+    linewidth: LINE_WIDTH * width,
+    transparent: opacity < 1,
+    opacity,
+    worldUnits: false,
+  });
+  lineMaterials.push(material);
+  return new LineSegments2(geometry, material);
+}
+
+const STEEL = {
+  bright: new THREE.Color(0xe7ecf3),
+  line: new THREE.Color(0x9aa8bd),
+  dim: new THREE.Color(0x5b6c86),
+  fade: new THREE.Color(0x0e141d),
+};
+
+/** Lerp toward the background colour so distant geometry sinks into the cover. */
+function depthFade(base, t) {
+  return base.clone().lerp(STEEL.fade, Math.min(Math.max(t, 0), 1));
+}
+
+/**
+ * Ground plane grid. Each line is emitted in short segments so the fade can run
+ * along its length — the plane then reads as infinite without needing fog.
+ */
+function buildGrid(half, step, y) {
+  const positions = [];
+  const colors = [];
+  const push = (x1, z1, x2, z2, major) => {
+    const base = major ? STEEL.line : STEEL.dim;
+    const a = depthFade(base, Math.hypot(x1, z1) / (half * 1.2));
+    const b = depthFade(base, Math.hypot(x2, z2) / (half * 1.2));
+    positions.push(x1, y, z1, x2, y, z2);
+    colors.push(a.r, a.g, a.b, b.r, b.g, b.b);
+  };
+
+  for (let i = -half; i <= half; i += step) {
+    const major = Math.abs(i % (step * 4)) < 1e-6;
+    for (let s = -half; s < half; s += step) {
+      push(i, s, i, s + step, major);
+      push(s, i, s + step, i, major);
+    }
+  }
+
+  return fatLines(positions, { colors, opacity: 0.85, width: 0.8 });
+}
+
+/** Wireframe edges of a geometry, in a flat steel tone. */
+function wire(geometry, color, opacity) {
+  const edges = new THREE.EdgesGeometry(geometry, 18);
+  return fatLines(Array.from(edges.attributes.position.array), { color, opacity });
+}
+
+/** Solid faceted steel body with its edges traced on top — reads at any size. */
+function solid(geometry, color, edgeOpacity) {
+  const group = new THREE.Group();
+  group.add(new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({
+    color, roughness: 0.42, metalness: 0.35, flatShading: true,
+    emissive: 0x0b1220, emissiveIntensity: 0.6,
+  })));
+  const edges = wire(geometry, 0xf2f5fa, edgeOpacity);
+  edges.scale.setScalar(1.004);
+  group.add(edges);
+  return group;
+}
+
+/**
+ * The camera: a small body plus the frustum it projects. The frustum is the
+ * recognisable part, so its near edges get the brightest lines and the far
+ * rectangle fades into the scene.
+ *
+ * Built along +Z on purpose: Object3D.lookAt() points the +Z axis at the target
+ * for everything that is not a camera or a light, so a -Z frustum aims backwards.
+ */
+function buildFrustum(near, far, halfW, halfH) {
+  const group = new THREE.Group();
+
+  const corners = (d) => [
+    [-halfW * d, -halfH * d, d],
+    [halfW * d, -halfH * d, d],
+    [halfW * d, halfH * d, d],
+    [-halfW * d, halfH * d, d],
+  ];
+  const n = corners(near);
+  const f = corners(far);
+
+  const positions = [];
+  const colors = [];
+  const seg = (a, b, ca, cb) => {
+    positions.push(a[0], a[1], a[2], b[0], b[1], b[2]);
+    colors.push(ca.r, ca.g, ca.b, cb.r, cb.g, cb.b);
+  };
+  const farTone = depthFade(STEEL.line, 0.3);
+  for (let i = 0; i < 4; i++) {
+    const j = (i + 1) % 4;
+    seg(n[i], n[j], STEEL.bright, STEEL.bright);
+    seg(f[i], f[j], farTone, farTone);
+    seg(n[i], f[i], STEEL.bright, farTone);
+  }
+
+  group.add(fatLines(positions, { colors, opacity: 0.9 }));
+
+  // Translucent sides of the view cone, so it reads as a volume even when small
+  const cone = [];
+  for (let i = 0; i < 4; i++) {
+    const j = (i + 1) % 4;
+    cone.push(...n[i], ...n[j], ...f[j], ...n[i], ...f[j], ...f[i]);
+  }
+  const coneGeometry = new THREE.BufferGeometry();
+  coneGeometry.setAttribute('position', new THREE.Float32BufferAttribute(cone, 3));
+  group.add(new THREE.Mesh(coneGeometry, new THREE.MeshBasicMaterial({
+    color: 0x9fb3d1, transparent: true, opacity: 0.14, side: THREE.DoubleSide, depthWrite: false,
+  })));
+
+  const body = solid(new THREE.BoxGeometry(0.66, 0.48, 0.78), 0x8a9ab3, 0.95);
+  body.position.z = -0.4;
+  group.add(body);
+
+  const lens = solid(new THREE.CylinderGeometry(0.18, 0.18, 0.22, 16), 0x5b6c86, 0.8);
+  lens.rotation.x = Math.PI / 2;
+  lens.position.z = 0.08;
+  group.add(lens);
+
+  return group;
+}
 
 export function initCover3d() {
-    var host = document.getElementById('coverHeart');
-    if (!host || host.dataset.ready) return;
-    host.dataset.ready = '1';
-    var w = host.clientWidth || 1200, h = host.clientHeight || 800;
+  const host = document.getElementById('coverHeart');
+  if (!host || host.dataset.ready) return;
+  host.dataset.ready = '1';
+  const w = host.clientWidth || 1200;
+  const h = host.clientHeight || 800;
 
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(34, w / h, 0.1, 100);
-    camera.position.set(0, 0, 10.4);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(38, w / h, 0.1, 200);
+  camera.position.set(0, 3.9, 12.6);
+  camera.lookAt(0, 0.2, 0);
 
-    var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setSize(w, h);
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    host.appendChild(renderer.domElement);
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(w, h);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  host.appendChild(renderer.domElement);
 
-    var cube = new THREE.Group();
-    scene.add(cube);
+  // Everything sits in one group so the whole scene orbits as a unit.
+  const rig = new THREE.Group();
+  scene.add(rig);
 
-    var vertices = [
-      [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
-      [-1, -1, 1], [1, -1, 1], [1, 1, 1], [-1, 1, 1]
-    ];
-    var edges = [
-      [0, 1], [1, 2], [2, 3], [3, 0],
-      [4, 5], [5, 6], [6, 7], [7, 4],
-      [0, 4], [1, 5], [2, 6], [3, 7]
-    ];
-    var innerLines = [
-      [0, 6], [1, 7], [2, 4], [3, 5]
-    ];
-    var rainbow = [
-      new THREE.Color(0xff4d6d),
-      new THREE.Color(0xff9f1c),
-      new THREE.Color(0xffd166),
-      new THREE.Color(0x38d996),
-      new THREE.Color(0x4cc9f0),
-      new THREE.Color(0xb56cff)
-    ];
+  scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+  const key = new THREE.DirectionalLight(0xffffff, 2.2);
+  key.position.set(4, 7, 6);
+  scene.add(key);
+  const rim = new THREE.DirectionalLight(0x9fc2ff, 1.1);
+  rim.position.set(-6, 3, -5);
+  scene.add(rim);
 
-    function buildLineGeometry(pairs, scale, alphaOffset) {
-      var positions = [];
-      var colors = [];
-      for (var i = 0; i < pairs.length; i++) {
-        var pair = pairs[i];
-        var a = vertices[pair[0]];
-        var b = vertices[pair[1]];
-        var colorA = rainbow[(i + alphaOffset) % rainbow.length];
-        var colorB = rainbow[(i + alphaOffset + 2) % rainbow.length];
-        positions.push(a[0] * scale, a[1] * scale, a[2] * scale, b[0] * scale, b[1] * scale, b[2] * scale);
-        colors.push(colorA.r, colorA.g, colorA.b, colorB.r, colorB.g, colorB.b);
-      }
-      var geometry = new THREE.BufferGeometry();
-      geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-      geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-      return geometry;
-    }
+  const groundY = -1.6;
+  rig.add(buildGrid(16, PREVIEW ? 2 : 1, groundY));
 
-    // Semi-transparent rainbow fill so the cube reads as a volume, while the
-    // thicker rainbow wires stay dominant over the dark cover.
-    var fillMaterials = [
-      new THREE.MeshBasicMaterial({ color: 0xff4d6d, transparent: true, opacity: 0.13, side: THREE.DoubleSide, depthWrite: false }),
-      new THREE.MeshBasicMaterial({ color: 0xff9f1c, transparent: true, opacity: 0.12, side: THREE.DoubleSide, depthWrite: false }),
-      new THREE.MeshBasicMaterial({ color: 0xffd166, transparent: true, opacity: 0.11, side: THREE.DoubleSide, depthWrite: false }),
-      new THREE.MeshBasicMaterial({ color: 0x38d996, transparent: true, opacity: 0.13, side: THREE.DoubleSide, depthWrite: false }),
-      new THREE.MeshBasicMaterial({ color: 0x4cc9f0, transparent: true, opacity: 0.13, side: THREE.DoubleSide, depthWrite: false }),
-      new THREE.MeshBasicMaterial({ color: 0xb56cff, transparent: true, opacity: 0.14, side: THREE.DoubleSide, depthWrite: false })
-    ];
-    var fill = new THREE.Mesh(new THREE.BoxGeometry(2.9, 2.9, 2.9), fillMaterials);
-    cube.add(fill);
-
-    function makeEdgeTubes(pairs, scale, radius, opacity, alphaOffset, additive) {
-      var group = new THREE.Group();
-      var up = new THREE.Vector3(0, 1, 0);
-      for (var i = 0; i < pairs.length; i++) {
-        var pair = pairs[i];
-        var a = vertices[pair[0]];
-        var b = vertices[pair[1]];
-        var start = new THREE.Vector3(a[0] * scale, a[1] * scale, a[2] * scale);
-        var end = new THREE.Vector3(b[0] * scale, b[1] * scale, b[2] * scale);
-        var mid = start.clone().add(end).multiplyScalar(0.5);
-        var delta = end.clone().sub(start);
-        var length = delta.length();
-        var material = new THREE.MeshBasicMaterial({
-          color: rainbow[(i + alphaOffset) % rainbow.length],
-          transparent: true,
-          opacity: opacity,
-          blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending,
-          depthWrite: false
-        });
-        var tube = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, length, 10, 1), material);
-        tube.position.copy(mid);
-        tube.quaternion.setFromUnitVectors(up, delta.normalize());
-        group.add(tube);
-      }
-      return group;
-    }
-
-    var glow = makeEdgeTubes(edges, 1.455, 0.052, 0.20, 1, true);
-    cube.add(glow);
-
-    var outer = makeEdgeTubes(edges, 1.45, 0.024, 0.94, 0, false);
-    cube.add(outer);
-
-    var crispLines = new THREE.LineSegments(
-      buildLineGeometry(edges, 1.45, 0),
-      new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.85, linewidth: 2 })
-    );
-    cube.add(crispLines);
-
-    var diagonals = new THREE.LineSegments(
-      buildLineGeometry(innerLines, 1.28, 3),
-      new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.22, linewidth: 2 })
-    );
-    cube.add(diagonals);
-
-    var pointPositions = [];
-    var pointColors = [];
-    for (var p = 0; p < vertices.length; p++) {
-      var point = vertices[p];
-      var pointColor = rainbow[p % rainbow.length];
-      pointPositions.push(point[0] * 1.45, point[1] * 1.45, point[2] * 1.45);
-      pointColors.push(pointColor.r, pointColor.g, pointColor.b);
-    }
-    var pointGeometry = new THREE.BufferGeometry();
-    pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(pointPositions, 3));
-    pointGeometry.setAttribute('color', new THREE.Float32BufferAttribute(pointColors, 3));
-    var points = new THREE.Points(
-      pointGeometry,
-      new THREE.PointsMaterial({ size: 0.13, vertexColors: true, transparent: true, opacity: 0.92, blending: THREE.AdditiveBlending })
-    );
-    cube.add(points);
-
-    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-    var cool = new THREE.PointLight(0x4cc9f0, 0.8, 30); cool.position.set(3, -2, 4); scene.add(cool);
-    var warm = new THREE.PointLight(0xff4d6d, 0.7, 30); warm.position.set(-3, 2, 4); scene.add(warm);
-
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var previewCoverMode = new URLSearchParams(window.location.search).get('preview') === 'cover';
-    var previewMotionEnabled = !previewCoverMode;
-    var t0 = performance.now();
-    var motionFrame = 0;
-    var returnFrame = 0;
-    var currentPose = poseAt(0);
-    function poseAt(t) {
-      return {
-        ry: reduce ? -0.58 : t * 0.36 - 0.58,
-        rx: reduce ? 0.44 : Math.sin(t * 0.42) * 0.20 + 0.44,
-        rz: reduce ? -0.10 : Math.sin(t * 0.28) * 0.07 - 0.10,
-        scale: reduce ? 1 : 1 + Math.sin(t * 1.2) * 0.014
-      };
-    }
-    function applyPose(pose) {
-      currentPose = pose;
-      cube.rotation.y = pose.ry;
-      cube.rotation.x = pose.rx;
-      cube.rotation.z = pose.rz;
-      cube.scale.setScalar(pose.scale);
-      renderer.render(scene, camera);
-    }
-    function renderPose(t) {
-      applyPose(poseAt(t));
-    }
-    function lerpPose(from, to, eased) {
-      return {
-        ry: from.ry + (to.ry - from.ry) * eased,
-        rx: from.rx + (to.rx - from.rx) * eased,
-        rz: from.rz + (to.rz - from.rz) * eased,
-        scale: from.scale + (to.scale - from.scale) * eased
-      };
-    }
-    function frame(now) {
-      motionFrame = 0;
-      if (!previewMotionEnabled && previewCoverMode) return;
-      renderPose((now - t0) / 1000);
-      if (!reduce && previewMotionEnabled) motionFrame = requestAnimationFrame(frame);
-    }
-    function startPreviewMotion() {
-      if (!previewCoverMode || previewMotionEnabled || reduce) return;
-      cancelAnimationFrame(returnFrame);
-      returnFrame = 0;
-      previewMotionEnabled = true;
-      t0 = performance.now();
-      if (!motionFrame) motionFrame = requestAnimationFrame(frame);
-    }
-    function stopPreviewMotion() {
-      if (!previewCoverMode) return;
-      previewMotionEnabled = false;
-      cancelAnimationFrame(motionFrame);
-      motionFrame = 0;
-      cancelAnimationFrame(returnFrame);
-      var from = currentPose;
-      var to = poseAt(0);
-      var startTime = performance.now();
-      var duration = 560;
-      function tick(now) {
-        var progress = Math.min((now - startTime) / duration, 1);
-        var eased = 1 - Math.pow(1 - progress, 3);
-        applyPose(lerpPose(from, to, eased));
-        if (progress < 1) {
-          returnFrame = requestAnimationFrame(tick);
-          return;
-        }
-        returnFrame = 0;
-        renderPose(0);
-      }
-      returnFrame = requestAnimationFrame(tick);
-    }
-    window.addEventListener('preview-cover-motion-start', startPreviewMotion);
-    window.addEventListener('preview-cover-motion-stop', stopPreviewMotion);
-    window.addEventListener('message', function (event) {
-      if (event.data && event.data.type === 'preview-cover:start') startPreviewMotion();
-      if (event.data && event.data.type === 'preview-cover:stop') stopPreviewMotion();
-    });
-    if (previewCoverMode || reduce) {
-      renderPose(0);
-    } else {
-      motionFrame = requestAnimationFrame(frame);
-    }
-
-    function onResize() {
-      var nw = host.clientWidth || w, nh = host.clientHeight || h;
-      camera.aspect = nw / nh; camera.updateProjectionMatrix();
-      renderer.setSize(nw, nh);
-    }
-    window.addEventListener('resize', onResize);
+  // Three primitives standing on the grid — the stand-in for scene content.
+  const props = [
+    { geo: new THREE.BoxGeometry(1.8, 1.8, 1.8), pos: [-3.4, groundY + 0.9, 0.7], tone: 0x7f90aa, opacity: 0.55 },
+    { geo: new THREE.IcosahedronGeometry(1.12, 1), pos: [0.2, groundY + 1.12, -1.5], tone: 0x9aabc4, opacity: 0.45 },
+    { geo: new THREE.CylinderGeometry(0.66, 0.66, 2.2, 14), pos: [3.4, groundY + 1.1, 1.0], tone: 0x6c7d96, opacity: 0.5 },
+  ];
+  for (const prop of props) {
+    const mesh = solid(prop.geo, prop.tone, prop.opacity);
+    mesh.position.set(prop.pos[0], prop.pos[1], prop.pos[2]);
+    rig.add(mesh);
   }
+
+  const frustum = buildFrustum(0.8, 4.6, 0.34, 0.22);
+  frustum.position.set(-3.9, 2.7, 3.8);
+  frustum.updateMatrixWorld();
+  frustum.lookAt(-3.2, groundY + 0.8, 0.6);
+  rig.add(frustum);
+
+  const setLineResolution = (lw, lh) => lineMaterials.forEach(material => material.resolution.set(lw, lh));
+  setLineResolution(w, h);
+
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const previewCoverMode = new URLSearchParams(window.location.search).get('preview') === 'cover';
+  let previewMotionEnabled = !previewCoverMode;
+  let t0 = performance.now();
+  let motionFrame = 0;
+  let returnFrame = 0;
+
+  // A slow yaw sweep rather than a full spin: the grid should never read upside
+  // down, and the frustum has to keep pointing into the scene.
+  function poseAt(t) {
+    return {
+      ry: reduce ? -0.2 : Math.sin(t * 0.13) * 0.24 - 0.2,
+      rx: reduce ? 0.05 : Math.sin(t * 0.2) * 0.035 + 0.05,
+      y: reduce ? 0 : Math.sin(t * 0.46) * 0.07,
+    };
+  }
+  let currentPose = poseAt(0);
+
+  function applyPose(pose) {
+    currentPose = pose;
+    rig.rotation.y = pose.ry;
+    rig.rotation.x = pose.rx;
+    rig.position.y = pose.y;
+    renderer.render(scene, camera);
+  }
+  function renderPose(t) {
+    applyPose(poseAt(t));
+  }
+  function lerpPose(from, to, eased) {
+    return {
+      ry: from.ry + (to.ry - from.ry) * eased,
+      rx: from.rx + (to.rx - from.rx) * eased,
+      y: from.y + (to.y - from.y) * eased,
+    };
+  }
+  function frame(now) {
+    motionFrame = 0;
+    if (!previewMotionEnabled && previewCoverMode) return;
+    renderPose((now - t0) / 1000);
+    if (!reduce && previewMotionEnabled) motionFrame = requestAnimationFrame(frame);
+  }
+  function startPreviewMotion() {
+    if (!previewCoverMode || previewMotionEnabled || reduce) return;
+    cancelAnimationFrame(returnFrame);
+    returnFrame = 0;
+    previewMotionEnabled = true;
+    t0 = performance.now();
+    if (!motionFrame) motionFrame = requestAnimationFrame(frame);
+  }
+  function stopPreviewMotion() {
+    if (!previewCoverMode) return;
+    previewMotionEnabled = false;
+    cancelAnimationFrame(motionFrame);
+    motionFrame = 0;
+    cancelAnimationFrame(returnFrame);
+    const from = currentPose;
+    const to = poseAt(0);
+    const startTime = performance.now();
+    const duration = 560;
+    function tick(now) {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      applyPose(lerpPose(from, to, eased));
+      if (progress < 1) {
+        returnFrame = requestAnimationFrame(tick);
+        return;
+      }
+      returnFrame = 0;
+      renderPose(0);
+    }
+    returnFrame = requestAnimationFrame(tick);
+  }
+
+  window.addEventListener('preview-cover-motion-start', startPreviewMotion);
+  window.addEventListener('preview-cover-motion-stop', stopPreviewMotion);
+  window.addEventListener('message', function (event) {
+    if (event.data && event.data.type === 'preview-cover:start') startPreviewMotion();
+    if (event.data && event.data.type === 'preview-cover:stop') stopPreviewMotion();
+  });
+
+  if (previewCoverMode || reduce) {
+    renderPose(0);
+  } else {
+    motionFrame = requestAnimationFrame(frame);
+  }
+
+  function onResize() {
+    const nw = host.clientWidth || w;
+    const nh = host.clientHeight || h;
+    camera.aspect = nw / nh;
+    camera.updateProjectionMatrix();
+    renderer.setSize(nw, nh);
+    setLineResolution(nw, nh);
+  }
+  window.addEventListener('resize', onResize);
+}

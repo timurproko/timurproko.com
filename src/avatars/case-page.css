@@ -1,0 +1,6 @@
+/* Digital Human case page — teal theme matching the cover's 3D figure (#0d9488). Loads after case/case.css. */
+:root {
+  --hue: 185;
+  --accent: #0d9488;
+  --accent-dim: rgb(13 148 136 / 0.08);
+}

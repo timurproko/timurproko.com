@@ -15,7 +15,7 @@ function captionFrom(path) {
   return text || '';
 }
 
-export function renderGallery(modules, container) {
+export function renderGallery(modules, container, { pair = true } = {}) {
   const items = Object.keys(modules)
     .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
     .map(path => ({ src: modules[path], caption: captionFrom(path), video: VIDEO.test(path) }));
@@ -27,13 +27,15 @@ export function renderGallery(modules, container) {
 
   const lightbox = createLightbox();
 
-  // Progressive rows: one hero image, then a 50/50 pair, then everything
-  // else shares a single row of smaller thumbnails.
-  const rows = [items.slice(0, 1), items.slice(1, 3), items.slice(3)].filter(row => row.length);
+  // Progressive rows: one hero image, then a 50/50 pair (unless pair: false),
+  // then everything else shares a single strip of smaller thumbnails.
+  const stripStart = pair ? 3 : 1;
+  const rows = [items.slice(0, 1), items.slice(1, stripStart), items.slice(stripStart)];
   const rowOf = [];
-  rows.forEach(row => {
+  rows.forEach((row, index) => {
+    if (!row.length) return;
     const el = document.createElement('div');
-    el.className = 'gallery-row';
+    el.className = index === 2 ? 'gallery-row gallery-strip' : 'gallery-row';
     el.style.setProperty('--cols', row.length);
     container.append(el);
     row.forEach(() => rowOf.push(el));

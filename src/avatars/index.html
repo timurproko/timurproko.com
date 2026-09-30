@@ -1,9 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="Design overview of the avatar creation pipeline — from body and face capture to real-time AI-driven animation and rendering." />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f8f8f9" />
+  <meta name="description" content="Design overview of the avatar creation pipeline — from body and face capture to real-time AI-driven animation and rendering." />
   <!-- social-preview:start -->
   <link rel="canonical" href="https://timurproko.com/avatars/" />
   <meta property="og:type" content="website" />
@@ -20,43 +21,250 @@
   <meta name="twitter:description" content="Design overview of the avatar creation pipeline — from body and face capture to real-time AI-driven animation and rendering." />
   <meta name="twitter:image" content="https://timurproko.com/assets/social/avatars.png" />
   <!-- social-preview:end -->
-<title>Avatar Creation Pipeline</title>
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script>
-(function () {
-  try {
-    var params = new URLSearchParams(window.location.search);
-    var preview = params.get('preview') === 'cover';
-    if (preview) {
-      document.documentElement.classList.add('deck-preview-cover');
+  <title>Avatar Creation Pipeline</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    // Home page cards load this page with ?preview=cover — hand them the 3D deck cover.
+    if (new URLSearchParams(location.search).get('preview') === 'cover') {
+      location.replace('/avatars/cover/' + location.search);
     }
-    var layout = params.get('layout') || params.get('format');
-    if (layout === 'square' || params.get('linkedin') === 'square') {
-      document.documentElement.classList.add('deck-square-layout');
-    }
-    var saved = parseInt(localStorage.getItem('avatar-solutions-deck-position') || '0', 10);
-    var startsOnDarkSlide = preview || isNaN(saved) || [0,2,5,9,11].indexOf(saved) !== -1;
-    document.documentElement.classList.add(startsOnDarkSlide ? 'deck-starts-on-dark' : 'deck-starts-on-light');
-  } catch (_) {
-    document.documentElement.classList.add('deck-starts-on-dark');
-  }
-})();
-</script>
-<style>
-  /* Critical pre-mount paint: keep the first frame on-theme while the bundle loads. */
-  html.deck-starts-on-dark { background: #04140f; }
-  html.deck-starts-on-light { background: #f8f8f9; }
-</style>
-<link rel="stylesheet" href="/assets/deck-common.css">
+  </script>
+  <link rel="stylesheet" href="../case/case.css" />
+  <link rel="stylesheet" href="./case-page.css" />
 </head>
-<body class="chrome-boot deck-animations-pending">
-  <div id="root"></div>
-  <script type="module" src="./main.tsx"></script>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Timur Prokopiev</a>
+      <div class="nav-links" aria-label="Navigation">
+        <a href="/" class="nav-link">Portfolio</a>
+        <a href="/cv/" class="nav-link">CV</a>
+        <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <article>
+      <a class="back-shortcut" href="/" aria-label="Back to portfolio"><kbd>←</kbd> <span class="action-label">Back</span></a>
+
+      <header class="page-head reveal" style="animation-delay: 80ms">
+        <div class="head">
+          <h1>Digital Human</h1>
+        </div>
+        <p class="lede">
+          A digital human pipeline that takes a real person to a fully rigged, real-time avatar —
+          from body and face creation through to AI-driven facial animation and rendering.
+        </p>
+        <ul class="tags" aria-label="Focus areas">
+          <li><span class="tag">3D Design</span></li>
+          <li><span class="tag">Technical Art</span></li>
+          <li><span class="tag">XR Development</span></li>
+          <li><span class="tag">Digital Humans</span></li>
+          <li><span class="tag">Real-time 3D</span></li>
+        </ul>
+      </header>
+
+      <section id="gallery" class="gallery reveal" style="animation-delay: 180ms" aria-label="Project gallery"></section>
+
+      <section class="block first">
+        <h2>Pipeline</h2>
+        <p>Six stages take a real person to a fully rigged, real-time avatar — each backed by dedicated tools.</p>
+        <ol class="stages">
+          <li class="stage">
+            <span class="stage-index">01</span>
+            <div class="stage-text">
+              <span class="stage-title">Body Creation</span>
+              <span class="stage-desc">Base shape of the face and body.</span>
+            </div>
+            <span class="stage-tools"><span class="chip">Character Creator</span><span class="chip">Houdini</span></span>
+          </li>
+          <li class="stage">
+            <span class="stage-index">02</span>
+            <div class="stage-text">
+              <span class="stage-title">Face Reconstruction</span>
+              <span class="stage-desc">3D reconstruction of the face from captured imagery.</span>
+            </div>
+            <span class="stage-tools"><span class="chip">Reality Capture</span></span>
+          </li>
+          <li class="stage">
+            <span class="stage-index">03</span>
+            <div class="stage-text">
+              <span class="stage-title">Mesh Retopology</span>
+              <span class="stage-desc">Geometry retopology and projection onto the base mesh.</span>
+            </div>
+            <span class="stage-tools"><span class="chip">Wrap4D</span></span>
+          </li>
+          <li class="stage">
+            <span class="stage-index">04</span>
+            <div class="stage-text">
+              <span class="stage-title">Cloth Creation</span>
+              <span class="stage-desc">Garment design and cloth simulation.</span>
+            </div>
+            <span class="stage-tools"><span class="chip">Marvelous Designer</span></span>
+          </li>
+          <li class="stage">
+            <span class="stage-index">05</span>
+            <div class="stage-text">
+              <span class="stage-title">Character Design</span>
+              <span class="stage-desc">Facial expressions, makeup, hair and animation.</span>
+            </div>
+            <span class="stage-tools"><span class="chip">Character Creator</span><span class="chip">iClone</span></span>
+          </li>
+          <li class="stage">
+            <span class="stage-index">06</span>
+            <div class="stage-text">
+              <span class="stage-title">Animate &amp; Render</span>
+              <span class="stage-desc">AI-based facial animation and real-time rendering.</span>
+            </div>
+            <span class="stage-tools"><span class="chip">Omniverse</span><span class="chip">Audio2Face</span></span>
+          </li>
+        </ol>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">R&amp;D</p>
+          <h2>AI-driven face &amp; voice</h2>
+          <p>
+            AI-driven facial animation and voice synthesis produce lifelike facial expressions and
+            human-like speech — the foundation for believable avatars and immersive interaction across
+            gaming, entertainment, VR and voice assistants.
+          </p>
+          <ul class="points">
+            <li>Facial recognition &amp; 3D modeling</li>
+            <li>Emotion analysis for expression</li>
+            <li>Text-to-speech voice synthesis</li>
+          </ul>
+        </div>
+        <div class="frame">
+          <video src="/avatars/assets/avatar1.mp4" autoplay muted loop playsinline aria-label="R&amp;D reel — AI facial animation and voice synthesis"></video>
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Face Reconstruction</p>
+          <h2>From photos to a 3D face</h2>
+          <p>
+            Image-to-3D reconstruction turns 2D photographs and video into detailed, accurate 3D
+            representations of a human face.
+          </p>
+          <ul class="points">
+            <li>Multi-view capture to dense point cloud</li>
+            <li>Lifelike 3D facial models from 2D source</li>
+            <li>Feeds graphics, VR and medical imaging</li>
+          </ul>
+        </div>
+        <div class="frame">
+          <div class="switcher" aria-label="Face reconstruction stages">
+            <input type="radio" name="face-stage" id="face-photo" checked />
+            <input type="radio" name="face-stage" id="face-cloud" />
+            <input type="radio" name="face-stage" id="face-mesh" />
+            <div class="switcher-panels">
+              <img src="/avatars/assets/face-photo.webp" width="1436" height="1450" alt="Source photo of the face used for reconstruction" loading="lazy" decoding="async" />
+              <img src="/avatars/assets/face-point-cloud.webp" width="1436" height="1449" alt="Dense point cloud of the head, reconstructed from multi-view camera captures" loading="lazy" decoding="async" />
+              <img src="/avatars/assets/face-textured-mesh.webp" width="1436" height="1449" alt="Final textured 3D mesh of the face" loading="lazy" decoding="async" />
+            </div>
+            <div class="switcher-tabs">
+              <label for="face-photo">Photo</label>
+              <label for="face-cloud">Point cloud</label>
+              <label for="face-mesh">Mesh</label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Mesh Retopology</p>
+          <h2>High-poly to clean base mesh</h2>
+          <p>
+            Retopology rebuilds a dense scan as a simplified, optimized base mesh — clean edge flow that
+            is efficient and ready for animation across games, animation, VFX and product design.
+          </p>
+          <ul class="points">
+            <li>Simplified, optimized topology</li>
+            <li>Deformation-friendly edge flow</li>
+            <li>Detail projected back onto the base</li>
+          </ul>
+        </div>
+        <div class="frame">
+          <div class="compare" data-compare tabindex="0" aria-label="Retopology comparison — drag to compare the base mesh with the clean retopology">
+            <img class="compare-before" src="/avatars/assets/base-mesh.png" width="1080" height="900" alt="Base mesh before retopology" loading="lazy" decoding="async" draggable="false" />
+            <img class="compare-after" src="/avatars/assets/retopo-mesh.png" width="1080" height="900" alt="Retopologized clean mesh" loading="lazy" decoding="async" draggable="false" />
+            <span class="compare-label after">Base</span>
+            <span class="compare-label before">Retopo</span>
+            <span class="compare-line" aria-hidden="true"></span>
+            <span class="compare-handle" aria-hidden="true"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Character Design</p>
+          <h2>Texturing &amp; realistic render</h2>
+          <p>
+            Lifelike textures are authored and applied to the model, then rendered to achieve a high
+            level of realism — for film, games, medical visualization and VR.
+          </p>
+          <ul class="points">
+            <li>Skin, hair, makeup &amp; garment materials</li>
+            <li>Physically based texturing &amp; lighting</li>
+            <li>Rendering tuned for believable realism</li>
+          </ul>
+        </div>
+        <div class="frame">
+          <img src="/avatars/assets/render.png" width="4005" height="1558" alt="Textured and realistically rendered avatar" loading="lazy" decoding="async" />
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Case Study</p>
+          <h2>Jade — a digital host</h2>
+          <p>
+            A digital avatar built for the Singapore Fintech Festival — an innovative, intelligent
+            digital assistant with a radiant, holographic presence.
+          </p>
+          <ul class="points">
+            <li>Sleek, futuristic, holographic design</li>
+            <li>Modern &amp; traditional elements in balance</li>
+            <li>Reflects Singapore's cultural heritage</li>
+          </ul>
+          <ul class="tags" aria-label="Delivered for">
+            <li><span class="tag">Singapore Fintech Festival</span></li>
+            <li><span class="tag">Digital Assistant</span></li>
+            <li><span class="tag">Real-time</span></li>
+          </ul>
+        </div>
+        <div class="frame">
+          <video src="/avatars/assets/jade.webm" autoplay muted loop playsinline aria-label="Jade — digital avatar for the Singapore Fintech Festival"></video>
+        </div>
+      </section>
+
+      <a class="next" href="/corel-for-mac/">
+        <div>
+          <p class="label">Next project</p>
+          <p class="name">CorelDRAW for Mac</p>
+          <p class="desc">A UX case study on bringing CorelDRAW Graphics Suite to macOS <span>→</span></p>
+        </div>
+        <div class="thumb">
+          <img src="/assets/previews/corel-for-mac.jpg" alt="" loading="lazy" />
+        </div>
+      </a>
+    </article>
+
+    <footer><span class="footer-year" data-footer-year aria-label="Current year">0000</span></footer>
+  </main>
+
+  <script type="module" src="./main.js"></script>
 </body>
 </html>

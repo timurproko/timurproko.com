@@ -1,9 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="How AI is reshaping Unity development—from coding to fully agentic workflows." />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f8f8f9" />
+  <meta name="description" content="How AI is reshaping Unity development—from coding to fully agentic workflows." />
   <!-- social-preview:start -->
   <link rel="canonical" href="https://timurproko.com/ai-for-unity/" />
   <meta property="og:type" content="website" />
@@ -20,45 +21,661 @@
   <meta name="twitter:description" content="How AI is reshaping Unity development—from coding to fully agentic workflows." />
   <meta name="twitter:image" content="https://timurproko.com/assets/social/ai-for-unity.png" />
   <!-- social-preview:end -->
-<title>AI for Unity Development</title>
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-
-<link rel="stylesheet" href="/assets/deck-common.css">
-<script>
-(function () {
-  try {
-    var params = new URLSearchParams(window.location.search);
-    var preview = params.get('preview') === 'cover';
-    if (preview) {
-      document.documentElement.classList.add('deck-preview-cover');
+  <title>AI for Unity Development</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    // Home page cards load this page with ?preview=cover — hand them the 3D deck cover.
+    if (new URLSearchParams(location.search).get('preview') === 'cover') {
+      location.replace('/ai-for-unity/cover/' + location.search);
     }
-    var layout = params.get('layout') || params.get('format');
-    if (layout === 'square' || params.get('linkedin') === 'square') {
-      document.documentElement.classList.add('deck-square-layout');
-    }
-    var saved = parseInt(localStorage.getItem('ai-unity-deck-position') || '0', 10);
-    var startsOnDarkSlide = preview || isNaN(saved) || [0,18].indexOf(saved) !== -1;
-    document.documentElement.classList.add(startsOnDarkSlide ? 'deck-starts-on-dark' : 'deck-starts-on-light');
-  } catch (_) {
-    document.documentElement.classList.add('deck-starts-on-dark');
-  }
-})();
-</script>
-<style>
-  /* Critical pre-mount paint: keep the first frame on-theme while the bundle loads. */
-  html.deck-starts-on-dark { background: #111111; }
-  html.deck-starts-on-light { background: #f8f8f9; }
-</style>
+  </script>
+  <link rel="stylesheet" href="../case/case.css" />
+  <link rel="stylesheet" href="./case-page.css" />
 </head>
-<body class="chrome-boot deck-animations-pending">
-  <div id="root"></div>
-  <script type="module" src="./main.tsx"></script>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Timur Prokopiev</a>
+      <div class="nav-links" aria-label="Navigation">
+        <a href="/" class="nav-link">Portfolio</a>
+        <a href="/cv/" class="nav-link">CV</a>
+        <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <article>
+      <a class="back-shortcut" href="/" aria-label="Back to portfolio"><kbd>←</kbd> <span class="action-label">Back</span></a>
+
+      <header class="page-head reveal" style="animation-delay: 80ms">
+        <div class="head">
+          <h1>AI for Unity Development</h1>
+        </div>
+        <p class="lede">
+          How AI is reshaping Unity development — from autocomplete to agentic engineering. What changed,
+          which tools matter, and the skills engineers need now.
+        </p>
+        <ul class="tags" aria-label="Focus areas">
+          <li><span class="tag">AI Engineering</span></li>
+          <li><span class="tag">Unity</span></li>
+          <li><span class="tag">Agentic Workflows</span></li>
+          <li><span class="tag">MCP</span></li>
+          <li><span class="tag">Tooling</span></li>
+        </ul>
+      </header>
+
+      <section class="frame trend reveal" style="animation-delay: 180ms" role="img" aria-label="The shift to agents: traditional engineering, auto-complete, vibe coding, agentic engineering">
+        <figure><svg viewBox="0 0 195 250" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs><clipPath id="panelClip1"><rect width="195" height="250" rx="14" /></clipPath></defs>
+              <rect width="195" height="250" rx="14" fill="#ffffff" stroke="#e5e5e5" />
+              <g clip-path="url(#panelClip1)">
+                <circle cx="18" cy="16" r="2.3" fill="#e2e5ea" />
+                <circle cx="27" cy="16" r="2.3" fill="#e2e5ea" />
+                <circle cx="36" cy="16" r="2.3" fill="#e2e5ea" />
+                <text x="181" y="19" text-anchor="end" font-family="JetBrains Mono, ui-monospace, monospace" font-size="6.5" fill="#a9adb4">process.py</text>
+                <line x1="0" y1="30" x2="195" y2="30" stroke="#eef0f3" />
+                <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="7" fill="#c4c8cf" text-anchor="end">
+                  <text x="26" y="50">1</text>
+                  <text x="26" y="64">2</text>
+                  <text x="26" y="78">3</text>
+                  <text x="26" y="92">4</text>
+                  <text x="26" y="106">5</text>
+                  <text x="26" y="120">6</text>
+                  <text x="26" y="134">7</text>
+                </g>
+                <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="7" fill="#4b4f57">
+                  <text y="50"><tspan x="34" fill="#2f6feb">def </tspan><tspan>process(items):</tspan></text>
+                  <text y="64"><tspan x="44">result = []</tspan></text>
+                  <text y="78"><tspan x="44" fill="#2f6feb">for </tspan><tspan>item </tspan><tspan fill="#2f6feb">in </tspan><tspan>items:</tspan></text>
+                  <text y="92"><tspan x="54" fill="#2f6feb">if </tspan><tspan>check(item):</tspan></text>
+                  <text y="106"><tspan x="64">item.valid = </tspan><tspan fill="#1f9d6b">True</tspan></text>
+                  <text y="120"><tspan x="44">results.append(item)</tspan></text>
+                  <text y="134"><tspan x="44" fill="#2f6feb">return </tspan><tspan>results</tspan></text>
+                </g>
+              </g>
+            </svg><figcaption>Traditional engineering</figcaption></figure>
+        <figure><svg viewBox="0 0 195 250" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <clipPath id="panelClip2"><rect width="195" height="250" rx="14" /></clipPath>
+                <filter id="acShadow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1a2540" flood-opacity="0.12" />
+                </filter>
+              </defs>
+              <rect width="195" height="250" rx="14" fill="#ffffff" stroke="#e5e5e5" />
+              <g clip-path="url(#panelClip2)">
+                <circle cx="18" cy="16" r="2.3" fill="#e2e5ea" />
+                <circle cx="27" cy="16" r="2.3" fill="#e2e5ea" />
+                <circle cx="36" cy="16" r="2.3" fill="#e2e5ea" />
+                <text x="181" y="19" text-anchor="end" font-family="JetBrains Mono, ui-monospace, monospace" font-size="6.5" fill="#a9adb4">app.ts</text>
+                <line x1="0" y1="30" x2="195" y2="30" stroke="#eef0f3" />
+                <g fill="#e7eaef">
+                  <rect x="24" y="44" width="86" height="3.4" rx="1.7" />
+                  <rect x="24" y="56" width="64" height="3.4" rx="1.7" />
+                </g>
+                <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="8">
+                  <text x="24" y="75"><tspan fill="#2f6feb">const </tspan><tspan fill="#4b4f57">u = user.</tspan></text>
+                  <rect x="83" y="68.5" width="1.4" height="9" fill="#2f6feb" />
+                </g>
+                <g filter="url(#acShadow)">
+                  <rect x="40" y="84" width="118" height="86" rx="8" fill="#ffffff" stroke="#e1e5ec" />
+                  <rect x="40" y="86" width="118" height="20" rx="6" fill="#2f6feb" fill-opacity="0.08" />
+                  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="7.5">
+                    <rect x="48" y="90" width="11" height="11" rx="2.5" fill="#2f6feb" />
+                    <text x="64" y="99" fill="#2f6feb" font-weight="600">getName()</text>
+                    <rect x="48" y="111" width="11" height="11" rx="2.5" fill="#d6dbe4" />
+                    <text x="64" y="120" fill="#6b6f78">getEmail()</text>
+                    <rect x="48" y="132" width="11" height="11" rx="2.5" fill="#d6dbe4" />
+                    <text x="64" y="141" fill="#6b6f78">getId()</text>
+                    <rect x="48" y="153" width="11" height="11" rx="2.5" fill="#d6dbe4" />
+                    <text x="64" y="162" fill="#6b6f78">isActive</text>
+                  </g>
+                </g>
+                <g fill="#e7eaef">
+                  <rect x="24" y="190" width="58" height="3.4" rx="1.7" />
+                  <rect x="24" y="202" width="92" height="3.4" rx="1.7" />
+                  <rect x="24" y="214" width="44" height="3.4" rx="1.7" />
+                </g>
+              </g>
+            </svg><figcaption>Auto-complete</figcaption></figure>
+        <figure><svg viewBox="0 0 195 250" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <clipPath id="panelClip3"><rect width="195" height="250" rx="14" /></clipPath>
+                <linearGradient id="vibeImg" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#2f6feb" stop-opacity="0.18" />
+                  <stop offset="100%" stop-color="#2f6feb" stop-opacity="0.05" />
+                </linearGradient>
+              </defs>
+              <rect width="195" height="250" rx="14" fill="#ffffff" stroke="#e5e5e5" />
+              <g clip-path="url(#panelClip3)">
+                <circle cx="18" cy="16" r="2.3" fill="#e2e5ea" />
+                <circle cx="27" cy="16" r="2.3" fill="#e2e5ea" />
+                <circle cx="36" cy="16" r="2.3" fill="#e2e5ea" />
+                <text x="181" y="19" text-anchor="end" font-family="JetBrains Mono, ui-monospace, monospace" font-size="6.5" fill="#a9adb4">prompt</text>
+                <line x1="0" y1="30" x2="195" y2="30" stroke="#eef0f3" />
+                <g transform="translate(16 42)">
+                  <rect width="163" height="26" rx="13" fill="#ffffff" stroke="#cdd6e6" />
+                  <path d="M12 13 l1.6 -4.4 l1.6 4.4 l4.4 1.6 l-4.4 1.6 l-1.6 4.4 l-1.6 -4.4 l-4.4 -1.6 z" fill="#2f6feb" />
+                  <text x="26" y="16.5" font-family="Inter, system-ui, sans-serif" font-size="8.5" fill="#3b3f47">Make it look better.</text>
+                  <circle cx="150" cy="13" r="9" fill="#2f6feb" />
+                  <path d="M146.5 13 h6.5 M150.5 10 l3 3 l-3 3" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                </g>
+                <g transform="translate(28 84)">
+                  <rect width="139" height="150" rx="10" fill="#fbfcfe" stroke="#e8ebf1" />
+                  <rect x="14" y="14" width="111" height="44" rx="7" fill="url(#vibeImg)" />
+                  <circle cx="32" cy="36" r="9" fill="#2f6feb" fill-opacity="0.35" />
+                  <rect x="48" y="30" width="50" height="4" rx="2" fill="#2f6feb" fill-opacity="0.45" />
+                  <rect x="48" y="40" width="34" height="4" rx="2" fill="#2f6feb" fill-opacity="0.25" />
+                  <rect x="14" y="70" width="111" height="6" rx="3" fill="#e6eaf1" />
+                  <rect x="14" y="82" width="84" height="6" rx="3" fill="#eef1f5" />
+                  <rect x="14" y="100" width="52" height="16" rx="8" fill="#2f6feb" />
+                  <rect x="72" y="100" width="40" height="16" rx="8" fill="#ffffff" stroke="#cdd6e6" />
+                  <rect x="14" y="128" width="111" height="8" rx="4" fill="#f1f3f7" />
+                </g>
+              </g>
+            </svg><figcaption>Vibe coding</figcaption></figure>
+        <figure><svg viewBox="0 0 195 250" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <clipPath id="panelClip4"><rect width="195" height="250" rx="14" /></clipPath>
+                <radialGradient id="vortexHalo4" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#2f6feb" stop-opacity="0.20" />
+                  <stop offset="60%" stop-color="#2f6feb" stop-opacity="0.05" />
+                  <stop offset="100%" stop-color="#2f6feb" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+              <rect width="195" height="250" rx="14" fill="#ffffff" stroke="#e5e5e5" />
+              <g clip-path="url(#panelClip4)">
+                <circle cx="18" cy="16" r="2.3" fill="#e2e5ea" />
+                <circle cx="27" cy="16" r="2.3" fill="#e2e5ea" />
+                <circle cx="36" cy="16" r="2.3" fill="#e2e5ea" />
+                <text x="181" y="19" text-anchor="end" font-family="JetBrains Mono, ui-monospace, monospace" font-size="6.5" fill="#a9adb4">orchestrator</text>
+                <line x1="0" y1="30" x2="195" y2="30" stroke="#eef0f3" />
+                <g transform="translate(97.5 98)" pointer-events="none">
+                  <circle r="46" fill="url(#vortexHalo4)" />
+                  <g stroke="#c9d6f2" stroke-width="1.3">
+                    <line x1="0" y1="0" x2="-52" y2="-8" />
+                    <line x1="0" y1="0" x2="52" y2="-8" />
+                    <line x1="0" y1="0" x2="-34" y2="42" />
+                    <line x1="0" y1="0" x2="34" y2="42" />
+                  </g>
+                  <g>
+                    <circle cx="-52" cy="-8" r="8" fill="#ffffff" stroke="#2f6feb" stroke-width="1.4" />
+                    <path d="M-55 -8 l2 2 l4 -4" stroke="#2f6feb" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                    <circle cx="52" cy="-8" r="8" fill="#ffffff" stroke="#2f6feb" stroke-width="1.4" />
+                    <path d="M49 -8 l2 2 l4 -4" stroke="#2f6feb" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                    <circle cx="-34" cy="42" r="8" fill="#ffffff" stroke="#cdd6e6" stroke-width="1.4" />
+                    <circle cx="-34" cy="42" r="2.4" fill="#2f6feb" />
+                    <circle cx="34" cy="42" r="8" fill="#ffffff" stroke="#cdd6e6" stroke-width="1.4" />
+                    <circle cx="34" cy="42" r="2.4" fill="#cdd6e6" />
+                  </g>
+                  <circle r="15" fill="#2f6feb" />
+                  <path d="M0 -9 A9 9 0 1 1 -8 4.5" stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round" />
+                  <circle r="2.4" fill="#ffffff" />
+                </g>
+                <g transform="translate(31 178)">
+                  <rect width="132" height="40" rx="9" fill="#ffffff" stroke="#e5e8ee" />
+                  <circle cx="19" cy="20" r="10" fill="#2f6feb" />
+                  <path d="M14 20 l4 4 l6 -8" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                  <text x="37" y="16" font-family="Inter, system-ui, sans-serif" font-size="8" font-weight="600" fill="#111">Project 'Launch'</text>
+                  <text x="37" y="27" font-family="Inter, system-ui, sans-serif" font-size="6.5" fill="#72747a">Agents deployed · 95%</text>
+                  <rect x="37" y="31" width="86" height="3" rx="1.5" fill="#eef0f3" />
+                  <rect x="37" y="31" width="82" height="3" rx="1.5" fill="#2f6feb" />
+                </g>
+              </g>
+            </svg><figcaption>Agentic engineering</figcaption></figure>
+      </section>
+
+      <section class="block first">
+        <p class="eyebrow">Trend</p>
+        <h2>The shift to agents</h2>
+        <p>AI is no longer just a tool you call — it's a collaborator inside your loop. Each step integrates the previous one, moving development from manual control to guided automation.</p>
+        <ol class="stages">
+          <li class="stage"><span class="stage-index">01</span><div class="stage-text"><span class="stage-title">Pre-AI</span><span class="stage-desc">Autocomplete workflows.</span></div></li>
+          <li class="stage"><span class="stage-index">02</span><div class="stage-text"><span class="stage-title">ChatGPT assistance</span><span class="stage-desc">Copy / paste workflows.</span></div></li>
+          <li class="stage is-here"><span class="stage-index">03</span><div class="stage-text"><span class="stage-title">IDE plugins / CLI tools</span><span class="stage-desc">Manual agent control.</span></div><span class="stage-tools"><span class="chip">We are here</span></span></li>
+          <li class="stage"><span class="stage-index">04</span><div class="stage-text"><span class="stage-title">Agentic systems</span><span class="stage-desc">An automated development lifecycle.</span></div></li>
+        </ol>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Pillars</p>
+          <h2>AI engineering pillars</h2>
+          <p>
+            Every AI system rests on four pillars. Effective systems balance all of them — yet most people
+            obsess over the model and ignore the other three.
+          </p>
+          <ul class="points">
+            <li><span><strong>Tools</strong> — what AI can use</span></li>
+            <li><span><strong>Context</strong> — what AI knows</span></li>
+            <li><span><strong>Model</strong> — how AI reasons</span></li>
+            <li><span><strong>Prompt</strong> — how AI is guided</span></li>
+          </ul>
+        </div>
+        <div class="venn pillars-venn"><svg viewBox="-195 -215 1150 1080" role="img" aria-label="Four overlapping pillars — Tools, Context, Model, Prompt — converging on AI">
+          <defs>
+            <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.22" />
+              <stop offset="70%" stop-color="var(--accent)" stop-opacity="0.06" />
+              <stop offset="100%" stop-color="var(--accent)" stop-opacity="0" />
+            </radialGradient>
+            <filter id="coreShadow" x="-60%" y="-60%" width="220%" height="220%">
+              <feDropShadow dx="0" dy="10" stdDeviation="18" flood-color="#2f6feb" flood-opacity="0.30" />
+            </filter>
+            <path id="op1" d="M535,155 A340,340,0,1,1,-145,155 A340,340,0,1,1,535,155" />
+            <path id="op2" d="M905,155 A340,340,0,1,1,225,155 A340,340,0,1,1,905,155" />
+            <path id="op3" d="M535,475 A340,340,0,1,1,-145,475 A340,340,0,1,1,535,475" />
+            <path id="op4" d="M905,475 A340,340,0,1,1,225,475 A340,340,0,1,1,905,475" />
+            <clipPath id="cp1"><circle cx="195" cy="155" r="340" /></clipPath>
+            <clipPath id="cp12" clip-path="url(#cp1)"><circle cx="565" cy="155" r="340" /></clipPath>
+            <clipPath id="cp123" clip-path="url(#cp12)"><circle cx="195" cy="475" r="340" /></clipPath>
+            <clipPath id="cp1234" clip-path="url(#cp123)"><circle cx="565" cy="475" r="340" /></clipPath>
+            <filter id="dotGlow" x="-200%" y="-200%" width="500%" height="500%">
+              <feGaussianBlur stdDeviation="5" result="blur" />
+              <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+          </defs>
+          <g class="venn-rings">
+            <circle style="--vd: 60ms" cx="195" cy="155" r="340" fill="#2f6feb" fill-opacity="0.13" stroke="#2f6feb" stroke-opacity="0.55" stroke-width="2.5" />
+            <circle style="--vd: 150ms" cx="565" cy="155" r="340" fill="#17a34a" fill-opacity="0.13" stroke="#17a34a" stroke-opacity="0.55" stroke-width="2.5" />
+            <circle style="--vd: 240ms" cx="195" cy="475" r="340" fill="#eab308" fill-opacity="0.15" stroke="#c79406" stroke-opacity="0.55" stroke-width="2.5" />
+            <circle style="--vd: 330ms" cx="565" cy="475" r="340" fill="#dc2626" fill-opacity="0.12" stroke="#dc2626" stroke-opacity="0.50" stroke-width="2.5" />
+          </g>
+          <circle class="venn-core-glow" style="--vd: 520ms" cx="380" cy="315" r="210" fill="url(#coreGlow)" />
+          <g class="venn-label" text-anchor="middle" dominant-baseline="middle">
+            <text style="--vd: 220ms" x="135" y="95" fill="#2f6feb">Tools</text>
+            <text style="--vd: 310ms" x="625" y="95" fill="#15803d">Context</text>
+            <text style="--vd: 400ms" x="135" y="535" fill="#a87908">Model</text>
+            <text style="--vd: 490ms" x="625" y="535" fill="#dc2626">Prompt</text>
+          </g>
+          <rect class="venn-intersection" style="--vd: 580ms" x="-200" y="-220" width="1160" height="1100" fill="#2f6feb" clip-path="url(#cp1234)" />
+          <text class="venn-core" style="--vd: 700ms" x="380" y="322" text-anchor="middle" dominant-baseline="middle">AI</text>
+          <circle class="orbit-dot" style="--vd: 820ms" r="6" fill="#2f6feb" filter="url(#dotGlow)">
+            <animateMotion dur="9.2s" repeatCount="indefinite" begin="-2.1s" rotate="auto">
+              <mpath href="#op1" />
+            </animateMotion>
+          </circle>
+          <circle class="orbit-dot" style="--vd: 880ms" r="6" fill="#15803d" filter="url(#dotGlow)">
+            <animateMotion dur="7.6s" repeatCount="indefinite" begin="-5.3s" rotate="auto">
+              <mpath href="#op2" />
+            </animateMotion>
+          </circle>
+          <circle class="orbit-dot" style="--vd: 940ms" r="6" fill="#a87908" filter="url(#dotGlow)">
+            <animateMotion dur="8.4s" repeatCount="indefinite" begin="-1.4s" rotate="auto">
+              <mpath href="#op3" />
+            </animateMotion>
+          </circle>
+          <circle class="orbit-dot" style="--vd: 1000ms" r="6" fill="#dc2626" filter="url(#dotGlow)">
+            <animateMotion dur="6.9s" repeatCount="indefinite" begin="-3.7s" rotate="auto">
+              <mpath href="#op4" />
+            </animateMotion>
+          </circle>
+        </svg></div>
+      </section>
+
+      <!-- Tools -->
+      <header class="lens">
+        <p class="eyebrow">Pillar 01</p>
+        <h2 class="lens-title">Tools</h2>
+        <p class="lens-sub">The tooling landscape is wide — and the biggest shift is to stop only using tools and start building them.</p>
+      </header>
+
+      <section class="block">
+        <h2>Tooling landscape</h2>
+        <ul class="wins">
+          <li class="win"><span class="win-index">/01</span><span class="win-title">IDEs</span><span class="win-desc">Inline assistance while you code.</span><span class="win-tools"><span class="chip">JetBrains</span><span class="chip">VSCode</span><span class="chip">Cursor</span></span></li>
+          <li class="win"><span class="win-index">/02</span><span class="win-title">Desktop apps</span><span class="win-desc">Context-aware chat for projects.</span><span class="win-tools"><span class="chip">Codex</span><span class="chip">Claude</span></span></li>
+          <li class="win"><span class="win-index">/03</span><span class="win-title">CLI agents</span><span class="win-desc">Headless agents for automation and pipelines.</span><span class="win-tools"><span class="chip">OpenCode</span><span class="chip">Hermes</span><a class="chip" href="https://pi.dev/" target="_blank" rel="noopener noreferrer">PI</a></span></li>
+          <li class="win"><span class="win-index">/04</span><span class="win-title">MCP clients</span><span class="win-desc">AI inside the creative tool.</span><span class="win-tools"><span class="chip">Unity</span><span class="chip">Blender</span><span class="chip">Houdini</span></span></li>
+          <li class="win"><span class="win-index">/05</span><span class="win-title">Design tools</span><span class="win-desc">Agentic design surfaces.</span><span class="win-tools"><span class="chip">Claude Design</span><a class="chip" href="https://open-design.ai/" target="_blank" rel="noopener noreferrer">Open Design</a></span></li>
+          <li class="win"><span class="win-index">/06</span><span class="win-title">Other</span><span class="win-desc">Emerging agent surfaces.</span><span class="win-tools"><span class="chip">CMUX</span><span class="chip">Wrap</span><span class="chip">OpenClaw</span></span></li>
+        </ul>
+      </section>
+
+      <section class="block">
+        <p class="eyebrow">Model Context Protocol</p>
+        <h2>From chat to action</h2>
+        <p>MCP is the integration layer — it connects AI to real tools and workflows, turning it from a chat partner into an execution layer.</p>
+        <div class="stage-tools" style="justify-content: flex-start; margin-top: 16px" aria-label="Unity MCP servers">
+          <a class="chip" href="https://github.com/CoplayDev/unity-mcp" target="_blank" rel="noopener noreferrer">Coplay</a>
+          <a class="chip" href="https://github.com/AnkleBreaker-Studio/unity-mcp-server" target="_blank" rel="noopener noreferrer">AnkleBreaker</a>
+          <a class="chip" href="https://github.com/IvanMurzak/Unity-MCP" target="_blank" rel="noopener noreferrer">Ivan Murzak</a>
+          <a class="chip" href="https://github.com/german-krasnikov/unity-kiss-mcp" target="_blank" rel="noopener noreferrer">German Krasnikov</a>
+        </div>
+        <ul class="wins cols-2">
+          <li class="win">
+            <span class="win-index">Pros</span>
+            <ul class="points">
+              <li>Connects AI to real tools and workflows</li>
+              <li>Auto-fixes and validates code — compile, detect errors, suggest fixes</li>
+              <li>Runs editor tasks automatically — imports, references, setup</li>
+              <li>Maintains full project context — scene awareness, no re-explaining</li>
+            </ul>
+          </li>
+          <li class="win">
+            <span class="win-index">Cons</span>
+            <ul class="points">
+              <li>Burns context fast</li>
+              <li>Not plug-and-play (stdio vs HTTP)</li>
+              <li>Not always stable — a rapidly evolving stack</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section class="block">
+        <p class="eyebrow">Harness</p>
+        <h2>AI's core power</h2>
+        <p>The harness is the orchestration layer around a model — tools, workflows and integrations. It defines what the model can actually do, and whoever controls the harness controls outcomes.</p>
+        <ul class="wins cols-2">
+          <li class="win"><span class="win-index">Closed</span><span class="win-title">Systems limit control</span><span class="win-desc">Black-box harnesses decide for you what the model can reach.</span><span class="win-tools"><span class="chip">OpenAI</span><span class="chip">Anthropic</span><span class="chip">Google</span><span class="chip">Cursor</span></span></li>
+          <li class="win"><span class="win-index">Open</span><span class="win-title">Build and scale your own</span><span class="win-desc">Open harnesses let you customise the loop and grow it with your workflow.</span><span class="win-tools"><span class="chip">Pi</span><span class="chip">OpenCode</span></span></li>
+        </ul>
+      </section>
+
+      <section class="block">
+        <p class="eyebrow">Build</p>
+        <h2>Build your stack</h2>
+        <p>With AI, building tools is no longer optional — it's the baseline.</p>
+        <ul class="points">
+          <li>Shift from using tools → building tools</li>
+          <li>AI is only effective when integrated into your workflow</li>
+          <li>Custom toolchains unlock real productivity</li>
+          <li>Required to reach true agentic engineering</li>
+        </ul>
+      </section>
+
+      <!-- Context · Model · Prompt -->
+      <header class="lens">
+        <p class="eyebrow">Pillars 02 – 04</p>
+        <h2 class="lens-title">Context, model &amp; prompt</h2>
+        <p class="lens-sub">What the AI knows, how it reasons, and how it is guided — the pillars people underinvest in.</p>
+      </header>
+
+      <section class="block">
+        <ul class="wins cols-2">
+          <li class="win">
+            <span class="win-index">Context</span>
+            <span class="win-title">Context bottleneck</span>
+            <span class="win-desc">Limited context limits intelligence.</span>
+            <ul class="points">
+              <li>Context is limited — and expensive</li>
+              <li>Most value lives in a focused ~70% subset</li>
+              <li>Compression degrades quality</li>
+              <li>MCP is a major context consumer</li>
+              <li>Subagents split work into isolated contexts</li>
+            </ul>
+          </li>
+          <li class="win">
+            <span class="win-index">Model</span>
+            <span class="win-title">No universal model</span>
+            <span class="win-desc">Choose the right model for the job — not the most advanced one.</span>
+            <ul class="points">
+              <li>The “best” model depends on the task, context and constraints</li>
+              <li>Stronger ≠ better for every use case</li>
+              <li>Latency, cost and determinism often beat raw capability</li>
+              <li>Match model to workflow, not hype</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section class="block">
+        <p class="eyebrow">Prompt</p>
+        <h2>AI mirrors intent</h2>
+        <p>Better input, better output — garbage in, garbage out at higher resolution than ever.</p>
+        <ul class="wins">
+          <li class="win"><span class="win-index">/01</span><span class="win-title">WYAIWYG</span><span class="win-desc">What You Ask Is What You Get.</span><span class="win-tools"><span class="chip">Prompt</span><span class="chip">Skills</span><span class="chip">References</span></span></li>
+          <li class="win"><span class="win-index">/02</span><span class="win-title">WISIWYG</span><span class="win-desc">What It Sees Is What You Get.</span><span class="win-tools"><span class="chip">Structure</span><span class="chip">Code style</span><span class="chip">Patterns</span></span></li>
+          <li class="win"><span class="win-index">/03</span><span class="win-title">GIGO</span><span class="win-desc">Garbage In, Garbage Out.</span><span class="win-tools"><span class="chip">Data quality</span><span class="chip">Data bias</span></span></li>
+        </ul>
+      </section>
+
+      <section class="block">
+        <p class="eyebrow">Skills</p>
+        <h2>Guiding AI</h2>
+        <p>Better inputs → exponentially better outputs.</p>
+        <ul class="wins cols-2">
+          <li class="win">
+            <span class="win-index">Pros</span>
+            <ul class="points">
+              <li>Define clear constraints upfront</li>
+              <li>Automate domain knowledge injection</li>
+              <li>Define task-oriented knowledge</li>
+            </ul>
+          </li>
+          <li class="win">
+            <span class="win-index">Cons</span>
+            <ul class="points">
+              <li>Skills aren't a silver bullet — they eat context</li>
+              <li>A too-generic skill adds little to code quality</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Unity -->
+      <header class="lens">
+        <p class="eyebrow">Practice</p>
+        <h2 class="lens-title">Unity</h2>
+        <p class="lens-sub">Combine code and no-code where each is right, keep systems decoupled, and build modular tools AI can drive without breaking everything else.</p>
+      </header>
+
+      <section class="block">
+        <h2>AI in Unity</h2>
+        <ul class="points">
+          <li>Prefer code over graphs (UITK, HLSL)</li>
+          <li>Decouple core logic, data and presentation layers</li>
+          <li>Expose tools via APIs — Editor scripts, MCP-style access</li>
+          <li>Structure code into clear modules (assemblies, namespaces) AI can navigate</li>
+          <li>Prefer Dependency Injection over hard references</li>
+        </ul>
+      </section>
+
+      <section class="block">
+        <h2>AI-driven UI</h2>
+        <p>Code-based, component-driven UI scales better with AI.</p>
+        <ul class="wins cols-2">
+          <li class="win">
+            <span class="win-index">2D UI</span>
+            <span class="win-title">Screen systems</span>
+            <ul class="points">
+              <li>UITK (UXML + USS)</li>
+              <li><a href="https://v3.onejs.com/" target="_blank" rel="noopener noreferrer">OneJS (React + Tailwind)</a></li>
+              <li>Layout engine (Flexbox)</li>
+            </ul>
+          </li>
+          <li class="win">
+            <span class="win-index">3D UI</span>
+            <span class="win-title">Spatial layouts</span>
+            <ul class="points">
+              <li>Reusable components</li>
+              <li><a href="https://www.flexalon.com/" target="_blank" rel="noopener noreferrer">Layout engine (Flexalon)</a></li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Engineering -->
+      <header class="lens">
+        <p class="eyebrow">Future</p>
+        <h2 class="lens-title">Engineering shift</h2>
+        <p class="lens-sub">Engineering is not disappearing — it's evolving, from writing code to orchestrating systems that write it.</p>
+      </header>
+
+      <section class="block">
+        <div class="cols2">
+          <div>
+            <h3>Mindset</h3>
+            <ul class="points">
+              <li>Curiosity over certainty</li>
+              <li>Experiment — expect imperfect results</li>
+              <li>Comfortable with things not working immediately</li>
+              <li>Broad cross-domain knowledge with a focus on AI engineering</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Focus</h3>
+            <ul class="points">
+              <li>Orchestrate AI, don't just write code</li>
+              <li>Build harnesses around models</li>
+              <li>Design workflows, not one-off solutions</li>
+              <li>Turn tasks into reusable systems</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>AI engineering levels</h2>
+        <p>From prompting to building orchestrated systems — each level up adds leverage, and raises the cost of mistakes.</p>
+        <ol class="stages">
+          <li class="stage"><span class="stage-index">L1</span><div class="stage-text"><span class="stage-title">Prompts</span><span class="stage-desc">Raw interaction.</span></div></li>
+          <li class="stage"><span class="stage-index">L2</span><div class="stage-text"><span class="stage-title">Structured context</span><span class="stage-desc">Defined inputs, rules and reusable skills.</span></div></li>
+          <li class="stage"><span class="stage-index">L3</span><div class="stage-text"><span class="stage-title">Tools &amp; pipelines</span><span class="stage-desc">CLIs, automation, workflows.</span></div></li>
+          <li class="stage"><span class="stage-index">L4</span><div class="stage-text"><span class="stage-title">Orchestration</span><span class="stage-desc">Multi-agent systems.</span></div></li>
+        </ol>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Goal</p>
+          <h2>Agentic engineering</h2>
+          <p>
+            Where this is all heading: a loop you can trust — clear intent in, validated output out, refined
+            until it's repeatable.
+          </p>
+          <ul class="points">
+            <li>You make AI understand your intent</li>
+            <li>You know exactly what it will produce</li>
+            <li>The output is controlled, not random</li>
+            <li>You refine the process until it's repeatable</li>
+          </ul>
+        </div>
+        <div class="flow-graph"><svg viewBox="0 0 400 650" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arrV" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                <path d="M1,1 L7,4 L1,7 Z" fill="#2f6feb" />
+              </marker>
+              <marker id="arrLoop" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                <path d="M1,1 L7,4 L1,7 Z" fill="#6b6b6b" />
+              </marker>
+              <filter id="flowDotGlow" x="-200%" y="-200%" width="500%" height="500%">
+                <feGaussianBlur stdDeviation="4" result="blur" />
+                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+              </filter>
+            </defs>
+            <g class="flow-node">
+              <rect x="70" y="0" width="300" height="66" rx="8" fill="#fff" stroke="#2f6feb" stroke-width="1.5" />
+              <text x="220" y="26" text-anchor="middle" font-size="12" font-weight="700" fill="#2f6feb" letter-spacing="0.08em">DEFINE TASK</text>
+              <text x="220" y="47" text-anchor="middle" font-size="12" fill="#6b6b6b">intent, constraints</text>
+            </g>
+            <line class="flow-arrow" x1="220" y1="66" x2="220" y2="102" stroke="#2f6feb" stroke-width="1.5" marker-end="url(#arrV)" />
+            <g class="flow-node">
+              <rect x="70" y="106" width="300" height="66" rx="8" fill="#fff" stroke="#2f6feb" stroke-width="1.5" />
+              <text x="220" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#2f6feb" letter-spacing="0.08em">PLAN / RESEARCH</text>
+              <text x="220" y="153" text-anchor="middle" font-size="12" fill="#6b6b6b">explore options, tools</text>
+            </g>
+            <line class="flow-arrow" x1="220" y1="172" x2="220" y2="208" stroke="#2f6feb" stroke-width="1.5" marker-end="url(#arrV)" />
+            <g class="flow-node">
+              <rect x="70" y="212" width="300" height="66" rx="8" fill="#fff" stroke="#2f6feb" stroke-width="1.5" />
+              <text x="220" y="238" text-anchor="middle" font-size="12" font-weight="700" fill="#2f6feb" letter-spacing="0.08em">EXECUTE (via AGENTS)</text>
+              <text x="220" y="259" text-anchor="middle" font-size="12" fill="#6b6b6b">code, tools, actions</text>
+            </g>
+            <line class="flow-arrow" x1="220" y1="278" x2="220" y2="314" stroke="#2f6feb" stroke-width="1.5" marker-end="url(#arrV)" />
+            <g class="flow-node">
+              <rect x="70" y="318" width="300" height="66" rx="8" fill="#fff" stroke="#2f6feb" stroke-width="1.5" />
+              <text x="220" y="344" text-anchor="middle" font-size="12" font-weight="700" fill="#2f6feb" letter-spacing="0.08em">TEST / VALIDATE</text>
+              <text x="220" y="365" text-anchor="middle" font-size="12" fill="#6b6b6b">checks, outputs, QA</text>
+            </g>
+            <line class="flow-arrow" x1="220" y1="384" x2="220" y2="420" stroke="#2f6feb" stroke-width="1.5" marker-end="url(#arrV)" />
+            <g class="flow-node">
+              <rect x="70" y="424" width="300" height="66" rx="8" fill="#fff" stroke="#2f6feb" stroke-width="1.5" />
+              <text x="220" y="450" text-anchor="middle" font-size="12" font-weight="700" fill="#2f6feb" letter-spacing="0.08em">OBSERVE / FEEDBACK</text>
+              <text x="220" y="471" text-anchor="middle" font-size="12" fill="#6b6b6b">errors, results, logs</text>
+            </g>
+            <line class="flow-arrow" x1="220" y1="490" x2="220" y2="526" stroke="#2f6feb" stroke-width="1.5" marker-end="url(#arrV)" />
+            <g class="flow-node">
+              <rect x="70" y="530" width="300" height="66" rx="8" fill="#fff" stroke="#2f6feb" stroke-width="1.5" />
+              <text x="220" y="556" text-anchor="middle" font-size="12" font-weight="700" fill="#2f6feb" letter-spacing="0.08em">REFINE CONTEXT</text>
+              <text x="220" y="577" text-anchor="middle" font-size="12" fill="#6b6b6b">prompt, tools, rules</text>
+            </g>
+            <path id="loopPath" class="flow-loop" d="M70,563 L28,563 L28,33 L68,33" fill="none" stroke="#6b6b6b" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrLoop)" />
+            <circle class="flow-loop-dot" r="4" fill="#2f6feb" filter="url(#flowDotGlow)">
+              <animateMotion id="flowLoopMotion" dur="5.5s" repeatCount="indefinite" begin="indefinite" calcMode="linear">
+                <mpath href="#loopPath" />
+              </animateMotion>
+            </circle>
+            <g class="flow-loop-label">
+              <rect x="1" y="289" width="54" height="18" rx="3" fill="#fafafa" stroke="#e5e5e5" stroke-width="1" />
+              <text font-size="11" fill="#6b6b6b" letter-spacing="0.08em" text-anchor="middle" dominant-baseline="middle" x="28" y="298">LOOP ↺</text>
+            </g>
+          </svg></div>
+      </section>
+
+      <section class="block">
+        <p class="eyebrow">Workflow</p>
+        <h2>Agentic workflow stack</h2>
+        <p>Agents on top, design and execution layers bridged by MCP, and a code-based Unity architecture underneath — built for automation, not just assistance.</p>
+        <ul class="wins cols-4">
+          <li class="win">
+            <span class="win-index">Agent</span>
+            <span class="win-desc">Task definition, iteration loop</span>
+            <ul class="points">
+              <li><a href="https://pi.dev/" target="_blank" rel="noopener noreferrer">Pi</a></li>
+              <li>Copilot</li>
+              <li>Spec-driven development</li>
+            </ul>
+          </li>
+          <li class="win">
+            <span class="win-index">Design</span>
+            <span class="win-desc">AI-driven UI and design systems</span>
+            <ul class="points">
+              <li><a href="https://open-design.ai/" target="_blank" rel="noopener noreferrer">Open Design</a></li>
+              <li>Claude Design</li>
+            </ul>
+          </li>
+          <li class="win">
+            <span class="win-index">Execution</span>
+            <span class="win-desc">Instant validation and analysis</span>
+            <ul class="points">
+              <li><a href="https://github.com/IvanMurzak/Unity-MCP" target="_blank" rel="noopener noreferrer">Unity (MCP)</a></li>
+              <li><a href="https://github.com/healkeiser/fxhoudinimcp" target="_blank" rel="noopener noreferrer">Houdini (MCP)</a></li>
+            </ul>
+          </li>
+          <li class="win">
+            <span class="win-index">Unity</span>
+            <span class="win-desc">Code-based architecture</span>
+            <ul class="points">
+              <li>UITK (UXML + USS)</li>
+              <li><a href="https://v3.onejs.com/" target="_blank" rel="noopener noreferrer">OneJS (React + Tailwind)</a></li>
+              <li>HLSL</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <a class="next" href="/touch-my-heart/">
+        <div>
+          <p class="label">Next project</p>
+          <p class="name">Touch My Heart</p>
+          <p class="desc">An XR journey inside the human heart on Magic Leap <span>→</span></p>
+        </div>
+        <div class="thumb">
+          <img src="/assets/previews/touch-my-heart.jpg" alt="" loading="lazy" />
+        </div>
+      </a>
+    </article>
+
+    <footer><span class="footer-year" data-footer-year aria-label="Current year">0000</span></footer>
+  </main>
+
+  <script type="module" src="./main.js"></script>
 </body>
 </html>

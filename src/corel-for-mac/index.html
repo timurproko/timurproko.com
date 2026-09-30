@@ -1,9 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="A UX case study on bringing CorelDRAW Graphics Suite to macOS — balancing business goals, user needs and technical reality." />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f8f8f9" />
+  <meta name="description" content="A UX case study on bringing CorelDRAW Graphics Suite to macOS — balancing business goals, user needs and technical reality." />
   <!-- social-preview:start -->
   <link rel="canonical" href="https://timurproko.com/corel-for-mac/" />
   <meta property="og:type" content="website" />
@@ -20,45 +21,524 @@
   <meta name="twitter:description" content="A UX case study on bringing CorelDRAW Graphics Suite to macOS — balancing business goals, user needs and technical reality." />
   <meta name="twitter:image" content="https://timurproko.com/assets/social/corel-for-mac.png" />
   <!-- social-preview:end -->
-<title>UX Case Study</title>
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-
-<link rel="stylesheet" href="/assets/deck-common.css">
-<script>
-(function () {
-  try {
-    var params = new URLSearchParams(window.location.search);
-    var preview = params.get('preview') === 'cover';
-    if (preview) {
-      document.documentElement.classList.add('deck-preview-cover');
+  <title>UX Case Study</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    // Home page cards load this page with ?preview=cover — hand them the balloon deck cover.
+    if (new URLSearchParams(location.search).get('preview') === 'cover') {
+      location.replace('/corel-for-mac/cover/' + location.search);
     }
-    var layout = params.get('layout') || params.get('format');
-    if (layout === 'square' || params.get('linkedin') === 'square') {
-      document.documentElement.classList.add('deck-square-layout');
-    }
-    var saved = parseInt(localStorage.getItem('coreldraw-macos-deck-position') || '0', 10);
-    var startsOnDarkSlide = preview || isNaN(saved) || [0,3,7,12,17,19].indexOf(saved) !== -1;
-    document.documentElement.classList.add(startsOnDarkSlide ? 'deck-starts-on-dark' : 'deck-starts-on-light');
-  } catch (_) {
-    document.documentElement.classList.add('deck-starts-on-dark');
-  }
-})();
-</script>
-<style>
-  /* Critical pre-mount paint: keep the first frame on-theme while the bundle loads. */
-  html.deck-starts-on-dark { background: #04150b; }
-  html.deck-starts-on-light { background: #f8f8f9; }
-</style>
+  </script>
+  <link rel="stylesheet" href="../case/case.css" />
+  <link rel="stylesheet" href="./case-page.css" />
 </head>
-<body class="chrome-boot deck-animations-pending">
-  <div id="root"></div>
-  <script type="module" src="./main.tsx"></script>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Timur Prokopiev</a>
+      <div class="nav-links" aria-label="Navigation">
+        <a href="/" class="nav-link">Portfolio</a>
+        <a href="/cv/" class="nav-link">CV</a>
+        <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <article>
+      <a class="back-shortcut" href="/" aria-label="Back to portfolio"><kbd>←</kbd> <span class="action-label">Back</span></a>
+      <a class="link-shortcut" href="https://www.coreldraw.com/" target="_blank" rel="noopener noreferrer" aria-label="CorelDRAW website (opens in a new tab)"><kbd>↗</kbd> <span class="action-label">Website</span></a>
+
+      <header class="page-head reveal" style="animation-delay: 80ms">
+        <div class="head">
+          <h1>CorelDRAW for macOS</h1>
+        </div>
+        <p class="lede">
+          A UX case study on bringing CorelDRAW Graphics Suite to macOS — balancing business goals,
+          user needs and technical reality, staged across three releases.
+        </p>
+        <ul class="tags" aria-label="Focus areas">
+          <li><span class="tag">Design Strategy</span></li>
+          <li><span class="tag">UX/UI Design</span></li>
+          <li><span class="tag">macOS</span></li>
+          <li><span class="tag">User Research</span></li>
+          <li><span class="tag">Cross-platform</span></li>
+        </ul>
+      </header>
+
+      <section id="gallery" class="gallery gallery-wide-hero reveal" style="animation-delay: 180ms" aria-label="Project gallery"></section>
+
+      <!-- Framing -->
+      <section class="feature first">
+        <div class="feature-text">
+          <p class="eyebrow">What is UX</p>
+          <h2>Where business, users and tech meet</h2>
+          <p>
+            A successful macOS product lives where business goals, real user needs and technical ability
+            overlap — not where any one of them wins alone. We design the macOS product for that
+            intersection, not for any single force.
+          </p>
+        </div>
+        <div class="venn">
+          <svg viewBox="0 15 940 665" role="img" aria-label="UX as the intersection of Business, Users and Technology">
+            <g class="venn-rings">
+              <circle cx="470" cy="250" r="225" fill="#4fc487" fill-opacity="0.62" style="--vd: 60ms" />
+              <circle cx="340" cy="440" r="225" fill="#2fae64" fill-opacity="0.62" style="--vd: 150ms" />
+              <circle cx="600" cy="440" r="225" fill="#7ad49f" fill-opacity="0.62" style="--vd: 240ms" />
+            </g>
+            <circle class="venn-core-circle" cx="470" cy="378" r="104" fill="#0d7a3b" style="--vd: 440ms" />
+            <g class="venn-label">
+              <text x="470" y="150" text-anchor="middle" style="--vd: 200ms">Business</text>
+              <text x="238" y="486" text-anchor="middle" style="--vd: 290ms">Users</text>
+              <text x="702" y="486" text-anchor="middle" style="--vd: 380ms">Tech</text>
+            </g>
+            <text class="venn-core" style="--vd: 560ms" x="470" y="378" text-anchor="middle" dominant-baseline="central">UX</text>
+          </svg>
+        </div>
+      </section>
+
+      <section class="block">
+        <p class="eyebrow">The Challenge</p>
+        <h2>Winning over Mac users</h2>
+        <p>Turn today's friction into a loyal Mac user — without dropping below Corel's design standards along the way.</p>
+        <ul class="wins cols-2">
+          <li class="win">
+            <span class="win-index">Today</span>
+            <ul class="points">
+              <li>Not-loyal, hard-to-win users</li>
+              <li>Heavy technical debt</li>
+              <li>Tool complexity &amp; feature cascade</li>
+              <li>Missing native macOS features</li>
+            </ul>
+          </li>
+          <li class="win">
+            <span class="win-index">Target</span>
+            <ul class="points">
+              <li>A loyal, returning Mac user</li>
+              <li>A native, modern experience</li>
+              <li>A unified, maintainable product</li>
+              <li>Room to follow UX trends</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Strategy — Business -->
+      <header class="lens">
+        <p class="eyebrow">Strategy</p>
+        <h2 class="lens-title">Business</h2>
+        <p class="lens-sub">
+          Research the market, set standards, and sequence the work so progress ships without compromising
+          design quality. Progress over perfection — but never below design standards.
+        </p>
+      </header>
+
+      <section class="block">
+        <ul class="wins">
+          <li class="win"><span class="win-index">Phase 1</span><span class="win-title">Prepare the MVP</span><span class="win-desc">Resolve technical debt and ship the minimum viable set of macOS features.</span><span class="win-tools"><span class="chip">Technical debt</span><span class="chip">Min macOS features</span><span class="chip">macOS MVP</span></span></li>
+          <li class="win"><span class="win-index">Phase 2</span><span class="win-title">Improve the experience</span><span class="win-desc">Toolbars, dockers and native support; simplify features cross-platform and start user research.</span><span class="win-tools"><span class="chip">Toolbar &amp; dockers</span><span class="chip">Native support</span><span class="chip">New audience</span></span></li>
+          <li class="win"><span class="win-index">Phase 3</span><span class="win-title">Go fully native</span><span class="win-desc">Support all native features including Touch Bar, target key audiences, and introduce context-sensitive, real-time UX.</span><span class="win-tools"><span class="chip">Touch Bar</span><span class="chip">Real-time preview</span><span class="chip">Context-sensitive</span></span></li>
+        </ul>
+        <p class="block-note">Three phases move Corel from resolving technical debt in 2017 to a genuinely macOS-native experience by 2019.</p>
+      </section>
+
+      <section class="block">
+        <h2>Unifying the roadmap</h2>
+        <ol class="stages">
+          <li class="stage"><span class="stage-index">P1</span><div class="stage-text"><span class="stage-title">Resolve technical debt, prepare the macOS MVP</span></div></li>
+          <li class="stage"><span class="stage-index">P2</span><div class="stage-text"><span class="stage-title">Ship Windows &amp; macOS releases, begin cross-platform simplification</span></div></li>
+          <li class="stage"><span class="stage-index">P3</span><div class="stage-text"><span class="stage-title">Unified Windows / macOS release led by a shared core UX team</span></div></li>
+        </ol>
+        <p class="block-note">Separate Windows and macOS tracks converge on a shared core UX team and a unified release by 2019. In January 2017 the work is at Phase 1.</p>
+      </section>
+
+      <section class="block">
+        <h2>A shift in paradigm</h2>
+        <ul class="wins cols-2">
+          <li class="win">
+            <span class="win-index">From</span>
+            <span class="win-title">Feature-driven</span>
+            <ul class="points">
+              <li>Ship parity with Windows</li>
+              <li>Expose every capability</li>
+              <li>Optimise for power users</li>
+            </ul>
+          </li>
+          <li class="win">
+            <span class="win-index">To</span>
+            <span class="win-title">User-centered</span>
+            <ul class="points">
+              <li>Start from user goals</li>
+              <li>Progressive disclosure</li>
+              <li>Simplify for every audience</li>
+            </ul>
+          </li>
+        </ul>
+        <p class="block-note">Each phase moves the product further from feature-driven thinking toward a user-centered one.</p>
+      </section>
+
+      <!-- Research — Users -->
+      <header class="lens">
+        <p class="eyebrow">Research</p>
+        <h2 class="lens-title">Users</h2>
+        <p class="lens-sub">Understand who uses Corel, why engagement is weak, and what would earn their loyalty. Where CorelDRAW loses people — and how they cope when they stay.</p>
+      </header>
+
+      <section class="block">
+        <div class="stat">
+          <div>
+            <p class="stat-big" data-count>40%</p>
+            <p class="stat-caption">of prospects are lost on the very first engagement</p>
+          </div>
+          <ul class="points">
+            <li><span><strong data-count>85%</strong> — learn by trial and error</span></li>
+            <li><span><strong data-count>30%</strong> — say it is too expensive</span></li>
+            <li><span><strong data-count>21%</strong> — are satisfied as-is</span></li>
+            <li><span><strong data-count>12%</strong> — cite bad UX</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>A highly diversified audience</h2>
+        <ul class="wins">
+          <li class="win"><span class="win-index">Segment 01</span><span class="win-title">Occasional business</span><span class="win-desc">Needs quick, correct results for everyday business collateral.</span><span class="win-tools"><span class="chip">Business cards</span><span class="chip">Signs</span><span class="chip">Newsletters</span></span></li>
+          <li class="win"><span class="win-index">Segment 02</span><span class="win-title">Hobbyist &amp; graphic</span><span class="win-desc">Creates occasionally; values approachability over depth.</span><span class="win-tools"><span class="chip">Greeting cards</span><span class="chip">Photos</span><span class="chip">Illustration</span></span></li>
+          <li class="win"><span class="win-index">Segment 03</span><span class="win-title">Professional</span><span class="win-desc">Depends on Corel daily across print, web and technical work.</span><span class="win-tools"><span class="chip">Logos &amp; brochures</span><span class="chip">Technical &amp; CAD</span><span class="chip">Apparel &amp; web</span></span></li>
+        </ul>
+        <p class="block-note">From occasional business users to full-time professionals — each with different goals, skill and output.</p>
+      </section>
+
+      <section class="block">
+        <h2>Loyal users, three ways</h2>
+        <ul class="wins">
+          <li class="win"><span class="win-index">Peter · 32</span><span class="win-title">Freelance designer</span><span class="win-desc">Design-educated and artistic. Recently on macOS because "Mac is for designers." Wants Windows familiarity, better performance and native UI.</span><span class="win-tools"><span class="chip">Price: sensitive</span><span class="chip">Reuse license</span></span></li>
+          <li class="win"><span class="win-index">Joyce · 45</span><span class="win-title">Layout &amp; small studio</span><span class="win-desc">No design education; leads a few designers. Moving her workflow to macOS for a stable, virus-free ecosystem. Slow to learn new tools.</span><span class="win-tools"><span class="chip">Price: sensitive</span><span class="chip">Group license</span></span></li>
+          <li class="win"><span class="win-index">Burt · 57</span><span class="win-title">Sign maker</span><span class="win-desc">Technical and mature in his tools. Considers macOS for hardware integration and performance — Corel is one link in his chain.</span><span class="win-tools"><span class="chip">Price: less sensitive</span><span class="chip">Integration</span></span></li>
+        </ul>
+        <p class="block-note">Loyal users move to macOS for different reasons — familiarity, a stable ecosystem, or raw performance and integration.</p>
+      </section>
+
+      <section class="block">
+        <h2>What the research told us</h2>
+        <ul class="wins cols-2">
+          <li class="win">
+            <span class="win-index">Findings</span>
+            <span class="win-title">What we know</span>
+            <ul class="points">
+              <li>The tool is seen as expensive</li>
+              <li>Weak first-run engagement</li>
+              <li>Fuzzy, hard-to-target audience</li>
+            </ul>
+          </li>
+          <li class="win">
+            <span class="win-index">Next</span>
+            <span class="win-title">What we will do next</span>
+            <ul class="points">
+              <li>Qualitative user research</li>
+              <li>Surveys at scale</li>
+              <li>Feature-by-feature analysis</li>
+            </ul>
+          </li>
+        </ul>
+        <p class="block-note">Clear problems to solve — and a clear signal that we need to keep researching with surveys and feature analysis.</p>
+      </section>
+
+      <!-- Constraints — Tech -->
+      <header class="lens">
+        <p class="eyebrow">Constraints</p>
+        <h2 class="lens-title">Tech</h2>
+        <p class="lens-sub">A shared codebase, heavy debt and framework limits mean we sequence carefully rather than expecting dramatic change overnight.</p>
+      </header>
+
+      <section class="block">
+        <ul class="points">
+          <li>One unified source code across platforms</li>
+          <li>Significant accumulated technical debt</li>
+          <li>Framework limitations (Qt)</li>
+          <li>2018 feature set still to land</li>
+          <li>macOS-specific features on top of all of it</li>
+        </ul>
+      </section>
+
+      <section class="block">
+        <h2>Unify or differentiate?</h2>
+        <ul class="wins cols-2">
+          <li class="win">
+            <span class="win-index">Option A</span>
+            <span class="win-title">Cross-platform unification</span>
+            <span class="win-desc">One shared experience on every platform.</span>
+            <ul class="points"><li>Familiar to users on any platform</li><li>Easier to develop and support</li></ul>
+            <span class="win-note">Trade-off — more effort to unify the design.</span>
+          </li>
+          <li class="win">
+            <span class="win-index">Option B</span>
+            <span class="win-title">Platform differentiation</span>
+            <span class="win-desc">Each OS gets a tailored experience.</span>
+            <ul class="points"><li>Optimised for each operating system</li><li>Can target different audiences</li></ul>
+            <span class="win-note">Trade-off — more to build, and poorer for shared audiences.</span>
+          </li>
+        </ul>
+        <p class="block-note">Two ways to handle Windows and macOS from one core — each with real trade-offs.</p>
+      </section>
+
+      <!-- Principles — Design -->
+      <header class="lens">
+        <p class="eyebrow">Principles</p>
+        <h2 class="lens-title">Design</h2>
+        <p class="lens-sub">What "feels like macOS" means — the principles we hold every macOS decision against.</p>
+      </header>
+
+      <section class="block">
+        <ul class="wins">
+          <li class="win"><span class="win-index">01</span><span class="win-title">Real-time preview</span><span class="win-desc">Show the end result as properties change.</span></li>
+          <li class="win"><span class="win-index">02</span><span class="win-title">Performance</span><span class="win-desc">Exploit the latest macOS and Apple hardware.</span></li>
+          <li class="win"><span class="win-index">03</span><span class="win-title">Clear structure</span><span class="win-desc">Make relationships between views and controls obvious.</span></li>
+          <li class="win"><span class="win-index">04</span><span class="win-title">Maximise context</span><span class="win-desc">Avoid feature cascade and irrelevant controls.</span></li>
+          <li class="win"><span class="win-index">05</span><span class="win-title">Progressive disclosure</span><span class="win-desc">Reveal complexity only when it is needed.</span></li>
+          <li class="win"><span class="win-index">06</span><span class="win-title">Consistency</span><span class="win-desc">Let users transfer skills from app to app.</span></li>
+        </ul>
+      </section>
+
+      <section class="block">
+        <h2>From Corel UI to macOS UI</h2>
+        <p>Re-map today's Windows-first structure onto common macOS UI architecture — a single menu bar, inspectors, toolbars and native dialogs.</p>
+        <div class="arch-tabs">
+          <input type="radio" name="arch-view" id="arch-macos" checked />
+          <input type="radio" name="arch-view" id="arch-corel" />
+          <div class="arch-switch" aria-label="Switch architecture diagram">
+            <label for="arch-macos">macOS UI</label>
+            <label for="arch-corel">Corel UI</label>
+          </div>
+          <div class="frame frame-light arch-panel macos">
+            <svg class="architecture-graph" viewBox="0 0 725 436" role="img" aria-labelledby="macos-arch-title">
+                <title id="macos-arch-title">Common macOS UI architecture — target structure</title>
+                <defs><clipPath id="macos-arch-clip"><rect x="0.5" y="0.5" width="724" height="435" rx="16" ry="16" /></clipPath></defs>
+                <rect class="frame-rect" x="0.5" y="0.5" width="724" height="435" rx="16" ry="16" />
+                <g clip-path="url(#macos-arch-clip)">
+                <line class="line" x1="0" y1="19" x2="725" y2="19" />
+                <line class="line" x1="0" y1="50" x2="725" y2="50" />
+                <line class="soft-line" x1="175" y1="50" x2="175" y2="412" />
+                <line class="line" x1="552" y1="50" x2="552" y2="412" />
+                <line class="soft-line dash" x1="175" y1="68" x2="552" y2="68" />
+                <line class="line" x1="0" y1="412" x2="725" y2="412" />
+                <text x="362.5" y="10">Menu bar</text>
+                <text x="362.5" y="35">Tool bar</text>
+                <text x="363.5" y="60">Hierarchy Navigation (contextual)</text>
+                <text x="87.5" y="206"><tspan x="87.5">Document</tspan><tspan x="87.5" dy="16">Navigation</tspan></text>
+                <text x="363.5" y="213">Working Area</text>
+                <text x="638.5" y="206"><tspan x="638.5">Properties</tspan><tspan x="638.5" dy="16">(contextual)</tspan></text>
+                </g>
+              </svg>
+          </div>
+          <div class="frame frame-light arch-panel corel">
+            <svg class="architecture-graph" viewBox="0 0 725 436" role="img" aria-labelledby="corel-arch-title">
+                <title id="corel-arch-title">Corel UI architecture — current Windows structure</title>
+                <defs><clipPath id="corel-arch-clip"><rect x="0.5" y="0.5" width="724" height="435" rx="16" ry="16" /></clipPath></defs>
+                <rect class="frame-rect" x="0.5" y="0.5" width="724" height="435" rx="16" ry="16" />
+                <g clip-path="url(#corel-arch-clip)">
+                <line class="line" x1="0" y1="19" x2="725" y2="19" />
+                <line class="line" x1="0" y1="50" x2="725" y2="50" />
+                <line class="line" x1="0" y1="81" x2="725" y2="81" />
+                <line class="line" x1="0" y1="374" x2="725" y2="374" />
+                <line class="line" x1="0" y1="405" x2="725" y2="405" />
+                <line class="line" x1="42" y1="81" x2="42" y2="374" />
+                <line class="soft-line" x1="462" y1="81" x2="462" y2="374" />
+                <line class="line" x1="684" y1="81" x2="684" y2="374" />
+                <text x="362.5" y="10">Menu bar</text>
+                <text x="362.5" y="35">Tool bar</text>
+                <text x="362.5" y="66">Property bar</text>
+                <text class="vertical" x="22" y="228">Toolbox</text>
+                <text x="252" y="229">Working Area</text>
+                <text x="573" y="229">Docker</text>
+                <text class="vertical" x="704" y="207">Color Panel</text>
+                <text x="362.5" y="390">Status Bar</text>
+                <text x="362.5" y="421">Document Palette</text>
+                </g>
+              </svg>
+          </div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Where the design work goes next</h2>
+        <p>Four workstreams turn the strategy into a shippable macOS experience.</p>
+        <ul class="wins cols-4">
+          <li class="win"><span class="win-index">01</span><span class="win-title">UI breakdown</span><span class="win-desc">Audit every screen, control and flow in today's product.</span></li>
+          <li class="win"><span class="win-index">02</span><span class="win-title">Cross-platform layouts</span><span class="win-desc">Define shared and platform-specific layout rules.</span></li>
+          <li class="win"><span class="win-index">03</span><span class="win-title">Core redesign</span><span class="win-desc">Rework the core interface around macOS principles.</span></li>
+          <li class="win"><span class="win-index">04</span><span class="win-title">Design system</span><span class="win-desc">A reusable system to keep both platforms consistent.</span></li>
+        </ul>
+      </section>
+
+      <section class="block">
+        <h2>Interactive UI breakdown</h2>
+        <p>Hover or tap a region to see the work planned for it.</p>
+        <div class="breakdown-stage">
+          <svg class="breakdown-svg" viewBox="160 36 1000 524" role="img" aria-labelledby="breakdown-title breakdown-desc">
+            <title id="breakdown-title">Interactive CorelDRAW UI breakdown graph</title>
+            <desc id="breakdown-desc">A schematic CorelDRAW interface with hoverable regions for menu bar, tool bar, property bar, framework, document work area, dockers, tool box, colour palettes, context menus, status bar and Touch Bar.</desc>
+            <defs>
+              <clipPath id="breakdown-window-clip">
+                <rect x="280" y="96" width="780" height="384" rx="10" />
+              </clipPath>
+            </defs>
+
+            <rect class="bar" x="240" y="36" width="840" height="30" />
+            <text class="ui-label" x="660" y="51">MENU BAR</text>
+
+            <rect class="window" x="280" y="96" width="780" height="384" rx="10" />
+            <g clip-path="url(#breakdown-window-clip)">
+            <circle cx="302" cy="116" r="6" fill="#e6e7e8" stroke="#b8b8b8" />
+            <circle cx="320" cy="116" r="6" fill="#e6e7e8" stroke="#b8b8b8" />
+            <circle cx="338" cy="116" r="6" fill="#e6e7e8" stroke="#b8b8b8" />
+            <text class="ui-label app-title" x="670" y="122">CorelDRAW</text>
+
+            <rect class="bar" x="280" y="146" width="780" height="48" />
+            <text class="ui-label" x="670" y="170">TOOL BAR</text>
+            <rect class="bar" x="280" y="194" width="780" height="34" />
+            <text class="ui-label" x="670" y="211">PROPERTY BAR</text>
+            <rect class="panel" x="280" y="228" width="42" height="229" />
+            <text class="ui-label vertical-label" x="301" y="342.5">TOOL BOX</text>
+            <rect class="panel" x="322" y="228" width="548" height="229" />
+            <text class="ui-label" x="596" y="342.5">DOCUMENT WORK AREA</text>
+            <rect class="panel" x="870" y="228" width="150" height="229" />
+            <text class="ui-label" x="945" y="342.5">DOCKERS</text>
+            <rect class="panel" x="1020" y="228" width="40" height="229" />
+            <text class="ui-label vertical-label" x="1040" y="342.5">COLOUR PALETTES</text>
+            <rect class="bar" x="280" y="457" width="780" height="23" />
+            <text class="ui-label small" x="670" y="469">STATUS BAR</text>
+
+            <rect class="panel" x="348" y="328" width="140" height="130" rx="7" />
+            <text class="ui-label small" x="418" y="393">CONTEXT MENUS</text>
+            </g>
+            <rect class="window-outline" x="280" y="96" width="780" height="384" rx="10" />
+            <rect class="touch" x="280" y="510" width="780" height="34" />
+            <text class="ui-label" x="670" y="527">TOUCH BAR</text>
+
+            <g class="breakdown-hotspot" tabindex="0" aria-label="Framework details">
+              <rect class="hotspot-fill" x="280" y="96" width="780" height="384" rx="10" />
+              <g class="breakdown-tip">
+                <rect x="170" y="166" width="250" height="112" />
+                <text class="tip-title" x="184" y="188">Framework</text>
+                <text class="tip-copy" x="184" y="210"><tspan x="184">Cursors, document tabs,</tspan><tspan x="184" dy="16">dialogs, split-screen views</tspan><tspan x="184" dy="16">and multi-window behaviour.</tspan></text>
+              </g>
+            </g>
+
+            <g class="breakdown-hotspot" tabindex="0" aria-label="Menu bar details">
+              <rect class="hotspot-fill" x="240" y="36" width="840" height="30" />
+              <g class="breakdown-tip">
+                <rect x="382" y="30" width="218" height="86" />
+                <text class="tip-title" x="396" y="51">Menu Bar</text>
+                <text class="tip-copy" x="396" y="72"><tspan x="396">Re-organisation, renaming</tspan><tspan x="396" dy="16">and shortcut-key cleanup.</tspan></text>
+              </g>
+            </g>
+
+            <g class="breakdown-hotspot" tabindex="0" aria-label="Tool bar details">
+              <rect class="hotspot-fill" x="280" y="146" width="780" height="48" />
+              <g class="breakdown-tip">
+                <rect x="790" y="72" width="238" height="94" />
+                <text class="tip-title" x="804" y="94">Tool Bar</text>
+                <text class="tip-copy" x="804" y="116"><tspan x="804">Mac-oriented controls,</tspan><tspan x="804" dy="16">customisability and icon/text</tspan><tspan x="804" dy="16">standardisation.</tspan></text>
+              </g>
+            </g>
+
+            <g class="breakdown-hotspot" tabindex="0" aria-label="Property bar details">
+              <rect class="hotspot-fill" x="280" y="194" width="780" height="34" />
+              <g class="breakdown-tip">
+                <rect x="450" y="238" width="250" height="94" />
+                <text class="tip-title" x="464" y="260">Property Bar</text>
+                <text class="tip-copy" x="464" y="282"><tspan x="464">Advanced drop-downs,</tspan><tspan x="464" dy="16">context sensitivity and</tspan><tspan x="464" dy="16">simplification.</tspan></text>
+              </g>
+            </g>
+
+            <g class="breakdown-hotspot" tabindex="0" aria-label="Document work area details">
+              <rect class="hotspot-fill" x="322" y="228" width="548" height="229" />
+              <g class="breakdown-tip">
+                <rect x="170" y="306" width="238" height="96" />
+                <text class="tip-title" x="184" y="328">Document Work Area</text>
+                <text class="tip-copy" x="184" y="350"><tspan x="184">Drag and drop, input gestures</tspan><tspan x="184" dy="16">and real-time previews.</tspan></text>
+              </g>
+            </g>
+
+            <g class="breakdown-hotspot" tabindex="0" aria-label="Docker framework and dockers details">
+              <rect class="hotspot-fill" x="870" y="228" width="150" height="229" />
+              <g class="breakdown-tip">
+                <rect x="900" y="164" width="246" height="112" />
+                <text class="tip-title" x="914" y="186">Dockers</text>
+                <text class="tip-copy" x="914" y="208"><tspan x="914">Tabs, freeform docking,</tspan><tspan x="914" dy="16">show/hide, consolidation and</tspan><tspan x="914" dy="16">context-sensitive controls.</tspan></text>
+              </g>
+            </g>
+
+            <g class="breakdown-hotspot" tabindex="0" aria-label="Tool box details">
+              <rect class="hotspot-fill" x="280" y="228" width="42" height="229" />
+              <g class="breakdown-tip">
+                <rect x="170" y="340" width="224" height="80" />
+                <text class="tip-title" x="184" y="362">Tool Box</text>
+                <text class="tip-copy" x="184" y="384"><tspan x="184">Tool consolidation, grouping</tspan><tspan x="184" dy="16">and customisability.</tspan></text>
+              </g>
+            </g>
+
+            <g class="breakdown-hotspot" tabindex="0" aria-label="Context menus details">
+              <rect class="hotspot-fill" x="348" y="328" width="140" height="130" rx="7" />
+              <g class="breakdown-tip">
+                <rect x="500" y="384" width="236" height="64" />
+                <text class="tip-title" x="514" y="406">Context Menus</text>
+                <text class="tip-copy" x="514" y="428">Basic transliteration and simplification.</text>
+              </g>
+            </g>
+
+            <g class="breakdown-hotspot" tabindex="0" aria-label="Colour palettes details">
+              <rect class="hotspot-fill" x="1020" y="228" width="40" height="229" />
+              <g class="breakdown-tip">
+                <rect x="900" y="352" width="218" height="86" />
+                <text class="tip-title" x="914" y="374">Colour Palettes</text>
+                <text class="tip-copy" x="914" y="396"><tspan x="914">Basic transliteration,</tspan><tspan x="914" dy="16">simplification and standards.</tspan></text>
+              </g>
+            </g>
+
+            <g class="breakdown-hotspot" tabindex="0" aria-label="Status bar details">
+              <rect class="hotspot-fill" x="280" y="457" width="780" height="23" />
+              <g class="breakdown-tip">
+                <rect x="900" y="400" width="222" height="72" />
+                <text class="tip-title" x="914" y="422">Status Bar</text>
+                <text class="tip-copy" x="914" y="444"><tspan x="914">Basic transliteration,</tspan><tspan x="914" dy="16">simplification and standards.</tspan></text>
+              </g>
+            </g>
+
+            <g class="breakdown-hotspot" tabindex="0" aria-label="Touch Bar details">
+              <rect class="hotspot-fill" x="280" y="510" width="780" height="34" />
+              <g class="breakdown-tip">
+                <rect x="830" y="430" width="218" height="50" />
+                <text class="tip-title" x="844" y="452">Touch Bar</text>
+                <text class="tip-copy" x="844" y="472">Avoid property-bar duplication.</text>
+              </g>
+            </g>
+          </svg>
+        </div>
+      </section>
+
+      <a class="next" href="/starkit/">
+        <div>
+          <p class="label">Next project</p>
+          <p class="name">STARKIT SRD</p>
+          <p class="desc">Touch-free 3D on Sony's Spatial Reality Display <span>→</span></p>
+        </div>
+        <div class="thumb">
+          <img src="../starkit/images/03.webp" alt="" loading="lazy" />
+        </div>
+      </a>
+    </article>
+
+    <footer><span class="footer-year" data-footer-year aria-label="Current year">0000</span></footer>
+  </main>
+
+  <script type="module" src="./main.js"></script>
 </body>
 </html>

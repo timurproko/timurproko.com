@@ -4,7 +4,7 @@ import { chromium } from 'playwright';
 const HOST = '127.0.0.1';
 const PORT = Number(process.env.DECK_RAIL_PORT || 5178);
 const BASE_URL = `http://${HOST}:${PORT}`;
-const ROUTES = ['/ai-for-unity/', '/avatars/', '/touch-my-heart/', '/corel-for-mac/'];
+const ROUTES = ['/ai-for-unity/'];
 const VIEWPORT = { width: 1192, height: 929 };
 const TOLERANCE_PX = 2;
 

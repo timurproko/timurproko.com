@@ -1,9 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="An XR experience for Magic Leap that takes users deep inside the human heart — realistic anatomy and the sounds of heart disease." />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f8f8f9" />
+  <meta name="description" content="An XR experience for Magic Leap that takes users deep inside the human heart — realistic anatomy and the sounds of heart disease." />
   <!-- social-preview:start -->
   <link rel="canonical" href="https://timurproko.com/touch-my-heart/" />
   <meta property="og:type" content="website" />
@@ -20,45 +21,223 @@
   <meta name="twitter:description" content="An XR experience for Magic Leap that takes users deep inside the human heart — realistic anatomy and the sounds of heart disease." />
   <meta name="twitter:image" content="https://timurproko.com/assets/social/touch-my-heart.png" />
   <!-- social-preview:end -->
-<title>Touch My Heart XR Experience</title>
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-
-<link rel="stylesheet" href="/assets/deck-common.css">
-<script>
-(function () {
-  try {
-    var params = new URLSearchParams(window.location.search);
-    var preview = params.get('preview') === 'cover';
-    if (preview) {
-      document.documentElement.classList.add('deck-preview-cover');
+  <title>Touch My Heart XR Experience</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    // Home page cards load this page with ?preview=cover — hand them the 3D deck cover.
+    if (new URLSearchParams(location.search).get('preview') === 'cover') {
+      location.replace('/touch-my-heart/cover/' + location.search);
     }
-    var layout = params.get('layout') || params.get('format');
-    if (layout === 'square' || params.get('linkedin') === 'square') {
-      document.documentElement.classList.add('deck-square-layout');
-    }
-    var saved = parseInt(localStorage.getItem('touch-my-heart-deck-position') || '0', 10);
-    var startsOnDarkSlide = preview || isNaN(saved) || [0,11].indexOf(saved) !== -1;
-    document.documentElement.classList.add(startsOnDarkSlide ? 'deck-starts-on-dark' : 'deck-starts-on-light');
-  } catch (_) {
-    document.documentElement.classList.add('deck-starts-on-dark');
-  }
-})();
-</script>
-<style>
-  /* Critical pre-mount paint: keep the first frame on-theme while the bundle loads. */
-  html.deck-starts-on-dark { background: #170609; }
-  html.deck-starts-on-light { background: #f8f8f9; }
-</style>
+  </script>
+  <link rel="stylesheet" href="../case/case.css" />
+  <link rel="stylesheet" href="./case-page.css" />
 </head>
-<body class="chrome-boot deck-animations-pending">
-  <div id="root"></div>
-  <script type="module" src="./main.tsx"></script>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Timur Prokopiev</a>
+      <div class="nav-links" aria-label="Navigation">
+        <a href="/" class="nav-link">Portfolio</a>
+        <a href="/cv/" class="nav-link">CV</a>
+        <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <article>
+      <a class="back-shortcut" href="/" aria-label="Back to portfolio"><kbd>←</kbd> <span class="action-label">Back</span></a>
+
+      <header class="page-head reveal" style="animation-delay: 80ms">
+        <div class="head">
+          <h1>Touch My Heart</h1>
+        </div>
+        <p class="lede">
+          An XR experience for Magic Leap that takes users deep into the inner workings of the human
+          heart — a realistic, educational encounter with its anatomy and the sound of various diseases.
+        </p>
+        <ul class="tags" aria-label="Focus areas">
+          <li><span class="tag">3D/UX Design</span></li>
+          <li><span class="tag">Technical Art</span></li>
+          <li><span class="tag">XR Development</span></li>
+          <li><span class="tag">Magic Leap</span></li>
+          <li><span class="tag">Medical Visualization</span></li>
+        </ul>
+      </header>
+
+      <section id="gallery" class="gallery gallery-wide-hero reveal" style="animation-delay: 180ms" aria-label="Project gallery"></section>
+
+      <section class="block first">
+        <h2>Inside the human heart</h2>
+        <p>An immersive AR application built on three pillars — spatial display, mid-air touch and medically accurate content.</p>
+        <ul class="wins">
+          <li class="win"><span class="win-index">/01</span><span class="win-title">Magic Leap AR glasses</span><span class="win-desc">Spatial anatomy rendered in the user's real environment.</span><span class="win-tools"><span class="chip">AR</span><span class="chip">Spatial</span></span></li>
+          <li class="win"><span class="win-index">/02</span><span class="win-title">Ultraleap haptics</span><span class="win-desc">Mid-air touch — feel the heartbeat with your bare hands.</span><span class="win-tools"><span class="chip">Haptics</span><span class="chip">Hand tracking</span></span></li>
+          <li class="win"><span class="win-index">/03</span><span class="win-title">Accurate visuals &amp; sound</span><span class="win-desc">Medically correct anatomy paired with true disease sounds.</span><span class="win-tools"><span class="chip">Medical</span><span class="chip">Audio</span></span></li>
+        </ul>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Design Research</p>
+          <h2>Mapping the whole problem</h2>
+          <p>
+            From day one my role was to understand every dimension of the project — and turn scattered
+            inputs into a clear design direction, fast.
+          </p>
+          <ul class="points">
+            <li>Mapped the project boundaries and constraints</li>
+            <li>Gathered early ideas from team and stakeholders</li>
+            <li>Conceptualized the design direction quickly</li>
+          </ul>
+        </div>
+        <div class="frame">
+          <img src="/touch-my-heart/assets/research.png" alt="Research boards and mood references for Touch My Heart" loading="lazy" decoding="async" />
+        </div>
+      </section>
+
+      <section class="block">
+        <p class="eyebrow">Platforms Research</p>
+        <h2>Learning from XR platforms</h2>
+        <p>I studied design guidelines across the major platforms. With Apple Vision Pro freshly announced, its interaction patterns became a primary reference point.</p>
+        <ul class="wins cols-4">
+          <li class="win"><span class="device"><img src="/touch-my-heart/assets/apple-vision.webp" alt="Apple Vision Pro" loading="lazy" /></span><span class="win-index">Reference</span><span class="win-title">Apple Vision Pro</span><span class="win-desc">Freshly announced, richly documented interaction model.</span></li>
+          <li class="win"><span class="device"><img src="/touch-my-heart/assets/meta-quest.webp" alt="Meta Quest" loading="lazy" /></span><span class="win-index">Reference</span><span class="win-title">Meta Quest</span><span class="win-desc">Mature hand-tracking and comfort guidelines.</span></li>
+          <li class="win"><span class="device"><img src="/touch-my-heart/assets/microsoft-hololens2.webp" alt="Microsoft HoloLens 2" loading="lazy" /></span><span class="win-index">Reference</span><span class="win-title">Microsoft HoloLens</span><span class="win-desc">Enterprise-grade spatial UX patterns.</span></li>
+          <li class="win is-target"><span class="device"><img src="/touch-my-heart/assets/magic-leap2.webp" alt="Magic Leap 2" loading="lazy" /></span><span class="win-index">Target</span><span class="win-title">Magic Leap</span><span class="win-desc">Our delivery device — the design had to fit its optics.</span></li>
+        </ul>
+      </section>
+
+      <section class="block">
+        <p class="eyebrow">Medical Research</p>
+        <h2>Two conditions, medically accurate</h2>
+        <p>I produced precise 3D representations — shape, motion and sound — for the two most prevalent heart conditions.</p>
+        <ul class="wins cols-2">
+          <li class="win">
+            <svg class="cond-svg" viewBox="0 0 320 220" role="img" aria-label="Aortic valve opening and closing"><circle class="ln" cx="160" cy="122" r="80" stroke-width="1.4" opacity="0.28" /><circle class="ln" cx="160" cy="122" r="72" stroke-width="3" opacity="0.9" /><g class="av-closed"><path class="ln tint" stroke-width="2.6" d="M160 50 A72 72 0 0 0 98 158 Q 120 142 160 122 Q 168 84 160 50 Z" /><path class="ln tint" stroke-width="2.6" d="M98 158 A72 72 0 0 0 222 158 Q 190 152 160 122 Q 130 152 98 158 Z" /><path class="ln tint" stroke-width="2.6" d="M222 158 A72 72 0 0 0 160 50 Q 152 84 160 122 Q 200 142 222 158 Z" /></g><g class="av-open"><path class="av-lumen" d="M160 94 L192 140 L128 140 Z" /><path class="ln tint" stroke-width="2.6" d="M160 50 A72 72 0 0 0 98 158 Q 112 152 128 140 Q 150 114 160 94 Q 164 72 160 50 Z" /><path class="ln tint" stroke-width="2.6" d="M98 158 A72 72 0 0 0 222 158 Q 208 152 192 140 Q 160 130 128 140 Q 112 152 98 158 Z" /><path class="ln tint" stroke-width="2.6" d="M222 158 A72 72 0 0 0 160 50 Q 156 72 160 94 Q 172 114 192 140 Q 208 152 222 158 Z" /></g></svg>
+            <span class="win-index">Condition 01</span>
+            <span class="win-title">Aortic Stenosis</span>
+            <span class="win-desc">A narrowed aortic valve — modeled with its characteristic restricted flow and murmur.</span>
+          </li>
+          <li class="win">
+            <svg class="cond-svg" viewBox="0 0 320 220" role="img" aria-label="Fibrillating heart with an irregular ECG rhythm"><g class="af-heart"><path class="ln tint" stroke-width="3" d="M160 130 C 116 98, 92 72, 116 50 C 132 36, 152 42, 160 60 C 168 42, 188 36, 204 50 C 228 72, 204 98, 160 130 Z" /></g><path class="ln" stroke-width="2" opacity="0.24" d="M24 182 c4 -4 8 4 12 0 c4 -4 8 4 12 0 l3 2 3 -30 3 40 3 -12 c5 4 9 -2 14 0 c4 -3 7 3 11 0 l3 1 3 -26 3 34 3 -9 c6 4 10 -3 16 0 c6 4 10 -3 16 0 c5 3 9 -2 13 0 l3 2 3 -34 3 44 3 -12 c4 3 8 -2 12 0 l3 1 3 -22 3 30 3 -8 c6 4 11 -3 17 0 c6 4 11 -3 17 0 l3 2 3 -30 3 40 3 -11 c5 3 10 -2 15 0 c6 4 10 -3 16 0 l3 1 3 -26 3 34 3 -9 c6 4 11 -3 17 0 L296 182" /><path class="ln af-ecg-lit" stroke-width="2.8" d="M24 182 c4 -4 8 4 12 0 c4 -4 8 4 12 0 l3 2 3 -30 3 40 3 -12 c5 4 9 -2 14 0 c4 -3 7 3 11 0 l3 1 3 -26 3 34 3 -9 c6 4 10 -3 16 0 c6 4 10 -3 16 0 c5 3 9 -2 13 0 l3 2 3 -34 3 44 3 -12 c4 3 8 -2 12 0 l3 1 3 -22 3 30 3 -8 c6 4 11 -3 17 0 c6 4 11 -3 17 0 l3 2 3 -30 3 40 3 -11 c5 3 10 -2 15 0 c6 4 10 -3 16 0 l3 1 3 -26 3 34 3 -9 c6 4 11 -3 17 0 L296 182" /></svg>
+            <span class="win-index">Condition 02</span>
+            <span class="win-title">Atrial Fibrillation</span>
+            <span class="win-desc">An irregular, rapid rhythm — captured in both the motion and the sound of the beat.</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="block">
+        <p class="eyebrow">Experience Concept</p>
+        <h2>Beyond the technology</h2>
+        <p>The concept had to transcend the hardware — designing for the full spectrum of human interaction inside the application.</p>
+        <ul class="points">
+          <li>Human-centered interaction, not device-centered</li>
+          <li>Natural gestures paired with haptic feedback</li>
+          <li>An experience that teaches through presence</li>
+        </ul>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">XR Prototype</p>
+          <h2>A clickable XR prototype</h2>
+          <p>
+            A prototype of the forthcoming experience aligned the whole team early — and turned feedback
+            into a better final product.
+          </p>
+          <ul class="points">
+            <li>Aligns team and stakeholders early</li>
+            <li>Speeds up collaboration and development</li>
+            <li>Collects user feedback before the build</li>
+          </ul>
+        </div>
+        <div class="frame">
+          <img src="/touch-my-heart/assets/prototype.png?v=2" alt="Clickable XR prototype flow and Figma screens for Touch My Heart" loading="lazy" decoding="async" />
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Procedural Modelling</p>
+          <h2>Realistic, yet adjustable</h2>
+          <p>
+            A non-destructive procedural workflow drives the heart model — realistic enough for medicine,
+            flexible enough to refine each disease animation without rebuilding.
+          </p>
+        </div>
+        <div class="frame">
+          <video src="/touch-my-heart/assets/wireframe.mp4" autoplay muted loop playsinline aria-label="Procedural heart wireframe modelling"></video>
+        </div>
+      </section>
+
+      <section class="block">
+        <p class="eyebrow">Heart States</p>
+        <h2>One model, three conditions</h2>
+        <p>The same procedural model drives a normal heart, aortic stenosis and atrial fibrillation — each with its own shape, motion and sound.</p>
+        <div class="diagrams states">
+          <figure>
+            <div class="frame"><video src="/touch-my-heart/assets/condition_normal.mp4" autoplay muted loop playsinline aria-label="Normal heart"></video></div>
+            <figcaption>Normal heart</figcaption>
+          </figure>
+          <figure>
+            <div class="frame"><video src="/touch-my-heart/assets/condition_as.mp4" autoplay muted loop playsinline aria-label="Aortic stenosis"></video></div>
+            <figcaption>Aortic stenosis</figcaption>
+          </figure>
+          <figure>
+            <div class="frame"><video src="/touch-my-heart/assets/condition_af.mp4" autoplay muted loop playsinline aria-label="Atrial fibrillation"></video></div>
+            <figcaption>Atrial fibrillation</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Shading &amp; Lighting</p>
+          <h2>The final look, in real time</h2>
+          <p>
+            Procedural shader graphs defined the ultimate appearance and texture for real-time — including
+            interactive slicing of the heart across any axis.
+          </p>
+        </div>
+        <div class="frame">
+          <video src="/touch-my-heart/assets/render.mp4" autoplay muted loop playsinline aria-label="Real-time rendered heart shader"></video>
+        </div>
+      </section>
+
+      <section class="block">
+        <p class="eyebrow">Unity</p>
+        <h2>Bringing it together in engine</h2>
+        <p>Wiring interaction, slicing and real-time behaviour into the Magic Leap runtime.</p>
+        <ul class="points">
+          <li>Interactive slicing across arbitrary axes</li>
+          <li>Real-time disease animation states</li>
+          <li>Magic Leap and Ultraleap input integration</li>
+        </ul>
+      </section>
+
+      <a class="next" href="/avatars/">
+        <div>
+          <p class="label">Next project</p>
+          <p class="name">Digital Human</p>
+          <p class="desc">An avatar creation pipeline — from capture to real-time AI animation <span>→</span></p>
+        </div>
+        <div class="thumb">
+          <img src="/assets/previews/avatars.jpg" alt="" loading="lazy" />
+        </div>
+      </a>
+    </article>
+
+    <footer><span class="footer-year" data-footer-year aria-label="Current year">0000</span></footer>
+  </main>
+
+  <script type="module" src="./main.js"></script>
 </body>
 </html>

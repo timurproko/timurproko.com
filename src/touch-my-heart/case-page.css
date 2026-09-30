@@ -1,0 +1,43 @@
+/* Touch My Heart case page — heart-red theme matching the cover's 3D heart (#e0245e). Loads after case/case.css. */
+:root {
+  --hue: 10;
+  --accent: #e0245e;
+  --accent-dim: rgb(224 36 94 / 0.08);
+}
+
+/* Hero shot — letterbox the tall render inside the wide hero instead of cropping it; the grey matches the video's backdrop */
+.gallery-wide-hero .gallery-row:first-child .shot-open video { object-fit: contain; background: #d9d9d9; }
+
+/* Platforms —device renders on top of the cards; the delivery target is highlighted */
+.device { display: flex; align-items: center; justify-content: center; height: 96px; margin-bottom: 6px; }
+.device img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 14px 18px rgba(17, 17, 17, 0.14)); }
+.win.is-target { border-color: var(--accent); background: var(--accent-dim); }
+
+/* Heart conditions — animated line illustrations carried over from the deck */
+.cond-svg { display: block; width: min(72%, 300px); height: auto; margin: 4px auto 8px; overflow: visible; }
+.cond-svg .ln { fill: none; stroke: var(--accent); stroke-linecap: round; stroke-linejoin: round; }
+.cond-svg .tint { fill: color-mix(in oklab, var(--accent), transparent 80%); }
+.av-flow { animation: avFlow 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+.av-closed { animation: avClosed 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+.av-open { animation: avOpen 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+.av-lumen { fill: var(--surface); opacity: 0.9; }
+@keyframes avClosed { 0%,14% { opacity: 1; } 38%,62% { opacity: 0; } 86%,100% { opacity: 1; } }
+@keyframes avOpen { 0%,14% { opacity: 0; } 38%,62% { opacity: 1; } 86%,100% { opacity: 0; } }
+@keyframes avFlow { 0%,18% { opacity: 0.18; transform: translateY(4px); } 40%,60% { opacity: 0.72; transform: translateY(0); } 82%,100% { opacity: 0.18; transform: translateY(4px); } }
+.af-heart { transform-box: fill-box; transform-origin: center; animation: afQuiver 0.26s steps(2, end) infinite, afBeat 1.1s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+@keyframes afQuiver { 0% { translate: 0 0; } 25% { translate: 0.7px -0.6px; } 50% { translate: -0.6px 0.5px; } 75% { translate: 0.5px 0.6px; } 100% { translate: -0.4px -0.4px; } }
+@keyframes afBeat { 0%,100% { scale: 1; } 30% { scale: 1.045; } 45% { scale: 0.99; } }
+.af-ecg-lit { stroke-dasharray: 46 1200; stroke-dashoffset: 0; animation: afScan 2.6s linear infinite; }
+@keyframes afScan { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1246; } }
+
+/* Heart states — three condition renders side by side */
+.states { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.states .frame video { display: block; width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 10px; }
+
+@media (max-width: 760px) {
+  .states { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .av-flow, .av-closed, .av-open, .af-heart, .af-ecg-lit { animation: none; }
+  .av-open { opacity: 0; }
+}

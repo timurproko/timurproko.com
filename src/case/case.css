@@ -6,8 +6,9 @@
   --muted:   oklch(54% 0.012 250);
   --subtle:  oklch(72% 0.004 250);
   --border:  oklch(92% 0.005 250);
-  --accent:  oklch(58% 0.18 255);
-  --accent-dim: oklch(58% 0.18 255 / 0.08);
+  --hue:     255; /* theme hue — a page can override it (e.g. Corel is green) */
+  --accent:  oklch(58% 0.18 var(--hue));
+  --accent-dim: oklch(58% 0.18 var(--hue) / 0.08);
   --ink:     oklch(22% 0.04 265);
   --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
   --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
@@ -78,6 +79,8 @@ nav {
   white-space: nowrap;
 }
 .nav-link:hover { color: var(--fg); }
+.nav-link[aria-current] { position: relative; color: var(--fg); }
+.nav-link[aria-current]::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 1.5px; border-radius: 1px; background: linear-gradient(90deg, #ff4d6d, #ffb703, #3ddc97, #3a86ff, #b517ff, #ff4d6d); background-size: 220% 100%; animation: navLogoRainbow 1400ms linear 120ms both; }
 
 @keyframes navLogoReveal {
   from { opacity: 0; clip-path: inset(0 100% 0 0); transform: translateY(4px); }
@@ -162,6 +165,30 @@ nav {
 .link-shortcut:focus-visible kbd { transform: translateY(-1px); }
 .back-shortcut:active kbd,
 .link-shortcut:active kbd { transform: translateY(0); }
+/* Website button: every few seconds a rainbow comet runs once around its outline (same as the CV print button) */
+@property --link-glow-angle { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+.link-shortcut::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  padding: 1.5px;
+  border-radius: inherit;
+  background: conic-gradient(from var(--link-glow-angle),
+    transparent 0 45%, #ff4d6d 62%, #ffb703 72%, #3ddc97 81%, #3a86ff 90%, #b517ff 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: 0;
+  pointer-events: none;
+  animation: linkGlow 7s linear 2.4s infinite;
+}
+@keyframes linkGlow {
+  0%   { --link-glow-angle: 0deg; opacity: 0; }
+  4%   { opacity: 1; }
+  26%  { opacity: 1; }
+  32%  { --link-glow-angle: 400deg; opacity: 0; }
+  100% { --link-glow-angle: 400deg; opacity: 0; }
+}
 .back-shortcut .action-label,
 .link-shortcut .action-label {
   display: inline-block;
@@ -207,10 +234,10 @@ h1 {
   align-items: center;
   min-height: 28px;
   padding: 0 13px;
-  border: 1px solid oklch(88% 0.03 255);
+  border: 1px solid oklch(88% 0.03 var(--hue));
   border-radius: 999px;
   background: var(--accent-dim);
-  color: oklch(38% 0.12 255);
+  color: oklch(38% 0.12 var(--hue));
   font-size: 13px;
   letter-spacing: 0.01em;
 }
@@ -221,7 +248,7 @@ h1 {
   padding: 14px;
   border: 1px solid var(--border);
   border-radius: 20px;
-  background: oklch(95% 0.012 255);
+  background: oklch(95% 0.012 var(--hue));
   display: grid;
   gap: 12px;
 }
@@ -237,7 +264,7 @@ h1 {
   width: 100%;
   padding: 0;
   overflow: hidden;
-  border: 1px solid oklch(90% 0.01 255);
+  border: 1px solid oklch(90% 0.01 var(--hue));
   border-radius: 12px;
   background: var(--surface);
   cursor: zoom-in;
@@ -248,7 +275,20 @@ h1 {
   height: auto;
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
+/* Transparent videos (e.g. webm with alpha) sit on the same ink as .frame media */
+.shot-open video { background: var(--ink); }
 .shot-open:hover img, .shot-open:hover video { transform: scale(1.015); }
+/* Thumbnail strip: StarKit-sized 16:9 tiles (fifths), even with fewer or mixed items */
+@media (min-width: 761px) {
+  .gallery-strip {
+    grid-template-columns: repeat(var(--cols), calc((100% - (max(var(--cols), 5) - 1) * 12px) / max(var(--cols), 5)));
+    justify-content: center;
+  }
+}
+/* Wide hero: fixed to the Digital Human hero ratio (render.png, 4005×1558) so every case opens at the same height */
+.gallery-wide-hero .gallery-row:first-child .shot-open :is(img, video) { aspect-ratio: 4005 / 1558; object-fit: cover; }
+.gallery-strip .shot-open img,
+.gallery-strip .shot-open video { aspect-ratio: 16 / 9; object-fit: cover; }
 .shot-open:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .shot figcaption { margin-top: 8px; padding: 0 2px; color: var(--muted); font-size: 13.5px; }
 .lightbox {
@@ -274,6 +314,8 @@ h1 {
 }
 .block { padding: 48px 0; border-top: 1px solid var(--border); }
 .first { margin-top: 56px; }
+/* No divider straight under the gallery — its panel already separates it */
+.gallery + .first { border-top: 0; padding-top: 0; }
 h2 {
   font-family: var(--font-display);
   font-size: 20px;
@@ -287,6 +329,8 @@ h2 {
   line-height: 1.7;
 }
 .pair p + p { margin-top: 12px; }
+.block > .block-note { margin-top: 16px; color: var(--muted); font-size: 15px; }
+.block > .eyebrow { margin: 0 0 8px; color: var(--accent); font-size: 11px; line-height: 1.6; }
 
 /* Process */
 /* Numbered down the left column first, then the right (01 02 | 03 04) */
@@ -349,7 +393,7 @@ h2 {
 }
 .win-title {
   font-family: var(--font-display);
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.015em;
@@ -360,13 +404,361 @@ h2 {
   line-height: 1.45;
 }
 
+/* Stage cards — same look as the deck phase cards, one per row, top to bottom */
+.stages {
+  display: grid;
+  gap: 8px;
+  margin-top: 24px;
+  list-style: none;
+}
+.stage {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 14px 22px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  transition:
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 260ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.stage:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 38px rgba(17, 17, 17, 0.12);
+}
+.stage-index {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+.stage-text { display: flex; flex-direction: column; }
+.stage-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+.stage-desc {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+.stage-tools {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.chip {
+  padding: 5px 12px;
+  border: 1px solid oklch(88% 0.03 var(--hue));
+  border-radius: 999px;
+  background: var(--accent-dim);
+  color: oklch(42% 0.12 var(--hue));
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Feature rows — copy on the left, framed image/video on the right */
+.feature {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: center;
+  gap: 32px 56px;
+  padding: 48px 0;
+  border-top: 1px solid var(--border);
+}
+.eyebrow {
+  margin-bottom: 8px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.feature-text > p:not(.eyebrow) {
+  margin-top: 14px;
+  color: oklch(34% 0.012 250);
+  line-height: 1.7;
+}
+/* Links inside bullet lists: no underline — an arrow marks them, and they take the accent on hover */
+.points a { text-decoration: none; transition: color 0.15s; }
+.points a[target="_blank"]::after { content: " ↗"; }
+.points a:hover { color: var(--accent); }
+.points a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+
+/* Link chips: no underline — an arrow marks them, and they tint on hover */
+a.chip { display: inline-flex; align-items: center; gap: 4px; text-decoration: none; transition: background-color 0.15s, border-color 0.15s, color 0.15s; }
+a.chip::after { content: "↗"; font-size: 1.05em; line-height: 1; letter-spacing: 0; }
+a.chip:hover { border-color: var(--accent); background: oklch(93% 0.04 var(--hue)); color: var(--accent); }
+a.chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.points {
+  display: grid;
+  gap: 6px;
+  margin-top: 16px;
+  list-style: none;
+}
+.points li {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  color: oklch(34% 0.012 250);
+}
+.points li::before {
+  content: "→";
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+.frame {
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: oklch(95% 0.012 var(--hue));
+}
+/* Every preview shares one 4:3 box, cropped to fill */
+.frame img, .frame video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 1px solid oklch(90% 0.01 var(--hue));
+  border-radius: 10px;
+  background: var(--ink);
+}
+/* Before/after slider (compare.js) — same look as the deck's MeshCompare */
+.compare {
+  --compare-pos: 50%;
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid oklch(90% 0.01 var(--hue));
+  border-radius: 10px;
+  background: #101010;
+  cursor: ew-resize;
+  touch-action: none;
+  user-select: none;
+}
+.frame .compare img {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  pointer-events: none;
+}
+.compare .compare-after {
+  clip-path: inset(0 calc(100% - var(--compare-pos)) 0 0);
+}
+.compare:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.compare-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--compare-pos);
+  width: 1px;
+  translate: -50% 0;
+  background: #fff;
+  pointer-events: none;
+}
+.compare-handle {
+  position: absolute;
+  top: 50%;
+  left: var(--compare-pos);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  translate: -50% -50%;
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 12px 34px rgba(17, 17, 17, 0.22);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 18px;
+  pointer-events: none;
+}
+.compare-handle::before { content: "↔"; translate: 0 -1px; }
+/* Same frosted pill as the .switcher tabs, one in each bottom corner */
+.compare-label {
+  position: absolute;
+  bottom: 14px;
+  padding: 7px 14px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 999px;
+  background: rgb(12 14 18 / 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.compare-label.after { left: 14px; }
+.compare-label.before { right: 14px; }
+
+/* Lens header — introduces a group of blocks (e.g. Business, Users, Tech) */
+/* Even space on both sides of a section divider: 56px above (previous block) and below */
+.lens { padding: 56px 0 8px; border-top: 1px solid var(--border); }
+article > :is(.block, .feature, .pair):has(+ :is(.lens, .next)) { padding-bottom: 56px; }
+.lens-title {
+  font-size: clamp(30px, 3.6vw, 40px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+.lens-sub { max-width: 64ch; margin-top: 12px; color: var(--muted); font-size: 17px; line-height: 1.6; }
+/* Inside a lens group only the lens header gets a divider; blocks just stack with space */
+.lens ~ .block { border-top: 0; padding: 36px 0; }
+.lens + .block { padding-top: 12px; }
+.lens + .block > :first-child { margin-top: 0; }
+
+/* Two side-by-side lists with small headings */
+.cols2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 56px;
+  margin-top: 24px;
+}
+.cols2 h3 { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+.cols2 h3 + .points { margin-top: 10px; }
+
+/* Headline stat beside supporting figures */
+.stat {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: center;
+  gap: 24px 56px;
+  margin-top: 24px;
+}
+.stat-big {
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: clamp(72px, 9vw, 120px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.stat-caption { margin-top: 10px; color: var(--muted); font-size: 16px; }
+.stat .points strong { color: var(--accent); font-weight: 700; }
+.stat-big, .stat .points strong { font-variant-numeric: tabular-nums; }
+/* Scroll reveal (stat-reveal.js adds .is-armed, then .is-visible) */
+.stat.is-armed .stat-big,
+.stat.is-armed .stat-caption,
+.stat.is-armed .points li { opacity: 0; }
+.stat.is-visible .stat-big { animation: statRise 720ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.stat.is-visible .stat-caption { animation: statRise 640ms cubic-bezier(0.22, 1, 0.36, 1) 240ms both; }
+.stat.is-visible .points li { animation: statRise 560ms cubic-bezier(0.22, 1, 0.36, 1) var(--sd, 0ms) both; }
+@keyframes statRise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Card grid variants + extras (built on .wins / .win) */
+.wins.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.wins.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.win-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 8px; }
+.win .points { margin-top: 4px; font-size: 15px; }
+.win-note { margin-top: auto; padding-top: 6px; color: var(--muted); font-size: 14px; font-style: italic; }
+
+/* Diagrams shown side by side, each in a light frame with a mono caption */
+.diagrams {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+.diagrams figcaption {
+  margin-top: 10px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.frame-light { padding: 16px; background: var(--surface); }
+
+/* Image switcher — stacked images that cross-fade, picked with a pill of tabs over the bottom edge.
+   Pure CSS: the Nth radio shows the Nth image and highlights the Nth tab (up to 4). */
+.switcher { position: relative; }
+.switcher > input { position: absolute; opacity: 0; pointer-events: none; }
+.switcher-panels { display: grid; }
+.switcher-panels > * { grid-area: 1 / 1; opacity: 0; transition: opacity 360ms ease; }
+.switcher-tabs {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  translate: -50% 0;
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 999px;
+  background: rgb(12 14 18 / 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.switcher-tabs label {
+  padding: 7px 14px;
+  border-radius: 999px;
+  color: rgb(255 255 255 / 0.7);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.switcher-tabs label:hover { color: #fff; }
+.switcher > input:nth-of-type(1):checked ~ .switcher-panels > :nth-child(1),
+.switcher > input:nth-of-type(2):checked ~ .switcher-panels > :nth-child(2),
+.switcher > input:nth-of-type(3):checked ~ .switcher-panels > :nth-child(3),
+.switcher > input:nth-of-type(4):checked ~ .switcher-panels > :nth-child(4) { opacity: 1; }
+.switcher > input:nth-of-type(1):checked ~ .switcher-tabs > :nth-child(1),
+.switcher > input:nth-of-type(2):checked ~ .switcher-tabs > :nth-child(2),
+.switcher > input:nth-of-type(3):checked ~ .switcher-tabs > :nth-child(3),
+.switcher > input:nth-of-type(4):checked ~ .switcher-tabs > :nth-child(4) { background: var(--accent); color: #fff; }
+.switcher > input:nth-of-type(1):focus-visible ~ .switcher-tabs > :nth-child(1),
+.switcher > input:nth-of-type(2):focus-visible ~ .switcher-tabs > :nth-child(2),
+.switcher > input:nth-of-type(3):focus-visible ~ .switcher-tabs > :nth-child(3),
+.switcher > input:nth-of-type(4):focus-visible ~ .switcher-tabs > :nth-child(4) { outline: 2px solid #fff; outline-offset: 1px; }
+
+/* Venn reveal — .venn is armed by case/venn-reveal.js, then plays once in view.
+   Each piece staggers by its inline --vd delay. */
+.venn.is-armed :is(.venn-rings circle, .venn-core-circle, .venn-intersection, .venn-core-glow, .venn-label text, .venn-core, .orbit-dot) { opacity: 0; }
+.venn :is(.venn-rings circle, .venn-core-circle, .venn-intersection) { transform-box: fill-box; transform-origin: center; }
+.venn.is-visible .venn-rings circle { animation: vennRing 680ms cubic-bezier(0.22, 1, 0.36, 1) var(--vd, 0ms) both; }
+.venn.is-visible :is(.venn-core-circle, .venn-intersection) { animation: vennCore 720ms cubic-bezier(0.34, 1.56, 0.64, 1) var(--vd, 0ms) both; }
+.venn.is-visible :is(.venn-label text, .venn-core) { animation: vennLabel 480ms cubic-bezier(0.22, 1, 0.36, 1) var(--vd, 0ms) both; }
+.venn.is-visible :is(.venn-core-glow, .orbit-dot) { animation: vennFade 600ms ease var(--vd, 0ms) both; }
+@keyframes vennRing { from { opacity: 0; transform: scale(0.52); } to { opacity: 1; transform: scale(1); } }
+@keyframes vennCore { 0% { opacity: 0; transform: scale(0.4); } 65% { transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes vennLabel { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes vennFade { from { opacity: 0; } to { opacity: 1; } }
+
 /* Next project */
 .next {
   display: grid;
   grid-template-columns: 1fr 280px;
   align-items: center;
   gap: 32px;
-  padding: 48px 0 8px;
+  padding: 56px 0 8px;
   border-top: 1px solid var(--border);
   text-decoration: none;
 }
@@ -492,7 +884,8 @@ html.preview-cover.cover-reveal.preview-cover-motion-active .cover-title {
 }
 
 @media (max-width: 900px) {
-  .wins { grid-template-columns: 1fr; }
+  .wins, .wins.cols-2 { grid-template-columns: 1fr; }
+  .wins.cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 760px) {
   .nav-inner { padding: 0 20px; }
@@ -506,14 +899,24 @@ html.preview-cover.cover-reveal.preview-cover-motion-active .cover-title {
   .shell { padding: 28px 16px 64px; }
   .pair, .steps { grid-template-columns: 1fr; }
   .steps { grid-template-rows: none; grid-auto-flow: row; }
+  .stage { grid-template-columns: 32px minmax(0, 1fr); align-items: start; padding: 14px 16px; }
+  .stage-index { padding-top: 2px; }
+  .stage-tools { grid-column: 2; justify-content: flex-start; }
+  .feature { grid-template-columns: 1fr; padding: 36px 0; }
+  .cols2, .stat, .diagrams { grid-template-columns: 1fr; }
+  .lens { padding-top: 40px; }
+  article > :is(.block, .feature, .pair):has(+ :is(.lens, .next)) { padding-bottom: 40px; }
+  .next { padding-top: 40px; }
+  .frame { padding: 6px; border-radius: 14px; }
   .pair, .block { padding: 36px 0; }
   .first { margin-top: 40px; }
   .gallery { padding: 8px; gap: 8px; border-radius: 16px; }
   .gallery-row { gap: 8px; }
-  .gallery-row:nth-child(n + 3) { grid-template-columns: repeat(min(var(--cols), 3), minmax(0, 1fr)); }
+  .gallery-strip { grid-template-columns: repeat(min(var(--cols), 3), minmax(0, 1fr)); }
   .next { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .link-shortcut::before { animation: none; }
   .reveal, .back-shortcut, .link-shortcut { opacity: 1; animation: none; }
   .footer-year { opacity: 1; clip-path: none; transform: none; transition: none; }
   .nav-logo { opacity: 1; clip-path: none; animation: none; }

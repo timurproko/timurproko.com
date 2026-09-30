@@ -1,0 +1,54 @@
+/* AI for Unity case page — the deck's blue (#2f6feb) + its diagrams (trend panels, pillars Venn, agentic loop). Loads after case/case.css. */
+:root {
+  --hue: 262;
+  --accent: #2f6feb;
+  --accent-dim: rgb(47 111 235 / 0.08);
+}
+
+/* Hero: the four eras of AI-assisted coding, as editor panels — same height as the other case heroes */
+.trend {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: center;
+  gap: 16px 36px;
+  aspect-ratio: 4005 / 1558;
+  margin-top: 36px; /* same gap under the tags as .gallery */
+  padding: 24px 32px;
+}
+.trend figure { position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; min-height: 0; height: 100%; }
+.trend figure + figure::before {
+  content: "→";
+  position: absolute;
+  left: -26px;
+  top: 50%;
+  color: var(--subtle);
+  font-family: var(--font-mono);
+  font-size: 18px;
+}
+.trend figcaption {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.trend svg { display: block; flex: 1; min-height: 0; width: auto; max-width: 100%; filter: drop-shadow(0 10px 22px rgba(17, 17, 17, 0.08)); }
+
+/* Evolution — the current step is marked */
+.stage.is-here { border-color: var(--accent); background: var(--accent-dim); }
+.stage.is-here .stage-tools .chip { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* Pillars Venn — kept compact; labels are lighter, tinted to their rings. Reveal is shared (case.css + case/venn-reveal.js) */
+.pillars-venn svg { display: block; width: min(440px, 100%); height: auto; margin: 0 auto; overflow: visible; }
+.pillars-venn .venn-label text { font-family: Inter, var(--font-display); font-size: 42px; font-weight: 500; letter-spacing: -0.01em; fill-opacity: 0.82; }
+.pillars-venn .venn-core { font-family: Inter, var(--font-display); font-size: 58px; font-weight: 600; letter-spacing: -0.02em; fill: #fff; }
+
+/* Agentic loop */
+.flow-graph svg { display: block; width: min(360px, 100%); height: auto; margin: 0 auto; overflow: visible; font-family: var(--font); }
+
+@media (max-width: 760px) {
+  .trend { grid-template-columns: repeat(2, minmax(0, 1fr)); aspect-ratio: auto; padding: 16px; gap: 20px 16px; }
+  .trend figure + figure::before { display: none; }
+  .trend svg { width: 100%; height: auto; }
+}

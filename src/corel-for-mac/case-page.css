@@ -1,0 +1,138 @@
+/* CorelDRAW case page — green theme + diagram styles (Venn, architecture, UI breakdown). Loads after case/case.css. */
+
+:root { --hue: 150; }
+
+/* Framing (Venn + challenge) reads as one group — no divider between them */
+.feature + .block { border-top: 0; padding-top: 12px; }
+
+/* Venn — bare circles; the scroll reveal is shared (case.css + case/venn-reveal.js) */
+.venn svg { display: block; width: 100%; height: auto; overflow: visible; }
+.venn .venn-rings circle { mix-blend-mode: multiply; }
+.venn .venn-label text {
+  font-family: Inter, var(--font-display);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  fill: #14311f;
+}
+.venn .venn-core {
+  font-family: Inter, var(--font-display);
+  font-size: 36px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  fill: #fff;
+}
+
+/* Architecture graphs */
+.architecture-graph { display: block; width: 100%; height: auto; overflow: visible; }
+.architecture-graph .frame-rect { fill: #fff; stroke: #171717; stroke-width: 2.1; }
+.architecture-graph .line { fill: none; stroke: #8f8f8f; stroke-width: 1; }
+.architecture-graph .soft-line { fill: none; stroke: #c7c7c7; stroke-width: 1; }
+.architecture-graph .dash { stroke-dasharray: 2 2; }
+.architecture-graph text {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  fill: #353535;
+  dominant-baseline: middle;
+  text-anchor: middle;
+  text-transform: uppercase;
+}
+.architecture-graph .vertical { writing-mode: vertical-rl; }
+
+/* Architecture tab switch — radio inputs drive which diagram shows (no JS) */
+.arch-tabs { display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 28px; }
+.arch-tabs input { position: absolute; opacity: 0; pointer-events: none; }
+.arch-switch {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: 0 8px 24px rgba(17, 17, 17, 0.06);
+}
+.arch-switch label {
+  padding: 9px 18px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 220ms ease, color 220ms ease, box-shadow 220ms ease;
+}
+.arch-switch label:hover { color: var(--fg); }
+#arch-macos:checked ~ .arch-switch label[for="arch-macos"],
+#arch-corel:checked ~ .arch-switch label[for="arch-corel"] {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 8px 20px color-mix(in oklab, var(--accent), transparent 72%);
+}
+#arch-macos:focus-visible ~ .arch-switch label[for="arch-macos"],
+#arch-corel:focus-visible ~ .arch-switch label[for="arch-corel"] { outline: 2px solid var(--accent); outline-offset: 2px; }
+.arch-panel { display: none; width: min(780px, 100%); }
+#arch-macos:checked ~ .arch-panel.macos,
+#arch-corel:checked ~ .arch-panel.corel { display: block; animation: archFade 320ms ease both; }
+@keyframes archFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* Interactive UI breakdown */
+.breakdown-stage { display: flex; flex-direction: column; gap: 16px; margin-top: 28px; }
+.breakdown-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.breakdown-svg .window { fill: #fff; stroke: #171717; stroke-width: 2.1; }
+.breakdown-svg .window-outline { fill: none; stroke: #171717; stroke-width: 2.1; pointer-events: none; }
+.breakdown-svg .bar { fill: #f2f2f2; stroke: #8f8f8f; stroke-width: 1; }
+.breakdown-svg .panel { fill: #fff; stroke: #8f8f8f; stroke-width: 1; }
+.breakdown-svg .touch { fill: #d9d9d9; stroke: #1f1f1f; stroke-width: 1; }
+/* Label sizes are scaled so they render like the architecture diagram above (~13px on screen) */
+.breakdown-svg text { font-family: var(--font-mono); font-size: 12.7px; letter-spacing: 0.02em; fill: #353535; }
+.breakdown-svg .ui-label { fill: #444; text-anchor: middle; dominant-baseline: middle; text-transform: uppercase; }
+.breakdown-svg .ui-label.small { font-size: 11px; }
+.breakdown-svg .app-title {
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+.breakdown-svg .vertical-label { writing-mode: vertical-rl; }
+.breakdown-hotspot { cursor: help; outline: none; }
+.breakdown-hotspot .hotspot-fill {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 2.5;
+  transition: fill 140ms ease, stroke 140ms ease;
+}
+.breakdown-hotspot:hover .hotspot-fill,
+.breakdown-hotspot:focus .hotspot-fill { fill: color-mix(in oklab, var(--accent), transparent 84%); stroke: var(--accent); }
+.breakdown-tip {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+.breakdown-hotspot:hover .breakdown-tip,
+.breakdown-hotspot:focus .breakdown-tip { opacity: 1; transform: translateY(0); }
+.breakdown-tip rect { fill: rgba(255, 255, 255, 0.96); stroke: #9ca3af; stroke-width: 1; rx: 8; filter: drop-shadow(0 12px 24px rgba(17, 17, 17, 0.14)); }
+.breakdown-tip .tip-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; letter-spacing: -0.01em; fill: #111; }
+.breakdown-tip .tip-copy { font-family: var(--font); font-size: 13.5px; letter-spacing: 0; fill: #5f6368; }
+.breakdown-mobile-detail { display: none; }
+
+@media (max-width: 760px) {
+  .breakdown-svg text, .breakdown-svg .ui-label { font-size: 18px; }
+  .breakdown-svg .breakdown-tip { display: none; }
+  .breakdown-hotspot.is-selected .hotspot-fill { fill: color-mix(in oklab, var(--accent), transparent 84%); stroke: var(--accent); }
+  .breakdown-mobile-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+  }
+  .breakdown-mobile-detail strong { font-family: var(--font-display); font-size: 17px; line-height: 1.25; }
+  .breakdown-mobile-detail span { color: var(--muted); font-size: 15px; line-height: 1.45; }
+}

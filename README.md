@@ -77,20 +77,9 @@ LINKEDIN_OUT_DIR="./exports/linkedin" npm run linkedin:square
 - `src/deck/` — shared deck chrome, navigation engine, and slide wrapper
 - `src/components/` — reusable content/layout primitives for deck pages
 - `src/styles/` — shared deck CSS extracted from the legacy pages
-- `src/<deck>/` — per-deck `index.html`, `main.tsx`, `slides.tsx`, and small page-specific effects/styles
+- `src/starkit/`, `src/a1/`, `src/ai-for-unity/`, `src/avatars/`, `src/corel-for-mac/`, `src/touch-my-heart/` — case pages (static HTML + `src/case/` styles; a page can set `--hue` to retheme); each deck-born page keeps a cover-only deck at `/<page>/cover/` (`cover.tsx`) for the home page preview
 - `legacy/` — original monolithic deck HTML retained as migration reference
 - `scripts/` — preview/social generation and one-time migration helpers
-
-## Editing deck content
-
-Deck content lives in `src/<deck>/slides.tsx`:
-
-- `src/avatars/slides.tsx`
-- `src/touch-my-heart/slides.tsx`
-- `src/ai-for-unity/slides.tsx`
-- `src/corel-for-mac/slides.tsx`
-
-Use shared components from `src/components/` where possible (`CoverSlide`, `Slide`, `SplitMedia`, `Pipeline`, `Media`, `VideoLoop`, etc.). Layout, chrome, navigation, and common styling are shared so most edits should only touch text, media, or component composition.
 
 ## Deployment
 

@@ -113,6 +113,8 @@
       white-space: nowrap;
     }
     .nav-link:hover { color: var(--fg); }
+    .nav-link[aria-current] { position: relative; color: var(--fg); }
+    .nav-link[aria-current]::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 1.5px; border-radius: 1px; background: linear-gradient(90deg, #ff4d6d, #ffb703, #3ddc97, #3a86ff, #b517ff, #ff4d6d); background-size: 220% 100%; animation: navLogoRainbow 1400ms linear 120ms both; }
 
     @keyframes navLogoReveal {
       from {
@@ -144,6 +146,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+      .count.is-loading { animation: none; }
       .nav-logo,
       .hero .eyebrow,
       .hero h1,
@@ -355,6 +358,7 @@
     }
     .toolbar.has-query { margin-bottom: 32px; }
     .toolbar:focus-within { border-bottom-color: var(--accent); }
+    /* Count ("Finding content…" / "8 items") and the search placeholder share one text style */
     .count {
       flex-shrink: 0;
       padding-bottom: 8px;
@@ -363,6 +367,19 @@
       font-variant-numeric: tabular-nums;
       letter-spacing: -0.01em;
     }
+    /* While the list loads, a rainbow sweeps through "Finding content…" left to right */
+    .count.is-loading {
+      background: linear-gradient(90deg, var(--subtle) 0%, var(--subtle) 30%, #ff4d6d 38%, #ffb703 44%, #3ddc97 50%, #3a86ff 56%, #b517ff 62%, var(--subtle) 70%, var(--subtle) 100%);
+      background-size: 300% 100%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: countRainbow 1600ms linear infinite;
+    }
+    @keyframes countRainbow {
+      from { background-position: 100% 50%; }
+      to { background-position: 0% 50%; }
+    }
     .search {
       flex: 1;
       min-width: 0;
@@ -370,6 +387,7 @@
       border: 0;
       border-radius: 0;
       padding: 0 0 8px;
+      font-family: inherit;
       font-size: 16px;
       color: var(--fg);
       background: transparent;
@@ -380,6 +398,7 @@
     .search::placeholder {
       color: var(--subtle);
       font-size: 13px;
+      letter-spacing: -0.01em;
     }
     .search-clear {
       flex-shrink: 0;
@@ -728,6 +747,7 @@
       .nav-link {
         font-size: 15px;
       }
+      .nav-links { gap: 12px; }
       .toolbar {
         position: relative;
         padding-top: 4px;
@@ -832,6 +852,7 @@
     <div class="nav-inner">
       <a href="/" class="nav-logo">Timur Prokopiev</a>
       <div class="nav-links" aria-label="Navigation">
+        <a href="./" class="nav-link" aria-current="page">Portfolio</a>
         <a href="cv/" class="nav-link" data-presentation-link="cv">CV</a>
         <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
       </div>
@@ -856,7 +877,7 @@
     <div class="toolbar" aria-label="Presentation controls">
       <input class="search" id="search" type="text" role="searchbox" placeholder="Search content" autocomplete="off" />
       <button type="button" class="search-clear" id="search-clear" aria-label="Clear search" title="Clear search">✕</button>
-      <div class="count" id="count">Finding content…</div>
+      <div class="count is-loading" id="count">Finding content…</div>
     </div>
 
     <section class="grid" id="presentations" aria-live="polite"></section>
@@ -877,7 +898,7 @@
     const TITLE_OVERRIDES = {
       "ai-for-unity": "AI Development Workflow",
       "touch-my-heart": "XR Experience",
-      "avatars": "Digital Human Pipeline",
+      "avatars": "Avatar Creation Pipeline",
       "corel-for-mac": "UX Case Study",
       "starkit": "Touch-free Experience",
       "a1": "AI Coding Agent",
@@ -1566,6 +1587,7 @@
 
     function render(items, query) {
       const visibleItemCount = query ? items.length : items.length + 1;
+      count.classList.remove("is-loading");
       count.textContent = `${visibleItemCount} item${visibleItemCount === 1 ? "" : "s"}`;
       grid.innerHTML = "";
 

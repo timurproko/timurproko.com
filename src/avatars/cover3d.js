@@ -16,23 +16,49 @@ export function initCover3d() {
     renderer.setSize(w, h);
     host.appendChild(renderer.domElement);
 
-    // Faceted "digital identity" orb
-    var geo = new THREE.IcosahedronGeometry(2.15, 2);
-
+    // Faceted low-poly bust — head, neck and shoulders — as the "digital human"
     var mat = new THREE.MeshStandardMaterial({
       color: 0x0d9488, roughness: 0.38, metalness: 0.2,
       emissive: 0x00241f, emissiveIntensity: 0.5, flatShading: true
     });
+    var wireMat = new THREE.LineBasicMaterial({ color: 0x5eead4, transparent: true, opacity: 0.26 });
     var heart = new THREE.Group();
-    var orb = new THREE.Mesh(geo, mat);
-    heart.add(orb);
-    var wire = new THREE.LineSegments(
-      new THREE.WireframeGeometry(geo),
-      new THREE.LineBasicMaterial({ color: 0x5eead4, transparent: true, opacity: 0.26 })
-    );
-    wire.scale.setScalar(1.012);
-    heart.add(wire);
-    heart.scale.set(1.0, 1.0, 1.0);
+
+    function addPart(geo, x, y, z) {
+      var mesh = new THREE.Mesh(geo, mat);
+      var wire = new THREE.LineSegments(new THREE.WireframeGeometry(geo), wireMat);
+      wire.scale.setScalar(1.006);
+      var part = new THREE.Group();
+      part.add(mesh, wire);
+      part.position.set(x, y, z);
+      heart.add(part);
+      return part;
+    }
+
+    // Head: an icosphere sculpted into a skull, jaw and nose
+    var headGeo = new THREE.IcosahedronGeometry(1, 2);
+    var p = headGeo.attributes.position;
+    for (var i = 0; i < p.count; i++) {
+      var x = p.getX(i), y = p.getY(i), z = p.getZ(i);
+      var taper = y < 0 ? 1 + y * 0.3 : 1;              // narrow toward the chin
+      x *= 0.8 * taper;
+      z *= 0.92 * (y < 0 ? 1 + y * 0.12 : 1);
+      y *= 1.08;
+      if (z > 0.6 && Math.abs(x) < 0.2 && y > -0.35 && y < 0.15) z += 0.14;   // nose
+      if (z > 0.55 && Math.abs(Math.abs(x) - 0.32) < 0.14 && y > 0 && y < 0.3) z -= 0.07; // eye sockets
+      p.setXYZ(i, x, y, z);
+    }
+    headGeo.computeVertexNormals();
+    addPart(headGeo, 0, 1.25, 0);
+
+    addPart(new THREE.CylinderGeometry(0.36, 0.44, 0.7, 9, 1, true), 0, 0.2, -0.05);
+
+    // Shoulders and chest: a squashed low-poly ellipsoid, sliced off below the frame
+    var torsoGeo = new THREE.SphereGeometry(1, 12, 8, 0, Math.PI * 2, 0, Math.PI * 0.62);
+    torsoGeo.scale(2.05, 1.25, 0.95);
+    addPart(torsoGeo, 0, -0.95, 0);
+
+    heart.position.y = -0.6;
     scene.add(heart);
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.55));
@@ -53,7 +79,7 @@ export function initCover3d() {
       return {
         ry: reduce ? -0.35 : Math.sin(t * 0.35) * 0.55 - 0.15,
         rx: reduce ? 0.12 : Math.sin(t * 0.5) * 0.08 + 0.08,
-        scale: 1.0 * beat
+        scale: 1.4 * beat
       };
     }
     function applyPose(pose) {

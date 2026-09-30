@@ -113,6 +113,8 @@
       white-space: nowrap;
     }
     .nav-link:hover { color: var(--fg); }
+    .nav-link[aria-current] { position: relative; color: var(--fg); }
+    .nav-link[aria-current]::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 1.5px; border-radius: 1px; background: linear-gradient(90deg, #ff4d6d, #ffb703, #3ddc97, #3a86ff, #b517ff, #ff4d6d); background-size: 220% 100%; animation: navLogoRainbow 1400ms linear 120ms both; }
 
     @keyframes navLogoReveal {
       from { opacity: 0; clip-path: inset(0 100% 0 0); transform: translateY(4px); }
@@ -231,6 +233,30 @@
     .print-shortcut:focus-visible kbd { transform: translateY(-1px); }
     .back-shortcut:active kbd,
     .print-shortcut:active kbd { transform: translateY(0); }
+    /* Print button: every few seconds a rainbow comet runs once around its outline */
+    @property --print-glow-angle { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+    .print-shortcut::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      padding: 1.5px;
+      border-radius: inherit;
+      background: conic-gradient(from var(--print-glow-angle),
+        transparent 0 45%, #ff4d6d 62%, #ffb703 72%, #3ddc97 81%, #3a86ff 90%, #b517ff 100%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+      opacity: 0;
+      pointer-events: none;
+      animation: printGlow 7s linear 2.4s infinite;
+    }
+    @keyframes printGlow {
+      0%   { --print-glow-angle: 0deg; opacity: 0; }
+      4%   { opacity: 1; }
+      26%  { opacity: 1; }
+      32%  { --print-glow-angle: 400deg; opacity: 0; }
+      100% { --print-glow-angle: 400deg; opacity: 0; }
+    }
     .back-shortcut .action-label,
     .print-shortcut .action-label {
       display: inline-block;
@@ -1009,6 +1035,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+      .print-shortcut::before { animation: none; }
       .nav-logo,
       .eyebrow,
       .back-shortcut,
@@ -1039,6 +1066,7 @@
       <a href="/" class="nav-logo">Timur Prokopiev</a>
       <div class="nav-links" aria-label="Navigation">
         <a href="/" class="nav-link">Portfolio</a>
+        <a href="./" class="nav-link" aria-current="page">CV</a>
         <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
       </div>
     </div>

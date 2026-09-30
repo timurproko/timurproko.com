@@ -18,11 +18,15 @@
   --motion-hover: 220ms;
 }
 html.deck-starts-on-dark {
-  background: var(--fg);
+  background: #0d1117;
 }
 body.chrome-on-dark,
   html.deck-starts-on-dark body.chrome-boot {
-  background: var(--fg);
+  background: #0d1117;
+}
+/* ── Cover: steel scene view — grid, primitives and a camera frustum (cover3d.js) ── */
+.slide.hero.dark {
+  background: radial-gradient(circle at 50% 44%, #18212e 0%, #0f1520 48%, #0b0f16 100%);
 }
 .cover-heart {
   position: absolute;
@@ -41,18 +45,18 @@ body.chrome-on-dark,
   position: absolute;
   inset: 0;
   background:
-      radial-gradient(ellipse 42% 40% at 50% 49%, rgba(17,17,17,0.50), rgba(17,17,17,0.34) 54%, rgba(17,17,17,0) 78%),
-      linear-gradient(180deg, rgba(17,17,17,0.16), rgba(17,17,17,0.06) 46%, rgba(17,17,17,0.18));
+      radial-gradient(ellipse 44% 42% at 50% 50%, rgba(11,15,22,0.56), rgba(11,15,22,0.36) 54%, rgba(11,15,22,0) 78%),
+      linear-gradient(180deg, rgba(11,15,22,0.18), rgba(11,15,22,0.06) 46%, rgba(11,15,22,0.20));
 }
 .slide.hero .h-hero {
   background: linear-gradient(110deg,
       var(--bg) 0%,
       var(--bg) 34%,
-      #ff4d6d 42%,
-      #ffd166 48%,
-      #38d996 54%,
-      #4cc9f0 60%,
-      #b56cff 66%,
+      #7d8ca4 41%,
+      #b7c2d2 47%,
+      #e7ecf3 53%,
+      #9aa8bd 59%,
+      #6c7d96 66%,
       var(--bg) 74%,
       var(--bg) 100%);
   background-size: 340% 100%;
