@@ -273,3 +273,42 @@ html.preview-cover .cover { background-size: auto 100%; background-repeat: no-re
 .tracking-illo .station circle, .tracking-illo .feature-pt circle { fill: var(--accent); }
 
 .roomscale-illo .play-area { fill: var(--accent-dim); stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 6 4; }
+
+/* Zoomable images (main.js) — click to open full screen */
+img[data-zoom] { cursor: zoom-in; transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), filter 0.2s ease; }
+img[data-zoom]:hover { filter: brightness(1.04); }
+.photo-grid img[data-zoom]:hover { transform: scale(1.015); }
+img[data-zoom]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Headsets infographic: the frame previews the top; the lightbox scrolls through all of it */
+.infographic { position: relative; }
+.infographic img { object-position: top; }
+.zoom-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  translate: -50% 0;
+  padding: 7px 14px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 999px;
+  background: rgb(12 14 18 / 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: zoom-in;
+  transition: background-color 0.2s ease;
+}
+.infographic:hover .zoom-hint { background: var(--accent); }
+.lightbox.is-long {
+  width: min(1100px, 94vw);
+  max-height: 94vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #fff;
+}
+.lightbox.is-long img { width: 100%; max-width: none; max-height: none; }
