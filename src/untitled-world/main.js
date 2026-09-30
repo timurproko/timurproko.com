@@ -1,5 +1,6 @@
 import { setupCover } from '../case/cover.js';
 import { setupFooterYear } from '../case/footer-year.js';
+import { setupZoom } from '../case/lightbox.js';
 
 // Home page preview cover uses the title scene as its backdrop.
 setupCover('/untitled-world/assets/scene-balloon.webp');
@@ -155,30 +156,8 @@ document.querySelector('.film-play')?.addEventListener('click', event => {
   button.replaceWith(frame);
 });
 
-// Zoomable images open full screen in a lightbox. Click or Esc closes it.
-const lightbox = document.createElement('dialog');
-lightbox.className = 'lightbox';
-lightbox.addEventListener('click', () => lightbox.close());
-lightbox.addEventListener('close', () => lightbox.replaceChildren());
-document.body.append(lightbox);
-function openZoom(img) {
-  const full = document.createElement('img');
-  full.src = img.currentSrc || img.src;
-  full.alt = img.alt;
-  lightbox.replaceChildren(full);
-  lightbox.showModal();
-}
-document.querySelectorAll('img[data-zoom]').forEach(img => {
-  img.tabIndex = 0;
-  img.setAttribute('role', 'button');
-  img.setAttribute('aria-label', `Enlarge: ${img.alt}`);
-  img.addEventListener('click', () => openZoom(img));
-  img.addEventListener('keydown', event => {
-    if (event.key !== 'Enter' && event.key !== ' ') return;
-    event.preventDefault();
-    openZoom(img);
-  });
-});
+// Zoomable images open full screen and swipe through their group (case/lightbox.js).
+setupZoom();
 
 // Pinned sighting strip: a compact copy of the contact sheet that appears once the
 // sheet scrolls away, hides again after the last sighting, and marks the one in view.

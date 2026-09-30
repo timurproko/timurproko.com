@@ -1,3 +1,5 @@
+import { createLightbox, markLoading } from './lightbox.js';
+
 // Shared case-study gallery: renders every image/video in a case's images/
 // folder, ordered by filename (01, 02, 03 ...). No manifest — each page passes
 // the result of its own import.meta.glob (globs must be static per page).
@@ -26,6 +28,7 @@ export function renderGallery(modules, container, { pair = true } = {}) {
   }
 
   const lightbox = createLightbox();
+  const slides = items.map(item => ({ src: item.src, alt: item.caption, video: item.video }));
 
   // Progressive rows: one hero image, then a 50/50 pair (unless pair: false),
   // then everything else shares a single strip of smaller thumbnails.
@@ -61,7 +64,8 @@ export function renderGallery(modules, container, { pair = true } = {}) {
     button.className = 'shot-open';
     button.setAttribute('aria-label', item.caption ? `Enlarge: ${item.caption}` : 'Enlarge');
     button.append(media);
-    button.addEventListener('click', () => lightbox.open(item));
+    markLoading(button, media);
+    button.addEventListener('click', () => lightbox.open(slides, index));
     figure.append(button);
 
     if (item.caption) {
@@ -73,21 +77,3 @@ export function renderGallery(modules, container, { pair = true } = {}) {
   });
 }
 
-function createLightbox() {
-  const dialog = document.createElement('dialog');
-  dialog.className = 'lightbox';
-  dialog.addEventListener('click', () => dialog.close());
-  dialog.addEventListener('close', () => dialog.replaceChildren());
-  document.body.append(dialog);
-
-  return {
-    open(item) {
-      const media = item.video ? document.createElement('video') : document.createElement('img');
-      media.src = item.src;
-      if (item.video) Object.assign(media, { autoplay: true, muted: true, loop: true, playsInline: true, controls: true });
-      else media.alt = item.caption || '';
-      dialog.replaceChildren(media);
-      dialog.showModal();
-    },
-  };
-}

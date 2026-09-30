@@ -1,6 +1,7 @@
 import { setupCover } from '../case/cover.js';
 import { setupFooterYear } from '../case/footer-year.js';
 import { setupStatReveal } from '../case/stat-reveal.js';
+import { setupZoom } from '../case/lightbox.js';
 
 // Home page preview cover uses the deck's title artwork as its backdrop.
 setupCover('/vr-for-everybody/assets/hero.webp');
@@ -20,36 +21,11 @@ if (!reducedMotion && 'IntersectionObserver' in window) {
   videos.forEach(video => observer.observe(video));
 }
 
-// Zoomable images ([data-zoom]) open full screen in a lightbox. data-zoom may name a
-// larger file to show instead; data-zoom-long marks a tall image that opens at full
-// width and scrolls, so the whole thing can be read. Click or Esc closes it.
-const lightbox = document.createElement('dialog');
-lightbox.className = 'lightbox';
-lightbox.addEventListener('click', () => lightbox.close());
-lightbox.addEventListener('close', () => lightbox.replaceChildren());
-document.body.append(lightbox);
-function openZoom(img) {
-  const full = document.createElement('img');
-  full.src = img.dataset.zoom || img.currentSrc || img.src;
-  full.alt = img.alt;
-  lightbox.classList.toggle('is-long', img.hasAttribute('data-zoom-long'));
-  lightbox.replaceChildren(full);
-  lightbox.showModal();
-  lightbox.scrollTop = 0;
-}
-document.querySelectorAll('img[data-zoom]').forEach(img => {
-  img.tabIndex = 0;
-  img.setAttribute('role', 'button');
-  img.setAttribute('aria-label', `Enlarge: ${img.alt}`);
-  img.addEventListener('click', () => openZoom(img));
-  img.addEventListener('keydown', event => {
-    if (event.key !== 'Enter' && event.key !== ' ') return;
-    event.preventDefault();
-    openZoom(img);
-  });
-});
+// Zoomable images ([data-zoom]) open full screen and swipe through their photo grid
+// (case/lightbox.js). The infographic's hint opens it too.
+setupZoom();
 document.querySelector('.zoom-hint')?.addEventListener('click', event => {
-  openZoom(event.currentTarget.parentElement.querySelector('img[data-zoom]'));
+  event.currentTarget.parentElement.querySelector('img[data-zoom]').click();
 });
 
 // Chapter artwork: fades up the first time its chapter scrolls into view, then

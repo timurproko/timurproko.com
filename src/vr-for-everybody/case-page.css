@@ -15,7 +15,15 @@ html.preview-cover .cover { background-size: auto 100%; background-repeat: no-re
   border-radius: 20px;
   background: radial-gradient(ellipse at 50% 60%, oklch(30% 0.05 280), oklch(14% 0.02 265) 70%);
 }
-.hero-art img { display: block; width: 100%; max-height: 520px; object-fit: contain; }
+.hero-art img {
+  display: block;
+  width: 100%;
+  max-height: 520px;
+  object-fit: contain;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Same gentle zoom on hover as the gallery heroes on the other cases */
+.hero-art:hover img { transform: scale(1.015); }
 
 /* Chapter index — eight jump cards; the last one states the thesis */
 .chapter-index { border-top: 0; }

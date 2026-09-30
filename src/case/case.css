@@ -289,8 +289,44 @@ h1 {
 .gallery-wide-hero .gallery-row:first-child .shot-open :is(img, video) { aspect-ratio: 4005 / 1558; object-fit: cover; }
 .gallery-strip .shot-open img,
 .gallery-strip .shot-open video { aspect-ratio: 16 / 9; object-fit: cover; }
+/* Until its media loads, a tile holds a 16:9 slot for the rainbow loader */
+.shot-open.is-media-loading { aspect-ratio: 16 / 9; }
 .shot-open:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .shot figcaption { margin-top: 8px; padding: 0 2px; color: var(--muted); font-size: 13.5px; }
+/* Rainbow loading sweep — the landing cards' loader, for media that is still loading
+   (lightbox.js adds .is-media-loading). Images carry it as a background; other hosts as an overlay. */
+:root {
+  --rainbow-load: linear-gradient(115deg,
+    oklch(68% 0.24 25) 0%, oklch(78% 0.18 80) 15%, oklch(76% 0.2 145) 30%,
+    oklch(70% 0.22 220) 48%, oklch(70% 0.24 300) 66%, oklch(76% 0.22 350) 82%,
+    oklch(68% 0.24 25) 100%);
+}
+/* Sweeps across the oversized gradient and back, so the angled bands never show a tiling seam */
+@keyframes rainbowLoad {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
+img.is-media-loading {
+  background: var(--rainbow-load);
+  background-size: 260% 100%;
+  opacity: 0.82;
+  animation: rainbowLoad 1.4s ease-in-out infinite alternate;
+}
+:not(img).is-media-loading { position: relative; }
+:not(img).is-media-loading::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: var(--rainbow-load);
+  background-size: 260% 100%;
+  opacity: 0.82;
+  animation: rainbowLoad 1.4s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+/* Lightbox (lightbox.js): one item at a time; swipe, arrow keys or side buttons move through the group */
 .lightbox {
   max-width: 94vw;
   max-height: 94vh;
@@ -299,10 +335,72 @@ h1 {
   border: 0;
   border-radius: 12px;
   background: transparent;
+  overflow: visible;
   cursor: zoom-out;
+  touch-action: pan-y;
+  user-select: none;
 }
+.lightbox:focus { outline: none; }
 .lightbox::backdrop { background: oklch(14% 0.01 250 / 0.86); }
-.lightbox img, .lightbox video { display: block; max-width: 94vw; max-height: 94vh; object-fit: contain; }
+.lightbox-stage { border-radius: 12px; transition: translate 320ms cubic-bezier(0.22, 1, 0.36, 1); }
+.lightbox-stage.is-dragging { transition: none; }
+.lightbox-stage.is-entering { animation: lightboxEnter 360ms cubic-bezier(0.22, 1, 0.36, 1); }
+@keyframes lightboxEnter { from { opacity: 0; translate: calc(var(--enter, 0) * 48px) 0; } }
+.lightbox-stage.is-media-loading { min-width: min(720px, 86vw); aspect-ratio: 16 / 10; overflow: hidden; }
+.lightbox-stage.is-media-loading > * { opacity: 0; }
+.lightbox img, .lightbox video {
+  display: block;
+  max-width: 94vw;
+  max-height: 94vh;
+  object-fit: contain;
+  border-radius: 12px;
+  -webkit-user-drag: none;
+}
+.lightbox-nav {
+  position: fixed;
+  top: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  translate: 0 -50%;
+  border: 1px solid oklch(100% 0 0 / 0.16);
+  border-radius: 50%;
+  background: oklch(14% 0.01 250 / 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font: 500 18px/1 var(--font-mono);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.lightbox-nav:hover { background: oklch(30% 0.01 250 / 0.8); }
+.lightbox-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.lightbox-prev { left: 16px; }
+.lightbox-next { right: 16px; }
+.lightbox-count {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  translate: -50% 0;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: oklch(14% 0.01 250 / 0.6);
+  color: #fff;
+  font: 500 12px/1.2 var(--font-mono);
+  letter-spacing: 0.06em;
+  pointer-events: none;
+}
+.lightbox-count:empty, .lightbox.is-single .lightbox-nav, .lightbox.is-long .lightbox-nav { display: none; }
+/* Touch screens swipe instead — keep the buttons out of the way of the photo */
+@media (hover: none) {
+  .lightbox-nav { top: auto; bottom: 10px; translate: none; width: 40px; height: 40px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  img.is-media-loading, :not(img).is-media-loading::before { animation: none; }
+  .lightbox-stage, .lightbox-stage.is-entering { transition: none; animation: none; }
+}
 
 /* Text sections */
 .pair {
