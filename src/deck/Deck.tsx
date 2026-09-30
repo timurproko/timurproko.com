@@ -47,8 +47,8 @@ export function Deck({ config, children }: { config: DeckConfig; children: React
 
   return (
     <>
-      <a className="deck-back" id="deckBack" href="../" aria-label="Back to TimurProko.com">
-        <span className="nav-action-label">TimurProko.com</span>
+      <a className="deck-back" id="deckBack" href="../" aria-label="Back to portfolio">
+        <span className="nav-action-label">Back</span>
       </a>
       <div className="deck-tag is-hidden" id="deckTag">{config.tag}</div>
       <div className="deck-counter" id="deckCounter">

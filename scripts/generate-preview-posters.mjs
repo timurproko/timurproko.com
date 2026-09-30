@@ -24,6 +24,8 @@ const PRESENTATIONS = [
   { slug: 'touch-my-heart', width: 1920, height: 1080 },
   { slug: 'avatars', width: 1920, height: 1080 },
   { slug: 'corel-for-mac', width: 1920, height: 1080 },
+  { slug: 'starkit', width: 1920, height: 1080 },
+  { slug: 'a1', width: 1920, height: 1080 },
   { slug: 'cv', width: 900, height: 900 },
 ];
 

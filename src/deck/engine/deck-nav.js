@@ -144,9 +144,9 @@ export function initDeckNav(config) {
     if (db) {
       var isCover = i === 0;
       var dbLabel = db.querySelector('.nav-action-label');
-      if (dbLabel) dbLabel.textContent = isCover ? 'TimurProko.com' : 'Home';
-      else db.textContent = isCover ? 'TimurProko.com' : 'Home';
-      db.setAttribute('aria-label', isCover ? 'Back to TimurProko.com' : 'Go to first slide');
+      if (dbLabel) dbLabel.textContent = isCover ? 'Back' : 'Home';
+      else db.textContent = isCover ? 'Back' : 'Home';
+      db.setAttribute('aria-label', isCover ? 'Back to portfolio' : 'Go to first slide');
       db.setAttribute('href', isCover ? '../' : '#cover');
     }
 

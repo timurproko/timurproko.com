@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f8f8f9" />
+  <meta name="description" content="A Unity XR application for Sony's Spatial Reality Display — glasses-free stereoscopic 3D, touch-free gesture control, and cloud-hosted content loaded at runtime." />
+  <!-- social-preview:start -->
+  <link rel="canonical" href="https://timurproko.com/starkit/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Timur Prokopiev" />
+  <meta property="og:title" content="STARKIT SRD — Touch-free Experience" />
+  <meta property="og:description" content="A Unity XR application for Sony's Spatial Reality Display — glasses-free stereoscopic 3D, touch-free gesture control, and cloud-hosted content loaded at runtime." />
+  <meta property="og:url" content="https://timurproko.com/starkit/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="STARKIT SRD — Touch-free Experience" />
+  <meta name="twitter:description" content="A Unity XR application for Sony's Spatial Reality Display — glasses-free stereoscopic 3D, touch-free gesture control, and cloud-hosted content loaded at runtime." />
+  <!-- social-preview:end -->
+  <title>STARKIT SRD — Touch-free Experience</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    // Home page cards load this page with ?preview=cover — show only the cover.
+    if (new URLSearchParams(location.search).get('preview') === 'cover') {
+      document.documentElement.classList.add('preview-cover');
+    }
+  </script>
+  <link rel="stylesheet" href="../case/case.css" />
+</head>
+<body>
+  <div class="cover" aria-hidden="true">
+    <p class="cover-title">STARKIT<br>SRD</p>
+  </div>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Timur Prokopiev</a>
+      <div class="nav-links" aria-label="Navigation">
+        <a href="/" class="nav-link">Portfolio</a>
+        <a href="/cv/" class="nav-link">CV</a>
+        <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <article>
+      <a class="back-shortcut" href="/" aria-label="Back to portfolio"><kbd>←</kbd> <span class="action-label">Back</span></a>
+      <a class="link-shortcut" href="https://www.ameria.de/ameria-x-sony-starkit-srd" target="_blank" rel="noopener noreferrer" aria-label="STARKIT SRD website (opens in a new tab)"><kbd>↗</kbd> <span class="action-label">Website</span></a>
+
+      <header class="page-head reveal" style="animation-delay: 80ms">
+        <div class="head">
+          <h1>STARKIT SRD</h1>
+        </div>
+        <p class="lede">
+          An XR application for Sony's Spatial Reality Display that shows cloud-hosted 3D content
+          in glasses-free 3D, controlled with touch-free hand gestures.
+        </p>
+        <ul class="tags" aria-label="Focus areas">
+          <li><span class="tag">Unity</span></li>
+          <li><span class="tag">Sony Spatial Reality Display</span></li>
+          <li><span class="tag">Touch-free interaction</span></li>
+          <li><span class="tag">Spatial UI</span></li>
+          <li><span class="tag">Real-time 3D</span></li>
+        </ul>
+      </header>
+
+      <section id="gallery" class="gallery reveal" style="animation-delay: 180ms" aria-label="Project gallery"></section>
+
+      <div class="pair first">
+        <section>
+          <h2>Overview</h2>
+          <p>
+            STARKIT SRD combines Sony's Spatial Reality Display with AMERIA's STARKIT camera mount
+            and touch-free interaction. People browse and turn 3D products that float inside the
+            display, with no glasses and no touchscreen.
+          </p>
+          <p>
+            It's built for retail floors, showrooms and trade fairs. Brands bring their own 3D products
+            with variants, logo, QR codes and video, and publish them straight to the display — no
+            headset, no touchscreen, just a product visitors can turn with their hands.
+          </p>
+        </section>
+        <section>
+          <h2>Challenge</h2>
+          <p>
+            Mid-air hand input has no touch, no click and no hover — so every action needs large,
+            forgiving targets and clear visual feedback, or it simply feels broken.
+          </p>
+          <p>
+            The stereoscopic display adds depth: UI and products appear in front of and behind the
+            glass, and the viewer's own hand moves through that space. Controls have to stay readable
+            and reachable in depth, for first-time visitors who just walk up and try it.
+          </p>
+        </section>
+      </div>
+
+      <section class="block">
+        <h2>Process</h2>
+        <ol class="steps">
+          <li><div><strong>Content from the cloud.</strong> Models are loaded at runtime from cloud storage, so a brand can swap products and variants without a new build.</div></li>
+          <li><div><strong>Each model set up for the display.</strong> Scale, default orientation, rotation limits and PBR materials — base, normal, metallic, roughness, AO — are set per model so it sits right in the 3D volume.</div></li>
+          <li><div><strong>A spatial UI control library.</strong> Buttons, sliders and panels built for hand input, driven by physics so they press, push back and respond like real objects in the display's depth.</div></li>
+          <li><div><strong>Tuned for glasses-free stereo.</strong> Rendering optimized for the display's stereoscopic output, with touch-free hand gestures to browse and turn products.</div></li>
+        </ol>
+      </section>
+
+      <section class="block">
+        <h2>Recognition</h2>
+        <ul class="wins">
+          <li class="win"><span class="win-index">/01</span><span class="win-title">Nimbus Award</span><span class="win-desc">Best Video &amp; Display Innovation, plus Best in Show.</span></li>
+          <li class="win"><span class="win-index">/02</span><span class="win-title">Sony Europe</span><span class="win-desc">Announced as an end-to-end, gesture-controlled 3D display system.</span></li>
+          <li class="win"><span class="win-index">/03</span><span class="win-title">Hannover Messe</span><span class="win-desc">Shown live at the WISKA booth.</span></li>
+        </ul>
+      </section>
+
+      <a class="next" href="/touch-my-heart/">
+        <div>
+          <p class="label">Next project</p>
+          <p class="name">Touch My Heart</p>
+          <p class="desc">An XR journey inside the human heart on Magic Leap <span>→</span></p>
+        </div>
+        <div class="thumb">
+          <img src="/assets/previews/touch-my-heart.jpg" alt="" loading="lazy" />
+        </div>
+      </a>
+    </article>
+
+    <footer><span class="footer-year" data-footer-year aria-label="Current year">0000</span></footer>
+  </main>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
