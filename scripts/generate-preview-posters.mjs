@@ -26,6 +26,7 @@ const PRESENTATIONS = [
   { slug: 'corel-for-mac', width: 1920, height: 1080 },
   { slug: 'starkit', width: 1920, height: 1080 },
   { slug: 'xr-prototypes', width: 1920, height: 1080 },
+  { slug: 'vr-for-everybody', width: 1920, height: 1080 },
   { slug: 'a1', width: 1920, height: 1080 },
   { slug: 'cv', width: 900, height: 900 },
 ];

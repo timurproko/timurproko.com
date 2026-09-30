@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f8f8f9" />
+  <meta name="description" content="Research of the VR field — 64 years of history, AR/VR/MR theory, headsets and tracking, XR software, education, enterprise use and where the industry is heading." />
+  <!-- social-preview:start -->
+  <link rel="canonical" href="https://timurproko.com/vr-for-everybody/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Timur Prokopiev" />
+  <meta property="og:title" content="VR for Everybody" />
+  <meta property="og:description" content="Research of the VR field — 64 years of history, AR/VR/MR theory, headsets and tracking, XR software, education, enterprise use and where the industry is heading." />
+  <meta property="og:url" content="https://timurproko.com/vr-for-everybody/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="VR for Everybody" />
+  <meta name="twitter:description" content="Research of the VR field — 64 years of history, AR/VR/MR theory, headsets and tracking, XR software, education, enterprise use and where the industry is heading." />
+  <!-- social-preview:end -->
+  <title>VR for Everybody</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    // Home page cards load this page with ?preview=cover — show only the cover.
+    if (new URLSearchParams(location.search).get('preview') === 'cover') {
+      document.documentElement.classList.add('preview-cover');
+    }
+  </script>
+  <link rel="stylesheet" href="../case/case.css" />
+  <link rel="stylesheet" href="./case-page.css" />
+</head>
+<body>
+  <div class="cover" aria-hidden="true">
+    <p class="cover-title">VR for<br>Everybody</p>
+  </div>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Timur Prokopiev</a>
+      <div class="nav-links" aria-label="Navigation">
+        <a href="/" class="nav-link">Portfolio</a>
+        <a href="/cv/" class="nav-link">CV</a>
+        <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <article>
+      <a class="back-shortcut" href="/" aria-label="Back to portfolio"><kbd>←</kbd> <span class="action-label">Back</span></a>
+
+      <nav class="chapter-nav" id="chapter-nav" aria-label="Chapters">
+        <a href="#history"><span class="chapter-nav-title">History</span></a>
+        <a href="#theory"><span class="chapter-nav-title">Theory</span></a>
+        <a href="#hardware"><span class="chapter-nav-title">Hardware</span></a>
+        <a href="#software"><span class="chapter-nav-title">Software</span></a>
+        <a href="#education"><span class="chapter-nav-title">Education</span></a>
+        <a href="#enterprise"><span class="chapter-nav-title">Enterprise</span></a>
+        <a href="#future"><span class="chapter-nav-title">Future</span></a>
+      </nav>
+
+      <header class="page-head reveal" style="animation-delay: 80ms">
+        <div class="head">
+          <h1>VR for Everybody</h1>
+        </div>
+        <p class="lede">
+          A research of the virtual reality field, shared as a talk for designers and developers
+          stepping into XR — where VR came from, how it works, what to build it with, and where it
+          is heading. The short version: VR is very fun to use, but very hard to develop.
+        </p>
+        <ul class="tags" aria-label="Focus areas">
+          <li><span class="tag">Field Research</span></li>
+          <li><span class="tag">VR / AR / MR</span></li>
+          <li><span class="tag">Hardware &amp; Tracking</span></li>
+          <li><span class="tag">XR Tooling</span></li>
+          <li><span class="tag">Enterprise XR</span></li>
+        </ul>
+      </header>
+
+      <section class="hero-art reveal" style="animation-delay: 180ms" aria-label="Cover artwork">
+        <img src="/vr-for-everybody/assets/hero.webp" alt="Iridescent 3D bust wearing a VR headset" decoding="async" />
+      </section>
+
+      <section class="block first chapter-index" aria-label="Chapters">
+        <ul class="wins cols-4">
+          <li class="win"><a class="win-link" href="#history"><span class="win-index">/01</span><span class="win-title">History</span><span class="win-desc">64 years from Sensorama to standalone headsets.</span></a></li>
+          <li class="win"><a class="win-link" href="#theory"><span class="win-index">/02</span><span class="win-title">Theory</span><span class="win-desc">AR, VR, MR, XR — and why VR is so demanding.</span></a></li>
+          <li class="win"><a class="win-link" href="#hardware"><span class="win-index">/03</span><span class="win-title">Hardware</span><span class="win-desc">Headsets, tracking, controllers and hands.</span></a></li>
+          <li class="win"><a class="win-link" href="#software"><span class="win-index">/04</span><span class="win-title">Software</span><span class="win-desc">Stores, creation tools, DCCs and engines.</span></a></li>
+          <li class="win"><a class="win-link" href="#education"><span class="win-index">/05</span><span class="win-title">Education</span><span class="win-desc">Design roles, courses and experiences to try.</span></a></li>
+          <li class="win"><a class="win-link" href="#enterprise"><span class="win-index">/06</span><span class="win-title">Enterprise</span><span class="win-desc">Industries, digital twins and business headsets.</span></a></li>
+          <li class="win"><a class="win-link" href="#future"><span class="win-index">/07</span><span class="win-title">Future</span><span class="win-desc">Mixed reality and the XR adoption lifecycle.</span></a></li>
+          <li class="win win-thesis"><span class="win-index">/TL;DR</span><span class="win-title">Fun to use, hard to develop</span><span class="win-desc">Every chapter comes back to this tension.</span></li>
+        </ul>
+      </section>
+
+      <!-- 01 History -->
+      <header class="lens chapter" id="history">
+        <div>
+          <p class="eyebrow">Chapter 01</p>
+          <h2 class="lens-title">History</h2>
+          <p class="lens-sub">VR is older than most people think — the first immersive machine predates the personal computer by two decades.</p>
+        </div>
+        <img class="chapter-art" src="/vr-for-everybody/assets/art-history.webp" alt="" loading="lazy" decoding="async" />
+      </header>
+
+      <section class="block">
+        <div class="stat">
+          <div>
+            <p class="stat-big" data-count>64</p>
+            <p class="stat-caption">years of development, from Sensorama in 1956 to Meta Quest 2 in 2020.</p>
+          </div>
+          <ul class="points">
+            <li><span><strong>1956</strong> — the first VR machine, a booth for all the senses</span></li>
+            <li><span><strong>1968</strong> — the first head-mounted display</span></li>
+            <li><span><strong>2014</strong> — Facebook buys Oculus and VR gains momentum</span></li>
+            <li><span><strong>2020</strong> — standalone VR goes mainstream with Quest 2</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Milestones</h2>
+        <ol class="stages timeline">
+          <li class="stage"><span class="stage-index">1956</span><div class="stage-text"><span class="stage-title">Sensorama</span><span class="stage-desc">Cinematographer Morton Heilig's booth for up to four people combined full-colour 3D video, audio, vibration, smell and wind. Patented in 1962.</span></div></li>
+          <li class="stage"><span class="stage-index">1968</span><div class="stage-text"><span class="stage-title">The Sword of Damocles</span><span class="stage-desc">Ivan Sutherland and Bob Sproull's first VR head-mounted display. Wire-frame shapes changed perspective with head tracking — but it hung from the ceiling and never left the lab.</span></div></li>
+          <li class="stage"><span class="stage-index">1985</span><div class="stage-text"><span class="stage-title">VPL Research</span><span class="stage-desc">Jaron Lanier and Thomas Zimmerman founded the first company to sell VR goggles and gloves — DataGlove, EyePhone HMD, AudioSphere. Its patents went to Sun Microsystems in 1999.</span></div></li>
+          <li class="stage"><span class="stage-index">1990</span><div class="stage-text"><span class="stage-title">NASA VIEW</span><span class="stage-desc">The Virtual Interface Environment Workstation: a stereoscopic HMD showing a computer-generated world or a remote camera feed, with 3D audio by Crystal River Engineering (1989).</span></div></li>
+          <li class="stage"><span class="stage-index">1995</span><div class="stage-text"><span class="stage-title">Nintendo Virtual Boy</span><span class="stage-desc">The first portable console with 3D graphics — and a commercial failure: monochrome, few games, uncomfortable to use.</span></div></li>
+          <li class="stage"><span class="stage-index">2012</span><div class="stage-text"><span class="stage-title">Oculus Rift Kickstarter</span><span class="stage-desc">Palmer Luckey's campaign raised $2.4 million and restarted consumer VR.</span></div></li>
+          <li class="stage is-here"><span class="stage-index">2014</span><div class="stage-text"><span class="stage-title">Facebook buys Oculus for $2 billion</span><span class="stage-desc">The defining moment in VR's history — after it, the industry gained momentum rapidly.</span></div><span class="stage-tools"><span class="chip">Turning point</span></span></li>
+        </ol>
+      </section>
+
+      <section class="block">
+        <div class="photo-grid cols-3">
+          <figure><img src="/vr-for-everybody/assets/sensorama-patent.webp" alt="Sensorama advertisement and patent drawing" loading="lazy" decoding="async" /><figcaption>1956 · Sensorama</figcaption></figure>
+          <figure><img src="/vr-for-everybody/assets/sword-of-damocles.webp" alt="Ivan Sutherland's head-mounted display" loading="lazy" decoding="async" /><figcaption>1968 · The Sword of Damocles</figcaption></figure>
+          <figure><img src="/vr-for-everybody/assets/vpl-research.webp" alt="VPL Research EyePhone and DataGlove in use" loading="lazy" decoding="async" /><figcaption>1985 · VPL Research</figcaption></figure>
+          <figure><img src="/vr-for-everybody/assets/nasa-view-gloves.webp" alt="NASA VIEW headset and data gloves" loading="lazy" decoding="async" /><figcaption>1990 · NASA VIEW</figcaption></figure>
+          <figure><img src="/vr-for-everybody/assets/virtual-boy.webp" alt="Nintendo Virtual Boy box" loading="lazy" decoding="async" /><figcaption>1995 · Nintendo Virtual Boy</figcaption></figure>
+          <figure><img src="/vr-for-everybody/assets/oculus-rift-dk.webp" alt="A developer wearing an early Oculus Rift" loading="lazy" decoding="async" /><figcaption>2012 · Oculus Rift</figcaption></figure>
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Headsets throughout history</p>
+          <h2>A crowded family tree</h2>
+          <p>
+            Dozens of headsets shipped between the Rift DK1 and today — plus a long list of
+            yet-to-be-released devices. The pace only picked up after 2014.
+          </p>
+        </div>
+        <div class="frame frame-light infographic">
+          <img src="/vr-for-everybody/assets/headsets-history.webp" alt="Infographic of VR headsets released over time" loading="lazy" decoding="async" />
+        </div>
+      </section>
+
+      <!-- 02 Theory -->
+      <header class="lens chapter" id="theory">
+        <div>
+          <p class="eyebrow">Chapter 02</p>
+          <h2 class="lens-title">Theory</h2>
+          <p class="lens-sub">What are AR, VR, MR and XR — and why does VR ask so much of hardware, software and people?</p>
+        </div>
+        <img class="chapter-art" src="/vr-for-everybody/assets/art-theory.webp" alt="" loading="lazy" decoding="async" />
+      </header>
+
+      <section class="block">
+        <h2>AR vs. VR</h2>
+        <div class="cols2">
+          <div>
+            <h3>Virtual reality</h3>
+            <ul class="points">
+              <li>Computer-generated virtual environment</li>
+              <li>No view of the real world</li>
+              <li>R = synthetic world</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Augmented reality</h3>
+            <ul class="points">
+              <li>Virtual world merged with the physical one</li>
+              <li>Real + virtual, a composite view</li>
+              <li>R = real world</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>The reality–virtuality continuum</h2>
+        <p>AR and VR are two ends of one spectrum. Everything in between — including augmented virtuality — is mixed reality.</p>
+        <div class="spectrum" role="img" aria-label="Spectrum from physical world to digital world: augmented reality, augmented virtuality, virtual reality; mixed reality spans the middle">
+          <div class="spectrum-ends"><span>Physical world</span><span>Digital world</span></div>
+          <div class="spectrum-bar"></div>
+          <div class="spectrum-stops">
+            <div><img src="/vr-for-everybody/assets/hololens-user.webp" alt="" loading="lazy" /><span>Augmented reality</span></div>
+            <div><img src="/vr-for-everybody/assets/room-scale.webp" alt="" loading="lazy" /><span>Augmented virtuality</span></div>
+            <div><img src="/vr-for-everybody/assets/quest-2.webp" alt="" loading="lazy" /><span>Virtual reality</span></div>
+          </div>
+          <div class="spectrum-mr"><span>Mixed reality spectrum</span></div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Terms</h2>
+        <ul class="wins cols-4">
+          <li class="win"><span class="win-index">VR</span><span class="win-title">Virtual Reality</span><span class="win-desc">A computer-generated virtual world.</span></li>
+          <li class="win"><span class="win-index">AR</span><span class="win-title">Augmented Reality</span><span class="win-desc">An enhanced physical world.</span></li>
+          <li class="win"><span class="win-index">MR</span><span class="win-title">Mixed Reality</span><span class="win-desc">The spectrum that includes AR and VR.</span></li>
+          <li class="win"><span class="win-index">XR</span><span class="win-title">Extended Reality</span><span class="win-desc">X is a wildcard for A, V or M.</span></li>
+        </ul>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Passthrough</p>
+          <h2>Where the worlds meet</h2>
+          <p>
+            A headset's passthrough view blends the room with virtual content — the moment VR
+            starts sliding along the spectrum toward mixed reality.
+          </p>
+        </div>
+        <div class="frame">
+          <video src="/vr-for-everybody/assets/vr-passthrough.mp4" poster="/vr-for-everybody/assets/vr-passthrough.webp" muted loop playsinline controls preload="none" aria-label="Passthrough view from a VR headset in ShapesXR"></video>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>VR has extreme requirements</h2>
+        <p>If 3D is challenging, VR is even more so — every part of the pipeline is pushed at once.</p>
+        <ul class="wins cols-4">
+          <li class="win"><span class="win-index">/01</span><span class="win-title">Visual quality</span><span class="win-desc">Stereoscopic view doubles render time. Get it wrong and people get motion sick.</span></li>
+          <li class="win"><span class="win-index">/02</span><span class="win-title">Sound quality</span><span class="win-desc">Spatial sound is part of presence, not an extra.</span></li>
+          <li class="win"><span class="win-index">/03</span><span class="win-title">Real-time calculations</span><span class="win-desc">Movement synchronization and content optimization — baked textures and lighting.</span></li>
+          <li class="win"><span class="win-index">/04</span><span class="win-title">Intuitive interactions</span><span class="win-desc">Spatial design for controllers and hand tracking.</span></li>
+        </ul>
+      </section>
+
+      <section class="block">
+        <h2>Main problems with VR</h2>
+        <ul class="wins cols-5">
+          <li class="win"><span class="win-index">/01</span><span class="win-title">Field of view</span><span class="win-desc">Still feels like looking through a tube — it needs to grow.</span></li>
+          <li class="win"><span class="win-index">/02</span><span class="win-title">Controllers</span><span class="win-desc">Hand tracking isn't ideal yet and struggles with complex interactions.</span></li>
+          <li class="win"><span class="win-index">/03</span><span class="win-title">Health</span><span class="win-desc">Headaches, motion sickness and effects on vision.</span></li>
+          <li class="win"><span class="win-index">/04</span><span class="win-title">Visual quality</span><span class="win-desc">Getting better, but not for long sessions — 30 minutes at most.</span></li>
+          <li class="win"><span class="win-index">/05</span><span class="win-title">Degrees of freedom</span><span class="win-desc">Movement is constrained. The future is MR with a VR option.</span></li>
+        </ul>
+      </section>
+
+      <!-- 03 Hardware -->
+      <header class="lens chapter" id="hardware">
+        <div>
+          <p class="eyebrow">Chapter 03</p>
+          <h2 class="lens-title">Hardware</h2>
+          <p class="lens-sub">Headsets differ by platform and price, and everything they do depends on tracking — of the head, the body, the face and the hands.</p>
+        </div>
+        <img class="chapter-art" src="/vr-for-everybody/assets/art-hardware.webp" alt="" loading="lazy" decoding="async" />
+      </header>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Anatomy of a headset</p>
+          <h2>Main features, on Quest 2</h2>
+          <ul class="points specs">
+            <li><span><strong>Field of view</strong> 97° horizontal, 93° vertical</span></li>
+            <li><span><strong>Resolution</strong> 1832 × 1920 per eye</span></li>
+            <li><span><strong>Refresh rate</strong> 120 Hz</span></li>
+            <li><span><strong>Degrees of freedom</strong> 6DoF inside-out, via 4 integrated cameras</span></li>
+            <li><span><strong>Input</strong> hand tracking and two 6DoF Oculus Touch controllers</span></li>
+          </ul>
+          <p class="block-note">Compare any headset at <a href="https://vr-compare.com" target="_blank" rel="noopener noreferrer">vr-compare.com</a>.</p>
+        </div>
+        <div class="frame">
+          <img src="/vr-for-everybody/assets/headsets-collection.webp" alt="A collection of VR headsets from cardboard viewers to the Oculus Rift" loading="lazy" decoding="async" />
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Headset types by platform</h2>
+        <ul class="wins cols-4 product-cards">
+          <li class="win"><img src="/vr-for-everybody/assets/gear-vr.webp" alt="" loading="lazy" /><span class="win-index">Mobile</span><span class="win-title">Samsung Gear VR</span><span class="win-desc">Requires a smartphone.</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/quest-2.webp" alt="" loading="lazy" /><span class="win-index">Standalone</span><span class="win-title">Quest 2, Pico Neo 3</span><span class="win-desc">Can also connect to a PC with a cable or software.</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/rift-s.webp" alt="" loading="lazy" /><span class="win-index">PC</span><span class="win-title">Oculus Rift, Pimax, HTC Vive</span><span class="win-desc">Requires a PC.</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/psvr2.webp" alt="" loading="lazy" /><span class="win-index">Console</span><span class="win-title">PlayStation VR</span><span class="win-desc">Requires a PlayStation console.</span></li>
+        </ul>
+      </section>
+
+      <section class="block">
+        <h2>Headset types by budget</h2>
+        <ul class="wins cols-4 product-cards">
+          <li class="win"><img src="/vr-for-everybody/assets/budget-cardboard.webp" alt="" loading="lazy" /><span class="win-index">Experimental</span><span class="win-title price">$10</span><span class="win-desc">A cardboard viewer. Requires a smartphone.</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/budget-gear-vr.webp" alt="" loading="lazy" /><span class="win-index">Budget</span><span class="win-title price">$70</span><span class="win-desc">Requires a smartphone.</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/budget-quest-2.webp" alt="" loading="lazy" /><span class="win-index">Mid range</span><span class="win-title price">$600</span><span class="win-desc">Standalone; can connect to a PC.</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/budget-varjo.webp" alt="" loading="lazy" /><span class="win-index">High end</span><span class="win-title price">$6,495</span><span class="win-desc">Requires a high-end desktop PC or console.</span></li>
+        </ul>
+      </section>
+
+      <section class="block">
+        <h2>Tracking</h2>
+        <p>Degrees of freedom describe how much of your movement a headset follows. 3DoF tracks only rotation; 6DoF adds position, so you can walk around a room-scale play area.</p>
+        <div class="diagrams">
+          <figure class="frame frame-light">
+            <div class="switcher" aria-label="Degrees of freedom">
+              <input type="radio" name="dof-type" id="dof-3" checked />
+              <input type="radio" name="dof-type" id="dof-6" />
+              <div class="switcher-panels">
+              <svg class="illo tracking-illo dof-illo" viewBox="0 0 400 300" role="img" aria-label="3DoF: the headset follows only how your head turns — yaw, pitch and roll">
+                <defs><marker id="dof-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="dof-tip" d="M0 0 L10 5 L0 10 Z" /></marker></defs>
+                <g class="room"><path class="wall" d="M60 190 L200 120 L200 20 L60 90 Z" /><path class="wall wall-right" d="M200 120 L340 190 L340 90 L200 20 Z" /><path class="floor" d="M60 190 L200 120 L340 190 L200 260 Z" /></g>
+                
+                <g class="person"><ellipse class="shadow" cx="200" cy="214" rx="22" ry="7" /><path class="body" d="M186 140 Q200 132 214 140 L216 184 L184 184 Z" /><line class="leg" x1="194" y1="184" x2="193" y2="212" /><line class="leg" x1="206" y1="184" x2="207" y2="212" /><circle class="head" cx="200" cy="120" r="13" /><rect class="headset" x="187" y="112" width="26" height="12" rx="4" /></g>
+                <g class="dof-turn">
+                  <path transform="translate(200 98)" d="M0 -7 A30 7 0 1 1 -30 0" marker-end="url(#dof-arrow)" />
+                  <path transform="translate(232 124) rotate(-30)" d="M0 -18 A7 18 0 1 1 -7 0" marker-end="url(#dof-arrow)" />
+                  <path transform="translate(168 124) rotate(30)" d="M0 -18 A7 18 0 1 1 -7 0" marker-end="url(#dof-arrow)" />
+                </g>
+                <g class="dof-label"><text x="236" y="92">Yaw</text><text x="248" y="146">Pitch</text><text x="152" y="146" text-anchor="end">Roll</text></g>
+              </svg>
+              <svg class="illo tracking-illo dof-illo" viewBox="0 0 400 300" role="img" aria-label="6DoF: the headset follows how your head turns and how you move — up and down, left and right, forward and back">
+                <defs><marker id="dof-arrow-6" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="dof-tip" d="M0 0 L10 5 L0 10 Z" /></marker></defs>
+                <g class="room"><path class="wall" d="M60 190 L200 120 L200 20 L60 90 Z" /><path class="wall wall-right" d="M200 120 L340 190 L340 90 L200 20 Z" /><path class="floor" d="M60 190 L200 120 L340 190 L200 260 Z" /></g>
+                <g class="dof-move">
+                  <line x1="146" y1="187" x2="254" y2="241" marker-start="url(#dof-arrow-6)" marker-end="url(#dof-arrow-6)" />
+                  <line x1="254" y1="187" x2="146" y2="241" marker-start="url(#dof-arrow-6)" marker-end="url(#dof-arrow-6)" />
+                  <line x1="300" y1="118" x2="300" y2="194" marker-start="url(#dof-arrow-6)" marker-end="url(#dof-arrow-6)" />
+                </g>
+                <g class="dof-label dof-label-move"><text x="262" y="252">Left / right</text><text x="138" y="252" text-anchor="end">Forward / back</text><text x="310" y="160">Up / down</text></g>
+                <g class="person"><ellipse class="shadow" cx="200" cy="214" rx="22" ry="7" /><path class="body" d="M186 140 Q200 132 214 140 L216 184 L184 184 Z" /><line class="leg" x1="194" y1="184" x2="193" y2="212" /><line class="leg" x1="206" y1="184" x2="207" y2="212" /><circle class="head" cx="200" cy="120" r="13" /><rect class="headset" x="187" y="112" width="26" height="12" rx="4" /></g>
+                <g class="dof-turn">
+                  <path transform="translate(200 98)" d="M0 -7 A30 7 0 1 1 -30 0" marker-end="url(#dof-arrow-6)" />
+                  <path transform="translate(232 124) rotate(-30)" d="M0 -18 A7 18 0 1 1 -7 0" marker-end="url(#dof-arrow-6)" />
+                  <path transform="translate(168 124) rotate(30)" d="M0 -18 A7 18 0 1 1 -7 0" marker-end="url(#dof-arrow-6)" />
+                </g>
+                <g class="dof-label"><text x="236" y="92">Yaw</text><text x="248" y="146">Pitch</text><text x="152" y="146" text-anchor="end">Roll</text></g>
+              </svg>
+              </div>
+              <div class="switcher-tabs">
+                <label for="dof-3">3 DoF</label>
+                <label for="dof-6">6 DoF</label>
+              </div>
+            </div>
+            <figcaption>Degrees of freedom</figcaption>
+          </figure>
+          <figure class="frame frame-light">
+            <svg class="illo tracking-illo roomscale-illo" viewBox="0 0 400 300" role="img" aria-label="Room scale: a person walks freely inside a marked play area on the floor">
+              <g class="room"><path class="wall" d="M60 190 L200 120 L200 20 L60 90 Z" /><path class="wall wall-right" d="M200 120 L340 190 L340 90 L200 20 Z" /><path class="floor" d="M60 190 L200 120 L340 190 L200 260 Z" /></g>
+              <path class="play-area" d="M92 190 L200 136 L308 190 L200 244 Z" />
+              <g class="person"><ellipse class="shadow" cx="200" cy="214" rx="22" ry="7" /><path class="body" d="M186 140 Q200 132 214 140 L216 184 L184 184 Z" /><line class="leg" x1="194" y1="184" x2="193" y2="212" /><line class="leg" x1="206" y1="184" x2="207" y2="212" /><circle class="head" cx="200" cy="120" r="13" /><rect class="headset" x="187" y="112" width="26" height="12" rx="4" /></g>
+            </svg>
+            <figcaption>Room scale</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Two types of tracking</p>
+          <h2>Outside-in vs. inside-out</h2>
+          <ul class="points">
+            <li><span><strong>Outside-in</strong> — cameras or base stations are mounted around the room</span></li>
+            <li><span><strong>Inside-out</strong> — cameras are built into the headset itself, so no setup is needed</span></li>
+          </ul>
+        </div>
+        <div class="frame">
+          <div class="switcher" aria-label="Tracking types">
+            <input type="radio" name="tracking-type" id="tracking-outside" checked />
+            <input type="radio" name="tracking-type" id="tracking-inside" />
+            <div class="switcher-panels">
+              <svg class="illo tracking-illo" viewBox="0 0 400 300" role="img" aria-label="Outside-in: two base stations on the walls track the headset">
+                <g class="room"><path class="wall" d="M60 190 L200 120 L200 20 L60 90 Z" /><path class="wall wall-right" d="M200 120 L340 190 L340 90 L200 20 Z" /><path class="floor" d="M60 190 L200 120 L340 190 L200 260 Z" /><path class="floor-zone" d="M130 190 L200 155 L270 190 L200 225 Z" /></g>
+                <g class="beam-cone"><path d="M84 92 L196 112 L204 126 Z" /><path d="M316 92 L204 112 L196 126 Z" /></g>
+                <g class="beam"><line x1="84" y1="92" x2="198" y2="118" /><line x1="316" y1="92" x2="202" y2="118" /></g>
+                <g class="person"><ellipse class="shadow" cx="200" cy="214" rx="22" ry="7" /><path class="body" d="M186 140 Q200 132 214 140 L216 184 L184 184 Z" /><line class="leg" x1="194" y1="184" x2="193" y2="212" /><line class="leg" x1="206" y1="184" x2="207" y2="212" /><circle class="head" cx="200" cy="120" r="13" /><rect class="headset" x="187" y="112" width="26" height="12" rx="4" /></g>
+                <g class="station"><rect x="70" y="84" width="24" height="16" rx="4" /><circle cx="86" cy="92" r="3" /><rect x="306" y="84" width="24" height="16" rx="4" /><circle cx="314" cy="92" r="3" /></g>
+              </svg>
+              <svg class="illo tracking-illo" viewBox="0 0 400 300" role="img" aria-label="Inside-out: cameras on the headset map the room around it">
+                <g class="room"><path class="wall" d="M60 190 L200 120 L200 20 L60 90 Z" /><path class="wall wall-right" d="M200 120 L340 190 L340 90 L200 20 Z" /><path class="floor" d="M60 190 L200 120 L340 190 L200 260 Z" /><path class="floor-zone" d="M130 190 L200 155 L270 190 L200 225 Z" /></g>
+                <g class="beam"><line x1="200" y1="118" x2="112" y2="86" /><line x1="200" y1="118" x2="96" y2="146" /><line x1="200" y1="118" x2="288" y2="86" /><line x1="200" y1="118" x2="304" y2="146" /><line x1="200" y1="118" x2="140" y2="226" /><line x1="200" y1="118" x2="262" y2="228" /></g>
+                <g class="feature-pt"><circle cx="112" cy="86" r="4" /><circle cx="96" cy="146" r="4" /><circle cx="288" cy="86" r="4" /><circle cx="304" cy="146" r="4" /><circle cx="140" cy="226" r="4" /><circle cx="262" cy="228" r="4" /></g>
+                <g class="person"><ellipse class="shadow" cx="200" cy="214" rx="22" ry="7" /><path class="body" d="M186 140 Q200 132 214 140 L216 184 L184 184 Z" /><line class="leg" x1="194" y1="184" x2="193" y2="212" /><line class="leg" x1="206" y1="184" x2="207" y2="212" /><circle class="head" cx="200" cy="120" r="13" /><rect class="headset" x="187" y="112" width="26" height="12" rx="4" /></g>
+              </svg>
+            </div>
+            <div class="switcher-tabs">
+              <label for="tracking-outside">Outside-in</label>
+              <label for="tracking-inside">Inside-out</label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Body trackers</h2>
+        <ul class="wins cols-4 product-cards">
+          <li class="win"><img src="/vr-for-everybody/assets/tundra-tracker.webp" alt="" loading="lazy" /><span class="win-index">$120</span><span class="win-title">Tundra Tracker</span><span class="win-desc">A smaller, better SteamVR tracking puck.</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/haritorax.webp" alt="" loading="lazy" /><span class="win-index">$270</span><span class="win-title">HaritoraX</span><span class="win-desc">Waist and leg motion tracking, compatible with SteamVR.</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/decamove.webp" alt="" loading="lazy" /><span class="win-index">$79</span><span class="win-title">DecaMove</span><span class="win-desc">Navigate with your hips in any SteamVR headset.</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/vive-tracker.webp" alt="" loading="lazy" /><span class="win-index">$130</span><span class="win-title">Vive Tracker</span><span class="win-desc">Track movement and bring real objects into VR.</span></li>
+        </ul>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Other trackers</p>
+          <h2>Vive Facial Tracker</h2>
+          <p>
+            A $129.99 add-on that captures lip and jaw movement, so an avatar's face follows yours
+            in real time.
+          </p>
+        </div>
+        <div class="frame">
+          <video src="/vr-for-everybody/assets/facial-tracking.mp4" poster="/vr-for-everybody/assets/facial-tracking.webp" muted loop playsinline controls preload="none" aria-label="An avatar mirroring facial expressions captured by the Vive Facial Tracker"></video>
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Hand tracking</p>
+          <h2>Why even bother with hand tracking?</h2>
+          <p>
+            Every big interface shift removed a layer between people and the computer — the iPhone
+            famously dropped the stylus. Hands are the most natural input we have; controllers are
+            still more precise, and tracking still struggles with complex interactions.
+          </p>
+          <ul class="points">
+            <li>Controllers: PlayStation VR2, Meta Quest 2, HTC Vive</li>
+            <li>Hands: built into Quest, or added with Ultraleap sensors</li>
+          </ul>
+        </div>
+        <div class="frame">
+          <img src="/vr-for-everybody/assets/hand-tracking-2.webp" alt="A person interacting with virtual content using bare hands" loading="lazy" decoding="async" />
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Controllers and Ultraleap sensors</h2>
+        <ul class="wins cols-3 product-cards">
+          <li class="win"><img src="/vr-for-everybody/assets/leap-motion.webp" alt="" loading="lazy" /><span class="win-index">Ultraleap</span><span class="win-title">Leap Motion Controller</span><span class="win-desc">Small, fast and accurate. For evaluation, or as a peripheral for headsets and screens.</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/stereo-ir-170.webp" alt="" loading="lazy" /><span class="win-index">Ultraleap</span><span class="win-title">Stereo IR 170</span><span class="win-desc">Wider field of view and longer tracking range, for evaluation and integration.</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/ultraleap-3di.webp" alt="" loading="lazy" /><span class="win-index">Ultraleap</span><span class="win-title">Ultraleap 3Di</span><span class="win-desc">A ruggedized camera for public interactive screens.</span></li>
+        </ul>
+        <div class="photo-grid cols-3 controllers">
+          <figure><img src="/vr-for-everybody/assets/controller-psvr2.webp" alt="PlayStation VR2 Sense controllers" loading="lazy" /><figcaption>PlayStation VR2</figcaption></figure>
+          <figure><img src="/vr-for-everybody/assets/controller-quest-2.webp" alt="Meta Quest 2 Touch controller" loading="lazy" /><figcaption>Meta Quest 2</figcaption></figure>
+          <figure><img src="/vr-for-everybody/assets/controller-vive.webp" alt="HTC Vive wand controller" loading="lazy" /><figcaption>HTC Vive</figcaption></figure>
+        </div>
+      </section>
+
+      <!-- 04 Software -->
+      <header class="lens chapter" id="software">
+        <div>
+          <p class="eyebrow">Chapter 04</p>
+          <h2 class="lens-title">Software</h2>
+          <p class="lens-sub">Where VR apps are sold, which tools create content inside VR, and which DCCs and engines build it on the desktop.</p>
+        </div>
+        <img class="chapter-art" src="/vr-for-everybody/assets/art-software.webp" alt="" loading="lazy" decoding="async" />
+      </header>
+
+      <section class="block">
+        <h2>Four marketplaces</h2>
+        <ul class="wins cols-4 product-cards stores">
+          <li class="win"><img src="/vr-for-everybody/assets/store-steam.webp" alt="" loading="lazy" /><span class="win-title">Steam</span><span class="win-desc">The PC VR library, for any SteamVR headset.</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/rift-s.webp" alt="" loading="lazy" /><span class="win-title">Oculus Store for PC</span><span class="win-desc">Rift and Link titles.</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/store-oculus-quest.webp" alt="" loading="lazy" /><span class="win-title">Oculus Store for Quest</span><span class="win-desc">Curated standalone apps.</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/store-sidequest.webp" alt="" loading="lazy" /><span class="win-title">SideQuest</span><span class="win-desc">Sideloaded and experimental apps.</span></li>
+        </ul>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Work in VR</p>
+          <h2>Virtual Desktop</h2>
+          <p>Stream your computer into the headset and work on giant virtual screens — or play PC VR games wirelessly on a standalone headset.</p>
+        </div>
+        <div class="frame">
+          <img src="/vr-for-everybody/assets/virtual-desktop.webp" alt="Virtual Desktop: a large computer screen floating in a VR environment" loading="lazy" decoding="async" />
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">XR tools for content creation</p>
+          <h2>Creating inside the headset</h2>
+          <p>A new generation of apps lets designers sketch, sculpt, animate and prototype directly in 3D space — ShapesXR even turns VR into a collaborative Figma-like canvas.</p>
+          <div class="proto-tools" aria-label="XR creation tools">
+            <span class="chip">ShapesXR</span><span class="chip">Gravity Sketch</span><span class="chip">Microsoft Maquette</span><span class="chip">Quill</span><span class="chip">Tvori</span><span class="chip">Tilt Brush</span><span class="chip">SculptrVR</span><span class="chip">Sketchbox</span><span class="chip">AnimVR</span><span class="chip">Kodon</span><span class="chip">Shapelab</span><span class="chip">Blocks</span><span class="chip">Adobe Medium</span>
+          </div>
+        </div>
+        <div class="frame">
+          <img src="/vr-for-everybody/assets/shapes-xr.webp" alt="ShapesXR interface floating in VR" loading="lazy" decoding="async" />
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Content creation for XR</h2>
+        <p>That's not all you need to consider before you start. Different domains favour different DCC tools — unlike UI design, where Figma, Sketch or XD can be learned in weeks.</p>
+        <ul class="wins cols-5">
+          <li class="win"><span class="win-index">Indie</span><span class="win-title">Blender</span></li>
+          <li class="win"><span class="win-index">AAA</span><span class="win-title">Maya</span></li>
+          <li class="win"><span class="win-index">VFX / Gamedev</span><span class="win-title">Houdini</span></li>
+          <li class="win"><span class="win-index">Motion graphics</span><span class="win-title">Cinema 4D</span></li>
+          <li class="win"><span class="win-index">Archviz</span><span class="win-title">3ds Max</span></li>
+        </ul>
+      </section>
+
+      <section class="block">
+        <h2>Platforms to deliver XR</h2>
+        <div class="cols2">
+          <div>
+            <h3>Unity</h3>
+            <ul class="points">
+              <li>Scripted in C#</li>
+              <li>The go-to for AAA mobile XR and standalone headsets</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Unreal Engine</h3>
+            <ul class="points">
+              <li>C++ and Blueprints</li>
+              <li>High-fidelity AAA XR</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 Education -->
+      <header class="lens chapter" id="education">
+        <div>
+          <p class="eyebrow">Chapter 05</p>
+          <h2 class="lens-title">Education</h2>
+          <p class="lens-sub">3D is a complex field, which is why it involves so many roles. Here's where designers fit in, how to learn, and what to try first.</p>
+        </div>
+        <img class="chapter-art" src="/vr-for-everybody/assets/art-education.webp" alt="" loading="lazy" decoding="async" />
+      </header>
+
+      <section class="block">
+        <h2>Design roles for XR</h2>
+        <div class="spectrum-label"><span>More technical</span><span>Less technical</span></div>
+        <ol class="stages">
+          <li class="stage"><span class="stage-index">01</span><div class="stage-text"><span class="stage-title">Technical Artist</span><span class="stage-desc">Creates tools to build complex assets with a generative design approach.</span></div></li>
+          <li class="stage"><span class="stage-index">02</span><div class="stage-text"><span class="stage-title">XR Artist</span><span class="stage-desc">3D modeling, texturing, mapping and other techniques.</span></div></li>
+          <li class="stage"><span class="stage-index">03</span><div class="stage-text"><span class="stage-title">Environment Artist</span><span class="stage-desc">Designs and creates digital assets and environments.</span></div></li>
+          <li class="stage"><span class="stage-index">04</span><div class="stage-text"><span class="stage-title">Experience Designer</span><span class="stage-desc">Designs interactions for spatial interfaces, prototyping with 3D and VR tools.</span></div></li>
+          <li class="stage"><span class="stage-index">05</span><div class="stage-text"><span class="stage-title">Concept Artist</span><span class="stage-desc">Visualizes early ideas with overpaint, and helps communicate technical limits and 3D design.</span></div></li>
+        </ol>
+        <p class="block-note">All of these roles will be transformed by AI.</p>
+      </section>
+
+      <section class="block">
+        <h2>Where to learn</h2>
+        <ul class="wins cols-2 product-cards">
+          <li class="win"><img src="/vr-for-everybody/assets/course-umich.webp" alt="" loading="lazy" /><span class="win-index">University of Michigan</span><span class="win-title">Extended Reality for Everybody</span><span class="win-desc">An introductory XR specialization — the talk's namesake.</span><span class="win-tools"><a class="chip" href="https://online.umich.edu/series/extended-reality-for-everybody/" target="_blank" rel="noopener noreferrer">Course</a></span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/course-nyu.webp" alt="" loading="lazy" /><span class="win-index">NYU Tandon</span><span class="win-title">Professional Certificate in AR/VR Development and 3D Graphics</span><span class="win-desc">A deeper, development-focused programme.</span><span class="win-tools"><a class="chip" href="https://em.online.engineering.nyu.edu/professional-certificate-ar-vr" target="_blank" rel="noopener noreferrer">Course</a></span></li>
+        </ul>
+      </section>
+
+      <section class="block">
+        <h2>Best experiences to try out</h2>
+        <ul class="wins cols-4 product-cards">
+          <li class="win"><img src="/vr-for-everybody/assets/exp-hand-physics-lab.webp" alt="" loading="lazy" /><span class="win-index">Best hand tracking</span><span class="win-title">Hand Physics Lab</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/exp-museum-of-other-realities.webp" alt="" loading="lazy" /><span class="win-index">Best environment</span><span class="win-title">Museum of Other Realities</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/exp-half-life-alyx.webp" alt="" loading="lazy" /><span class="win-index">Best game &amp; fidelity</span><span class="win-title">Half-Life: Alyx</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/exp-gravity-sketch.webp" alt="" loading="lazy" /><span class="win-index">Best creation app</span><span class="win-title">Gravity Sketch</span></li>
+        </ul>
+      </section>
+
+      <!-- 06 Enterprise -->
+      <header class="lens chapter" id="enterprise">
+        <div>
+          <p class="eyebrow">Chapter 06</p>
+          <h2 class="lens-title">Enterprise</h2>
+          <p class="lens-sub">Beyond games, XR already earns its keep in industry — training, assistance, design reviews and digital twins.</p>
+        </div>
+        <img class="chapter-art" src="/vr-for-everybody/assets/art-enterprise.webp" alt="" loading="lazy" decoding="async" />
+      </header>
+
+      <section class="block">
+        <h2>Industries</h2>
+        <ul class="wins cols-5">
+          <li class="win"><span class="win-index">/01</span><span class="win-title">Manufacturing</span><span class="win-desc">Remote assistance and digital twins.</span></li>
+          <li class="win"><span class="win-index">/02</span><span class="win-title">Healthcare</span><span class="win-desc">Anatomy, surgery planning and therapy.</span></li>
+          <li class="win"><span class="win-index">/03</span><span class="win-title">Design &amp; engineering</span><span class="win-desc">Full-scale reviews before anything is built.</span></li>
+          <li class="win"><span class="win-index">/04</span><span class="win-title">Education</span><span class="win-desc">Trainings, master classes and assistance.</span></li>
+          <li class="win"><span class="win-index">/05</span><span class="win-title">Shopping</span><span class="win-desc">Try products in your own space.</span></li>
+        </ul>
+        <div class="photo-grid cols-3">
+          <figure><img src="/vr-for-everybody/assets/ent-hololens-assist.webp" alt="An engineer using HoloLens with a remote expert" loading="lazy" /><figcaption>Remote assistance</figcaption></figure>
+          <figure><img src="/vr-for-everybody/assets/ent-automotive-design.webp" alt="A designer reviewing a car in a mixed reality headset" loading="lazy" /><figcaption>Automotive design review</figcaption></figure>
+          <figure><img src="/vr-for-everybody/assets/ent-flight-training.webp" alt="A pilot training in a VR flight simulator" loading="lazy" /><figcaption>Flight training</figcaption></figure>
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Digital twins</p>
+          <h2>BMW's factory of the future</h2>
+          <p>
+            NVIDIA and BMW blend real and virtual worlds so every factory has a "digital twin".
+            Each line can build up to 10 different cars, and global teams reconfigure it together in
+            real time on Omniverse — from Revit, CATIA or point clouds, with every change visible live.
+          </p>
+        </div>
+        <div class="frame">
+          <img src="/vr-for-everybody/assets/ent-bmw-factory.webp" alt="A digital twin of a BMW factory floor with a virtual worker" loading="lazy" decoding="async" />
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Banking in the metaverse</p>
+          <h2>DBS Metaverse</h2>
+          <p>A bank building its own virtual space — a sign that enterprise interest reaches well past hardware and heavy industry.</p>
+        </div>
+        <div class="frame">
+          <img src="/vr-for-everybody/assets/ent-dbs-metaverse.webp" alt="DBS Metaverse virtual space with avatars" loading="lazy" decoding="async" />
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Business headsets</h2>
+        <ul class="wins cols-4 product-cards">
+          <li class="win"><img src="/vr-for-everybody/assets/dev-hololens-2.webp" alt="" loading="lazy" /><span class="win-index">XR · from $3,500</span><span class="win-title">HoloLens 2</span><span class="win-desc">An untethered MR headset built to solve real business problems today.</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/dev-magic-leap-2.webp" alt="" loading="lazy" /><span class="win-index">XR · from $3,300</span><span class="win-title">Magic Leap 2</span><span class="win-desc">The most immersive AR platform for enterprise.</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/dev-pico-neo-3-pro.webp" alt="" loading="lazy" /><span class="win-index">VR · from €699</span><span class="win-title">Pico Neo 3 Pro</span><span class="win-desc">Standalone enterprise VR.</span></li>
+          <li class="win"><img src="/vr-for-everybody/assets/dev-varjo-xr-3.webp" alt="" loading="lazy" /><span class="win-index">VR/XR · from €3,645</span><span class="win-title">Varjo VR-3 / XR-3</span><span class="win-desc">High-resolution VR and MR for professionals.</span></li>
+        </ul>
+      </section>
+
+      <!-- 07 Future -->
+      <header class="lens chapter" id="future">
+        <div>
+          <p class="eyebrow">Chapter 07</p>
+          <h2 class="lens-title">Future</h2>
+          <p class="lens-sub">Mixed reality is the next step — and XR is only at the start of its adoption curve.</p>
+        </div>
+        <img class="chapter-art" src="/vr-for-everybody/assets/art-future.webp" alt="" loading="lazy" decoding="async" />
+      </header>
+
+      <section class="feature">
+        <div class="feature-text">
+          <p class="eyebrow">Next up</p>
+          <h2>Meta Cambria</h2>
+          <p>A mixed-reality headset, expected at the time of this research — it later shipped as Meta Quest Pro.</p>
+          <ul class="points">
+            <li>2160 × 2160 per eye</li>
+            <li>Eye, face and hand tracking</li>
+            <li>Colour passthrough</li>
+          </ul>
+        </div>
+        <div class="frame">
+          <img src="/vr-for-everybody/assets/meta-cambria.webp" alt="Meta Cambria headset render" loading="lazy" decoding="async" />
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>XR industry lifecycle</h2>
+        <p>As XR moves along the adoption curve, the challenges fall and the value rises — from harmful and interesting, through challenging and enjoyable, to something that saves time and builds careers.</p>
+        <figure class="lifecycle frame frame-light">
+          <svg viewBox="0 0 1000 440" role="img" aria-label="XR adoption lifecycle from 1956 to 2050: challenges fall from harmful to saves me, value rises from interesting to my career, crossing around 2025">
+            <g class="lc-phases">
+              <text x="95" y="30">Innovators</text><text x="300" y="30">Early adopters</text><text x="500" y="30">Early majority</text><text x="700" y="30">Late majority</text><text x="895" y="30">Laggards</text>
+            </g>
+            <g class="lc-grid">
+              <line x1="200" y1="46" x2="200" y2="380" /><line x1="400" y1="46" x2="400" y2="380" /><line x1="600" y1="46" x2="600" y2="380" /><line x1="800" y1="46" x2="800" y2="380" />
+              <line x1="0" y1="380" x2="1000" y2="380" />
+            </g>
+            <path class="lc-challenge" d="M60 100 C 220 110, 330 190, 400 230 S 700 330, 940 340" />
+            <path class="lc-value" d="M60 350 C 220 345, 330 280, 400 245 S 700 150, 940 170" />
+            <g class="lc-dots-c"><circle cx="60" cy="100" r="7" /><circle cx="370" cy="212" r="7" /><circle cx="940" cy="340" r="7" /></g>
+            <g class="lc-dots-v"><circle cx="60" cy="350" r="7" /><circle cx="370" cy="262" r="7" /><circle cx="520" cy="205" r="7" /><circle cx="940" cy="170" r="7" /></g>
+            <g class="lc-labels">
+              <text x="76" y="92">Harmful</text><text x="384" y="200">Challenging</text><text x="930" y="325" text-anchor="end">Saves me</text>
+              <text x="76" y="330">Interesting</text><text x="384" y="282">Enjoyable</text><text x="530" y="188">Helpful</text><text x="930" y="155" text-anchor="end">My career</text>
+            </g>
+            <g class="lc-years">
+              <text x="40" y="408">1956</text><text x="400" y="408" text-anchor="middle">2022</text><text x="500" y="408" text-anchor="middle">2025</text><text x="600" y="408" text-anchor="middle">2030</text><text x="800" y="408" text-anchor="middle">2040</text><text x="960" y="408" text-anchor="end">2050</text>
+            </g>
+          </svg>
+          <figcaption><span class="lc-key lc-key-c"></span>Challenges <span class="lc-key lc-key-v"></span>Value</figcaption>
+        </figure>
+      </section>
+
+      <a class="next" href="/touch-my-heart/">
+        <div>
+          <p class="label">Next project</p>
+          <p class="name">Touch My Heart</p>
+          <p class="desc">An XR journey inside the human heart on Magic Leap <span>→</span></p>
+        </div>
+        <div class="thumb">
+          <img src="/assets/previews/touch-my-heart.jpg" alt="" loading="lazy" />
+        </div>
+      </a>
+    </article>
+
+    <footer><span class="footer-year" data-footer-year aria-label="Current year">0000</span></footer>
+  </main>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

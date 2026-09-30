@@ -166,18 +166,15 @@
 .proto-nav a:hover { color: var(--fg); }
 .proto-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .proto-nav a[aria-current] { background: var(--accent-dim); color: var(--accent); }
-.proto-nav-index { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; }
-/* Narrower screens: numbers only, with the current prototype's name */
-@media (max-width: 1180px) {
-  .proto-nav a:not([aria-current]) .proto-nav-title { display: none; }
+/* Too narrow for every title: the pill scrolls sideways instead of wrapping */
+@media (max-width: 1000px) {
+  .proto-nav { max-width: calc(100vw - 150px); overflow-x: auto; scrollbar-width: none; }
+  .proto-nav::-webkit-scrollbar { display: none; }
 }
 @media (max-width: 760px) {
   .proto-nav { top: 68px; left: auto; right: 16px; transform: translateY(-8px); }
   .proto-nav.is-visible { transform: none; }
   .proto-nav a { padding: 4px 9px; font-size: 12px; }
-}
-@media (max-width: 420px) {
-  .proto-nav a[aria-current] .proto-nav-title { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .proto-nav { transition: opacity 1ms; }

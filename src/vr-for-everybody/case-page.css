@@ -1,0 +1,275 @@
+/* VR for Everybody page — amber theme. Loads after case/case.css. */
+:root {
+  --hue: 55;
+  --cover-sweep: #7a2e0b 41%, #d9661a 47%, #f5a524 53%, #ffd36b 60%, #fff4d6 66%;
+}
+
+/* Cover: the iridescent headset bust sits whole behind the title */
+html.preview-cover .cover { background-size: auto 100%; background-repeat: no-repeat; }
+
+/* Title artwork under the header */
+.hero-art {
+  margin-top: 36px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: radial-gradient(ellipse at 50% 60%, oklch(30% 0.05 280), oklch(14% 0.02 265) 70%);
+}
+.hero-art img { display: block; width: 100%; max-height: 520px; object-fit: contain; }
+
+/* Chapter index — eight jump cards; the last one states the thesis */
+.chapter-index { border-top: 0; }
+.chapter-index .wins { margin-top: 0; }
+.win-link { display: flex; flex-direction: column; gap: 10px; height: 100%; text-decoration: none; }
+.win:has(.win-link:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+.win-link:focus-visible { outline: none; }
+.win-thesis { background: var(--accent-dim); border-color: oklch(88% 0.05 var(--hue)); }
+.block > .wins { margin-top: 24px; }
+.wins.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.wins.cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+
+/* Chapter headers — lens copy on the left, the deck's chapter artwork on the right */
+.lens.chapter {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
+  align-items: center;
+  gap: 24px 48px;
+  scroll-margin-top: 72px;
+}
+/* Only chapters get a divider — rows inside a chapter just stack with space (case.css does this for .block) */
+.lens ~ .feature { border-top: 0; padding: 36px 0; }
+.lens + .feature { padding-top: 12px; }
+
+/* The renders are dark and metallic — lift and saturate them so they sit lightly on the page */
+.chapter-art {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  filter: brightness(1.6) saturate(1.35) contrast(0.9) drop-shadow(0 18px 28px oklch(60% 0.12 280 / 0.18));
+}
+/* Scroll reveal (main.js arms each chapter, then marks it visible once in view):
+   the render fades up slowly, then keeps a gentle float while its iridescent colours
+   shift back and forth. The loop pauses whenever the chapter is off screen. */
+.lens.chapter.is-armed .chapter-art { opacity: 0; translate: 0 24px; scale: 0.97; }
+.lens.chapter.is-visible .chapter-art {
+  opacity: 1;
+  translate: 0 0;
+  scale: 1;
+  transition:
+    opacity 1400ms ease,
+    translate 1800ms cubic-bezier(0.22, 1, 0.36, 1),
+    scale 1800ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: artFloat 5s ease-in-out 1800ms infinite;
+  animation-play-state: paused;
+}
+.lens.chapter.is-visible.is-onscreen .chapter-art { animation-play-state: running; }
+@keyframes artFloat {
+  0%, 100% {
+    translate: 0 0;
+    filter: brightness(1.6) saturate(1.35) contrast(0.9) hue-rotate(0deg) drop-shadow(0 18px 28px oklch(60% 0.12 280 / 0.18));
+  }
+  50% {
+    translate: 0 -8px;
+    filter: brightness(1.75) saturate(1.6) contrast(0.9) hue-rotate(50deg) drop-shadow(0 26px 30px oklch(60% 0.12 280 / 0.14));
+  }
+}
+
+/* Product cards: an image on top of a regular win card */
+.product-cards .win img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  margin-bottom: 4px;
+  border: 1px solid oklch(92% 0.01 var(--hue));
+  border-radius: 10px;
+  background: #fff;
+}
+.win-title.price { color: var(--accent); font-size: 26px; letter-spacing: -0.02em; }
+
+/* Photo grids with captions */
+.photo-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 24px; }
+.block > .photo-grid:first-child { margin-top: 0; }
+.photo-grid figure { margin: 0; }
+.photo-grid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--ink);
+}
+.photo-grid.controllers img { object-fit: contain; background: #fff; }
+.photo-grid figcaption { margin-top: 8px; color: var(--muted); font-size: 13.5px; }
+
+/* Framed images that must not be cropped */
+.frame .contain, .infographic img, .diagrams img { object-fit: contain; background: #fff; }
+.infographic img { aspect-ratio: 1; }
+.diagrams figure { margin: 0; }
+
+.specs strong { margin-right: 6px; color: var(--fg); font-weight: 600; }
+.feature .block-note { margin-top: 16px; color: var(--muted); font-size: 15px; }
+.proto-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+
+/* Year timeline — wider index column for four-digit years */
+.timeline .stage { grid-template-columns: 52px minmax(0, 1fr) auto; }
+.stage.is-here { border-color: oklch(85% 0.06 var(--hue)); background: var(--accent-dim); }
+
+/* Reality–virtuality spectrum */
+.spectrum { margin-top: 28px; }
+.spectrum-ends, .spectrum-label {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.spectrum-label { margin-top: 20px; }
+.spectrum-bar {
+  height: 10px;
+  margin: 10px 0 20px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, oklch(80% 0.02 250), oklch(70% 0.14 var(--hue)), oklch(45% 0.2 300));
+}
+.spectrum-stops { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.spectrum-stops > div { display: grid; justify-items: center; gap: 10px; text-align: center; font-weight: 600; }
+.spectrum-stops img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: contain;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+}
+.spectrum-mr {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 2px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* XR industry lifecycle chart */
+.lifecycle { margin: 24px 0 0; }
+.lifecycle svg { display: block; width: 100%; height: auto; font-family: var(--font); }
+.lc-phases text { fill: var(--muted); font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-anchor: middle; text-transform: uppercase; }
+.lc-grid line { stroke: var(--border); stroke-width: 1.5; }
+.lc-challenge, .lc-value { fill: none; stroke-width: 4; stroke-linecap: round; }
+.lc-challenge { stroke: oklch(62% 0.2 20); }
+.lc-value { stroke: oklch(62% 0.16 150); }
+.lc-dots-c circle { fill: oklch(62% 0.2 20); }
+.lc-dots-v circle { fill: oklch(62% 0.16 150); }
+.lc-dots-c circle, .lc-dots-v circle { stroke: #fff; stroke-width: 3; }
+.lc-labels text { fill: var(--fg); font-size: 17px; font-weight: 600; }
+.lc-years text { fill: var(--muted); font-family: var(--font-mono); font-size: 13px; }
+.lifecycle figcaption { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 12px; color: var(--muted); font-size: 14px; }
+.lc-key { display: inline-block; width: 18px; height: 4px; margin-left: 12px; border-radius: 2px; }
+.lc-key-c { background: oklch(62% 0.2 20); }
+.lc-key-v { background: oklch(62% 0.16 150); }
+
+/* Pinned chapter nav — a floating pill level with the Back button (main.js) */
+.chapter-nav {
+  position: fixed;
+  top: 76px;
+  left: 50%;
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--surface), transparent 10%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(17, 17, 17, 0.08);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -8px);
+  transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.chapter-nav.is-visible { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
+.chapter-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 25px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.chapter-nav a:hover { color: var(--fg); }
+.chapter-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.chapter-nav a[aria-current] { background: var(--accent-dim); color: var(--accent); }
+/* Too narrow for every title: the pill scrolls sideways instead of wrapping */
+@media (max-width: 1000px) {
+  .chapter-nav { max-width: calc(100vw - 150px); overflow-x: auto; scrollbar-width: none; }
+  .chapter-nav::-webkit-scrollbar { display: none; }
+}
+
+@media (max-width: 900px) {
+  .wins.cols-3, .wins.cols-4, .wins.cols-5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .lens.chapter { grid-template-columns: 1fr; }
+  .chapter-art { max-width: 280px; }
+  .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .spectrum-stops { font-size: 13px; }
+  .lc-labels text { font-size: 22px; }
+  .chapter-nav { top: 68px; left: auto; right: 16px; transform: translateY(-8px); }
+  .chapter-nav.is-visible { transform: none; }
+  .chapter-nav a { padding: 4px 9px; font-size: 12px; }
+}
+@media (max-width: 480px) {
+  .wins.cols-2, .wins.cols-3, .wins.cols-4, .wins.cols-5 { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chapter-nav { transition: opacity 1ms; }
+}
+
+/* Drawn illustrations (6DoF, tracking) — 4:3 like the other framed media */
+.illo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  border: 1px solid oklch(90% 0.01 var(--hue));
+  border-radius: 10px;
+  background: #fff;
+  font-family: var(--font);
+}
+.diagrams .illo { border: 0; }
+.illo-note { fill: var(--muted); font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-anchor: middle; text-transform: uppercase; }
+
+.dof-tip { fill: var(--accent); }
+.dof-turn path { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; }
+.dof-move line { stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; }
+.dof-label text { fill: var(--accent); font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+.tracking-illo .wall { fill: oklch(97% 0.008 var(--hue)); stroke: oklch(90% 0.01 var(--hue)); }
+.tracking-illo .wall-right { fill: oklch(95% 0.01 var(--hue)); }
+.tracking-illo .floor { fill: oklch(93% 0.012 var(--hue)); stroke: oklch(88% 0.015 var(--hue)); }
+.tracking-illo .floor-zone { fill: none; stroke: oklch(70% 0.14 var(--hue)); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.tracking-illo .shadow { fill: oklch(80% 0.02 var(--hue) / 0.6); }
+.tracking-illo .body { fill: oklch(45% 0.03 260); }
+.tracking-illo .leg { stroke: oklch(45% 0.03 260); stroke-width: 7; stroke-linecap: round; }
+.tracking-illo .head { fill: oklch(80% 0.05 60); }
+.tracking-illo .headset { fill: var(--ink); }
+.tracking-illo .beam line { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.tracking-illo .beam-cone path { fill: var(--accent-dim); }
+.tracking-illo .station rect { fill: var(--ink); }
+.tracking-illo .station circle, .tracking-illo .feature-pt circle { fill: var(--accent); }
+
+.roomscale-illo .play-area { fill: var(--accent-dim); stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 6 4; }

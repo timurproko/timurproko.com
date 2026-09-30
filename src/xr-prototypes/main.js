@@ -86,6 +86,11 @@ const sectionObserver = new IntersectionObserver(entries => {
       if (sections[i] === target) link.setAttribute('aria-current', 'true');
       else link.removeAttribute('aria-current');
     });
+    // On narrow screens the pill scrolls sideways — keep the current prototype centred in it.
+    const link = navLinks[sections.indexOf(target)];
+    if (protoNav.scrollWidth > protoNav.clientWidth) {
+      protoNav.scrollTo({ left: link.offsetLeft - (protoNav.clientWidth - link.offsetWidth) / 2, behavior: 'smooth' });
+    }
   });
 }, { rootMargin: '-45% 0px -50% 0px' });
 sections.forEach(section => sectionObserver.observe(section));
