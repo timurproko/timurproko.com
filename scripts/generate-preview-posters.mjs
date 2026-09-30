@@ -28,6 +28,7 @@ const PRESENTATIONS = [
   { slug: 'xr-prototypes', width: 1920, height: 1080 },
   { slug: 'vr-for-everybody', width: 1920, height: 1080 },
   { slug: 'untitled-world', width: 1920, height: 1080 },
+  { slug: 'calmxr', width: 1920, height: 1080 },
   { slug: 'a1', width: 1920, height: 1080 },
   { slug: 'cv', width: 900, height: 900 },
 ];
