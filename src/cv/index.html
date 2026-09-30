@@ -306,6 +306,7 @@
     .email-reveal.is-revealed { user-select: all; }
     .print-url,
     .print-only-chip { display: none; }
+    .print-cases { display: none; }
 
     .layout {
       display: grid;
@@ -930,6 +931,55 @@
         page-break-before: auto;
       }
       #experience-title { break-before: avoid; }
+
+      /* Selected case studies — print only, 2×2 with a QR code per case */
+      .print-cases {
+        display: block;
+        margin-top: 6px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .case-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px 16px;
+        list-style: none;
+      }
+      .case-list li {
+        display: grid;
+        grid-template-columns: 72px minmax(0, 1fr);
+        align-items: center;
+        gap: 12px;
+        padding: 10px;
+        border: 1px solid oklch(84% 0.006 250);
+        border-radius: 10px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .case-qr { display: block; width: 72px; height: 72px; }
+      .case-title {
+        display: block;
+        color: black;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 1.2;
+        text-decoration: none;
+      }
+      .case-desc {
+        display: block;
+        margin-top: 3px;
+        color: black;
+        font-size: 9.3px;
+        line-height: 1.32;
+      }
+      .case-url {
+        display: block;
+        margin-top: 4px;
+        color: oklch(46% 0.01 250);
+        font-family: var(--font-mono);
+        font-size: 8.5px;
+        letter-spacing: 0.04em;
+      }
     }
     html.preview-cover,
     html.preview-cover body {
@@ -1313,6 +1363,21 @@
           </div>
         </section>
 
+        <section class="card side-card print-cases" aria-labelledby="cases-title">
+          <div class="card-inner">
+            <div class="section-title">
+              <h2 id="cases-title">Selected Case Studies</h2>
+              <span class="section-kicker">Scan to open</span>
+            </div>
+            <ul class="case-list">
+              <li><img class="case-qr" src="/cv/qr/touch-my-heart.svg" alt="QR code for timurproko.com/touch-my-heart" width="72" height="72"><div><a class="case-title" href="https://timurproko.com/touch-my-heart/">Touch My Heart</a><span class="case-desc">XR experience for Magic Leap — inside the human heart</span><span class="case-url">timurproko.com/touch-my-heart</span></div></li>
+              <li><img class="case-qr" src="/cv/qr/starkit.svg" alt="QR code for timurproko.com/starkit" width="72" height="72"><div><a class="case-title" href="https://timurproko.com/starkit/">STARKIT SRD</a><span class="case-desc">Touch-free 3D for Sony Spatial Reality Display</span><span class="case-url">timurproko.com/starkit</span></div></li>
+              <li><img class="case-qr" src="/cv/qr/avatars.svg" alt="QR code for timurproko.com/avatars" width="72" height="72"><div><a class="case-title" href="https://timurproko.com/avatars/">Digital Human</a><span class="case-desc">Avatar pipeline — from capture to real-time AI animation</span><span class="case-url">timurproko.com/avatars</span></div></li>
+              <li><img class="case-qr" src="/cv/qr/xr-prototypes.svg" alt="QR code for timurproko.com/xr-prototypes" width="72" height="72"><div><a class="case-title" href="https://timurproko.com/xr-prototypes/">XR Prototypes</a><span class="case-desc">Rapid Meta Quest prototypes — physics, sound, AI vision</span><span class="case-url">timurproko.com/xr-prototypes</span></div></li>
+            </ul>
+          </div>
+        </section>
+
       </aside>
     </div>
 
@@ -1593,7 +1658,14 @@
       window.print();
     }
 
-    window.addEventListener("beforeprint", revealEmailsForPrint);
+    // "Save as PDF" names the file after the page title, so print under the file name.
+    const PRINT_FILE_NAME = "Timur_Prokopiev_CV";
+    const screenTitle = document.title;
+    window.addEventListener("beforeprint", () => {
+      revealEmailsForPrint();
+      document.title = PRINT_FILE_NAME;
+    });
+    window.addEventListener("afterprint", () => { document.title = screenTitle; });
 
     const printButton = document.getElementById("print-cv");
     printButton?.addEventListener("click", printCv);
