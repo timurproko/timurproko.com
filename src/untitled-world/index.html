@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f8f8f9" />
+  <meta name="description" content="An augmented-reality art project — wireframe holograms anchored over rooftops, parks, frozen rivers and underpasses, imagining a world where reality itself becomes a piece of art." />
+  <!-- social-preview:start -->
+  <link rel="canonical" href="https://timurproko.com/untitled-world/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Timur Prokopiev" />
+  <meta property="og:title" content="Untitled World" />
+  <meta property="og:description" content="An augmented-reality art project — wireframe holograms anchored over rooftops, parks, frozen rivers and underpasses, imagining a world where reality itself becomes a piece of art." />
+  <meta property="og:url" content="https://timurproko.com/untitled-world/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Untitled World" />
+  <meta name="twitter:description" content="An augmented-reality art project — wireframe holograms anchored over rooftops, parks, frozen rivers and underpasses, imagining a world where reality itself becomes a piece of art." />
+  <!-- social-preview:end -->
+  <title>Untitled World</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=Inter:wght@700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    // Home page cards load this page with ?preview=cover — show only the cover.
+    if (new URLSearchParams(location.search).get('preview') === 'cover') {
+      document.documentElement.classList.add('preview-cover');
+    }
+  </script>
+  <link rel="stylesheet" href="../case/case.css" />
+  <link rel="stylesheet" href="./case-page.css" />
+</head>
+<body>
+  <div class="cover" aria-hidden="true">
+    <p class="cover-title">Untitled<br>World</p>
+  </div>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Timur Prokopiev</a>
+      <div class="nav-links" aria-label="Navigation">
+        <a href="/" class="nav-link">Portfolio</a>
+        <a href="/cv/" class="nav-link">CV</a>
+        <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <article>
+      <a class="back-shortcut" href="/" aria-label="Back to portfolio"><kbd>←</kbd> <span class="action-label">Back</span></a>
+
+      <header class="page-head reveal" style="animation-delay: 80ms">
+        <div class="head">
+          <h1>Untitled World</h1>
+        </div>
+        <p class="lede">
+          An augmented-reality art project from 2021. Wireframe sculptures hang over rooftops,
+          bloom between park trees, drift above a frozen river and coil inside an underpass —
+          a sketch of a world where the hologram has left the phone screen and the city itself
+          becomes the gallery.
+        </p>
+        <ul class="tags" aria-label="Focus areas">
+          <li><span class="tag">AR Art</span></li>
+          <li><span class="tag">Holographic Installations</span></li>
+          <li><span class="tag">3D Sculpture</span></li>
+          <li><span class="tag">Concept Art</span></li>
+        </ul>
+      </header>
+
+      <!-- Viewfinder: the title scene seen through an AR HUD -->
+      <figure class="viewfinder hero-view reveal" style="animation-delay: 180ms" data-parallax>
+        <img src="/untitled-world/assets/scene-balloon.webp" alt="A wireframe balloon hologram floating above city rooftops on an overcast day" decoding="async" />
+        <div class="hud" aria-hidden="true">
+          <span class="hud-corner tl"></span><span class="hud-corner tr"></span><span class="hud-corner bl"></span><span class="hud-corner br"></span>
+          <span class="hud-label tl"><span class="rec"></span>REC · Untitled World</span>
+          <span class="hud-label tr" data-timecode>00:00:00:00</span>
+          <span class="hud-label bl">Object 01 · anchored</span>
+          <span class="hud-label br">Reality layer · on</span>
+          <span class="reticle" style="--x: 60%; --y: 38%"></span>
+          <span class="scanline"></span>
+        </div>
+      </figure>
+
+      <!-- Manifesto: words light up as the section scrolls past -->
+      <section class="manifesto" aria-label="Manifesto">
+        <div class="manifesto-pin">
+          <p class="eyebrow">Manifesto</p>
+          <p class="manifesto-text" data-scrub>
+            A world where people's perception of reality is changed. Augmented reality has gone
+            beyond the phone screen. Artists realize the concepts of <em>karma</em>, <em>fate</em>,
+            <em>memory</em> in different parts of the world as holographic installations.
+          </p>
+          <p class="manifesto-text" data-scrub>
+            A world where human creativity is elevated to the absolute. Only the one who generates
+            concepts is demanded, respected, needed and loved. No one can complain anymore about
+            the namelessness of a world where only soil accompanies mortal life.
+          </p>
+        </div>
+      </section>
+
+      <!-- Closing line: pins centred on screen and assembles as scrolling continues -->
+      <section class="manifesto manifesto-finale" aria-label="Closing line">
+        <div class="manifesto-pin">
+          <p class="manifesto-close" data-materialize>The reality becomes a piece of art.</p>
+        </div>
+      </section>
+
+      <!-- Sightings -->
+      <header class="lens" id="sightings">
+        <p class="eyebrow">Field log</p>
+        <h2 class="lens-title">Six sightings</h2>
+        <p class="lens-sub">Each installation is a hologram composited into an ordinary winter place — no plinth, no gallery wall, no label. Just an object that should not be there.</p>
+      </header>
+
+      <div class="contact-sheet" role="navigation" aria-label="Sightings">
+        <a href="#s1"><img src="/untitled-world/assets/scene-balloon.webp" alt="" loading="lazy" /><span>01</span></a>
+        <a href="#s2"><img src="/untitled-world/assets/scene-cloud.webp" alt="" style="object-position: 50% 10%" loading="lazy" /><span>02</span></a>
+        <a href="#s3"><img src="/untitled-world/assets/scene-crown.webp" alt="" loading="lazy" /><span>03</span></a>
+        <a href="#s4"><img src="/untitled-world/assets/scene-shards.webp" alt="" style="object-position: 50% 10%" loading="lazy" /><span>04</span></a>
+        <a href="#s5"><img src="/untitled-world/assets/scene-whale.webp" alt="" loading="lazy" /><span>05</span></a>
+        <a href="#s6"><img src="/untitled-world/assets/scene-loop.webp" alt="" style="object-position: 50% 70%" loading="lazy" /><span>06</span></a>
+      </div>
+
+      <ol class="sightings">
+        <li class="sighting" id="s1">
+          <figure class="viewfinder" data-parallax>
+            <img src="/untitled-world/assets/scene-balloon.webp" alt="A wireframe balloon hologram over city rooftops" loading="lazy" decoding="async" />
+            <div class="hud" aria-hidden="true"><span class="hud-corner tl"></span><span class="hud-corner tr"></span><span class="hud-corner bl"></span><span class="hud-corner br"></span><span class="reticle" style="--x: 59%; --y: 36%"></span></div>
+          </figure>
+          <dl class="log">
+            <div class="log-no"><dt>Sighting</dt><dd>01</dd></div>
+            <div><dt>Form</dt><dd>Balloon</dd></div>
+            <div><dt>Site</dt><dd>Above the rooftops</dd></div>
+            <div><dt>Material</dt><dd>Wireframe mesh, smoke-grey</dd></div>
+            <div><dt>Behaviour</dt><dd>Hangs still while the clouds move</dd></div>
+          </dl>
+        </li>
+        <li class="sighting" id="s2">
+          <figure class="viewfinder" data-parallax>
+            <img src="/untitled-world/assets/scene-cloud.webp" alt="A wireframe cloud, shaped like a slow explosion, over a city in winter" style="object-position: 50% 10%" loading="lazy" decoding="async" />
+            <div class="hud" aria-hidden="true"><span class="hud-corner tl"></span><span class="hud-corner tr"></span><span class="hud-corner bl"></span><span class="hud-corner br"></span><span class="reticle" style="--x: 50%; --y: 36%"></span></div>
+          </figure>
+          <dl class="log">
+            <div class="log-no"><dt>Sighting</dt><dd>02</dd></div>
+            <div><dt>Form</dt><dd>Cloud</dd></div>
+            <div><dt>Site</dt><dd>Over the valley, city skyline behind</dd></div>
+            <div><dt>Material</dt><dd>Layered wireframe, blue-grey</dd></div>
+            <div><dt>Behaviour</dt><dd>Billows like a frozen explosion</dd></div>
+          </dl>
+        </li>
+        <li class="sighting" id="s3">
+          <figure class="viewfinder" data-parallax>
+            <img src="/untitled-world/assets/scene-crown.webp" alt="A red hologram crown between bare trees in a snowy park" loading="lazy" decoding="async" />
+            <div class="hud" aria-hidden="true"><span class="hud-corner tl"></span><span class="hud-corner tr"></span><span class="hud-corner bl"></span><span class="hud-corner br"></span><span class="reticle" style="--x: 24%; --y: 38%"></span></div>
+          </figure>
+          <dl class="log">
+            <div class="log-no"><dt>Sighting</dt><dd>03</dd></div>
+            <div><dt>Form</dt><dd>Red crown</dd></div>
+            <div><dt>Site</dt><dd>Park, among bare trees</dd></div>
+            <div><dt>Material</dt><dd>Dense red foliage</dd></div>
+            <div><dt>Behaviour</dt><dd>The only leaves left in winter</dd></div>
+          </dl>
+        </li>
+        <li class="sighting" id="s4">
+          <figure class="viewfinder" data-parallax>
+            <img src="/untitled-world/assets/scene-shards.webp" alt="A sphere of dark blue shards hovering over a frozen river" style="object-position: 50% 10%" loading="lazy" decoding="async" />
+            <div class="hud" aria-hidden="true"><span class="hud-corner tl"></span><span class="hud-corner tr"></span><span class="hud-corner bl"></span><span class="hud-corner br"></span><span class="reticle" style="--x: 49%; --y: 34%"></span></div>
+          </figure>
+          <dl class="log">
+            <div class="log-no"><dt>Sighting</dt><dd>04</dd></div>
+            <div><dt>Form</dt><dd>Shard sphere</dd></div>
+            <div><dt>Site</dt><dd>Over a frozen river</dd></div>
+            <div><dt>Material</dt><dd>Splintered planes, ink and ice-blue</dd></div>
+            <div><dt>Behaviour</dt><dd>Reflects faintly in the ice below</dd></div>
+          </dl>
+        </li>
+        <li class="sighting" id="s5">
+          <figure class="viewfinder" data-parallax>
+            <img src="/untitled-world/assets/scene-whale.webp" alt="A pale translucent whale swimming through the sky above a city skyline" loading="lazy" decoding="async" />
+            <div class="hud" aria-hidden="true"><span class="hud-corner tl"></span><span class="hud-corner tr"></span><span class="hud-corner bl"></span><span class="hud-corner br"></span><span class="reticle" style="--x: 49%; --y: 26%"></span></div>
+          </figure>
+          <dl class="log">
+            <div class="log-no"><dt>Sighting</dt><dd>05</dd></div>
+            <div><dt>Form</dt><dd>Whale</dd></div>
+            <div><dt>Site</dt><dd>The sky above the city</dd></div>
+            <div><dt>Material</dt><dd>Translucent mesh, near white</dd></div>
+            <div><dt>Behaviour</dt><dd>Swims where the clouds should be</dd></div>
+          </dl>
+        </li>
+        <li class="sighting" id="s6">
+          <figure class="viewfinder" data-parallax>
+            <img src="/untitled-world/assets/scene-loop.webp" alt="A glowing green scribble loop under a railway bridge" style="object-position: 50% 70%" loading="lazy" decoding="async" />
+            <div class="hud" aria-hidden="true"><span class="hud-corner tl"></span><span class="hud-corner tr"></span><span class="hud-corner bl"></span><span class="hud-corner br"></span><span class="reticle" style="--x: 45%; --y: 54%"></span></div>
+          </figure>
+          <dl class="log">
+            <div class="log-no"><dt>Sighting</dt><dd>06</dd></div>
+            <div><dt>Form</dt><dd>Green loop</dd></div>
+            <div><dt>Site</dt><dd>Underpass, beneath a railway bridge</dd></div>
+            <div><dt>Material</dt><dd>Glowing tangled line</dd></div>
+            <div><dt>Behaviour</dt><dd>Coils in on itself, like a thought on repeat</dd></div>
+          </dl>
+        </li>
+      </ol>
+      <!-- Specimen shelf: the objects out of context -->
+      <section class="block">
+        <h2>Out of context</h2>
+        <p>The wireframe studies behind the installations — meshes, tangles and splinters that were drawn first and placed later.</p>
+        <ul class="specimens">
+          <li><img src="/untitled-world/assets/obj-mesh.webp" alt="A loose wireframe mesh blob" loading="lazy" data-zoom /><span class="specimen-tag">Mesh</span></li>
+          <li><img src="/untitled-world/assets/obj-sphere.webp" alt="A wireframe sphere with a dense knot at its centre" loading="lazy" data-zoom /><span class="specimen-tag">Sphere</span></li>
+          <li><img src="/untitled-world/assets/obj-spiral.webp" alt="A thick hand-drawn spiral of dark lines" loading="lazy" data-zoom /><span class="specimen-tag">Spiral</span></li>
+          <li><img src="/untitled-world/assets/obj-balloon.webp" alt="A wireframe balloon with a small basket" loading="lazy" data-zoom /><span class="specimen-tag">Balloon</span></li>
+          <li><img src="/untitled-world/assets/obj-whale.webp" alt="A wireframe whale" loading="lazy" data-zoom /><span class="specimen-tag">Whale</span></li>
+          <li><img src="/untitled-world/assets/obj-shatter.webp" alt="A field of white splintered planes" loading="lazy" data-zoom /><span class="specimen-tag">Shatter</span></li>
+        </ul>
+      </section>
+
+      <!-- Film -->
+      <section class="block">
+        <h2>The film</h2>
+        <p>A short film walks through the world, one installation at a time.</p>
+        <div class="film viewfinder">
+          <button type="button" class="film-play" data-video="Bs1gbyd_K18" aria-label="Play the Untitled World film">
+            <img src="/untitled-world/assets/scene-balloon.webp" alt="" loading="lazy" />
+            <span class="film-icon" aria-hidden="true"></span>
+          </button>
+          <div class="hud" aria-hidden="true"><span class="hud-corner tl"></span><span class="hud-corner tr"></span><span class="hud-corner bl"></span><span class="hud-corner br"></span><span class="hud-label tl">Play · YouTube</span></div>
+        </div>
+      </section>
+
+      <a class="next" href="/touch-my-heart/">
+        <div>
+          <p class="label">Next project</p>
+          <p class="name">Touch My Heart</p>
+          <p class="desc">An XR journey inside the human heart on Magic Leap <span>→</span></p>
+        </div>
+        <div class="thumb">
+          <img src="/assets/previews/touch-my-heart.jpg" alt="" loading="lazy" />
+        </div>
+      </a>
+    </article>
+
+    <footer><span class="footer-year" data-footer-year aria-label="Current year">0000</span></footer>
+  </main>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
