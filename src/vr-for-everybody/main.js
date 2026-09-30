@@ -41,6 +41,11 @@ if (!reducedMotion && 'IntersectionObserver' in window) {
     chapter.classList.add('is-armed');
     artObserver.observe(chapter);
   });
+  // The hero bust floats the same way; its loop rests while scrolled away.
+  const heroArt = document.querySelector('.hero-art');
+  if (heroArt) {
+    new IntersectionObserver(([entry]) => heroArt.classList.toggle('is-offscreen', !entry.isIntersecting)).observe(heroArt);
+  }
 }
 
 // Pinned chapter nav: appears once the index cards scroll away, hides again at
