@@ -49,7 +49,8 @@ async function main() {
       const url = `${server.origin}/${encodeURIComponent(slug)}/?preview=cover`;
       const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
       await page.goto(url, { waitUntil: 'networkidle' });
-      await page.waitForSelector('.slide.hero, .hero', { timeout: 10000 });
+      // Deck covers and the CV render .hero; case pages (StarKit, A1) render .cover.
+      await page.waitForSelector('.slide.hero, .hero, .cover', { timeout: 10000 });
       await page.waitForTimeout(SETTLE_MS);
       const outPath = path.join(outDir, `${slug}.jpg`);
       await page.screenshot({ path: outPath, type: 'jpeg', quality: 82 });
