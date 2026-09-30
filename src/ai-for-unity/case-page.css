@@ -16,23 +16,43 @@
   padding: 24px 32px;
 }
 .trend figure { position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; min-height: 0; height: 100%; }
+/* Arrow between panels: centred in the 36px gap and on the panel itself
+   (the figure also holds the 16px caption + 12px gap below, hence -14px) */
 .trend figure + figure::before {
   content: "→";
   position: absolute;
-  left: -26px;
-  top: 50%;
-  color: var(--subtle);
+  left: -18px;
+  top: calc(50% - 14px);
+  translate: -50% -50%;
+  color: var(--accent);
   font-family: var(--font-mono);
-  font-size: 18px;
+  font-size: 20px;
+  line-height: 1;
 }
 .trend figcaption {
   color: var(--muted);
   font-family: var(--font-mono);
   font-size: 11px;
+  line-height: 16px;
   letter-spacing: 0.14em;
   text-align: center;
   text-transform: uppercase;
 }
+
+/* Reveal once in view (main.js arms it): panels scale in one by one, each arrow slides in
+   after the panel before it, and captions fade up under their panel */
+.trend.is-armed :is(svg, figcaption),
+.trend.is-armed figure + figure::before { opacity: 0; }
+.trend.is-visible svg { animation: trendPanel 620ms cubic-bezier(0.22, 1, 0.36, 1) var(--td) both; }
+.trend.is-visible figcaption { animation: trendCaption 480ms cubic-bezier(0.22, 1, 0.36, 1) calc(var(--td) + 180ms) both; }
+.trend.is-visible figure + figure::before { animation: trendArrow 420ms cubic-bezier(0.22, 1, 0.36, 1) calc(var(--td) - 120ms) both; }
+.trend figure:nth-child(1) { --td: 80ms; }
+.trend figure:nth-child(2) { --td: 320ms; }
+.trend figure:nth-child(3) { --td: 560ms; }
+.trend figure:nth-child(4) { --td: 800ms; }
+@keyframes trendPanel { from { opacity: 0; transform: translateY(14px) scale(0.96); } to { opacity: 1; transform: none; } }
+@keyframes trendCaption { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes trendArrow { from { opacity: 0; translate: -120% -50%; } to { opacity: 1; translate: -50% -50%; } }
 .trend svg { display: block; flex: 1; min-height: 0; width: auto; max-width: 100%; filter: drop-shadow(0 10px 22px rgba(17, 17, 17, 0.08)); }
 
 /* Evolution — the current step is marked */

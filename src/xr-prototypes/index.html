@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f8f8f9" />
+  <meta name="description" content="Rapid XR prototypes for Meta Quest — physics, generative music, AI vision and spatial health education — plus a playable WebGL heart viewer." />
+  <!-- social-preview:start -->
+  <link rel="canonical" href="https://timurproko.com/xr-prototypes/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Timur Prokopiev" />
+  <meta property="og:title" content="XR Prototypes" />
+  <meta property="og:description" content="Rapid XR prototypes for Meta Quest — physics, generative music, AI vision and spatial health education — plus a playable WebGL heart viewer." />
+  <meta property="og:url" content="https://timurproko.com/xr-prototypes/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="XR Prototypes" />
+  <meta name="twitter:description" content="Rapid XR prototypes for Meta Quest — physics, generative music, AI vision and spatial health education — plus a playable WebGL heart viewer." />
+  <!-- social-preview:end -->
+  <title>XR Prototypes</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    // Home page cards load this page with ?preview=cover — show only the cover.
+    if (new URLSearchParams(location.search).get('preview') === 'cover') {
+      document.documentElement.classList.add('preview-cover');
+    }
+  </script>
+  <link rel="stylesheet" href="../case/case.css" />
+  <link rel="stylesheet" href="./case-page.css" />
+</head>
+<body>
+  <div class="cover" aria-hidden="true">
+    <p class="cover-title">XR<br>Prototypes</p>
+  </div>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Timur Prokopiev</a>
+      <div class="nav-links" aria-label="Navigation">
+        <a href="/" class="nav-link">Portfolio</a>
+        <a href="/cv/" class="nav-link">CV</a>
+        <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <article>
+      <a class="back-shortcut" href="/" aria-label="Back to portfolio"><kbd>←</kbd> <span class="action-label">Back</span></a>
+
+      <nav class="proto-nav" id="proto-nav" aria-label="Prototypes">
+        <a href="#physics-playground"><span class="proto-nav-index">01</span><span class="proto-nav-title">Physics Playground</span></a>
+        <a href="#gravity-composer"><span class="proto-nav-index">02</span><span class="proto-nav-title">Gravity Composer</span></a>
+        <a href="#reality-scanner"><span class="proto-nav-index">03</span><span class="proto-nav-title">Reality Scanner</span></a>
+        <a href="#health-scope"><span class="proto-nav-index">04</span><span class="proto-nav-title">Health Scope</span></a>
+        <a href="#heart-viewer"><span class="proto-nav-index">05</span><span class="proto-nav-title">Heart Viewer</span></a>
+      </nav>
+
+      <header class="page-head reveal" style="animation-delay: 80ms">
+        <div class="head">
+          <h1>XR Prototypes</h1>
+        </div>
+        <p class="lede">
+          A series of rapid mixed-reality prototypes for Meta Quest, built during XR Bootcamp — each one
+          a quick test of a single idea: physics, generative sound, AI vision and spatial learning.
+        </p>
+        <ul class="tags" aria-label="Focus areas">
+          <li><span class="tag">Rapid Prototyping</span></li>
+          <li><span class="tag">Meta Quest</span></li>
+          <li><span class="tag">Hand Tracking</span></li>
+          <li><span class="tag">Mixed Reality</span></li>
+          <li><span class="tag">AI Integration</span></li>
+        </ul>
+      </header>
+
+      <section class="block first proto-index" aria-label="Prototypes">
+        <ul class="wins cols-5">
+          <li class="win"><a class="win-link" href="#physics-playground"><span class="win-index">/01</span><span class="win-title">Physics Playground</span><span class="win-desc">A hands-on virtual physics lab for the classroom.</span></a></li>
+          <li class="win"><a class="win-link" href="#gravity-composer"><span class="win-index">/02</span><span class="win-title">Gravity Composer</span><span class="win-desc">Generative music from objects moving under physics.</span></a></li>
+          <li class="win"><a class="win-link" href="#reality-scanner"><span class="win-index">/03</span><span class="win-title">Reality Scanner</span><span class="win-desc">A "magic scanner" that identifies real objects with AI.</span></a></li>
+          <li class="win"><a class="win-link" href="#health-scope"><span class="win-index">/04</span><span class="win-title">Health Scope</span><span class="win-desc">Explore anatomy and talk to an AI about it, in your room.</span></a></li>
+          <li class="win"><a class="win-link" href="#heart-viewer"><span class="win-index">/05</span><span class="win-title">Heart Viewer</span><span class="win-desc">A touch-free heart you can slice — playable in the browser.</span></a></li>
+        </ul>
+      </section>
+
+      <section class="feature proto" id="physics-playground">
+        <div class="feature-text">
+          <p class="eyebrow">Prototype 01</p>
+          <h2>Physics Playground XR</h2>
+          <p>
+            An interactive XR sandbox that turns complex physics concepts into playful, hands-on
+            experiments. Designed for educational institutions, it brings a virtual physics lab to
+            every classroom.
+          </p>
+          <div class="proto-tools" aria-label="Tech used">
+            <span class="chip">Meta SDK</span><span class="chip">Hand tracking</span><span class="chip">Scene understanding</span><span class="chip">Shapes</span><span class="chip">UniTask</span><span class="chip">PrimeTween</span>
+          </div>
+          <ul class="points">
+            <li>Believable physics simulations are hard to get right</li>
+            <li>Hand tracking feels natural for brief interactions, but lacks precision for extended use</li>
+            <li>It works best when virtual and real spaces align — like a virtual table matching the real one</li>
+          </ul>
+        </div>
+        <div class="frame">
+          <video src="/xr-prototypes/assets/physics-playground.mp4" poster="/xr-prototypes/assets/physics-playground.webp" muted loop playsinline controls preload="none" aria-label="Physics Playground XR prototype recorded on Meta Quest"></video>
+        </div>
+      </section>
+
+      <section class="feature proto" id="gravity-composer">
+        <div class="feature-text">
+          <p class="eyebrow">Prototype 02</p>
+          <h2>Gravity Composer XR</h2>
+          <p>
+            An immersive sandbox for ambient generative music: place sound-emitting objects in 3D space
+            and let them fall, swing, collide or orbit under simulated physics — their motion plays the music.
+          </p>
+          <div class="proto-tools" aria-label="Tech used">
+            <span class="chip">Meta SDK</span><span class="chip">Hand tracking</span><span class="chip">Scene understanding</span><span class="chip">Shapes</span><span class="chip">FMOD</span>
+          </div>
+          <ul class="points">
+            <li>Pivoted from room-scale interaction to a constrained, focused placement area</li>
+            <li>Took inspiration from Reactable to guide the interaction design</li>
+            <li>Richer sound needs real synthesis — something FMOD isn't built for</li>
+          </ul>
+        </div>
+        <div class="frame">
+          <video src="/xr-prototypes/assets/gravity-composer.mp4" poster="/xr-prototypes/assets/gravity-composer.webp" muted loop playsinline controls preload="none" aria-label="Gravity Composer XR prototype recorded on Meta Quest"></video>
+        </div>
+      </section>
+
+      <section class="feature proto" id="reality-scanner">
+        <div class="feature-text">
+          <p class="eyebrow">Prototype 03</p>
+          <h2>Reality Scanner XR</h2>
+          <p>
+            A "magic scanner" that identifies real objects with AI. What if your surroundings didn't just
+            exist in XR, but actually shaped the experience?
+          </p>
+          <div class="proto-tools" aria-label="Tech used">
+            <span class="chip">Meta SDK</span><span class="chip">Camera API</span><span class="chip">OpenAI Vision</span><span class="chip">OpenCV for Unity</span>
+          </div>
+          <ul class="points">
+            <li>On-device OpenCV detection hit a wall fast — performance, accuracy and integration fell short</li>
+            <li>Pivoted to the Quest camera feed paired with OpenAI's Vision API</li>
+            <li>AI vision pairs beautifully with spatial computing — generative interactions can feel magical</li>
+          </ul>
+        </div>
+        <div class="frame">
+          <video src="/xr-prototypes/assets/reality-scanner.mp4" poster="/xr-prototypes/assets/reality-scanner.webp" muted loop playsinline controls preload="none" aria-label="Reality Scanner XR prototype recorded on Meta Quest"></video>
+        </div>
+      </section>
+
+      <section class="feature proto" id="health-scope">
+        <div class="feature-text">
+          <p class="eyebrow">Prototype 04</p>
+          <h2>Health Scope XR</h2>
+          <p>
+            Turns real-world space into an interactive diagnostic lens: explore lifelike 3D anatomy, hear
+            pathological sounds and ask an AI about symptoms or conditions — all in real time.
+          </p>
+          <div class="proto-tools" aria-label="Tech used">
+            <span class="chip">Meta SDK</span><span class="chip">Camera API</span><span class="chip">Groq STT &amp; Vision</span><span class="chip">OpenAI GPT</span><span class="chip">OpenAI TTS</span>
+          </div>
+          <ul class="points">
+            <li>Integrating diverse AI APIs is tough, but worth it for fluid XR experiences</li>
+            <li>Spatial learning combined with AI conversation opens up powerful educational tools</li>
+            <li>XR isn't just immersion — it makes complex knowledge intuitive and accessible</li>
+          </ul>
+        </div>
+        <div class="frame">
+          <video src="/xr-prototypes/assets/health-scope.mp4" poster="/xr-prototypes/assets/health-scope.webp" muted loop playsinline controls preload="none" aria-label="Health Scope XR prototype recorded on Meta Quest"></video>
+        </div>
+      </section>
+
+      <section class="block" id="heart-viewer">
+        <p class="eyebrow">Prototype 05</p>
+        <h2>Heart Viewer</h2>
+        <p>A WebGL build of the touch-free heart viewer — made for mid-air hand gestures, it works with a mouse too. Drag to start, then turn the heart, slice it along the X, Y or Z axis and switch between 3D and X-ray views.</p>
+        <div class="proto-tools" aria-label="Tech used">
+          <span class="chip">Unity</span><span class="chip">WebGL</span><span class="chip">Touch-free interaction</span><span class="chip">Slicing</span><span class="chip">X-ray view</span>
+        </div>
+        <div class="frame webgl" id="webgl-frame">
+          <button type="button" class="webgl-fullscreen" id="webgl-fullscreen" aria-label="Open full screen" title="Full screen">
+            <svg class="icon-enter" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg>
+            <svg class="icon-exit" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" /></svg>
+          </button>
+          <div class="webgl-stage" id="webgl-stage">
+            <img src="/xr-prototypes/assets/heart-viewer.webp" alt="Heart Viewer prototype: a sliced 3D heart with view, axis, 3D/X-ray and slice controls" loading="lazy" decoding="async" />
+            <button type="button" class="webgl-launch" id="webgl-launch">
+              <span class="webgl-play" aria-hidden="true"></span>
+              <span>Launch prototype</span>
+              <span class="webgl-note">~100 MB · desktop recommended</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <a class="next" href="/touch-my-heart/">
+        <div>
+          <p class="label">Next project</p>
+          <p class="name">Touch My Heart</p>
+          <p class="desc">An XR journey inside the human heart on Magic Leap <span>→</span></p>
+        </div>
+        <div class="thumb">
+          <img src="/assets/previews/touch-my-heart.jpg" alt="" loading="lazy" />
+        </div>
+      </a>
+    </article>
+
+    <footer><span class="footer-year" data-footer-year aria-label="Current year">0000</span></footer>
+  </main>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

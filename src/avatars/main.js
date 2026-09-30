@@ -12,8 +12,8 @@ renderGallery({
   '04.webp': `${A}jade-realtime-screen.webp`,
   '05.mp4': `${A}avatar1.mp4`,
   '06.png': `${A}image-to-3d.png`,
-  '07.png': `${A}base-mesh.png`,
-  '08.png': `${A}retopo-mesh.png`,
+  '07.webp': `${A}wrap-landmarks.webp`,
+  '08.webp': `${A}character-creator.webp`,
 }, document.getElementById('gallery'), { pair: false });
 setupCompare();
 setupFooterYear();

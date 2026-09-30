@@ -1,0 +1,184 @@
+/* XR Prototypes page — purple theme. Loads after case/case.css. */
+:root {
+  --hue: 300;
+  --cover-sweep: #3b0f7a 41%, #6d28d9 47%, #9b5cf6 53%, #c4a1ff 60%, #efe4ff 66%;
+}
+
+/* Overview cards jump to their prototype */
+.win-link { display: flex; flex-direction: column; gap: 10px; height: 100%; text-decoration: none; }
+.win:has(.win-link:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+.win-link:focus-visible { outline: none; }
+.proto, #heart-viewer { scroll-margin-top: 96px; }
+
+/* Prototype rows — copy on the left, square headset capture on the right */
+.proto .frame video { aspect-ratio: 1; object-fit: cover; }
+.proto-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+
+/* WebGL heart — poster with a launch button, swapped for the live build on click (main.js) */
+.webgl { margin-top: 24px; }
+.webgl-stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid oklch(90% 0.01 var(--hue));
+  border-radius: 10px;
+  background: #1b2230;
+}
+.frame .webgl-stage img,
+.webgl-stage iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  border: 0;
+  border-radius: 0;
+  object-fit: cover;
+}
+.webgl-launch {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 10px;
+  border: 0;
+  background: oklch(12% 0.02 260 / 0.68);
+  color: #fff;
+  font: 600 17px/1.2 var(--font-display);
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+.webgl-launch:hover { background: oklch(12% 0.02 260 / 0.56); }
+.webgl-launch:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
+/* Play button — same glass tile as the full-screen button, just larger */
+.webgl-play {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 16px;
+  background: oklch(12% 0.02 260 / 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background-color 200ms ease, transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.webgl-play::after {
+  content: "";
+  position: absolute;
+  left: 25px;
+  top: 21px;
+  border-left: 16px solid #fff;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+}
+.webgl-launch:hover .webgl-play { background: var(--accent); transform: scale(1.06); }
+.webgl-note {
+  color: oklch(88% 0.01 260);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+
+/* Full-screen icon button, pinned to the stage's top-right corner */
+.webgl { position: relative; }
+.webgl-fullscreen {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 10px;
+  background: oklch(12% 0.02 260 / 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 200ms ease, transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.webgl-fullscreen:hover { background: var(--accent); transform: scale(1.06); }
+.webgl-fullscreen:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.webgl-fullscreen svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.webgl-fullscreen .icon-exit,
+.webgl.is-fullscreen .webgl-fullscreen .icon-enter { display: none; }
+.webgl.is-fullscreen .webgl-fullscreen .icon-exit { display: block; }
+/* In full screen the frame drops its padding and the stage fills the screen */
+.webgl.is-fullscreen { margin: 0; padding: 0; border: 0; border-radius: 0; background: #1b2230; }
+.webgl.is-fullscreen .webgl-stage { width: 100%; height: 100%; aspect-ratio: auto; border: 0; border-radius: 0; }
+.webgl.is-fullscreen .webgl-fullscreen { top: 16px; right: 16px; }
+@media (max-width: 760px) {
+  .webgl-fullscreen { top: 14px; right: 14px; width: 34px; height: 34px; }
+}
+
+/* Prototype index — five jump cards straight under the header, no heading or divider */
+.proto-index { border-top: 0; padding-top: 0; }
+.proto-index .wins { margin-top: 0; }
+.wins.cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+@media (max-width: 900px) {
+  .wins.cols-5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wins.cols-5 > :last-child { grid-column: 1 / -1; }
+}
+
+/* Pinned prototype nav — a floating pill level with the Back button, shown once
+   the index cards scroll away (main.js). The current prototype shows its name. */
+.proto-nav {
+  position: fixed;
+  top: 76px;
+  left: 50%;
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--surface), transparent 10%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(17, 17, 17, 0.08);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -8px);
+  transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.proto-nav.is-visible { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
+.proto-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 25px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.proto-nav a:hover { color: var(--fg); }
+.proto-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.proto-nav a[aria-current] { background: var(--accent-dim); color: var(--accent); }
+.proto-nav-index { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; }
+/* Narrower screens: numbers only, with the current prototype's name */
+@media (max-width: 1180px) {
+  .proto-nav a:not([aria-current]) .proto-nav-title { display: none; }
+}
+@media (max-width: 760px) {
+  .proto-nav { top: 68px; left: auto; right: 16px; transform: translateY(-8px); }
+  .proto-nav.is-visible { transform: none; }
+  .proto-nav a { padding: 4px 9px; font-size: 12px; }
+}
+@media (max-width: 420px) {
+  .proto-nav a[aria-current] .proto-nav-title { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .proto-nav { transition: opacity 1ms; }
+}

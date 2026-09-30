@@ -4,3 +4,7 @@
   --accent: #0d9488;
   --accent-dim: rgb(13 148 136 / 0.08);
 }
+
+/* R&D reel: the head sits small in the source video — crop in so it reads at the same scale as the reconstruction images below */
+.frame .zoom { overflow: hidden; border: 1px solid oklch(90% 0.01 var(--hue)); border-radius: 10px; }
+.frame .zoom video { border: 0; border-radius: 0; transform: scale(1.35); transform-origin: 50% 45%; }

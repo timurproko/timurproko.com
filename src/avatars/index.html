@@ -144,7 +144,7 @@
           </ul>
         </div>
         <div class="frame">
-          <video src="/avatars/assets/avatar1.mp4" autoplay muted loop playsinline aria-label="R&amp;D reel — AI facial animation and voice synthesis"></video>
+          <div class="zoom"><video src="/avatars/assets/avatar1.mp4" autoplay muted loop playsinline aria-label="R&amp;D reel — AI facial animation and voice synthesis"></video></div>
         </div>
       </section>
 
@@ -202,7 +202,6 @@
             <span class="compare-label after">Base</span>
             <span class="compare-label before">Retopo</span>
             <span class="compare-line" aria-hidden="true"></span>
-            <span class="compare-handle" aria-hidden="true"></span>
           </div>
         </div>
       </section>
@@ -222,7 +221,13 @@
           </ul>
         </div>
         <div class="frame">
-          <img src="/avatars/assets/render.png" width="4005" height="1558" alt="Textured and realistically rendered avatar" loading="lazy" decoding="async" />
+          <div class="compare" data-compare tabindex="0" aria-label="Character design comparison — drag to compare the textured render with the styled character">
+            <img class="compare-before" src="/avatars/assets/character-textured.webp" width="1600" height="1200" alt="Textured, realistically rendered head before styling" loading="lazy" decoding="async" draggable="false" />
+            <img class="compare-after" src="/avatars/assets/character-styled.webp" width="1600" height="1200" alt="Styled character with hair, beard and grooming in Character Creator" loading="lazy" decoding="async" draggable="false" />
+            <span class="compare-label after">Textured</span>
+            <span class="compare-label before">Styled</span>
+            <span class="compare-line" aria-hidden="true"></span>
+          </div>
         </div>
       </section>
 
