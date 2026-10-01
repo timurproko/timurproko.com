@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f8f8f9" />
+  <meta name="description" content="A UX case study for MineCare — unifying fleet-health monitoring and maintenance software for open-pit mines into one role-based platform." />
+  <!-- social-preview:start -->
+  <link rel="canonical" href="https://timurproko.com/minecare/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Timur Prokopiev" />
+  <meta property="og:title" content="UX Case Study" />
+  <meta property="og:description" content="A UX case study for MineCare — unifying fleet-health monitoring and maintenance software for open-pit mines into one role-based platform." />
+  <meta property="og:url" content="https://timurproko.com/minecare/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="UX Case Study" />
+  <meta name="twitter:description" content="A UX case study for MineCare — unifying fleet-health monitoring and maintenance software for open-pit mines into one role-based platform." />
+  <!-- social-preview:end -->
+  <title>UX Case Study</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    // Home page cards load this page with ?preview=cover — show only the cover.
+    if (new URLSearchParams(location.search).get('preview') === 'cover') {
+      document.documentElement.classList.add('preview-cover');
+    }
+  </script>
+  <link rel="stylesheet" href="../case/case.css" />
+  <link rel="stylesheet" href="./case-page.css" />
+</head>
+<body>
+  <div class="cover" aria-hidden="true">
+    <p class="cover-title">MINE<br>CARE</p>
+  </div>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Timur Prokopiev</a>
+      <div class="nav-links" aria-label="Navigation">
+        <a href="/" class="nav-link">Portfolio</a>
+        <a href="/cv/" class="nav-link">CV</a>
+        <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <article>
+      <a class="back-shortcut" href="/" aria-label="Back to portfolio"><kbd>←</kbd> <span class="action-label">Back</span></a>
+      <a class="link-shortcut" href="https://www.modularmining.com/" target="_blank" rel="noopener noreferrer" aria-label="Modular Mining website (opens in a new tab)"><kbd>↗</kbd> <span class="action-label">Website</span></a>
+
+      <nav class="chapter-nav" id="chapter-nav" aria-label="Sections">
+        <a href="#challenge">Challenge</a>
+        <a href="#users">Users</a>
+        <a href="#structure">Structure</a>
+        <a href="#flows">Flows</a>
+        <a href="#design">Design</a>
+      </nav>
+
+      <header class="page-head reveal" style="animation-delay: 80ms">
+        <div class="head">
+          <h1>MineCare</h1>
+        </div>
+        <p class="lede">
+          A UX case study for MineCare — turning a suite of inconsistent, duplicated desktop tools
+          for open-pit mines into one role-based platform for fleet health, diagnostics and maintenance.
+        </p>
+        <ul class="tags" aria-label="Focus areas">
+          <li><span class="tag">UX Strategy</span></li>
+          <li><span class="tag">User Research</span></li>
+          <li><span class="tag">Information Architecture</span></li>
+          <li><span class="tag">Interaction Design</span></li>
+          <li><span class="tag">Enterprise</span></li>
+          <li><span class="tag">Mining</span></li>
+        </ul>
+      </header>
+
+      <section class="mine-hero reveal" style="animation-delay: 180ms" aria-label="Interactive open pit">
+        <div class="mine-stage" data-mine data-view="overview">
+          <div class="mine-loader" aria-live="polite">
+            <span class="mine-loader-track"><span class="mine-loader-bar"></span></span>
+            <span class="mine-loader-label">Loading Bingham Canyon…</span>
+          </div>
+          <div class="mine-hotspots"></div>
+          <div class="mine-modes" role="group" aria-label="Camera view">
+            <button type="button" data-mode="overview">Overview</button>
+            <button type="button" data-mode="bird">Bird's-eye</button>
+            <button type="button" data-mode="follow">Follow</button>
+            <button type="button" data-mode="cab">In-cab</button>
+          </div>
+          <aside class="mine-fleet" aria-label="Fleet">
+            <div class="mine-fleet-head"><span>Fleet</span><span class="mine-fleet-count">6 trucks · 2 ramps</span></div>
+            <div class="mine-fleet-list"></div>
+          </aside>
+          <aside class="mine-panel" hidden aria-live="polite"></aside>
+          <details class="mine-credits">
+            <summary aria-label="3D model credits">Credits</summary>
+            <p><a href="https://sketchfab.com/3d-models/the-bingham-canyon-mine-utah-d4c90edf676843ed89a26c12228f0abc" target="_blank" rel="noopener noreferrer">Bingham Canyon Mine</a> by Dr Carlos Bartesaghi Koc, CC BY-NC-SA 4.0 · <a href="https://sketchfab.com/3d-models/komatsu-hd785-7-dump-truck-9f6d3aaf49f4460e81fa8b47f767bdd0" target="_blank" rel="noopener noreferrer">Komatsu HD785-7</a> by Maxim Lukyanov, CC BY 4.0 · <a href="https://sketchfab.com/3d-models/excavator-digger-3d-model-88b3ca0e6bac44ce8cef9865288d2ee0" target="_blank" rel="noopener noreferrer">Excavator</a> by Dioramass design, CC BY 4.0</p>
+          </details>
+        </div>
+        <p class="mine-note"><span data-hint="overview">Drag to orbit · Ctrl + scroll to zoom · click a truck or a marker</span><span data-hint="bird">Ctrl + scroll to change altitude · roads coloured by quality</span><span data-hint="follow">Chase camera · pick another truck in the fleet list</span><span data-hint="cab">Drag to look around the cab</span></p>
+      </section>
+
+      <!-- Challenge -->
+      <header class="lens" id="challenge">
+        <p class="eyebrow">Context</p>
+        <h2 class="lens-title">Challenge</h2>
+        <p class="lens-sub">
+          MineCare had grown into a suite of applications with inconsistent design and duplicated functionality across
+          platforms — hard for IT to support and hard for the people in the pit and the control room to use.
+        </p>
+      </header>
+
+      <section class="block">
+        <h2>One mine, too many applications</h2>
+        <ul class="wins cols-2">
+          <li class="win">
+            <span class="win-index">Today</span>
+            <ul class="points">
+              <li>Grey, dialog-on-dialog Windows tools</li>
+              <li>The same task solved differently in each app</li>
+              <li>Diagnostics (RTM) opened in separate windows</li>
+              <li>No overview of fleet health at all</li>
+            </ul>
+          </li>
+          <li class="win">
+            <span class="win-index">Target</span>
+            <ul class="points">
+              <li>One shell, pluggable components</li>
+              <li>Shared UI library and UX guidelines</li>
+              <li>Diagnosis, monitoring and work orders in one flow</li>
+              <li>Fleet health at a glance, by role</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+
+      <section class="block">
+        <h2>What MineCare watches</h2>
+        <ul class="wins cols-4 watch" data-watch>
+          <li class="win"><span class="watch-icon watch-events" aria-hidden="true"><svg viewBox="0 0 48 48"><path class="wi-bell" d="M16 30V21a8 8 0 0 1 16 0v9l3 4H13z"/><path class="wi-bell" d="M21 37a3 3 0 0 0 6 0"/><path class="wi-wave wi-w1" d="M36 14a12 12 0 0 1 3 8"/><path class="wi-wave wi-w2" d="M39 9a18 18 0 0 1 5 13"/><path class="wi-wave wi-w1" d="M12 14a12 12 0 0 0-3 8"/><path class="wi-wave wi-w2" d="M9 9a18 18 0 0 0-5 13"/><circle class="wi-dot" cx="32" cy="15" r="3.5"/></svg></span><span class="win-index">Events</span><span class="win-title">OEM sensor events</span><span class="win-desc">Critical, non-critical and informational events from on-board systems like VIMS.</span></li>
+          <li class="win"><span class="watch-icon watch-rtm" aria-hidden="true"><svg viewBox="0 0 48 48"><rect class="wi-frame" x="5" y="9" width="38" height="30" rx="5"/><path class="wi-line" d="M5 27h8l3-8 5 14 4-10 3 5h3l3-6 3 5h6"/><circle class="wi-live" cx="37" cy="15" r="2.2"/></svg></span><span class="win-index">RTM</span><span class="win-title">Real-time monitoring</span><span class="win-desc">Live parameter streams opened on demand for a single machine.</span></li>
+          <li class="win"><span class="watch-icon watch-snap" aria-hidden="true"><svg viewBox="0 0 48 48"><path class="wi-axis" d="M4 32h40"/><path class="wi-trace" d="M4 28c4 0 5-6 9-6s4 4 8 4 3-12 6-12 4 10 8 10 5-3 9-3"/><path class="wi-event" d="M27 10v28"/><rect class="wi-window" x="17" y="8" width="20" height="32" rx="3"/></svg></span><span class="win-index">Snapshots</span><span class="win-title">Before &amp; after</span><span class="win-desc">Sensor data captured seconds before and after an event, to find its cause.</span></li>
+          <li class="win"><span class="watch-icon watch-wo" aria-hidden="true"><svg viewBox="0 0 48 48"><rect class="wi-clip" x="11" y="8" width="26" height="33" rx="4"/><path class="wi-clip" d="M19 8v-1a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1"/><path class="wi-check" d="M17 19l3 3 5-5"/><path class="wi-row" d="M28 20h4"/><path class="wi-check wi-c2" d="M17 30l3 3 5-5"/><path class="wi-row" d="M28 31h4"/></svg></span><span class="win-index">Work orders</span><span class="win-title">Maintenance</span><span class="win-desc">Diagnosis turns into tasks, parts and a technician in the truck shop.</span></li>
+        </ul>
+      </section>
+
+      <!-- Discovery — Users -->
+      <header class="lens" id="users">
+        <p class="eyebrow">Discovery</p>
+        <h2 class="lens-title">Users</h2>
+        <p class="lens-sub">Five roles share every alert — from the dispatcher who sees it first to the technician who fixes the truck. We met them, then built a persona and a scenario for each.</p>
+      </header>
+
+      <section class="block">
+        <div class="cast" data-cast>
+          <ul class="cast-list" role="tablist" aria-label="Personas">
+            <li><button type="button" role="tab" data-persona="mike"><span class="persona-badge" data-role="S">S</span><span class="cast-name">Mike</span><span class="cast-role">Supervisor</span></button></li>
+            <li><button type="button" role="tab" data-persona="dave" aria-selected="true"><span class="persona-badge" data-role="MD">MD</span><span class="cast-name">Dave</span><span class="cast-role">Maintenance Dispatcher</span><span class="cast-tag">Primary</span></button></li>
+            <li><button type="button" role="tab" data-persona="john"><span class="persona-badge" data-role="MP">MP</span><span class="cast-name">John</span><span class="cast-role">Maintenance Planner</span></button></li>
+            <li><button type="button" role="tab" data-persona="peter"><span class="persona-badge" data-role="MT">MT</span><span class="cast-name">Peter</span><span class="cast-role">Maintenance Technician</span></button></li>
+            <li><button type="button" role="tab" data-persona="samuel"><span class="persona-badge" data-role="RE">RE</span><span class="cast-name">Samuel</span><span class="cast-role">Reliability Engineer</span></button></li>
+          </ul>
+          <div class="cast-detail" role="tabpanel" aria-live="polite">
+            <div class="cast-pane" data-pane-persona="dave">
+              <h3 class="cast-title">Dave, Maintenance Dispatcher</h3>
+              <p class="cast-lede">Works in an office on a desktop PC with multiple monitors, tracking the health of the whole fleet at once. First to see every alert — he diagnoses, decides and delegates.</p>
+              <div class="cast-grid">
+                <div><p class="cast-h">Needs</p><ul class="points"><li>A high-level view of fleet health</li><li>Notifications about upcoming issues</li><li>As much diagnostic information as possible</li></ul></div>
+                <div><p class="cast-h">Goals</p><ul class="points"><li>Address problems instantly, as they occur</li><li>Identify the nature of the problem</li><li>Delegate the decision once it is identified</li></ul></div>
+                <div><p class="cast-h">Pain points</p><ul class="points"><li>Impossible to assess overall fleet health</li><li>Hard to tell how critical an event is</li><li>The system doesn't know who should get the work order</li><li>Finding people's contacts takes extra effort</li><li>Diagnostics (RTM) live in a separate application</li></ul></div>
+                <div><p class="cast-h">Gains — how we help</p><ul class="points"><li>A streamlined UI for performing diagnostics</li><li>Quick access to contact information</li><li>Events matched to the supervisor responsible for that area</li></ul></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>A shift with Dave</h2>
+        <ol class="stages scenario">
+          <li class="stage"><span class="stage-index">01</span><div class="stage-text"><span class="stage-title">Backstory</span><span class="stage-desc">Dave logs in to MineCare. His job is to keep every machine healthy — when something goes wrong, the system raises an alert.</span></div></li>
+          <li class="stage"><span class="stage-index">02</span><div class="stage-text"><span class="stage-title">Configure notifications</span><span class="stage-desc">He checks the notification logic in Application Settings. The defaults already cover his needs out of the box.</span></div></li>
+          <li class="stage"><span class="stage-index">03</span><div class="stage-text"><span class="stage-title">Configure events</span><span class="stage-desc">In Event Handling he adds custom snapshots with start and end intervals, and raises the max engine temperature — technicians told him the regional climate runs hot.</span></div><span class="stage-tools"><span class="chip">Snapshots</span><span class="chip">Thresholds</span></span></li>
+          <li class="stage is-alert"><span class="stage-index">04</span><div class="stage-text"><span class="stage-title">Obtain diagnostics</span><span class="stage-desc">A critical event arrives from truck T102 every 10 seconds: the hydraulic oil pressure sensor is transmitting abnormal values. Dave opens the notification, sees location and latest values, accepts it and compares native and custom snapshots.</span></div><span class="stage-tools"><button type="button" class="chip chip-button" data-show-truck="T-102">See T-102 in the pit ↑</button></span></li>
+        </ol>
+      </section>
+
+      <!-- Architecture -->
+      <header class="lens" id="structure">
+        <p class="eyebrow">Architecture</p>
+        <h2 class="lens-title">Structure</h2>
+        <p class="lens-sub">The user journey shows how one OEM event becomes a closed work order. The information architecture maps every screen to the role that owns it.</p>
+      </header>
+
+      <section class="block">
+        <h2>Event handling and real-time monitoring</h2>
+        <div class="journey" data-journey>
+          <ol class="journey-steps" role="tablist" aria-label="Journey steps"></ol>
+          <div class="journey-detail" aria-live="polite"></div>
+        </div>
+        <p class="block-note">Alternative paths: a dispatcher can <strong>snooze</strong> or <strong>suppress</strong> a notification; cancelling a snooze groups all new events under a fresh notification.</p>
+      </section>
+
+      <section class="block">
+        <h2>Event configuration</h2>
+        <p>Everything the journey depends on is configurable — seven configuration areas behind the scenes.</p>
+        <ul class="wins cols-4 config-grid watch">
+          <li class="win"><span class="watch-icon cfg-oem" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="13" y="20" width="18" height="18" rx="3"/><path d="M17 20v-3M22 20v-3M27 20v-3M17 41v-3M22 41v-3M27 41v-3"/><circle cx="22" cy="29" r="3"/><path class="wi-sig wi-s1" d="M33 15a6 6 0 0 1 4 4"/><path class="wi-sig wi-s2" d="M34 9a12 12 0 0 1 9 9"/></svg></span><span class="win-title">OEM event / notification</span><span class="win-desc">Level, description, parameter, min/max, profile, snapshot, docs.</span></li>
+          <li class="win"><span class="watch-icon cfg-snap" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M8 17h7l3-5h12l3 5h7v20H8z"/><circle cx="24" cy="26" r="6"/><circle class="wi-flash" cx="35" cy="21" r="1.6"/></svg></span><span class="win-title">Snapshots</span><span class="win-desc">Create, update, delete and clone.</span></li>
+          <li class="win"><span class="watch-icon cfg-mail" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="7" y="13" width="34" height="23" rx="3"/><path class="wi-flap" d="M8 15l16 12 16-12"/></svg></span><span class="win-title">Email / phone</span><span class="win-desc">Who gets a text or an email, and when.</span></li>
+          <li class="win"><span class="watch-icon cfg-snooze" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="21" cy="27" r="12"/><path class="wi-hand" d="M21 27v-7"/><path d="M21 27h5"/><path class="wi-z" d="M33 8h6l-6 7h6"/></svg></span><span class="win-title">Snooze</span><span class="win-desc">Rules and expiration criteria.</span></li>
+          <li class="win"><span class="watch-icon cfg-suppress" aria-hidden="true"><svg viewBox="0 0 48 48"><path class="wi-mute" d="M15 32V22a9 9 0 0 1 18 0v10l3 4H12z"/><path d="M21 39a3 3 0 0 0 6 0"/><path class="wi-slash" d="M9 9l30 30"/></svg></span><span class="win-title">Suppress</span><span class="win-desc">Rules and expiration criteria.</span></li>
+          <li class="win"><span class="watch-icon cfg-global" aria-hidden="true"><svg viewBox="0 0 48 48"><rect class="wi-l3" x="12" y="10" width="24" height="7" rx="2"/><rect class="wi-l2" x="10" y="20" width="28" height="7" rx="2"/><rect class="wi-l1" x="8" y="30" width="32" height="8" rx="2"/></svg></span><span class="win-title">Global events</span><span class="win-desc">Ownership, event grouping, last-value and sensor checks.</span></li>
+          <li class="win"><span class="watch-icon cfg-fail" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 8L42 39H6z"/><path class="wi-bang" d="M24 19v10"/><circle class="wi-bang" cx="24" cy="34" r="0.8"/></svg></span><span class="win-title">Failure modes</span><span class="win-desc">Name and description for each failure mode.</span></li>
+        </ul>
+      </section>
+
+
+      <section class="block">
+        <h2>Who works where</h2>
+        <p>Pick a role to see which sections are theirs.</p>
+        <div class="ia" data-ia>
+          <div class="ia-roles" role="group" aria-label="Filter by role">
+            <button type="button" data-role="all" aria-pressed="true">All</button>
+            <button type="button" data-role="MD"><i></i>Dispatcher</button>
+            <button type="button" data-role="MT"><i></i>Technician</button>
+            <button type="button" data-role="S"><i></i>Supervisor</button>
+            <button type="button" data-role="MP"><i></i>Planner</button>
+            <button type="button" data-role="RE"><i></i>Reliability</button>
+          </div>
+          <div class="ia-modules"></div>
+        </div>
+      </section>
+
+      <!-- Interaction design -->
+      <header class="lens" id="flows">
+        <p class="eyebrow">Interaction</p>
+        <h2 class="lens-title">Flows</h2>
+        <p class="lens-sub">Every flow was drawn state by state — 3.1 Edit Event through 3.8 Clone Snapshot — with annotated rules for developers. Try the snapshot flow Dave uses in his scenario.</p>
+      </header>
+
+      <section class="block">
+        <h2>Add a snapshot to an event</h2>
+        <div class="wizard" data-wizard>
+          <div class="wizard-window">
+            <div class="wizard-bar">
+              <span class="wizard-app">MineCare</span>
+              <span class="wizard-tab">Event Handling Config…</span>
+            </div>
+            <div class="wizard-body">
+              <p class="wizard-crumb">Edit Hoist Screen — Active Event</p>
+              <ol class="wizard-steps">
+                <li data-step="1">General information</li>
+                <li data-step="2">Snapshot parameters</li>
+                <li data-step="3">Attached</li>
+              </ol>
+
+              <div class="wizard-pane" data-pane="1">
+                <label class="wizard-field">
+                  <span>Name*</span>
+                  <input type="text" value="Snapshot 1" maxlength="40" data-name />
+                </label>
+                <label class="wizard-field">
+                  <span>Interval before, sec*</span>
+                  <span class="wizard-range"><input type="range" min="30" max="300" step="30" value="60" data-before /><output data-before-out>60</output></span>
+                </label>
+                <label class="wizard-field">
+                  <span>Interval after, sec*</span>
+                  <span class="wizard-range"><input type="range" min="30" max="300" step="30" value="30" data-after /><output data-after-out>30</output></span>
+                </label>
+                <div class="wizard-field">
+                  <span>Sampling interval*</span>
+                  <span class="wizard-seg" role="radiogroup" aria-label="Sampling interval">
+                    <label><input type="radio" name="sampling" value="2" checked />2 s</label>
+                    <label><input type="radio" name="sampling" value="5" />5 s</label>
+                    <label><input type="radio" name="sampling" value="10" />10 s</label>
+                  </span>
+                </div>
+                <div class="wizard-timeline" aria-hidden="true">
+                  <span class="wizard-tl-before"></span><span class="wizard-tl-event">Event</span><span class="wizard-tl-after"></span>
+                </div>
+                <p class="wizard-hint">Intervals change incrementally, in 30-second steps.</p>
+              </div>
+
+              <div class="wizard-pane" data-pane="2" hidden>
+                <p class="wizard-sub">Parameters for interface <strong>VIMS 785B</strong></p>
+                <input type="search" class="wizard-search" placeholder="Search parameter…" data-search />
+                <div class="wizard-lists">
+                  <ul class="wizard-params" data-params></ul>
+                  <div class="wizard-selected">
+                    <p class="wizard-sub">Selected parameters <span data-count-selected>0</span></p>
+                    <ul data-selected></ul>
+                  </div>
+                </div>
+                <p class="wizard-hint">Check a parameter to add it to the right list. Create &amp; Attach stays disabled until something is selected.</p>
+              </div>
+
+              <div class="wizard-pane" data-pane="3" hidden>
+                <div class="wizard-done">
+                  <span class="wizard-done-icon">✓</span>
+                  <div>
+                    <p class="wizard-done-title" data-summary-title>Snapshot 1 attached</p>
+                    <p class="wizard-done-copy" data-summary></p>
+                  </div>
+                </div>
+                <p class="wizard-hint">Choosing <em>Detach</em> returns the event to state 3.1.</p>
+              </div>
+            </div>
+            <div class="wizard-foot">
+              <button type="button" class="wizard-btn is-ghost" data-back hidden>Previous step</button>
+              <span class="wizard-foot-gap"></span>
+              <button type="button" class="wizard-btn is-ghost" data-reset hidden>Detach</button>
+              <button type="button" class="wizard-btn" data-next>Next step</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- Design -->
+      <header class="lens" id="design">
+        <p class="eyebrow">Concepts &amp; interface</p>
+        <h2 class="lens-title">Design</h2>
+        <p class="lens-sub">Sketched at the whiteboard with the dev lead and written down as shared UI guidelines every MineCare application would follow — then carried into a calm, data-dense interface for long shifts in front of several monitors.</p>
+      </header>
+
+
+      <section class="block">
+        <h2>How loud should an alert be?</h2>
+        <p>A toast for every critical notification breaks down fast in a dispatcher's day, so the shell adapts to how often they arrive.</p>
+        <div class="arch-tabs">
+          <input type="radio" name="freq" id="freq-seldom" checked />
+          <input type="radio" name="freq" id="freq-frequent" />
+          <div class="arch-switch" aria-label="Notification frequency">
+            <label for="freq-seldom">Seldom</label>
+            <label for="freq-frequent">Frequent</label>
+          </div>
+          <div class="frame frame-light arch-panel seldom">
+            <svg class="wire" viewBox="0 0 720 400" role="img" aria-labelledby="freq-seldom-title">
+              <title id="freq-seldom-title">Seldom notifications: toasts off, notifications fetched into a tab box under the bell</title>
+              <rect class="wire-frame" x="1" y="1" width="718" height="398" rx="14" />
+              <line class="wire-line" x1="1" y1="40" x2="719" y2="40" />
+              <rect class="wire-chip" x="20" y="13" width="14" height="14" rx="3" /><rect class="wire-chip" x="40" y="13" width="14" height="14" rx="3" />
+              <rect class="wire-soft" x="430" y="12" width="150" height="16" rx="8" />
+              <g class="wire-accent-g"><circle cx="612" cy="20" r="10" class="wire-accent" /><text x="612" y="24" class="wire-badge">3</text></g>
+              <circle cx="644" cy="20" r="10" class="wire-soft" />
+              <rect class="wire-panel" x="20" y="58" width="300" height="322" rx="8" />
+              <ellipse class="wire-map" cx="170" cy="215" rx="110" ry="80" /><ellipse class="wire-map" cx="170" cy="215" rx="70" ry="48" /><ellipse class="wire-map" cx="170" cy="215" rx="30" ry="20" />
+              <text x="34" y="370" class="wire-label">MAP</text>
+              <rect class="wire-panel" x="336" y="58" width="176" height="322" rx="8" />
+              <g class="wire-rows"><rect x="350" y="80" width="148" height="8" rx="4"/><rect x="350" y="104" width="120" height="8" rx="4"/><rect x="350" y="128" width="140" height="8" rx="4"/><rect x="350" y="152" width="100" height="8" rx="4"/><rect x="350" y="176" width="132" height="8" rx="4"/></g>
+              <text x="350" y="370" class="wire-label">EVENTS</text>
+              <rect class="wire-panel" x="528" y="58" width="172" height="322" rx="8" />
+              <g class="wire-rows"><rect x="542" y="80" width="140" height="8" rx="4"/><rect x="542" y="104" width="110" height="8" rx="4"/><rect x="542" y="128" width="130" height="8" rx="4"/></g>
+              <text x="542" y="370" class="wire-label">PERSONNEL</text>
+              <g class="wire-pop">
+                <path class="wire-pop-box" d="M470 48 h196 a8 8 0 0 1 8 8 v104 a8 8 0 0 1 -8 8 h-196 a8 8 0 0 1 -8 -8 v-104 a8 8 0 0 1 8 -8 z M604 48 l8 -10 l8 10" />
+                <rect class="wire-alert-row" x="476" y="60" width="184" height="28" rx="5" /><rect class="wire-row-soft" x="476" y="94" width="184" height="28" rx="5" /><rect class="wire-row-soft" x="476" y="128" width="184" height="28" rx="5" />
+                <rect x="486" y="70" width="110" height="8" rx="4" class="wire-on-alert" />
+              </g>
+            </svg>
+          </div>
+          <div class="frame frame-light arch-panel frequent">
+            <svg class="wire" viewBox="0 0 720 400" role="img" aria-labelledby="freq-frequent-title">
+              <title id="freq-frequent-title">Frequent notifications: toasts off, the notifications component is docked into the shell</title>
+              <rect class="wire-frame" x="1" y="1" width="718" height="398" rx="14" />
+              <line class="wire-line" x1="1" y1="40" x2="719" y2="40" />
+              <rect class="wire-chip" x="20" y="13" width="14" height="14" rx="3" /><rect class="wire-chip" x="40" y="13" width="14" height="14" rx="3" />
+              <rect class="wire-panel" x="20" y="58" width="250" height="322" rx="8" />
+              <ellipse class="wire-map" cx="145" cy="215" rx="95" ry="80" /><ellipse class="wire-map" cx="145" cy="215" rx="60" ry="48" /><ellipse class="wire-map" cx="145" cy="215" rx="26" ry="20" />
+              <text x="34" y="370" class="wire-label">MAP</text>
+              <rect class="wire-panel" x="284" y="58" width="150" height="322" rx="8" />
+              <g class="wire-rows"><rect x="298" y="80" width="122" height="8" rx="4"/><rect x="298" y="104" width="100" height="8" rx="4"/><rect x="298" y="128" width="116" height="8" rx="4"/><rect x="298" y="152" width="90" height="8" rx="4"/></g>
+              <text x="298" y="370" class="wire-label">EVENTS</text>
+              <rect class="wire-panel" x="448" y="58" width="120" height="322" rx="8" />
+              <g class="wire-rows"><rect x="462" y="80" width="92" height="8" rx="4"/><rect x="462" y="104" width="76" height="8" rx="4"/></g>
+              <text x="462" y="370" class="wire-label">PERSONNEL</text>
+              <rect class="wire-dock" x="582" y="58" width="118" height="322" rx="8" />
+              <rect class="wire-alert-row" x="592" y="70" width="98" height="30" rx="5" /><rect class="wire-alert-row" x="592" y="106" width="98" height="30" rx="5" />
+              <rect class="wire-row-soft" x="592" y="142" width="98" height="30" rx="5" /><rect class="wire-alert-row" x="592" y="178" width="98" height="30" rx="5" />
+              <rect class="wire-row-soft" x="592" y="214" width="98" height="30" rx="5" /><rect class="wire-row-soft" x="592" y="250" width="98" height="30" rx="5" />
+              <text x="596" y="370" class="wire-label">NOTIFICATIONS</text>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Pluggable component model</h2>
+        <p>The core concept of the guidelines: an application is decomposed into components that live on a Dashboard. Hover or tap a screen.</p>
+        <div class="nav-model" data-nav-model>
+          <svg class="wire nav-svg" viewBox="0 0 900 470" role="img" aria-labelledby="nav-model-title">
+            <title id="nav-model-title">Navigation model: Dashboard, All Components, Tab and Details page</title>
+            <defs>
+              <marker id="nav-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="nav-arrow-head" /></marker>
+            </defs>
+            <path class="nav-link-line" d="M372 116 H508" marker-end="url(#nav-arrow)" />
+            <path class="nav-link-line" d="M200 210 V290" marker-end="url(#nav-arrow)" />
+            <path class="nav-link-line" d="M372 354 H508" marker-end="url(#nav-arrow)" />
+
+            <g class="nav-screen" tabindex="0" data-screen="dashboard">
+              <rect class="nav-hit" x="20" y="20" width="352" height="190" rx="12" />
+              <rect class="wire-frame" x="28" y="28" width="336" height="174" rx="8" />
+              <line class="wire-line" x1="28" y1="44" x2="364" y2="44" />
+              <rect class="wire-tile" x="44" y="60" width="44" height="44" /><rect class="wire-tile" x="94" y="60" width="44" height="44" /><rect class="wire-tile is-hot" x="44" y="110" width="44" height="44" /><rect class="wire-tile" x="94" y="110" width="44" height="44" />
+              <rect class="wire-tile" x="156" y="60" width="94" height="94" /><rect class="wire-tile" x="262" y="60" width="44" height="44" /><rect class="wire-tile" x="262" y="110" width="44" height="44" /><rect class="wire-tile" x="312" y="60" width="38" height="94" />
+              <rect class="wire-dark" x="28" y="172" width="336" height="30" />
+              <circle cx="48" cy="187" r="5" class="wire-on-dark" /><circle cx="64" cy="187" r="5" class="wire-on-dark" /><circle cx="80" cy="187" r="5" class="wire-on-dark" />
+              <rect x="336" y="178" width="18" height="18" class="wire-on-dark-outline" />
+              <text x="28" y="230" class="nav-title">Dashboard</text>
+            </g>
+            <g class="nav-screen" tabindex="0" data-screen="all">
+              <rect class="nav-hit" x="508" y="20" width="352" height="190" rx="12" />
+              <rect class="wire-frame" x="516" y="28" width="336" height="174" rx="8" />
+              <line class="wire-line" x1="516" y1="44" x2="852" y2="44" />
+              <g class="wire-grid">
+                <rect x="532" y="60" width="44" height="30"/><rect x="582" y="60" width="44" height="30"/><rect x="632" y="60" width="44" height="30"/><rect x="682" y="60" width="44" height="30"/><rect x="732" y="60" width="44" height="30"/><rect x="782" y="60" width="44" height="30"/>
+                <rect x="532" y="96" width="44" height="30"/><rect x="582" y="96" width="44" height="30"/><rect x="632" y="96" width="44" height="30"/><rect x="682" y="96" width="44" height="30"/><rect x="732" y="96" width="44" height="30"/><rect x="782" y="96" width="44" height="30"/>
+                <rect x="532" y="132" width="44" height="30"/><rect x="582" y="132" width="44" height="30"/><rect x="632" y="132" width="44" height="30"/><rect x="682" y="132" width="44" height="30"/><rect x="732" y="132" width="44" height="30"/><rect x="782" y="132" width="44" height="30"/>
+              </g>
+              <text x="516" y="230" class="nav-title">All Components</text>
+            </g>
+            <g class="nav-screen" tabindex="0" data-screen="tab">
+              <rect class="nav-hit" x="20" y="258" width="352" height="190" rx="12" />
+              <rect class="wire-frame" x="28" y="266" width="336" height="174" rx="8" />
+              <line class="wire-line" x1="28" y1="282" x2="364" y2="282" />
+              <g class="wire-rows"><rect x="44" y="298" width="300" height="6" rx="3"/><rect x="44" y="314" width="300" height="6" rx="3"/></g>
+              <rect class="wire-select" x="40" y="326" width="312" height="18" rx="3" />
+              <g class="wire-rows"><rect x="44" y="352" width="300" height="6" rx="3"/><rect x="44" y="368" width="300" height="6" rx="3"/></g>
+              <rect class="wire-dark" x="44" y="384" width="304" height="44" rx="2" />
+              <text x="28" y="468" class="nav-title">Tab</text>
+            </g>
+            <g class="nav-screen" tabindex="0" data-screen="details">
+              <rect class="nav-hit" x="508" y="258" width="352" height="190" rx="12" />
+              <rect class="wire-frame" x="516" y="266" width="336" height="174" rx="8" />
+              <line class="wire-line" x1="516" y1="282" x2="852" y2="282" />
+              <circle cx="534" cy="298" r="6" class="wire-chip" />
+              <g class="wire-rows"><rect x="532" y="318" width="160" height="6" rx="3"/><rect x="532" y="334" width="150" height="6" rx="3"/><rect x="532" y="350" width="160" height="6" rx="3"/><rect x="532" y="366" width="130" height="6" rx="3"/><rect x="532" y="382" width="156" height="6" rx="3"/></g>
+              <rect class="wire-dark" x="712" y="312" width="120" height="70" rx="2" />
+              <text x="516" y="468" class="nav-title">Details page</text>
+            </g>
+          </svg>
+          <ul class="nav-copy">
+            <li data-screen="dashboard"><strong>Dashboard</strong> The user's entry point and main workspace. Components appear as grouped tiles of different sizes in a horizontally panning view.</li>
+            <li data-screen="all"><strong>All Components</strong> Every available component, broken into categories. Add one to the Dashboard — or launch it right from here.</li>
+            <li data-screen="tab"><strong>Tab</strong> A full-size view of a component, made of individual items. Several tabs stay open side by side.</li>
+            <li data-screen="details"><strong>Details page</strong> Each item has its own details page, reached by drill-down navigation where needed.</li>
+          </ul>
+        </div>
+      </section>
+
+
+      <section class="block design-ui">
+        <h2>Visual design</h2>
+        <p>White cards on a quiet canvas, one indigo accent, and colour reserved for the state of a machine.</p>
+      </section>
+      <section id="gallery" class="gallery gallery-wide-hero" aria-label="Interface gallery"></section>
+
+      <a class="next" href="/corel-for-mac/">
+        <div>
+          <p class="label">Next project</p>
+          <p class="name">CorelDRAW for macOS</p>
+          <p class="desc">Bringing a Windows design suite to the Mac <span>→</span></p>
+        </div>
+        <div class="thumb">
+          <img src="../corel-for-mac/images/01.webp" alt="" loading="lazy" />
+        </div>
+      </a>
+    </article>
+
+    <footer><span class="footer-year" data-footer-year aria-label="Current year">0000</span></footer>
+  </main>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
