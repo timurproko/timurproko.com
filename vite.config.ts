@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 
 // Static MPA build for GitHub Pages. Each deck page keeps its original URL:
-// /ai-for-unity/, /corel-for-mac/, /touch-my-heart/, /avatars/, /starkit/, /xr-prototypes/, /vr-for-everybody/, /untitled-world/, /calmxr/, /a1/
+// /ai-for-unity/, /corel-for-mac/, /touch-my-heart/, /avatars/, /starkit/, /vital-sports/, /xr-prototypes/, /vr-for-everybody/, /untitled-world/, /calmxr/, /a1/
 export default defineConfig({
   root: 'src',
   publicDir: resolve(__dirname, 'public'),
@@ -24,6 +24,7 @@ export default defineConfig({
         avatars: resolve(__dirname, 'src/avatars/index.html'),
         'avatars-cover': resolve(__dirname, 'src/avatars/cover/index.html'),
         starkit: resolve(__dirname, 'src/starkit/index.html'),
+        'vital-sports': resolve(__dirname, 'src/vital-sports/index.html'),
         'xr-prototypes': resolve(__dirname, 'src/xr-prototypes/index.html'),
         'vr-for-everybody': resolve(__dirname, 'src/vr-for-everybody/index.html'),
         'untitled-world': resolve(__dirname, 'src/untitled-world/index.html'),

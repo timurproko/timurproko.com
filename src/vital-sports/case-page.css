@@ -1,0 +1,338 @@
+/* VITAL Sports case page. Loads after case/case.css. */
+/* Blue accent (the shared default hue) to match the vHRV trace; the cover title sweeps in the same blues */
+:root { --hue: 255; --cover-sweep: #2b4fd8 41%, #4f74ff 47%, #6f8dff 53%, #a9bcff 60%, #e3e9ff 66%; }
+
+/* Cover: a heartbeat trace (cover-pulse.js) on a dark monitor grid instead of an image */
+html.preview-cover .cover {
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 50%, oklch(45% 0.16 268 / calc(0.1 + var(--beat, 0) * 0.32)), transparent 70%),
+    linear-gradient(oklch(100% 0 0 / 0.035) 1px, transparent 1px) 0 0 / 4vw 4vw,
+    linear-gradient(90deg, oklch(100% 0 0 / 0.035) 1px, transparent 1px) 0 0 / 4vw 4vw,
+    #0b0d14;
+}
+.cover-pulse { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; } /* above the shared vignette so the trace stays bright */
+.cover::before { z-index: 0; }
+.cover-title { z-index: 2; }
+
+/* Hero — athlete in a VR headset. The photo's hue drifts from its coral red through magenta to
+   blue and back, it swells slightly on every heartbeat (--beat from cover-pulse.js), and the
+   same heartbeat trace as the landing cover runs across it */
+.hero {
+  --beat: 0;
+  position: relative;
+  aspect-ratio: 16 / 7;
+  margin-top: 40px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #0b0d14;
+}
+.hero-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 22%;
+  scale: calc(1 + var(--beat) * 0.012);
+  animation: heroHue 10s ease-in-out infinite;
+}
+.hero-photo { filter: hue-rotate(var(--hue-shift, 0deg)) brightness(calc(0.92 + var(--beat) * 0.1)); }
+@property --hue-shift { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@keyframes heroHue {
+  0%, 100% { --hue-shift: 0deg; }
+  50% { --hue-shift: -150deg; }
+}
+/* Darken the lower half so the trace reads, like a HUD over the scene */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 35%, oklch(12% 0.02 260 / 0.55));
+  pointer-events: none;
+}
+.hero.is-media-loading > .hero-photo { opacity: 0; }
+.hero.is-media-loading::before { z-index: 2; }
+.hero .cover-pulse { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; mix-blend-mode: screen; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-photo { animation: none; scale: 1; }
+}
+@media (max-width: 760px) {
+  .hero { aspect-ratio: 4 / 3; }
+}
+.hero + .gallery { margin-top: 12px; }
+/* Screenshots sit under the hero as a strip of small thumbnails (two per row on phones) */
+@media (max-width: 760px) { #gallery .gallery-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  .hero { aspect-ratio: 4 / 3; }
+  .hero-athlete { preserveAspectRatio: xMidYMax slice; }
+}
+
+/* Process has five steps — three rows so they fill two columns (the shared grid assumes four) */
+@media (min-width: 761px) { .steps { grid-template-rows: repeat(3, auto); } }
+
+/* Biofeedback pipeline — device cards as on Touch My Heart, with line-art for the stream and readout */
+.device { display: flex; align-items: center; justify-content: center; height: 96px; margin-bottom: 6px; }
+.device img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 14px 18px rgba(17, 17, 17, 0.14)); }
+.device svg { height: 100%; overflow: visible; }
+.device .ln { fill: none; stroke: var(--accent); stroke-linecap: round; stroke-linejoin: round; }
+.device .tint { fill: color-mix(in oklab, var(--accent), transparent 80%); }
+/* Signal arcs light up outwards; the trace draws itself on a loop */
+.stream-1, .stream-2, .stream-3 { animation: streamPulse 1.8s ease-in-out infinite; }
+.stream-2 { animation-delay: 0.2s; }
+.stream-3 { animation-delay: 0.4s; }
+@keyframes streamPulse { 0%, 100% { opacity: 0.25; } 30% { opacity: 1; } }
+.pipeline .trace { stroke-dasharray: 260; animation: traceDraw 3.2s ease-in-out infinite; }
+@keyframes traceDraw { 0% { stroke-dashoffset: 260; } 60%, 100% { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .stream-1, .stream-2, .stream-3, .pipeline .trace { animation: none; }
+}
+
+/* Session recording — a poster with a frosted play button, as on the StarKit promo; main.js swaps in the video */
+.promo { margin-top: 24px; overflow: hidden; border: 1px solid var(--border); border-radius: 18px; background: var(--ink); }
+.promo-play { position: relative; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
+.promo-play img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; filter: brightness(0.82); transition: filter 400ms ease; }
+.promo-play:hover img { filter: brightness(0.95); }
+.promo-icon { position: absolute; left: calc(50% - 38px); top: calc(50% - 38px); z-index: 1; display: grid; place-items: center; width: 76px; height: 76px; color: #fff; }
+.promo-icon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid oklch(100% 0 0 / 0.3);
+  border-radius: 50%;
+  background: oklch(100% 0 0 / 0.16);
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  box-shadow: 0 10px 30px oklch(0% 0 0 / 0.3);
+  transition: scale 300ms cubic-bezier(0.22, 1, 0.36, 1), background-color 300ms ease;
+}
+.promo-icon svg { width: 28px; height: 28px; margin-left: 4px; fill: currentColor; }
+.promo-play:hover .promo-icon::before { scale: 1.08; background: oklch(100% 0 0 / 0.24); }
+.promo-play:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.promo video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #000; }
+
+/* Live biofeedback — the in-headset breathing pacer and vHRV strip, on a dusk fairway */
+.vital {
+  --breath-ink: oklch(68% 0.16 285);
+  --trace: #6f8dff;
+  margin-top: 24px;
+}
+.vital-stage {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 28px;
+  padding: 56px 32px 24px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  color: #fff;
+  background:
+    radial-gradient(120% 60% at 50% 38%, oklch(62% 0.11 55 / 0.55), transparent 60%),
+    linear-gradient(180deg, oklch(30% 0.03 250) 0%, oklch(36% 0.06 60) 38%, oklch(26% 0.05 140) 52%, oklch(17% 0.03 145) 100%);
+}
+/* Treeline on the horizon */
+.vital-stage::before {
+  content: "";
+  position: absolute;
+  inset: 44% 0 auto;
+  height: 46px;
+  background: oklch(16% 0.03 150 / 0.85);
+  clip-path: polygon(0 60%, 4% 30%, 7% 55%, 11% 20%, 15% 50%, 20% 35%, 24% 58%, 30% 25%, 35% 52%, 41% 40%, 47% 62%, 53% 38%, 58% 55%, 64% 22%, 69% 50%, 74% 32%, 80% 56%, 86% 28%, 91% 52%, 96% 34%, 100% 50%, 100% 100%, 0 100%);
+  pointer-events: none;
+}
+.vital-stage > * { position: relative; }
+
+/* Pacer — the core swells on In, holds, shrinks on Out (--breath 0..1 from biofeedback.js) */
+.pacer {
+  --breath: 0;
+  display: grid;
+  place-items: center;
+  width: 210px;
+  height: 210px;
+}
+.pacer > * { grid-area: 1 / 1; border-radius: 50%; }
+.pacer-halo {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(closest-side, oklch(100% 0 0 / 0.1), oklch(100% 0 0 / 0.02) 80%, transparent);
+  scale: calc(0.82 + var(--breath) * 0.18);
+}
+.pacer-ring {
+  width: 74%;
+  height: 74%;
+  background: oklch(100% 0 0 / 0.16);
+  box-shadow: inset 0 0 0 1px oklch(100% 0 0 / 0.14);
+  scale: calc(0.86 + var(--breath) * 0.14);
+}
+.pacer-core {
+  display: grid;
+  place-items: center;
+  width: 40%;
+  height: 40%;
+  background: oklch(97% 0.005 285);
+  box-shadow: 0 0 calc(18px + var(--breath) * 36px) oklch(100% 0 0 / 0.35);
+  scale: calc(0.62 + var(--breath) * 0.38);
+}
+.pacer-count {
+  color: var(--breath-ink);
+  font-size: 30px;
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  scale: calc(1 / (0.62 + var(--breath) * 0.38)); /* keep the digit steady while the core scales */
+}
+
+/* Phases — In / Hold / Out / Hold, the active one lit and filling over its 4 s */
+.phases {
+  display: grid;
+  grid-template-columns: repeat(4, 64px);
+  gap: 4px;
+  padding: 4px;
+  list-style: none;
+  border-radius: 14px;
+  background: oklch(12% 0.01 280 / 0.82);
+  box-shadow: 0 10px 30px oklch(0% 0 0 / 0.3);
+}
+.phase {
+  --progress: 0;
+  position: relative;
+  display: grid;
+  justify-items: center;
+  padding: 8px 0 7px;
+  overflow: hidden;
+  border-radius: 10px;
+  color: oklch(100% 0 0 / 0.55);
+  font-size: 15px;
+  line-height: 1.25;
+  transition: color 300ms ease, background-color 300ms ease;
+}
+.phase::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: calc(var(--progress) * 100%);
+  background: var(--breath-ink);
+}
+.phase svg { width: 18px; height: 18px; margin-bottom: 4px; fill: none; stroke: var(--breath-ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.phase-name { font-weight: 600; }
+.phase-time { font-variant-numeric: tabular-nums; }
+.phase.is-active { color: #fff; background: oklch(36% 0.08 285 / 0.85); }
+
+/* vHRV strip — number + session timer, scrolling trace, resilience scale */
+.hrv {
+  display: grid;
+  grid-template-columns: auto 1fr 150px;
+  width: min(100%, 760px);
+  overflow: hidden;
+  border: 1px solid oklch(100% 0 0 / 0.1);
+  border-radius: 14px;
+  background: oklch(10% 0.005 260 / 0.9);
+  box-shadow: 0 16px 40px oklch(0% 0 0 / 0.35);
+}
+.hrv-readout { display: grid; align-content: space-between; gap: 10px; padding: 14px 4px 14px 18px; }
+.hrv-value { display: flex; align-items: baseline; gap: 8px; }
+.hrv-value [data-hrv] { min-width: 2ch; font-size: 34px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.hrv-unit { color: oklch(100% 0 0 / 0.6); font-size: 14px; }
+.hrv-timer {
+  justify-self: start;
+  padding: 3px 14px;
+  border-radius: 999px;
+  background: oklch(100% 0 0 / 0.08);
+  color: oklch(100% 0 0 / 0.75);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+.hrv-graph { width: 100%; height: 96px; align-self: center; overflow: visible; }
+.hrv-base { stroke: oklch(100% 0 0 / 0.18); stroke-dasharray: 3 5; vector-effect: non-scaling-stroke; }
+.hrv-line { fill: none; stroke: var(--trace); stroke-width: 2; stroke-linejoin: round; vector-effect: non-scaling-stroke; filter: drop-shadow(0 0 4px rgb(111 141 255 / 0.6)); }
+.hrv-area { fill: url(#hrvFill); }
+.hrv-head { fill: #fff; stroke: var(--trace); stroke-width: 2; vector-effect: non-scaling-stroke; }
+
+.resilience {
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: center;
+}
+.resilience > span:not(.resilience-marker) { display: grid; place-items: center; padding: 0 10px; }
+.resilience-high { background: linear-gradient(90deg, oklch(24% 0.02 260), oklch(46% 0.12 140)); }
+.resilience-low { background: linear-gradient(90deg, oklch(24% 0.02 260), oklch(46% 0.13 25)); }
+.resilience-marker {
+  --level: 0.5;
+  position: absolute;
+  left: 0;
+  top: calc(var(--level) * 100%);
+  width: 4px;
+  height: 22px;
+  margin-top: -11px;
+  border-radius: 0 3px 3px 0;
+  background: #fff;
+  box-shadow: 0 0 10px oklch(100% 0 0 / 0.7);
+  transition: top 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.vital[data-mood="calm"] .resilience-high,
+.vital[data-mood="stressed"] .resilience-low { box-shadow: inset 0 0 0 1px oklch(100% 0 0 / 0.22); }
+.vital[data-mood="stressed"] { --trace: #ff7a6b; }
+.hrv-line, .hrv-head { transition: stroke 600ms ease; }
+
+/* Controls along the bottom of the stage — the dark pill bar from the A1 case (a1/stage.css .a1-tabs) */
+.vital-controls {
+  display: flex;
+  gap: 3px;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: -4px;
+  padding: 5px;
+  border: 1px solid #ffffff19;
+  border-radius: 100px;
+  background: #1c1c21db;
+  box-shadow: 0 2px 12px #0002;
+}
+.vital-controls button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 108px;
+  min-height: 40px;
+  padding: 8px 18px;
+  border: 0;
+  border-radius: 100px;
+  background: #2b2833;
+  color: #e4e1ec;
+  font: 13px/1 var(--font);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.vital-controls button:hover:not(:disabled) { background: #3b3745; color: #f3f0fb; box-shadow: inset 0 1px 0 #ffffff16, 0 2px 6px #0002; }
+.vital-controls button:disabled { color: #6d6a76; cursor: default; }
+.vital-controls button:focus-visible { outline: 2px solid #c5b7f2; outline-offset: 2px; }
+.vital-controls svg { flex: none; width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.vital-controls .icon-play, .vital-controls [data-pressure] svg { fill: currentColor; stroke-width: 1.2; }
+.vital .icon-play, .vital.is-paused .icon-pause { display: none; }
+.vital.is-paused .icon-play { display: block; }
+/* Caption — same as the A1 "Illustrative session" line */
+.vital-caption {
+  margin-top: 12px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .vital-stage { padding: 40px 12px 16px; gap: 22px; }
+  .pacer { width: 170px; height: 170px; }
+  .phases { grid-template-columns: repeat(4, 58px); }
+  .hrv { grid-template-columns: auto 1fr; }
+  .hrv-graph { height: 80px; }
+  .resilience { grid-column: 1 / -1; grid-template-rows: none; grid-template-columns: 1fr 1fr; height: 36px; }
+  .resilience-high { order: 2; }
+  .resilience-marker { display: none; }
+  .vital-controls button { min-width: 0; padding: 7px 13px; font-size: 12px; }
+}

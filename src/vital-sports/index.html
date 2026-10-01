@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f8f8f9" />
+  <meta name="description" content="A VR mental-training app for elite golfers on Meta Quest 3 — guided breathing, immersive tournament footage and visualisation in one short session, with live heart-rate-variability biofeedback." />
+  <!-- social-preview:start -->
+  <link rel="canonical" href="https://timurproko.com/vital-sports/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Timur Prokopiev" />
+  <meta property="og:title" content="VITAL Sports — VR Mental Training" />
+  <meta property="og:description" content="A VR mental-training app for elite golfers on Meta Quest 3 — guided breathing, immersive tournament footage and visualisation in one short session, with live heart-rate-variability biofeedback." />
+  <meta property="og:url" content="https://timurproko.com/vital-sports/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="VITAL Sports — VR Mental Training" />
+  <meta name="twitter:description" content="A VR mental-training app for elite golfers on Meta Quest 3 — guided breathing, immersive tournament footage and visualisation in one short session, with live heart-rate-variability biofeedback." />
+  <!-- social-preview:end -->
+  <title>VITAL Sports — VR Mental Training</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    // Home page cards load this page with ?preview=cover — show only the cover.
+    if (new URLSearchParams(location.search).get('preview') === 'cover') {
+      document.documentElement.classList.add('preview-cover');
+    }
+  </script>
+  <link rel="stylesheet" href="../case/case.css" />
+  <link rel="stylesheet" href="./case-page.css" />
+</head>
+<body>
+  <div class="cover" aria-hidden="true">
+    <canvas class="cover-pulse"></canvas>
+    <p class="cover-title">VITAL<br>SPORTS</p>
+  </div>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Timur Prokopiev</a>
+      <div class="nav-links" aria-label="Navigation">
+        <a href="/" class="nav-link">Portfolio</a>
+        <a href="/cv/" class="nav-link">CV</a>
+        <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <article>
+      <a class="back-shortcut" href="/" aria-label="Back to portfolio"><kbd>←</kbd> <span class="action-label">Back</span></a>
+      <a class="link-shortcut" href="https://www.vitalsports.co/" target="_blank" rel="noopener noreferrer" aria-label="VITAL Sports website (opens in a new tab)"><kbd>↗</kbd> <span class="action-label">Website</span></a>
+
+      <header class="page-head reveal" style="animation-delay: 80ms">
+        <div class="head">
+          <h1>VITAL Sports</h1>
+        </div>
+        <p class="lede">
+          A VR mental-training app for elite golfers on Meta Quest 3 — breathing, immersive tournament
+          footage and visualisation in one short session, guided by live heart-rate variability.
+        </p>
+        <ul class="tags" aria-label="Focus areas">
+          <li><span class="tag">Unity</span></li>
+          <li><span class="tag">Meta Quest 3</span></li>
+          <li><span class="tag">Biofeedback</span></li>
+          <li><span class="tag">Spatial UI</span></li>
+          <li><span class="tag">Sports performance</span></li>
+        </ul>
+      </header>
+
+      <figure class="hero reveal" style="animation-delay: 180ms">
+        <img class="hero-photo" src="/vital-sports/hero.webp" alt="An athlete wearing a VR headset, reaching forward" decoding="async" />
+        <canvas class="cover-pulse" aria-hidden="true"></canvas>
+      </figure>
+
+      <section id="gallery" class="gallery reveal" style="animation-delay: 240ms" aria-label="Project gallery"></section>
+
+      <div class="pair first">
+        <section>
+          <h2>Overview</h2>
+          <p>
+            VITAL — Virtual Immersive Training And Learning — prepares athletes for pressure before
+            they meet it. A personalised session opens on a course the player knows, recalls their
+            best rounds there and walks them through the moments that matter.
+          </p>
+          <p>
+            Each micro-session combines paced breathing, 180° tournament video and guided
+            visualisation, while a heart-rate-variability readout shows how calm the body really is.
+            The team calls it belief coding: <em>it isn't magic, it's neuroscience.</em>
+          </p>
+        </section>
+        <section>
+          <h2>Challenge</h2>
+          <p>
+            Elite players have little time and less patience for wellness apps. A session had to be
+            short, feel premium from the first screen and speak to them personally — their course,
+            their score, their name.
+          </p>
+          <p>
+            The biofeedback had to help, not distract. A number that jumps around makes people
+            anxious; the readout needed to read at a glance and reward steady breathing without
+            turning calm into a game.
+          </p>
+        </section>
+      </div>
+
+      <section class="block">
+        <p class="eyebrow">Biofeedback Pipeline</p>
+        <h2>From the arm to the headset</h2>
+        <p>Heart data streams live from a Polar sensor into the headset, so the session reacts to how the athlete's body is actually responding.</p>
+        <ul class="wins cols-4 pipeline">
+          <li class="win"><span class="device"><img src="/vital-sports/polar-verity-sense-band.webp" alt="Polar Verity Sense on its arm strap" loading="lazy" /></span><span class="win-index">Sensor</span><span class="win-title">Polar Verity Sense</span><span class="win-desc">An optical heart-rate sensor worn on the arm, measuring every beat.</span></li>
+          <li class="win"><span class="device"><svg viewBox="0 0 120 96" aria-hidden="true"><circle class="ln tint" cx="34" cy="48" r="7" stroke-width="2.4" /><path class="ln stream-1" stroke-width="2.4" d="M50 34a20 20 0 0 1 0 28" /><path class="ln stream-2" stroke-width="2.4" d="M62 24a34 34 0 0 1 0 48" /><path class="ln stream-3" stroke-width="2.4" d="M74 14a48 48 0 0 1 0 68" /></svg></span><span class="win-index">Stream</span><span class="win-title">Bluetooth LE</span><span class="win-desc">Beat-to-beat intervals reach the headset in real time while the session plays.</span></li>
+          <li class="win"><span class="device"><img src="/touch-my-heart/assets/meta-quest.webp" alt="Meta Quest headset" loading="lazy" /></span><span class="win-index">Headset</span><span class="win-title">Meta Quest 3</span><span class="win-desc">The Unity app turns the intervals into a vHRV score, updated as the athlete breathes.</span></li>
+          <li class="win"><span class="device"><svg viewBox="0 0 160 96" aria-hidden="true"><path class="ln" stroke-width="1.4" stroke-dasharray="3 5" opacity="0.4" d="M8 52h144" /><path class="ln trace" stroke-width="2.4" d="M8 52h22l5-6 4 10 5-18 5 26 5-14 6 4 8-8 8 6 6-12 5 20 5-10 8 2 8-6 8 4 6-14 5 18 5-8 8 2h14" /></svg></span><span class="win-index">Feedback</span><span class="win-title">vHRV readout</span><span class="win-desc">One number, a live trace and a resilience scale, always in view.</span></li>
+        </ul>
+      </section>
+
+      <section class="block" aria-labelledby="biofeedback-title">
+        <h2 id="biofeedback-title">Live biofeedback</h2>
+        <p>
+          Breathe with the pacer — four seconds in, hold, out, hold. As breathing settles into the
+          rhythm, heart-rate variability turns into a smooth wave and the readout climbs towards
+          high resilience. Add pressure to see it fall apart, then recover.
+        </p>
+
+        <div class="vital" data-vital>
+          <div class="vital-stage">
+            <div class="pacer" aria-hidden="true">
+              <span class="pacer-halo"></span>
+              <span class="pacer-ring"></span>
+              <span class="pacer-core"><span class="pacer-count" data-count>4</span></span>
+            </div>
+
+            <ol class="phases" aria-label="Box breathing, 4 seconds per phase">
+              <li class="phase" data-phase="0"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5m0 0-5 5m5-5 5 5"/></svg><span class="phase-name">In</span><span class="phase-time">4s</span></li>
+              <li class="phase" data-phase="1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg><span class="phase-name">Hold</span><span class="phase-time">4s</span></li>
+              <li class="phase" data-phase="2"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14m0 0-5-5m5 5 5-5"/></svg><span class="phase-name">Out</span><span class="phase-time">4s</span></li>
+              <li class="phase" data-phase="3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg><span class="phase-name">Hold</span><span class="phase-time">4s</span></li>
+            </ol>
+
+            <div class="hrv">
+              <div class="hrv-readout">
+                <p class="hrv-value"><span data-hrv aria-live="off">48</span><span class="hrv-unit">vHRV</span></p>
+                <p class="hrv-timer" data-timer>15:00</p>
+              </div>
+              <svg class="hrv-graph" viewBox="0 0 600 120" preserveAspectRatio="none" role="img" aria-label="Heart-rate-variability trace">
+                <defs>
+                  <linearGradient id="hrvFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#6f8dff" stop-opacity="0.32" />
+                    <stop offset="1" stop-color="#6f8dff" stop-opacity="0" />
+                  </linearGradient>
+                  <linearGradient id="hrvFade" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#fff" stop-opacity="0" />
+                    <stop offset="0.12" stop-color="#fff" stop-opacity="1" />
+                  </linearGradient>
+                  <mask id="hrvMask"><rect width="600" height="120" fill="url(#hrvFade)" /></mask>
+                </defs>
+                <line class="hrv-base" x1="0" y1="60" x2="600" y2="60" />
+                <g mask="url(#hrvMask)">
+                  <path class="hrv-area" data-area d="" />
+                  <path class="hrv-line" data-line d="" />
+                </g>
+                <circle class="hrv-head" data-head r="4" cx="600" cy="60" />
+              </svg>
+              <div class="resilience" aria-hidden="true">
+                <span class="resilience-high">High Resilience</span>
+                <span class="resilience-low">Low Resilience</span>
+                <span class="resilience-marker" data-marker></span>
+              </div>
+            </div>
+
+            <div class="vital-controls">
+              <button type="button" data-toggle aria-pressed="false">
+                <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+                <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10-6.5z"/></svg>
+                <span data-toggle-label>Pause</span>
+              </button>
+              <button type="button" data-pressure>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></svg>
+                <span>Add pressure</span>
+              </button>
+            </div>
+          </div>
+          <p class="vital-caption">An illustrative simulation of the in-headset readout, not recorded data.</p>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Process</h2>
+        <ol class="steps">
+          <li><div><strong>A personal welcome.</strong> Every session opens on a card addressed to the player, with its length and what to expect — no menus to learn.</div></li>
+          <li><div><strong>The course as a postcard.</strong> The venue arrives as a stamped postcard that recalls the player's best round there, setting up the visualisation.</div></li>
+          <li><div><strong>Breathing on the fairway.</strong> A box-breathing pacer floats over a dusk-lit golf course, with In / Hold / Out / Hold steps that light up in turn.</div></li>
+          <li><div><strong>Tournament moments in 180°.</strong> Broadcast footage plays on a curved screen in the scene while the vHRV strip keeps reporting underneath.</div></li>
+          <li><div><strong>Biofeedback at a glance.</strong> One number, a scrolling trace and a high-to-low resilience scale — readable in a headset without breaking focus.</div></li>
+        </ol>
+      </section>
+
+      <section class="block" aria-labelledby="video-title">
+        <h2 id="video-title">In action</h2>
+        <p>A full session recorded in the headset — breathing, tournament footage and visualisation, with the vHRV readout live throughout.</p>
+        <div class="promo">
+          <button type="button" class="promo-play" data-src="/vital-sports/promo.mp4" aria-label="Play the VITAL Sports session recording">
+            <img src="/vital-sports/promo.webp" alt="" loading="lazy" decoding="async" />
+            <span class="promo-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+          </button>
+        </div>
+      </section>
+
+      <a class="next" href="/xr-prototypes/">
+        <div>
+          <p class="label">Next project</p>
+          <p class="name">XR Prototypes</p>
+          <p class="desc">Rapid Meta Quest prototypes — physics, sound, AI vision and anatomy <span>→</span></p>
+        </div>
+        <div class="thumb">
+          <img src="/assets/previews/xr-prototypes.jpg" alt="" loading="lazy" />
+        </div>
+      </a>
+    </article>
+
+    <footer><span class="footer-year" data-footer-year aria-label="Current year">0000</span></footer>
+  </main>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
