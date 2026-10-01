@@ -1,11 +1,14 @@
 // Light / dark theme. Loaded as a classic (blocking) script in <head> so the
-// saved or system theme is applied before first paint, then adds the toggle
-// button to the nav. The choice is stored in localStorage and shared with
-// every page (and the home page's preview iframes) through the storage event.
+// theme is applied before first paint, then adds the toggle button to the nav.
+// Until the visitor picks a theme it follows their local time: dark at night,
+// light during the day. A pick is stored in localStorage, always wins, and is
+// shared with every page (and the home page's preview iframes) via the storage event.
 (function () {
   var KEY = 'theme';
   var root = document.documentElement;
-  var media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  // Local hours counted as night: from NIGHT_START until DAY_START
+  var NIGHT_START = 20;
+  var DAY_START = 7;
 
   function saved() {
     try {
@@ -17,7 +20,12 @@
   }
 
   function preferred() {
-    return saved() || (media && media.matches ? 'dark' : 'light');
+    return saved() || byTime();
+  }
+
+  function byTime() {
+    var hour = new Date().getHours();
+    return hour >= NIGHT_START || hour < DAY_START ? 'dark' : 'light';
   }
 
   function syncMeta(theme) {
@@ -80,9 +88,12 @@
   window.addEventListener('storage', function (event) {
     if (event.key === KEY) apply(preferred());
   });
-  if (media) {
-    var onSystemChange = function () { if (!saved()) apply(preferred()); };
-    if (media.addEventListener) media.addEventListener('change', onSystemChange);
-    else if (media.addListener) media.addListener(onSystemChange);
+  // A page left open across sunset or sunrise switches over on its own
+  function followClock() {
+    if (!saved() && root.getAttribute('data-theme') !== byTime()) apply(byTime());
   }
+  setInterval(followClock, 60 * 1000);
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) followClock();
+  });
 })();
