@@ -541,7 +541,9 @@
       position: absolute;
       inset: 0;
       z-index: 2;
-      pointer-events: none;
+      /* Hit-test shield over the preview iframe so wheel/trackpad scroll lands
+         on the landing page instead of latching onto scrollers inside the deck. */
+      pointer-events: auto;
       background: linear-gradient(to top, oklch(100% 0 0 / 0.3), transparent 60%);
     }
 
@@ -1164,6 +1166,18 @@
           // Suppress any internal scroll.
           idoc.documentElement.style.cssText += ";overflow:hidden!important";
           idoc.body.style.cssText += ";overflow:hidden!important";
+          // Deck scrollers use overscroll-behavior: contain, which traps scroll
+          // chaining inside the preview; let it chain out to the landing page.
+          const scrollChainStyle = idoc.createElement("style");
+          scrollChainStyle.textContent = "*, *::before, *::after { overscroll-behavior: auto !important; }";
+          idoc.head?.appendChild(scrollChainStyle);
+          // Any wheel that still reaches the preview scrolls the landing page.
+          idoc.addEventListener("wheel", event => {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
+            window.scrollBy({ left: event.deltaX * unit, top: event.deltaY * unit, behavior: "instant" });
+          }, { capture: true, passive: false });
           // Reset to first slide.
           iframe.contentWindow.scrollTo({ left: 0, top: 0, behavior: "auto" });
           idoc.documentElement.scrollLeft = 0;
