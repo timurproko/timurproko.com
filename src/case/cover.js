@@ -4,7 +4,7 @@
 export function setupCover(image, { onStart, onStop } = {}) {
   const root = document.documentElement;
   const cover = document.querySelector('.cover');
-  if (cover && image) cover.style.backgroundImage = `url(${image})`;
+  if (cover && image) cover.style.setProperty('--cover-image', `url(${image})`);
 
   function play(active) {
     if (!root.classList.contains('preview-cover')) return false;

@@ -1,7 +1,8 @@
 // Shared full-screen viewer for case-page galleries. Opens one item of a group and
 // lets the viewer move through the rest: swipe on touch (the media follows the
 // finger), arrow keys, or the side buttons. Media still loading shows the landing
-// cards' rainbow sweep. A tap or click that is not a swipe closes it, as does Esc.
+// cards' rainbow sweep. The X in the top-right corner closes it, as do Esc and a
+// tap or click that is not a swipe.
 //
 // Items: { src, alt?, video?, long? } — long opens a tall image at full width and
 // scrolls it (swiping is off there, so the page can be read).
@@ -14,8 +15,9 @@ export function createLightbox() {
   dialog.tabIndex = -1; // takes focus on open, so no button starts with a focus ring
   dialog.innerHTML = `
     <div class="lightbox-stage"></div>
-    <button type="button" class="lightbox-nav lightbox-prev" aria-label="Previous">←</button>
-    <button type="button" class="lightbox-nav lightbox-next" aria-label="Next">→</button>
+    <button type="button" class="lightbox-nav lightbox-prev" aria-label="Previous"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 6l-7 7 7 7"/></svg></button>
+    <button type="button" class="lightbox-nav lightbox-next" aria-label="Next"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 6l7 7-7 7"/></svg></button>
+    <button type="button" class="lightbox-close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7l12 12M18 7L6 19"/></svg></button>
     <span class="lightbox-count" aria-live="polite"></span>`;
   document.body.append(dialog);
 
@@ -54,6 +56,7 @@ export function createLightbox() {
     if (event.key === 'ArrowLeft') step(-1);
     if (event.key === 'ArrowRight') step(1);
   });
+  dialog.querySelector('.lightbox-close').addEventListener('click', event => { event.stopPropagation(); dialog.close(); });
   dialog.addEventListener('close', () => stage.replaceChildren());
 
   // Swipe: the stage follows the pointer horizontally; release past the threshold to
@@ -61,7 +64,7 @@ export function createLightbox() {
   let start = null;
   let moved = false;
   dialog.addEventListener('pointerdown', event => {
-    if (event.target.closest('.lightbox-nav') || dialog.classList.contains('is-long')) return;
+    if (event.target.closest('.lightbox-nav, .lightbox-close') || dialog.classList.contains('is-long')) return;
     start = { x: event.clientX, y: event.clientY };
     moved = false;
   });

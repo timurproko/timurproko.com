@@ -98,7 +98,18 @@
           </ul>
         </div>
         <div class="frame">
-          <img src="/touch-my-heart/assets/research.png" alt="Research boards and mood references for Touch My Heart" loading="lazy" decoding="async" />
+          <div class="switcher switcher-research" aria-label="Design research stages">
+            <input type="radio" name="research-stage" id="research-ideation" checked />
+            <input type="radio" name="research-stage" id="research-mockups" />
+            <div class="switcher-panels">
+              <img src="/touch-my-heart/assets/research.png" width="2560" height="948" alt="Ideation boards and mood references for Touch My Heart" loading="lazy" decoding="async" data-zoom />
+              <img src="/touch-my-heart/assets/mockups.png" width="2531" height="1263" alt="Flow and Figma mockup screens for Touch My Heart" loading="lazy" decoding="async" data-zoom />
+            </div>
+            <div class="switcher-tabs">
+              <label for="research-ideation">Ideation</label>
+              <label for="research-mockups">Mockups</label>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -160,7 +171,7 @@
           </ul>
         </div>
         <div class="frame">
-          <img src="/touch-my-heart/assets/prototype.png?v=2" alt="Clickable XR prototype flow and Figma screens for Touch My Heart" loading="lazy" decoding="async" />
+          <video src="/touch-my-heart/assets/prototype.mp4" autoplay muted loop playsinline aria-label="Clickable XR prototype of Touch My Heart"></video>
         </div>
       </section>
 

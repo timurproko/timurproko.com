@@ -1,5 +1,6 @@
 import { renderGallery } from '../case/gallery.js';
 import { setupFooterYear } from '../case/footer-year.js';
+import { setupZoom } from '../case/lightbox.js';
 
 // Media lives in public/touch-my-heart/assets (shared with the sections below), so the
 // gallery gets it listed here instead of via import.meta.glob. Keys set the order.
@@ -17,6 +18,7 @@ renderGallery({
   '10.png': `${A}prototype.png`,
 }, document.getElementById('gallery'), { pair: false });
 setupFooterYear();
+setupZoom();
 
 // Heart states: each condition clip rests on its first frame and plays only
 // while hovered (or focused). Touch screens have no hover, so a tap toggles it

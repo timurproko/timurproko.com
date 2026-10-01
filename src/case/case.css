@@ -291,6 +291,12 @@ h1 {
 .gallery-strip .shot-open video { aspect-ratio: 16 / 9; object-fit: cover; }
 /* Until its media loads, a tile holds a 16:9 slot for the rainbow loader */
 .shot-open.is-media-loading { aspect-ratio: 16 / 9; }
+/* Hero and strip media already hold their own ratio, so the loader keeps the tile's final size instead of stretching it */
+.gallery-wide-hero .gallery-row:first-child .shot-open.is-media-loading,
+.gallery-strip .shot-open.is-media-loading { aspect-ratio: auto; }
+/* Hide the media under the sweep so it never shows through dimmed, then fade it in */
+.shot-open.is-media-loading > :is(img, video) { opacity: 0; }
+.shot-open :is(img, video) { transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease; }
 .shot-open:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .shot figcaption { margin-top: 8px; padding: 0 2px; color: var(--muted); font-size: 13.5px; }
 /* Rainbow loading sweep — the landing cards' loader, for media that is still loading
@@ -356,37 +362,66 @@ img.is-media-loading {
   border-radius: 12px;
   -webkit-user-drag: none;
 }
-.lightbox-nav {
+/* Frosted round buttons with thin line icons (SVG in lightbox.js). The circle is a
+   ::before layer, so hover grows only the circle — the icon is never scaled and stays pixel-still. */
+.lightbox-nav, .lightbox-close {
   position: fixed;
-  top: 50%;
+  top: calc(50% - 24px);
   z-index: 2;
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
-  translate: 0 -50%;
-  border: 1px solid oklch(100% 0 0 / 0.16);
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
   border-radius: 50%;
-  background: oklch(14% 0.01 250 / 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  color: #fff;
-  font: 500 18px/1 var(--font-mono);
+  background: none;
+  color: oklch(100% 0 0 / 0.86);
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: color 0.2s ease;
 }
-.lightbox-nav:hover { background: oklch(30% 0.01 250 / 0.8); }
-.lightbox-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-.lightbox-prev { left: 16px; }
-.lightbox-next { right: 16px; }
+.lightbox-nav::before, .lightbox-close::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid oklch(100% 0 0 / 0.18);
+  border-radius: 50%;
+  background: oklch(100% 0 0 / 0.1);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: 0 6px 20px oklch(0% 0 0 / 0.25), inset 0 1px 0 oklch(100% 0 0 / 0.12);
+  transition: background-color 0.2s ease, border-color 0.2s ease, scale 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lightbox-nav svg, .lightbox-close svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.lightbox-nav:hover, .lightbox-close:hover { color: #fff; }
+.lightbox-nav:hover::before, .lightbox-close:hover::before { background: oklch(100% 0 0 / 0.2); border-color: oklch(100% 0 0 / 0.32); scale: 1.06; }
+.lightbox-nav:active::before, .lightbox-close:active::before { scale: 0.96; }
+.lightbox-nav:focus-visible, .lightbox-close:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.lightbox-prev { left: 20px; }
+.lightbox-next { right: 20px; }
+/* Close sits in the top-right corner over every item, long scrolling ones included */
+.lightbox-close { top: 20px; right: 20px; width: 44px; height: 44px; }
+.lightbox-close svg { width: 18px; height: 18px; }
 .lightbox-count {
   position: fixed;
   left: 50%;
   bottom: 16px;
   translate: -50% 0;
-  padding: 5px 12px;
+  padding: 6px 12px;
+  border: 1px solid oklch(100% 0 0 / 0.14);
   border-radius: 999px;
-  background: oklch(14% 0.01 250 / 0.6);
+  background: oklch(100% 0 0 / 0.1);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   color: #fff;
   font: 500 12px/1.2 var(--font-mono);
   letter-spacing: 0.06em;
@@ -396,6 +431,7 @@ img.is-media-loading {
 /* Touch screens swipe instead — keep the buttons out of the way of the photo */
 @media (hover: none) {
   .lightbox-nav { top: auto; bottom: 10px; translate: none; width: 40px; height: 40px; }
+  .lightbox-close { width: 40px; height: 40px; }
 }
 @media (prefers-reduced-motion: reduce) {
   img.is-media-loading, :not(img).is-media-loading::before { animation: none; }
@@ -776,7 +812,8 @@ article > :is(.block, .feature, .pair):has(+ :is(.lens, .next)) { padding-bottom
 .switcher { position: relative; }
 .switcher > input { position: absolute; opacity: 0; pointer-events: none; }
 .switcher-panels { display: grid; }
-.switcher-panels > * { grid-area: 1 / 1; opacity: 0; transition: opacity 360ms ease; }
+/* Hidden panels stay out of the way of clicks, so a zoomable panel opens the one on show */
+.switcher-panels > *, .switcher-panels > img.is-media-loading { grid-area: 1 / 1; opacity: 0; pointer-events: none; transition: opacity 360ms ease; }
 .switcher-tabs {
   position: absolute;
   left: 50%;
@@ -808,7 +845,7 @@ article > :is(.block, .feature, .pair):has(+ :is(.lens, .next)) { padding-bottom
 .switcher > input:nth-of-type(1):checked ~ .switcher-panels > :nth-child(1),
 .switcher > input:nth-of-type(2):checked ~ .switcher-panels > :nth-child(2),
 .switcher > input:nth-of-type(3):checked ~ .switcher-panels > :nth-child(3),
-.switcher > input:nth-of-type(4):checked ~ .switcher-panels > :nth-child(4) { opacity: 1; }
+.switcher > input:nth-of-type(4):checked ~ .switcher-panels > :nth-child(4) { opacity: 1; pointer-events: auto; }
 .switcher > input:nth-of-type(1):checked ~ .switcher-tabs > :nth-child(1),
 .switcher > input:nth-of-type(2):checked ~ .switcher-tabs > :nth-child(2),
 .switcher > input:nth-of-type(3):checked ~ .switcher-tabs > :nth-child(3),
@@ -914,6 +951,29 @@ html.preview-cover .cover {
   background-color: #0d0f14;
   background-position: center;
   background-size: cover;
+}
+/* The image (cover.js sets --cover-image) sits on its own layer so it can zoom without
+   moving the title; size/position/repeat inherit, so page overrides on .cover still apply.
+   While the card is hovered it breathes in and out like the 3D covers; on leave it holds
+   where it is and picks up from there next hover, instead of snapping back. */
+html.preview-cover .cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--cover-image, none);
+  background-size: inherit;
+  background-position: inherit;
+  background-repeat: inherit;
+  animation: coverZoom 9s ease-in-out infinite paused;
+}
+html.preview-cover.preview-cover-motion-active .cover::after { animation-play-state: running; }
+@keyframes coverZoom {
+  0%, 100% { scale: 1; }
+  50% { scale: 1.08; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.preview-cover .cover::after { animation: none; }
 }
 .cover::before {
   content: "";
