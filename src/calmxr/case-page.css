@@ -163,7 +163,9 @@ h1, .lens-title, .brief-text h2 { font-family: Inter, var(--font-display); }
   background: oklch(24% 0.01 60);
   box-shadow: 0 30px 60px -30px oklch(25% 0.04 240 / 0.45);
 }
-/* Screens cross-fade; the incoming one settles from a slight zoom, like focusing the eyes */
+/* Screens cross-fade; the incoming one settles from a slight zoom, like focusing the eyes.
+   --zoom crops in on the centred UI so it reads at this size; the frame keeps its proportions. */
+.flow-screen { --zoom: 1.5; }
 .flow-screen img {
   position: absolute;
   inset: 0;
@@ -171,12 +173,12 @@ h1, .lens-title, .brief-text h2 { font-family: Inter, var(--font-display); }
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  scale: 1.04;
+  scale: calc(var(--zoom) * 1.04);
   transition: opacity 700ms ease, scale 1100ms var(--ease-out);
 }
-.flow-screen img.is-active { opacity: 1; scale: 1; }
+.flow-screen img.is-active { opacity: 1; scale: var(--zoom); }
 .flow-screen { cursor: zoom-in; }
-.flow-screen:hover img.is-active { scale: 1.03; transition: opacity 700ms ease, scale 600ms var(--ease-out); }
+.flow-screen:hover img.is-active { scale: calc(var(--zoom) * 1.03); transition: opacity 700ms ease, scale 600ms var(--ease-out); }
 .flow-screen:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .flow-progress {
   height: 2px;
@@ -314,6 +316,9 @@ h1, .lens-title, .brief-text h2 { font-family: Inter, var(--font-display); }
     object-fit: cover;
     background: oklch(24% 0.01 60);
     cursor: zoom-in;
+    /* Same 1.5x crop as the desktop screen: scaled up, then clipped back to its own box */
+    scale: 1.5;
+    clip-path: inset(16.667% round 9.33px);
   }
 }
 @media (max-width: 760px) {

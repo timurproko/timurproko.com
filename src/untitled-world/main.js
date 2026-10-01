@@ -7,6 +7,8 @@ setupCover('/untitled-world/assets/scene-balloon.webp');
 setupFooterYear();
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// On phones the manifesto is plain text you scroll past (case-page.css unpins it too).
+const staticManifesto = reducedMotion || window.matchMedia('(max-width: 760px)').matches;
 
 // Hero HUD timecode — hh:mm:ss:ff since the page opened, like a camera readout.
 const timecode = document.querySelector('[data-timecode]');
@@ -59,15 +61,16 @@ document.querySelectorAll('[data-scrub]').forEach(paragraph => {
     node.replaceWith(fragment);
   });
 });
-// Hologram text: each letter starts as a scattered, blurred wireframe outline cycling
-// through glitch glyphs, then drifts into place and turns to solid ink. Letters resolve
-// in a shuffled order. Returns render(progress 0…1) for the caller to drive.
-const GLITCH = '░▒▓/<>*+#=:·|';
+// Cloud text: each letter starts as a large, faint blur drifting slightly off its
+// place, then condenses into sharp ink. Letters resolve roughly in reading order with
+// overlapping timings, so the line clears like mist. Returns render(progress 0…1).
+const smooth = x => x * x * (3 - 2 * x);
 function materialize(el) {
   const glyphs = [];
   const text = el.textContent.trim();
   el.setAttribute('aria-label', text);
   el.textContent = '';
+  const letters = text.replace(/\s+/g, '').length;
   text.split(/(\s+)/).forEach(part => {
     if (!part.trim()) return el.append(part);
     const word = document.createElement('span');
@@ -78,23 +81,20 @@ function materialize(el) {
       glyph.className = 'glyph';
       glyph.textContent = char;
       const angle = Math.random() * Math.PI * 2;
-      const distance = 40 + Math.random() * 90;
-      glyphs.push({ el: glyph, char, delay: Math.random(), dx: Math.cos(angle) * distance, dy: Math.sin(angle) * distance * 0.6, spin: (Math.random() - 0.5) * 50 });
+      const distance = 16 + Math.random() * 36;
+      const order = glyphs.length / Math.max(1, letters - 1);
+      glyphs.push({ el: glyph, delay: order * 0.65 + Math.random() * 0.35, dx: Math.cos(angle) * distance, dy: Math.sin(angle) * distance * 0.7 });
       word.append(glyph);
     });
     el.append(word);
   });
   return progress => glyphs.forEach(g => {
-    // Each letter gets a 40% slice of the timeline, offset by its random delay.
-    const p = Math.min(1, Math.max(0, (progress - g.delay * 0.6) / 0.4));
-    const rest = 1 - p;
-    g.el.style.transform = `translate(${(g.dx * rest).toFixed(1)}px, ${(g.dy * rest).toFixed(1)}px) rotate(${(g.spin * rest).toFixed(1)}deg)`;
-    g.el.style.filter = rest > 0.01 ? `blur(${(rest * 6).toFixed(1)}px)` : '';
-    g.el.style.opacity = (0.15 + p * 0.85).toFixed(2);
-    g.el.classList.toggle('is-solid', p >= 0.92);
-    g.el.textContent = p > 0 && p < 0.75 && Math.random() < rest * 0.8
-      ? GLITCH[Math.floor(Math.random() * GLITCH.length)]
-      : g.char;
+    // Each letter gets half the timeline, offset by its delay.
+    const e = smooth(Math.min(1, Math.max(0, (progress - g.delay * 0.5) / 0.5)));
+    const rest = 1 - e;
+    g.el.style.transform = `translate(${(g.dx * rest).toFixed(1)}px, ${(g.dy * rest).toFixed(1)}px) scale(${(1 + rest * 0.4).toFixed(3)})`;
+    g.el.style.filter = rest > 0.01 ? `blur(${(rest * 16).toFixed(1)}px)` : '';
+    g.el.style.opacity = e.toFixed(3);
   });
 }
 
@@ -116,11 +116,12 @@ function scrubManifesto() {
   // The closing line pins centred while still scattered, then assembles as scrolling continues.
   if (finale) renderGlyphs(Math.min(1, Math.max(0, (pinProgress(finale) - 0.08) / 0.72)));
 }
-if (!reducedMotion) {
+if (!staticManifesto) {
   window.addEventListener('scroll', scrubManifesto, { passive: true });
   window.addEventListener('resize', scrubManifesto);
   scrubManifesto();
 } else {
+  words.forEach(word => word.classList.add('is-lit'));
   renderGlyphs(1);
 }
 
