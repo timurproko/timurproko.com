@@ -359,7 +359,7 @@
   transition: border-color 200ms ease, background-color 200ms ease, color 200ms ease;
 }
 .nav-copy strong { display: block; margin-bottom: 2px; color: var(--fg); font-family: var(--font-display); font-size: 15.5px; }
-.nav-copy li.is-active { border-color: oklch(82% 0.07 var(--hue)); background: oklch(97.5% 0.015 var(--hue)); color: oklch(34% 0.012 250); }
+.nav-copy li.is-active { border-color: oklch(82% 0.07 var(--hue)); background: oklch(97.5% 0.015 var(--hue)); color: var(--text); }
 
 /* ---- Journey ----------------------------------------------------------------- */
 .journey { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 20px 32px; margin-top: 24px; align-items: start; }
@@ -598,12 +598,12 @@
 .cast-pane.is-in { animation: archFade 300ms ease both; }
 .cast-pane .eyebrow { margin-bottom: 6px; }
 .cast-title { font-family: var(--font-display); font-size: clamp(22px, 2.4vw, 28px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
-.cast-lede { max-width: 62ch; margin-top: 10px; color: oklch(34% 0.012 250); line-height: 1.65; }
+.cast-lede { max-width: 62ch; margin-top: 10px; color: var(--text); line-height: 1.65; }
 .cast-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 32px; margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--border); }
 .cast-h { color: var(--accent); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; }
 .cast-h-gap { margin-top: 18px; }
 .cast-grid .points { margin-top: 10px; font-size: 15px; }
-.cast-note { margin-top: 8px; color: oklch(34% 0.012 250); font-size: 15px; }
+.cast-note { margin-top: 8px; color: var(--text); font-size: 15px; }
 @media (max-width: 900px) {
   .cast { grid-template-columns: 1fr; }
   .cast-list button[aria-selected="true"]::after { display: none; }
@@ -806,3 +806,48 @@
 .journey-roles { display: inline-flex; gap: 4px; }
 .journey-r[data-role="S"] { background: color-mix(in oklab, var(--role-s), transparent 84%); color: #475569; }
 .journey-who .persona-badge + .persona-badge { margin-left: -4px; }
+
+/* ---- Dark theme ---------------------------------------------------------------
+   The 3D pit HUD and the snapshot wizard mimic the light platform UI, so they stay
+   light; page surfaces, diagrams and wireframes switch to the dark palette. */
+@media screen {
+  :root[data-theme="dark"] .mine-stage,
+  :root[data-theme="dark"] .wizard { color-scheme: light; }
+
+  :root[data-theme="dark"] .stage.is-alert { border-color: oklch(45% 0.12 25); background: linear-gradient(90deg, oklch(26% 0.05 25), var(--surface) 60%); }
+  :root[data-theme="dark"] .stage.is-alert .stage-index { color: #f87171; }
+  :root[data-theme="dark"] .chip-button:hover,
+  :root[data-theme="dark"] .arch-switch button[aria-pressed="true"],
+  :root[data-theme="dark"] #freq-seldom:checked ~ .arch-switch label[for="freq-seldom"],
+  :root[data-theme="dark"] #freq-frequent:checked ~ .arch-switch label[for="freq-frequent"],
+  :root[data-theme="dark"] .cast-tag { color: var(--bg); }
+
+  :root[data-theme="dark"] .journey-steps button[aria-selected="true"],
+  :root[data-theme="dark"] .cast-list button[aria-selected="true"],
+  :root[data-theme="dark"] .cast-list button[aria-selected="true"]::after { background: oklch(25% 0.04 var(--hue)); }
+  :root[data-theme="dark"] .journey-detail { background: linear-gradient(170deg, oklch(25% 0.04 var(--hue)), var(--surface) 70%); }
+  :root[data-theme="dark"] .cast-detail { border-color: oklch(40% 0.08 var(--hue)); background: linear-gradient(170deg, oklch(25% 0.04 var(--hue)), var(--surface) 60%); }
+  :root[data-theme="dark"] .journey-r { color: #60a5fa; }
+  :root[data-theme="dark"] .journey-r[data-role="SYS"] { background: oklch(30% 0.01 250); color: #a1a1aa; }
+  :root[data-theme="dark"] .journey-r[data-role="MP"] { color: #fbbf24; }
+  :root[data-theme="dark"] .journey-r[data-role="MT"] { color: #2dd4bf; }
+  :root[data-theme="dark"] .nav-copy li.is-active { border-color: oklch(45% 0.08 var(--hue)); background: oklch(24% 0.03 var(--hue)); }
+  :root[data-theme="dark"] .nav-screen.is-active .nav-hit { fill: oklch(26% 0.05 var(--hue)); }
+  :root[data-theme="dark"] .watch-icon { background: oklch(27% 0.05 var(--hue)); }
+
+  :root[data-theme="dark"] .wire-frame { fill: oklch(22% 0.01 270); stroke: oklch(80% 0.01 270); }
+  :root[data-theme="dark"] .wire-line { stroke: #6b6b78; }
+  :root[data-theme="dark"] .wire-chip { fill: #4a4a56; }
+  :root[data-theme="dark"] .wire-soft,
+  :root[data-theme="dark"] .wire-row-soft { fill: #33333d; }
+  :root[data-theme="dark"] .wire-panel { fill: oklch(25% 0.01 270); stroke: #4a4a56; }
+  :root[data-theme="dark"] .wire-map { stroke: #5c5c6a; }
+  :root[data-theme="dark"] .wire-rows rect,
+  :root[data-theme="dark"] .wire-grid rect,
+  :root[data-theme="dark"] .wire-tile:not(.is-hot) { fill: #3a3a46; }
+  :root[data-theme="dark"] .wire-label { fill: #9a9aaa; }
+  :root[data-theme="dark"] .wire-pop-box { fill: oklch(25% 0.02 270); filter: drop-shadow(0 10px 20px rgb(0 0 0 / 0.4)); }
+  :root[data-theme="dark"] .wire-alert-row { fill: oklch(32% 0.08 25); }
+  :root[data-theme="dark"] .wire-dock { fill: oklch(26% 0.05 var(--hue)); }
+  :root[data-theme="dark"] .wire-dark { fill: #0e0e14; }
+}

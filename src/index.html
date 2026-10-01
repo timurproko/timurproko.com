@@ -40,6 +40,16 @@
       --border:  oklch(92% 0.005 250);
       --accent:  oklch(58% 0.18 255);
       --accent-dim: oklch(58% 0.18 255 / 0.08);
+      --nav-bg:  oklch(99% 0.002 240 / 0.88);
+      --border-strong: oklch(85% 0.005 250);
+      --shadow-color: oklch(18% 0.012 250 / 0.07);
+      --veil:    oklch(100% 0 0 / 0.3);
+      --chip-bg:     oklch(96% 0.006 250);
+      --chip-border: oklch(88% 0.01 250);
+      --chip-fg:     oklch(30% 0.012 250);
+      --tag-bg:      oklch(97.5% 0.003 250);
+      --tag-border:  oklch(93% 0.005 250);
+      --tag-fg:      oklch(60% 0.01 250);
       --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
       --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
       --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
@@ -65,7 +75,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: oklch(99% 0.002 240 / 0.88);
+      background: var(--nav-bg);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
@@ -234,10 +244,10 @@
       align-items: center;
       min-height: 26px;
       padding: 0 13px;
-      border: 1px solid oklch(88% 0.01 250);
+      border: 1px solid var(--chip-border);
       border-radius: 999px;
-      background: oklch(96% 0.006 250);
-      color: oklch(30% 0.012 250);
+      background: var(--chip-bg);
+      color: var(--chip-fg);
       font-size: 13px;
       line-height: 1;
       letter-spacing: 0.01em;
@@ -258,7 +268,7 @@
     .intro-chip[aria-pressed="true"] {
       background: var(--accent, oklch(55% 0.15 250));
       border-color: var(--accent, oklch(55% 0.15 250));
-      color: #fff;
+      color: var(--bg);
     }
 
     /* Profile card — grid variant */
@@ -409,10 +419,10 @@
       height: 26px;
       margin-bottom: 6px;
       padding: 0;
-      border: 1px solid oklch(88% 0.01 250);
+      border: 1px solid var(--chip-border);
       border-radius: 999px;
-      background: oklch(96% 0.006 250);
-      color: oklch(30% 0.012 250);
+      background: var(--chip-bg);
+      color: var(--chip-fg);
       font-size: 13px;
       line-height: 1;
       cursor: pointer;
@@ -453,8 +463,8 @@
       transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
     }
     .card:hover {
-      border-color: oklch(85% 0.005 250);
-      box-shadow: 0 4px 24px oklch(18% 0.012 250 / 0.07);
+      border-color: var(--border-strong);
+      box-shadow: 0 4px 24px var(--shadow-color);
       transform: translateY(-2px);
     }
 
@@ -544,7 +554,7 @@
       /* Hit-test shield over the preview iframe so wheel/trackpad scroll lands
          on the landing page instead of latching onto scrollers inside the deck. */
       pointer-events: auto;
-      background: linear-gradient(to top, oklch(100% 0 0 / 0.3), transparent 60%);
+      background: linear-gradient(to top, var(--veil), transparent 60%);
     }
 
     .meta {
@@ -613,17 +623,17 @@
       align-items: center;
       height: 20px;
       padding: 0 7px;
-      border: 1px solid oklch(93% 0.005 250);
+      border: 1px solid var(--tag-border);
       border-radius: 999px;
-      background: oklch(97.5% 0.003 250);
-      color: oklch(60% 0.01 250);
+      background: var(--tag-bg);
+      color: var(--tag-fg);
       font-size: 10.5px;
       font-weight: 500;
       line-height: 1;
       letter-spacing: 0.04em;
     }
     .card-tag.is-active {
-      border-color: oklch(88% 0.04 250);
+      border-color: color-mix(in oklch, var(--accent) 40%, transparent);
       background: var(--accent-dim, oklch(95% 0.02 250));
       color: var(--accent, oklch(50% 0.14 250));
     }
@@ -800,7 +810,7 @@
         margin-right: -20px;
         padding: 4px 20px 0;
         border-bottom-color: transparent;
-        background: oklch(99% 0.002 240 / 0.88);
+        background: var(--nav-bg);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
       }
@@ -874,6 +884,8 @@
     }
   </style>
   <link rel="stylesheet" href="/styles/chips.css" />
+  <link rel="stylesheet" href="/styles/theme.css" />
+  <script src="/theme.js"></script>
 </head>
 <body>
   <nav>

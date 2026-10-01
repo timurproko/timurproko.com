@@ -336,3 +336,8 @@ html.preview-cover .cover {
   .resilience-marker { display: none; }
   .vital-controls button { min-width: 0; padding: 7px 13px; font-size: 12px; }
 }
+
+/* Dark theme */
+@media screen {
+  :root[data-theme="dark"] .device img { filter: drop-shadow(0 14px 18px var(--shadow-color)); }
+}

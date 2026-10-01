@@ -331,3 +331,21 @@ img[data-zoom]:focus-visible { outline: 2px solid var(--accent); outline-offset:
   background: #fff;
 }
 .lightbox.is-long img { width: 100%; max-width: none; max-height: none; }
+
+/* Dark theme — photos and infographics keep their white backdrops */
+@media screen {
+  :root[data-theme="dark"] .win-thesis { border-color: var(--hue-border); }
+  :root[data-theme="dark"] .stage.is-here { border-color: var(--hue-border); }
+  :root[data-theme="dark"] .product-cards .win img { border-color: var(--tint-border); }
+  :root[data-theme="dark"] .chapter-nav { box-shadow: 0 8px 24px var(--shadow-color); }
+  :root[data-theme="dark"] .spectrum-bar { background: linear-gradient(90deg, oklch(45% 0.02 250), oklch(70% 0.14 var(--hue)), oklch(60% 0.2 300)); }
+  :root[data-theme="dark"] .lc-dots-c circle, :root[data-theme="dark"] .lc-dots-v circle { stroke: var(--bg); }
+  :root[data-theme="dark"] .illo { border-color: var(--tint-border); background: var(--surface); }
+  :root[data-theme="dark"] .tracking-illo .wall { fill: oklch(26% 0.015 var(--hue)); stroke: oklch(34% 0.02 var(--hue)); }
+  :root[data-theme="dark"] .tracking-illo .wall-right { fill: oklch(23% 0.015 var(--hue)); }
+  :root[data-theme="dark"] .tracking-illo .floor { fill: oklch(30% 0.02 var(--hue)); stroke: oklch(38% 0.025 var(--hue)); }
+  :root[data-theme="dark"] .tracking-illo .shadow { fill: oklch(12% 0.01 var(--hue) / 0.6); }
+  :root[data-theme="dark"] .tracking-illo .body { fill: oklch(62% 0.03 260); }
+  :root[data-theme="dark"] .tracking-illo .leg { stroke: oklch(62% 0.03 260); }
+  :root[data-theme="dark"] .tracking-illo :is(.headset, .station rect) { fill: oklch(8% 0.01 265); }
+}

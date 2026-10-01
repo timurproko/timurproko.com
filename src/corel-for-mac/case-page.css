@@ -136,3 +136,29 @@
   .breakdown-mobile-detail strong { font-family: var(--font-display); font-size: 17px; line-height: 1.25; }
   .breakdown-mobile-detail span { color: var(--muted); font-size: 15px; line-height: 1.45; }
 }
+
+/* Dark theme — diagrams flip to light lines on the dark surface */
+@media screen {
+  :root[data-theme="dark"] .venn .venn-rings circle { mix-blend-mode: screen; }
+  :root[data-theme="dark"] #arch-macos:checked ~ .arch-switch label[for="arch-macos"],
+  :root[data-theme="dark"] #arch-corel:checked ~ .arch-switch label[for="arch-corel"] { color: var(--bg); }
+
+  :root[data-theme="dark"] .architecture-graph .frame-rect,
+  :root[data-theme="dark"] .breakdown-svg .window,
+  :root[data-theme="dark"] .breakdown-svg .panel { fill: var(--surface); }
+  :root[data-theme="dark"] .architecture-graph .frame-rect,
+  :root[data-theme="dark"] .breakdown-svg .window,
+  :root[data-theme="dark"] .breakdown-svg .window-outline { stroke: oklch(82% 0.006 250); }
+  :root[data-theme="dark"] .architecture-graph .line,
+  :root[data-theme="dark"] .breakdown-svg .bar,
+  :root[data-theme="dark"] .breakdown-svg .panel { stroke: #6f6f6f; }
+  :root[data-theme="dark"] .architecture-graph .soft-line { stroke: #484848; }
+  :root[data-theme="dark"] .breakdown-svg .bar { fill: oklch(25% 0.008 250); }
+  :root[data-theme="dark"] .breakdown-svg .touch { fill: #3a3a3a; stroke: #bdbdbd; }
+  :root[data-theme="dark"] .architecture-graph text,
+  :root[data-theme="dark"] .breakdown-svg text { fill: #c4c4c4; }
+  :root[data-theme="dark"] .breakdown-svg .ui-label { fill: #b4b4b4; }
+  :root[data-theme="dark"] .breakdown-tip rect { fill: oklch(24% 0.008 250 / 0.97); stroke: #555; filter: drop-shadow(0 12px 24px rgb(0 0 0 / 0.45)); }
+  :root[data-theme="dark"] .breakdown-tip .tip-title { fill: var(--fg); }
+  :root[data-theme="dark"] .breakdown-tip .tip-copy { fill: var(--muted); }
+}

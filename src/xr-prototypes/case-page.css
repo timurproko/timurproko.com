@@ -179,3 +179,9 @@
 @media (prefers-reduced-motion: reduce) {
   .proto-nav { transition: opacity 1ms; }
 }
+
+/* Dark theme */
+@media screen {
+  :root[data-theme="dark"] .webgl-stage { border-color: var(--tint-border); }
+  :root[data-theme="dark"] .proto-nav { box-shadow: 0 8px 24px var(--shadow-color); }
+}

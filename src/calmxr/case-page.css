@@ -112,7 +112,7 @@ h1, .lens-title, .brief-text h2 { font-family: Inter, var(--font-display); }
 }
 .brief-art:hover img { scale: 1.02; }
 .brief-text h2 { font-size: clamp(26px, 3vw, 34px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; }
-.brief-text > p:not(.eyebrow) { margin-top: 14px; color: oklch(34% 0.012 250); line-height: 1.7; }
+.brief-text > p:not(.eyebrow) { margin-top: 14px; color: var(--text); line-height: 1.7; }
 
 /* ─── Goals ─────────────────────────────────────────────────────────────── */
 .goals {
@@ -330,4 +330,18 @@ h1, .lens-title, .brief-text h2 { font-family: Inter, var(--font-display); }
   .sky-scene, .goals li { transition: none; }
   .cue-out { opacity: 0; }
   .flow-screen img, .flow-step, .flow-progress span { transition: none; }
+}
+
+/* ─── Dark theme ────────────────────────────────────────────────────────── */
+@media screen {
+  :root[data-theme="dark"] {
+    --accent: oklch(76% 0.08 var(--hue));
+    --accent-dim: oklch(76% 0.08 var(--hue) / 0.14);
+  }
+  :root[data-theme="dark"] .tag { border-color: oklch(40% 0.04 var(--hue)); color: oklch(84% 0.05 var(--hue)); }
+  :root[data-theme="dark"] .goals li {
+    border-color: oklch(30% 0.02 var(--hue));
+    background: linear-gradient(160deg, oklch(24% 0.025 var(--hue)), oklch(20% 0.01 var(--hue)) 70%);
+  }
+  :root[data-theme="dark"] .goals li:hover { border-color: oklch(42% 0.05 var(--hue)); }
 }

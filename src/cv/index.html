@@ -47,6 +47,12 @@
       --border:  oklch(92% 0.005 250);
       --accent:  oklch(58% 0.18 255);
       --accent-dim: oklch(58% 0.18 255 / 0.08);
+      --nav-bg:  oklch(99% 0.002 240 / 0.88);
+      --border-strong: oklch(85% 0.005 250);
+      --shadow-color: oklch(18% 0.012 250 / 0.07);
+      --chip-bg:     oklch(96% 0.006 250);
+      --chip-border: oklch(88% 0.01 250);
+      --chip-fg:     oklch(30% 0.012 250);
       --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
       --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
       --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
@@ -69,7 +75,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: oklch(99% 0.002 240 / 0.88);
+      background: var(--nav-bg);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
@@ -311,10 +317,10 @@
       align-items: center;
       min-height: 28px;
       padding: 0 13px;
-      border: 1px solid oklch(88% 0.01 250);
+      border: 1px solid var(--chip-border);
       border-radius: 999px;
-      background: oklch(96% 0.006 250);
-      color: oklch(30% 0.012 250);
+      background: var(--chip-bg);
+      color: var(--chip-fg);
       font-size: 13px;
       line-height: 1;
       letter-spacing: 0.01em;
@@ -348,8 +354,8 @@
       transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
     }
     .card:hover {
-      border-color: oklch(85% 0.005 250);
-      box-shadow: 0 4px 24px oklch(18% 0.012 250 / 0.07);
+      border-color: var(--border-strong);
+      box-shadow: 0 4px 24px var(--shadow-color);
       transform: translateY(-2px);
     }
     .card-inner { padding: 22px; }
@@ -443,7 +449,7 @@
       padding: 16px;
       border: 1px solid var(--border);
       border-radius: 12px;
-      background: oklch(99% 0.002 240);
+      background: var(--bg);
     }
     .project h3 {
       font-size: 15px;
@@ -1060,7 +1066,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, oklch(100% 0 0), var(--bg));
+      background: linear-gradient(135deg, var(--surface), var(--bg));
     }
     html.preview-cover .shell::before {
       content: "";
@@ -1157,8 +1163,15 @@
         animation: none;
       }
     }
+
+    /* Dark theme (tokens live in /styles/theme.css; screen only so print stays light) */
+    @media screen {
+      :root[data-theme="dark"] .subtitle { color: oklch(84% 0.008 250); }
+    }
   </style>
   <link rel="stylesheet" href="/styles/chips.css" />
+  <link rel="stylesheet" href="/styles/theme.css" />
+  <script src="/theme.js"></script>
 </head>
 <body>
   <nav>

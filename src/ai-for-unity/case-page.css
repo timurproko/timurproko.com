@@ -72,3 +72,16 @@
   .trend figure + figure::before { display: none; }
   .trend svg { width: 100%; height: auto; }
 }
+
+/* Dark theme — re-ink the light diagram SVGs (tokens live in /styles/theme.css) */
+@media screen {
+  :root[data-theme="dark"] .stage.is-here .stage-tools .chip { color: var(--bg); }
+  :root[data-theme="dark"] .pillars-venn .venn-label text { fill-opacity: 1; filter: brightness(1.6); }
+  :root[data-theme="dark"] .flow-graph .flow-node rect { fill: var(--surface); stroke: var(--accent); }
+  :root[data-theme="dark"] .flow-graph .flow-node text:first-of-type { fill: var(--accent); }
+  :root[data-theme="dark"] .flow-graph .flow-node text + text { fill: var(--muted); }
+  :root[data-theme="dark"] .flow-graph .flow-arrow { stroke: var(--accent); }
+  :root[data-theme="dark"] .flow-graph .flow-loop { stroke: var(--subtle); }
+  :root[data-theme="dark"] .flow-graph .flow-loop-label rect { fill: var(--surface); stroke: var(--border); }
+  :root[data-theme="dark"] .flow-graph .flow-loop-label text { fill: var(--muted); }
+}

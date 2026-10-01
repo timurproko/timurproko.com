@@ -415,3 +415,16 @@ h1, .lens-title { font-family: var(--font-type); font-weight: 400; letter-spacin
   .specimen-tag { opacity: 0; translate: 0 6px; transition: opacity 260ms ease, translate 360ms cubic-bezier(0.22, 1, 0.36, 1); }
   .specimens li:is(:hover, :focus-within) .specimen-tag { opacity: 1; translate: 0 0; }
 }
+
+/* Dark theme — keep the muted graphite accent instead of the shared bright one */
+@media screen {
+  html:root[data-theme="dark"] { /* outranks styles/theme.css, which loads later */
+    --accent: oklch(76% 0.05 var(--hue));
+    --accent-dim: oklch(76% 0.05 var(--hue) / 0.12);
+    --hue-fg: oklch(82% 0.04 var(--hue));
+    --hue-border: oklch(38% 0.025 var(--hue));
+  }
+  :root[data-theme="dark"] .word { color: oklch(38% 0.006 250); }
+  :root[data-theme="dark"] .tag { border-color: var(--hue-border); color: var(--hue-fg); }
+  :root[data-theme="dark"] .sighting-strip { box-shadow: 0 8px 24px var(--shadow-color); }
+}
