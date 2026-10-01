@@ -9,7 +9,8 @@
 // small card, so plain WebGL lines (always 1px) end up a fraction of a pixel
 // wide and strobe as the scene sways. So shapes are solid faceted steel, and all
 // lines are "fat" screen-space lines (LineSegments2) that get thicker — and the
-// grid sparser — in that preview mode. Depth is faked with per-vertex colour
+// grid sparser — in that preview mode, where the canvas is also drawn at the
+// card's on-screen size (see previewScale). Depth is faked with per-vertex colour
 // (lines darken toward the background) rather than fog, so the renderer can
 // stay alpha:true over the page gradient.
 import * as THREE from 'three';
@@ -18,8 +19,25 @@ import { LineSegmentsGeometry } from 'three/examples/jsm/lines/LineSegmentsGeome
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
 
 const PREVIEW = new URLSearchParams(window.location.search).get('preview') === 'cover';
-// Line width in CSS px of the rendered page; the preview is shown at ~1/4–1/5 scale.
-const LINE_WIDTH = PREVIEW ? 3.4 : 1.2;
+
+/**
+ * How much the home page shrinks this preview (its card iframe is scaled with a
+ * CSS transform). The canvas is then drawn at the card's real pixel size: a
+ * full-size canvas squeezed 5x by the compositor's bilinear filter is what made
+ * the grid strobe, however thick the lines were.
+ */
+function previewScale() {
+  try {
+    const frame = window.frameElement;
+    const s = frame ? frame.getBoundingClientRect().width / window.innerWidth : 0;
+    if (s > 0.05 && s < 1) return s;
+  } catch (_) { /* cross-origin parent */ }
+  return 0; // unknown, e.g. the unframed page `npm run previews:build` screenshots
+}
+const PREVIEW_SCALE = PREVIEW ? previewScale() : 0;
+// Line width in CSS px of the rendered page — in a card, sized so lines land at
+// ~1.5px on screen; unframed previews assume the usual ~1/4–1/5 card scale.
+const LINE_WIDTH = PREVIEW ? (PREVIEW_SCALE ? 1.5 / PREVIEW_SCALE : 3.4) : 1.2;
 // Fat-line materials need the canvas size; initCover3d keeps it up to date.
 const lineMaterials = [];
 
@@ -170,7 +188,8 @@ export function initCover3d() {
   camera.lookAt(0, 0.2, 0);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  renderer.setPixelRatio(PREVIEW_SCALE ? dpr * PREVIEW_SCALE : dpr);
   renderer.setSize(w, h);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   host.appendChild(renderer.domElement);

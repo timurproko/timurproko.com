@@ -66,14 +66,18 @@
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      padding-top: 57px; /* room for the fixed nav: 56px bar + 1px border */
     }
 
     a { color: inherit; }
 
-    /* Nav */
+    /* Nav. Fixed rather than sticky: iOS Safari garbles a sticky, backdrop-
+       blurred header while the page rubber-bands past its last card. */
     nav {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 100;
       background: var(--nav-bg);
       backdrop-filter: blur(12px);
