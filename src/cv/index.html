@@ -141,6 +141,7 @@
     }
     .eyebrow,
     .hero h1,
+    .subtitle,
     .intro,
     .quick-meta,
     .layout,
@@ -150,6 +151,7 @@
     }
     .eyebrow { animation-delay: 180ms; }
     .hero h1 { animation-delay: 260ms; }
+    .subtitle { animation-delay: 300ms; }
     .intro { animation-delay: 340ms; }
     .quick-meta { animation-delay: 430ms; }
     .layout { animation-delay: 520ms; }
@@ -269,6 +271,15 @@
       font-weight: 700;
       line-height: 1.04;
       letter-spacing: -0.04em;
+    }
+    .subtitle {
+      margin-top: 10px;
+      color: oklch(30% 0.012 250);
+      font-family: var(--font-display);
+      font-size: clamp(20px, 2.2vw, 26px);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
     }
     .intro {
       max-width: 78ch;
@@ -640,7 +651,8 @@
       footer,
       .intro,
       .eyebrow,
-      .hero h1 {
+      .hero h1,
+      .subtitle {
         opacity: 1 !important;
         translate: none !important;
         animation: none !important;
@@ -663,6 +675,11 @@
         line-height: 1.02;
         letter-spacing: -0.035em;
       }
+      .subtitle {
+        margin-top: 3px;
+        color: black;
+        font-size: 14px;
+      }
       .intro {
         max-width: none;
         margin-top: 7px;
@@ -671,17 +688,18 @@
         line-height: 1.36;
       }
       .quick-meta {
-        gap: 3px;
-        margin-top: 4px;
+        gap: 4px;
+        margin-top: 6px;
       }
+      /* One print pill for header chips, skill tags and language pills */
       .chip,
       .side-card .chip {
-        min-height: 15px;
-        padding: 0 5px;
+        min-height: 20px;
+        padding: 0 8px;
         border-color: oklch(84% 0.006 250);
         background: white;
         color: black;
-        font-size: 7.8px;
+        font-size: 9.6px;
         line-height: 1;
       }
       .github-chip .screen-label {
@@ -876,14 +894,14 @@
       .language-list {
         display: flex;
         flex-wrap: wrap;
-        gap: 3px;
+        gap: 4px;
       }
       .language-list li {
         display: inline-flex;
         align-items: center;
         gap: 0;
-        min-height: 17px;
-        padding: 1px 6px 2px;
+        min-height: 20px;
+        padding: 0 8px;
         border: 1px solid oklch(84% 0.006 250);
         border-radius: 999px;
         white-space: nowrap;
@@ -892,13 +910,13 @@
       .language-level {
         color: black;
         font-family: var(--font);
-        font-size: 8.8px;
-        line-height: 1.15;
+        font-size: 9.6px;
+        line-height: 1;
         letter-spacing: 0;
         text-align: left;
         white-space: nowrap;
       }
-      .language-level::before { content: " ("; }
+      .language-level::before { content: "\00a0("; }
       .language-level::after { content: ")"; }
       .language-code { display: none; }
       .cert-list li,
@@ -919,16 +937,19 @@
       .date {
         color: oklch(46% 0.01 250);
       }
-      .side-card .chip {
-        min-height: 17px;
-        padding: 0 6px;
-        font-size: 8.8px;
-      }
-      .chips { gap: 3px; }
+      .chips { gap: 4px; }
 
       section[aria-labelledby="certificates-title"] {
         break-before: auto;
         page-break-before: auto;
+      }
+      /* Contact opens the last page with Education, Languages and the case studies,
+         instead of splitting across the page break */
+      section[aria-labelledby="contact-title"] {
+        break-before: page;
+        page-break-before: always;
+        break-inside: avoid;
+        page-break-inside: avoid;
       }
       #experience-title { break-before: avoid; }
 
@@ -994,6 +1015,7 @@
     html.preview-cover nav,
     html.preview-cover .back-shortcut,
     html.preview-cover .print-shortcut,
+    html.preview-cover .subtitle,
     html.preview-cover .intro,
     html.preview-cover .quick-meta,
     html.preview-cover .layout,
@@ -1091,6 +1113,7 @@
       .back-shortcut,
       .print-shortcut,
       .hero h1,
+      .subtitle,
       .intro,
       .quick-meta,
       .layout,
@@ -1130,8 +1153,9 @@
         <button class="print-shortcut" type="button" id="print-cv" aria-label="Print CV"><kbd>P</kbd> <span class="action-label">Print</span></button>
       </div>
       <h1 id="page-title">Timur Prokopiev</h1>
+      <p class="subtitle">Product Design Prototyper</p>
       <p class="intro">
-        UX/XR Developer with <span data-experience-years data-start-date="2010-08-01">15+ years</span> of experience across real-time 3D development, UX, and technical art for Mobile, XR, and Desktop. I focus on scalable architectures, rendering pipeline optimization, custom editor tools, procedural generation, and spatial UI systems that accelerate production workflows.
+        <span data-experience-years data-start-date="2010-08-01">15+ years</span> of shipping real-time 3D software for XR headsets, smart glasses, Mobile, and Desktop. I define user needs, then design and build interactive prototypes in Unity and C# in short timeframes, test them with users, and iterate. I work closely with engineers, researchers, and stakeholders to turn bold interaction ideas into products, and bring AI tools into my workflow to prototype faster and raise quality.
       </p>
       <div class="quick-meta" aria-label="Profile highlights">
         <span class="chip">Gdańsk, Poland</span>
@@ -1163,7 +1187,7 @@
                 <p>Led the design and engineering of a market-ready MVP, managing the full product lifecycle.</p>
               </article>
               <article class="role">
-                <p class="company"><strong>Code Craft</strong></p>
+                <p class="company"><strong>Freelance</strong></p>
                 <h3>Unity Developer</h3>
                 <div class="date">Sep 2024 – Aug 2025</div>
                 <p>Developed cross-platform solutions for Android and iOS devices.</p>
@@ -1288,6 +1312,12 @@
             </div>
             <div class="skill-groups">
               <div class="skill-group">
+                <h3>Design</h3>
+                <div class="chips">
+                  <span class="chip">Problem Framing</span><span class="chip">Design Thinking</span><span class="chip">User-Centered Design</span><span class="chip">UX Design</span><span class="chip">UI Design</span><span class="chip">Spatial Design</span><span class="chip">Interaction Design</span><span class="chip">Design Systems</span><span class="chip">Micro-Interactions</span><span class="chip">Prototyping</span>
+                </div>
+              </div>
+              <div class="skill-group">
                 <h3>Engineering</h3>
                 <div class="chips">
                   <span class="chip">C#</span><span class="chip">OOP</span><span class="chip">SOLID</span><span class="chip">Design Patterns</span><span class="chip">MVx / MVC / MVP</span><span class="chip">Git</span><span class="chip">Data Structures</span><span class="chip">REST API</span><span class="chip">LINQ</span><span class="chip">Dependency Injection</span><span class="chip">Async</span><span class="chip">Unit Testing</span><span class="chip">AR / VR</span><span class="chip">Mobile</span><span class="chip">Android</span><span class="chip">iOS</span><span class="chip">Agile / Scrum</span>
@@ -1309,12 +1339,6 @@
                 <h3>3D</h3>
                 <div class="chips">
                   <span class="chip">Houdini</span><span class="chip">Houdini Engine</span><span class="chip">HDA</span><span class="chip">Procedural Asset Generation</span>
-                </div>
-              </div>
-              <div class="skill-group">
-                <h3>Design</h3>
-                <div class="chips">
-                  <span class="chip">Problem Framing</span><span class="chip">Design Thinking</span><span class="chip">User-Centered Design</span><span class="chip">UX Design</span><span class="chip">UI Design</span><span class="chip">Spatial Design</span><span class="chip">Interaction Design</span><span class="chip">Design Systems</span><span class="chip">Micro-Interactions</span><span class="chip">Prototyping</span>
                 </div>
               </div>
             </div>
@@ -1357,8 +1381,8 @@
             <ul class="compact-list language-list">
               <li><span class="language-name">Ukrainian</span><span class="language-level">Native</span></li>
               <li><span class="language-name">Russian</span><span class="language-level">Native</span></li>
-              <li><span class="language-name">English</span><span class="language-level">Advanced <span class="language-code">(C1)</span></span></li>
-              <li><span class="language-name">Polish</span><span class="language-level">Basic <span class="language-code">(A2)</span></span></li>
+              <li><span class="language-name">English</span><span class="language-level">Advanced<span class="language-code"> (C1)</span></span></li>
+              <li><span class="language-name">Polish</span><span class="language-level">Basic<span class="language-code"> (A2)</span></span></li>
             </ul>
           </div>
         </section>
