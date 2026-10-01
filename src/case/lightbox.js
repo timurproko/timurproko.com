@@ -112,9 +112,19 @@ export function markLoading(host, media) {
     host.classList.add('is-media-loading');
     media.addEventListener('loadeddata', done, { once: true });
   } else {
-    if (media.complete && media.naturalWidth) return done();
+    // Keep the loader until the image is decoded, not just downloaded — large images
+    // otherwise show an empty tile between the load event and their first paint.
+    let ready = false;
+    const decoded = () => (media.decode ? media.decode().catch(() => {}) : Promise.resolve())
+      .then(() => { ready = true; done(); });
+    if (media.complete && media.naturalWidth) {
+      // Already downloaded (e.g. cached): only show the loader if decoding is slow, so it never flashes.
+      decoded();
+      setTimeout(() => { if (!ready) host.classList.add('is-media-loading'); }, 80);
+      return;
+    }
     host.classList.add('is-media-loading');
-    media.addEventListener('load', done, { once: true });
+    media.addEventListener('load', decoded, { once: true });
   }
   media.addEventListener('error', done, { once: true });
 }
