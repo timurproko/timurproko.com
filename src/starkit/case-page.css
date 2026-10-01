@@ -1,0 +1,5 @@
+/* STARKIT case page. Loads after case/case.css. */
+
+/* Hero — the wide crop sits a little above centre so the hand and the arrow it presses
+   stay in frame along with the whole Casio */
+.gallery-wide-hero .gallery-row:first-child .shot-open img { object-position: 50% 38%; }

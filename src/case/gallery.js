@@ -17,7 +17,18 @@ function captionFrom(path) {
   return text || '';
 }
 
-export function renderGallery(modules, container, { pair = true } = {}) {
+// Videos load and play only while on screen (and pause when scrolled away), so a
+// gallery of clips never pulls them all in at page load.
+const playWhenVisible = new IntersectionObserver(entries => {
+  entries.forEach(({ target, isIntersecting }) => {
+    if (isIntersecting) target.play().catch(() => {});
+    else target.pause();
+  });
+}, { rootMargin: '200px 0px' });
+
+// columns: n lays every item out in an even grid of n per row instead of the
+// hero / pair / strip rows.
+export function renderGallery(modules, container, { pair = true, columns = 0 } = {}) {
   const items = Object.keys(modules)
     .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
     .map(path => ({ src: modules[path], caption: captionFrom(path), video: VIDEO.test(path) }));
@@ -33,13 +44,15 @@ export function renderGallery(modules, container, { pair = true } = {}) {
   // Progressive rows: one hero image, then a 50/50 pair (unless pair: false),
   // then everything else shares a single strip of smaller thumbnails.
   const stripStart = pair ? 3 : 1;
-  const rows = [items.slice(0, 1), items.slice(1, stripStart), items.slice(stripStart)];
+  const rows = columns
+    ? Array.from({ length: Math.ceil(items.length / columns) }, (_, i) => items.slice(i * columns, (i + 1) * columns))
+    : [items.slice(0, 1), items.slice(1, stripStart), items.slice(stripStart)];
   const rowOf = [];
   rows.forEach((row, index) => {
     if (!row.length) return;
     const el = document.createElement('div');
-    el.className = index === 2 ? 'gallery-row gallery-strip' : 'gallery-row';
-    el.style.setProperty('--cols', row.length);
+    el.className = !columns && index === 2 ? 'gallery-row gallery-strip' : 'gallery-row';
+    el.style.setProperty('--cols', columns || row.length);
     container.append(el);
     row.forEach(() => rowOf.push(el));
   });
@@ -51,7 +64,8 @@ export function renderGallery(modules, container, { pair = true } = {}) {
     const media = item.video ? document.createElement('video') : document.createElement('img');
     media.src = item.src;
     if (item.video) {
-      Object.assign(media, { autoplay: true, muted: true, loop: true, playsInline: true });
+      Object.assign(media, { muted: true, loop: true, playsInline: true, preload: 'none' });
+      playWhenVisible.observe(media);
       media.setAttribute('aria-label', item.caption || 'Project video');
     } else {
       media.alt = item.caption || '';
