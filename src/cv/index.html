@@ -132,6 +132,16 @@
       padding: 88px 32px 80px;
     }
     .hero { margin-bottom: 26px; }
+    /* Round portrait above the name, print only (same photo as the home page profile) */
+    .cv-photo {
+      display: none;
+      width: 97px;
+      height: 97px;
+      margin-bottom: 16px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 0 1px var(--border);
+    }
     .hero-top {
       display: flex;
       align-items: center;
@@ -140,6 +150,7 @@
       margin-bottom: 16px;
     }
     .eyebrow,
+    .cv-photo,
     .hero h1,
     .subtitle,
     .intro,
@@ -150,6 +161,7 @@
       animation: contentReveal 640ms cubic-bezier(0.22, 1, 0.36, 1) both;
     }
     .eyebrow { animation-delay: 180ms; }
+    .cv-photo { animation-delay: 220ms; }
     .hero h1 { animation-delay: 260ms; }
     .subtitle { animation-delay: 300ms; }
     .intro { animation-delay: 340ms; }
@@ -651,6 +663,7 @@
       footer,
       .intro,
       .eyebrow,
+      .cv-photo,
       .hero h1,
       .subtitle {
         opacity: 1 !important;
@@ -663,20 +676,29 @@
         border-bottom: 0;
         break-after: avoid;
       }
-      .hero-top { margin-bottom: 5px; }
+      /* Curriculum Vitae sits top-right, level with the photo */
+      .hero { position: relative; }
+      .hero-top { position: absolute; top: 0; right: 0; margin: 0; }
       .eyebrow {
         font-size: 9.5px;
         letter-spacing: 0.14em;
         color: black;
       }
       .eyebrow::before { width: 14px; height: 1px; }
+      /* Links carry the case pages' ↗ so they read as clickable in the PDF */
+      .quick-meta a.chip .print-url::after,
+      .quick-meta a.print-only-chip::after,
+      a.contact-value::after,
+      a.cert-title::after,
+      a.case-title::after { content: "\00a0↗"; }
+      .cv-photo { display: block; width: 66px; height: 66px; margin-bottom: 8px; box-shadow: none; }
       h1 {
         font-size: 28px;
         line-height: 1.02;
         letter-spacing: -0.035em;
       }
       .subtitle {
-        margin-top: 3px;
+        margin-top: 7px;
         color: black;
         font-size: 14px;
       }
@@ -749,10 +771,12 @@
       .skill-group h3 {
         margin-bottom: 7px;
       }
+      /* The university matches the role titles rather than a bold heading */
       .skill-group h3,
       .role h3,
       .project h3,
-      .cert-title {
+      .cert-title,
+      .education-name {
         color: black;
         font-family: var(--font);
         font-size: 12px;
@@ -771,7 +795,7 @@
       .timeline { gap: 6px; }
       .role {
         grid-template-columns: minmax(0, 1fr) auto;
-        gap: 2px 8px;
+        gap: 2px 40px;
         padding-bottom: 6px;
         break-inside: avoid;
         page-break-inside: avoid;
@@ -781,6 +805,8 @@
         line-height: 1.35;
         text-align: right;
       }
+      /* Descriptions stay in the text column and wrap before the dates */
+      .role p:not(.company) { grid-column: 1 / 2; }
       .company,
       .role p:not(.company),
       .project p,
@@ -896,7 +922,9 @@
         flex-wrap: wrap;
         gap: 4px;
       }
-      .language-list li {
+      /* :last-child too, so the last pill keeps its full outline (compact-list drops it) */
+      .language-list li,
+      .language-list li:last-child {
         display: inline-flex;
         align-items: center;
         gap: 0;
@@ -916,9 +944,8 @@
         text-align: left;
         white-space: nowrap;
       }
-      .language-level::before { content: "\00a0("; }
-      .language-level::after { content: ")"; }
-      .language-code { display: none; }
+      /* Full level, CEFR code included: "English · Advanced (C1)" */
+      .language-level::before { content: "\00a0·\00a0"; }
       .cert-list li,
       .contact-list li,
       .compact-list li,
@@ -1152,6 +1179,7 @@
         <p class="eyebrow">Curriculum Vitae</p>
         <button class="print-shortcut" type="button" id="print-cv" aria-label="Print CV"><kbd>P</kbd> <span class="action-label">Print</span></button>
       </div>
+      <img class="cv-photo" src="/assets/avatar.jpg" alt="Timur Prokopiev" width="400" height="400" decoding="async" />
       <h1 id="page-title">Timur Prokopiev</h1>
       <p class="subtitle">Product Design Prototyper</p>
       <p class="intro">
@@ -1161,7 +1189,7 @@
         <span class="chip">Gdańsk, Poland</span>
         <button class="chip email-reveal" type="button" data-token="43.3t.3y.47.45.2a.45.41.3z.3w.41.2r.3v.42.3k.3t.3x.28.3q.43.42" aria-label="Show email address">Show email</button>
         <a class="chip github-chip" href="https://github.com/timurproko" target="_blank" rel="noopener noreferrer"><span class="screen-label">GitHub ↗</span><span class="print-url">github.com/timurproko</span></a>
-        <a class="chip print-only-chip" href="https://timurproko.com">timurproko.com</a>
+        <a class="chip print-only-chip" href="https://timurproko.com" target="_blank" rel="noopener noreferrer">timurproko.com</a>
       </div>
     </section>
 
@@ -1394,12 +1422,12 @@
               <span class="section-kicker">Scan to open</span>
             </div>
             <ul class="case-list">
-              <li><img class="case-qr" src="/cv/qr/touch-my-heart.svg" alt="QR code for timurproko.com/touch-my-heart" width="72" height="72"><div><a class="case-title" href="https://timurproko.com/touch-my-heart/">Touch My Heart</a><span class="case-desc">XR experience for Magic Leap — inside the human heart</span><span class="case-url">timurproko.com/touch-my-heart</span></div></li>
-              <li><img class="case-qr" src="/cv/qr/starkit.svg" alt="QR code for timurproko.com/starkit" width="72" height="72"><div><a class="case-title" href="https://timurproko.com/starkit/">STARKIT SRD</a><span class="case-desc">Touch-free 3D for Sony Spatial Reality Display</span><span class="case-url">timurproko.com/starkit</span></div></li>
-              <li><img class="case-qr" src="/cv/qr/avatars.svg" alt="QR code for timurproko.com/avatars" width="72" height="72"><div><a class="case-title" href="https://timurproko.com/avatars/">Digital Human</a><span class="case-desc">Avatar pipeline — from capture to real-time AI animation</span><span class="case-url">timurproko.com/avatars</span></div></li>
-              <li><img class="case-qr" src="/cv/qr/xr-prototypes.svg" alt="QR code for timurproko.com/xr-prototypes" width="72" height="72"><div><a class="case-title" href="https://timurproko.com/xr-prototypes/">XR Prototypes</a><span class="case-desc">Rapid Meta Quest prototypes — physics, sound, AI vision</span><span class="case-url">timurproko.com/xr-prototypes</span></div></li>
-              <li><img class="case-qr" src="/cv/qr/vital-sports.svg" alt="QR code for timurproko.com/vital-sports" width="72" height="72"><div><a class="case-title" href="https://timurproko.com/vital-sports/">VITAL Sports</a><span class="case-desc">VR mental training for elite golfers, guided by live HRV</span><span class="case-url">timurproko.com/vital-sports</span></div></li>
-              <li><img class="case-qr" src="/cv/qr/calmxr.svg" alt="QR code for timurproko.com/calmxr" width="72" height="72"><div><a class="case-title" href="https://timurproko.com/calmxr/">CalmXR</a><span class="case-desc">Calm-tech sessions for smart glasses, prototyped on Quest 3</span><span class="case-url">timurproko.com/calmxr</span></div></li>
+              <li><img class="case-qr" src="/cv/qr/touch-my-heart.svg" alt="QR code for timurproko.com/touch-my-heart" width="72" height="72"><div><a class="case-title" href="https://timurproko.com/touch-my-heart/" target="_blank" rel="noopener noreferrer">Touch My Heart</a><span class="case-desc">XR experience for Magic Leap — inside the human heart</span><span class="case-url">timurproko.com/touch-my-heart</span></div></li>
+              <li><img class="case-qr" src="/cv/qr/starkit.svg" alt="QR code for timurproko.com/starkit" width="72" height="72"><div><a class="case-title" href="https://timurproko.com/starkit/" target="_blank" rel="noopener noreferrer">STARKIT SRD</a><span class="case-desc">Touch-free 3D for Sony Spatial Reality Display</span><span class="case-url">timurproko.com/starkit</span></div></li>
+              <li><img class="case-qr" src="/cv/qr/avatars.svg" alt="QR code for timurproko.com/avatars" width="72" height="72"><div><a class="case-title" href="https://timurproko.com/avatars/" target="_blank" rel="noopener noreferrer">Digital Human</a><span class="case-desc">Avatar pipeline — from capture to real-time AI animation</span><span class="case-url">timurproko.com/avatars</span></div></li>
+              <li><img class="case-qr" src="/cv/qr/xr-prototypes.svg" alt="QR code for timurproko.com/xr-prototypes" width="72" height="72"><div><a class="case-title" href="https://timurproko.com/xr-prototypes/" target="_blank" rel="noopener noreferrer">XR Prototypes</a><span class="case-desc">Rapid Meta Quest prototypes — physics, sound, AI vision</span><span class="case-url">timurproko.com/xr-prototypes</span></div></li>
+              <li><img class="case-qr" src="/cv/qr/vital-sports.svg" alt="QR code for timurproko.com/vital-sports" width="72" height="72"><div><a class="case-title" href="https://timurproko.com/vital-sports/" target="_blank" rel="noopener noreferrer">VITAL Sports</a><span class="case-desc">VR mental training for elite golfers, guided by live HRV</span><span class="case-url">timurproko.com/vital-sports</span></div></li>
+              <li><img class="case-qr" src="/cv/qr/calmxr.svg" alt="QR code for timurproko.com/calmxr" width="72" height="72"><div><a class="case-title" href="https://timurproko.com/calmxr/" target="_blank" rel="noopener noreferrer">CalmXR</a><span class="case-desc">Calm-tech sessions for smart glasses, prototyped on Quest 3</span><span class="case-url">timurproko.com/calmxr</span></div></li>
             </ul>
           </div>
         </section>
