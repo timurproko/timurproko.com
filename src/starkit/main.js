@@ -21,3 +21,14 @@ renderGallery(videos, document.getElementById('videos'), { columns: 3 });
 // Home page preview cover uses this gallery image as its backdrop.
 setupCover(images['./images/06.webp'] ?? Object.values(images)[0]);
 setupFooterYear();
+
+// Promo: load the YouTube player only when asked to.
+document.querySelector('.promo-play')?.addEventListener('click', event => {
+  const button = event.currentTarget;
+  const frame = document.createElement('iframe');
+  frame.src = `https://www.youtube-nocookie.com/embed/${button.dataset.video}?autoplay=1&rel=0&vq=hd1080`;
+  frame.title = 'STARKIT SRD by AMERIA × Sony — promo';
+  frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+  frame.allowFullscreen = true;
+  button.replaceWith(frame);
+});

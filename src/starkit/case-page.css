@@ -3,3 +3,51 @@
 /* Hero — the wide crop sits a little above centre so the hand and the arrow it presses
    stay in frame along with the whole Casio */
 .gallery-wide-hero .gallery-row:first-child .shot-open img { object-position: 50% 38%; }
+
+/* Promo — a poster with a frosted play button; the YouTube player replaces it on click (main.js) */
+.promo {
+  margin-top: 24px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--ink);
+}
+.promo-play {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.promo-play img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; filter: brightness(0.82); transition: filter 400ms ease; }
+.promo-play:hover img { filter: brightness(0.95); }
+.promo-icon {
+  position: absolute;
+  left: calc(50% - 38px);
+  top: calc(50% - 38px);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  color: #fff;
+}
+.promo-icon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid oklch(100% 0 0 / 0.3);
+  border-radius: 50%;
+  background: oklch(100% 0 0 / 0.16);
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  box-shadow: 0 10px 30px oklch(0% 0 0 / 0.3);
+  transition: scale 300ms cubic-bezier(0.22, 1, 0.36, 1), background-color 300ms ease;
+}
+.promo-icon svg { width: 28px; height: 28px; margin-left: 4px; fill: currentColor; }
+.promo-play:hover .promo-icon::before { scale: 1.08; background: oklch(100% 0 0 / 0.24); }
+.promo-play:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.promo iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; }
