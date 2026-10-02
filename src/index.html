@@ -1378,20 +1378,26 @@
     window.addEventListener("resize", scheduleProfileCardHeightSync);
 
     // Cards left out for visitors in some countries. A static host has no geo-IP,
-    // so the country comes from the browser's time zone (no request leaves the page).
-    const HIDDEN_IN_TIME_ZONES = {
+    // so the country is guessed in the browser (no request leaves the page): the
+    // time zone AND a browser language must both match. The zone alone is too
+    // broad — Windows' default "Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna"
+    // zone reports Europe/Berlin for much of Western Europe.
+    const HIDDEN_IN_REGIONS = {
       // Germany
-      "starkit": ["Europe/Berlin", "Europe/Busingen"]
+      "starkit": { timeZones: ["Europe/Berlin", "Europe/Busingen"], languages: ["de"] }
     };
 
     init();
 
     function isShownInRegion(file) {
-      const zones = HIDDEN_IN_TIME_ZONES[normalizePresentationRoute(file)];
-      if (!zones) return true;
+      const region = HIDDEN_IN_REGIONS[normalizePresentationRoute(file)];
+      if (!region) return true;
       let zone = "";
       try { zone = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (_) {}
-      return !zones.includes(zone);
+      const languages = (navigator.languages?.length ? navigator.languages : [navigator.language || ""])
+        .map(tag => tag.toLowerCase().split("-")[0]);
+      const inRegion = region.timeZones.includes(zone) && languages.some(lang => region.languages.includes(lang));
+      return !inRegion;
     }
 
     async function init() {
