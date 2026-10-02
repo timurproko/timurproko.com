@@ -1,5 +1,6 @@
 import { setupFooterYear } from '../case/footer-year.js';
 import { setupVennReveal } from '../case/venn-reveal.js';
+import { setupChapterNav } from '../case/chapter-nav.js';
 
 // The agentic loop: a dot travels the dashed feedback path once the graph is on
 // screen (the SMIL motion starts paused so it doesn't run while off-screen).
@@ -33,3 +34,5 @@ if (trend && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-m
 
 setupVennReveal();
 setupFooterYear();
+// Section tabs appear once the trend panels have scrolled away
+setupChapterNav(document.getElementById('chapter-nav'), trend);

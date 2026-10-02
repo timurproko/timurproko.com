@@ -55,7 +55,6 @@ html.preview-cover .cover { background-size: auto 100%; background-repeat: no-re
   grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
   align-items: center;
   gap: 24px 48px;
-  scroll-margin-top: 72px;
 }
 /* Only chapters get a divider — rows inside a chapter just stack with space (case.css does this for .block) */
 .lens ~ .feature { border-top: 0; padding: 36px 0; }
@@ -195,50 +194,7 @@ html.preview-cover .cover { background-size: auto 100%; background-repeat: no-re
 .lc-key-c { background: oklch(62% 0.2 20); }
 .lc-key-v { background: oklch(62% 0.16 150); }
 
-/* Pinned chapter nav — a floating pill level with the Back button (main.js) */
-.chapter-nav {
-  position: fixed;
-  top: 76px;
-  left: 50%;
-  z-index: 95;
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  padding: 3px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: color-mix(in oklab, var(--surface), transparent 10%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 8px 24px rgba(17, 17, 17, 0.08);
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(-50%, -8px);
-  transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.chapter-nav.is-visible { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
-.chapter-nav a {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 25px;
-  padding: 4px 11px;
-  border-radius: 999px;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background-color 200ms ease, color 200ms ease;
-}
-.chapter-nav a:hover { color: var(--fg); }
-.chapter-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-.chapter-nav a[aria-current] { background: var(--accent-dim); color: var(--accent); }
-/* Too narrow for every title: the pill scrolls sideways instead of wrapping */
-@media (max-width: 1000px) {
-  .chapter-nav { max-width: calc(100vw - 150px); overflow-x: auto; scrollbar-width: none; }
-  .chapter-nav::-webkit-scrollbar { display: none; }
-}
+/* Pinned chapter nav: shared .chapter-nav in case/case.css */
 
 @media (max-width: 900px) {
   .wins.cols-3, .wins.cols-4, .wins.cols-5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -249,15 +205,9 @@ html.preview-cover .cover { background-size: auto 100%; background-repeat: no-re
   .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .spectrum-stops { font-size: 13px; }
   .lc-labels text { font-size: 22px; }
-  .chapter-nav { top: 68px; left: auto; right: 16px; transform: translateY(-8px); }
-  .chapter-nav.is-visible { transform: none; }
-  .chapter-nav a { padding: 4px 9px; font-size: 12px; }
 }
 @media (max-width: 480px) {
   .wins.cols-2, .wins.cols-3, .wins.cols-4, .wins.cols-5 { grid-template-columns: 1fr; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .chapter-nav { transition: opacity 1ms; }
 }
 
 /* Drawn illustrations (6DoF, tracking) — 4:3 like the other framed media */
@@ -339,7 +289,6 @@ img[data-zoom]:focus-visible { outline: 2px solid var(--accent); outline-offset:
   :root[data-theme="dark"] .win-thesis { border-color: var(--hue-border); }
   :root[data-theme="dark"] .stage.is-here { border-color: var(--hue-border); }
   :root[data-theme="dark"] .product-cards .win img { border-color: var(--tint-border); }
-  :root[data-theme="dark"] .chapter-nav { box-shadow: 0 8px 24px var(--shadow-color); }
   :root[data-theme="dark"] .spectrum-bar { background: linear-gradient(90deg, oklch(45% 0.02 250), oklch(70% 0.14 var(--hue)), oklch(60% 0.2 300)); }
   :root[data-theme="dark"] .lc-dots-c circle, :root[data-theme="dark"] .lc-dots-v circle { stroke: var(--bg); }
   :root[data-theme="dark"] .illo { border-color: var(--tint-border); background: var(--surface); }

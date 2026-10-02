@@ -41,8 +41,10 @@ body {
 a { color: inherit; }
 
 /* Nav — same component as the home and CV pages. Fixed rather than sticky:
-   iOS Safari drops a sticky, backdrop-blurred header while the page rubber-bands. */
-nav {
+   iOS Safari drops a sticky, backdrop-blurred header while the page rubber-bands.
+   Scoped to the site header so the pages' own section navs (.chapter-nav,
+   .proto-nav) keep their floating pill. */
+body > nav {
   position: fixed;
   top: 0;
   left: 0;
@@ -207,6 +209,67 @@ nav {
   display: inline-block;
   line-height: 1;
   transform: translateY(1px);
+}
+
+/* Pinned section nav — a floating pill level with the Back button (chapter-nav.js) */
+.chapter-nav {
+  position: fixed;
+  top: 76px;
+  left: 50%;
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--surface), transparent 10%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(17, 17, 17, 0.08);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -8px);
+  transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.chapter-nav.is-visible { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
+.chapter-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 25px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.chapter-nav a:hover { color: var(--fg); }
+.chapter-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.chapter-nav a[aria-current] { background: var(--accent-dim); color: var(--accent); }
+/* Jumping to a section leaves its heading clear of the header and the pill
+   (zero specificity, so a page can set its own) */
+:where(article:has(.chapter-nav)) :where(.lens[id], .block[id], .feature[id]) { scroll-margin-top: 110px; }
+/* Too narrow for every title: the pill scrolls sideways instead of wrapping */
+@media (max-width: 1000px) {
+  .chapter-nav { max-width: calc(100vw - 150px); overflow-x: auto; scrollbar-width: none; }
+  .chapter-nav::-webkit-scrollbar { display: none; }
+}
+@media (max-width: 760px) {
+  .chapter-nav { top: 68px; left: auto; right: 16px; transform: translateY(-8px); }
+  .chapter-nav.is-visible { transform: none; }
+  .chapter-nav a { padding: 4px 9px; font-size: 12px; }
+  /* The section nav takes the Website button's spot on phones */
+  article:has(.chapter-nav) .link-shortcut { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chapter-nav { transition: opacity 1ms; }
+}
+@media screen {
+  :root[data-theme="dark"] .chapter-nav { box-shadow: 0 8px 24px var(--shadow-color); }
 }
 
 

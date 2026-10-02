@@ -2,6 +2,7 @@ import { renderGallery } from '../case/gallery.js';
 import { setupFooterYear } from '../case/footer-year.js';
 import { setupStatReveal } from '../case/stat-reveal.js';
 import { setupVennReveal } from '../case/venn-reveal.js';
+import { setupChapterNav } from '../case/chapter-nav.js';
 
 // Drop numbered files into src/corel-for-mac/images/ — 01 is the hero, the rest form the thumbnail strip.
 const images = import.meta.glob('./images/*.{jpg,jpeg,png,webp,avif,gif,mp4,webm}', {
@@ -49,3 +50,5 @@ document.querySelectorAll('.breakdown-stage').forEach(stage => {
 setupVennReveal();
 setupStatReveal();
 setupFooterYear();
+// Section tabs appear once the gallery has scrolled away
+setupChapterNav(document.getElementById('chapter-nav'), document.getElementById('gallery'));

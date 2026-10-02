@@ -2,6 +2,7 @@ import { renderGallery } from '../case/gallery.js';
 import { setupZoom } from '../case/lightbox.js';
 import { setupCover } from '../case/cover.js';
 import { setupFooterYear } from '../case/footer-year.js';
+import { setupChapterNav } from '../case/chapter-nav.js';
 import coverImage from './cover.webp';
 
 // Drop numbered files into src/minecare/images/ — 01 is the hero, the rest form the thumbnail strip.
@@ -334,35 +335,6 @@ document.querySelectorAll('[data-cast]').forEach(root => {
   select('dave');
 });
 
-// ---- Pinned section nav: appears once the 3D pit scrolls away, hides at the
-// "next project" footer, and marks the section currently being read. ---------------
-const chapterNav = document.getElementById('chapter-nav');
-if (chapterNav) {
-  const navLinks = [...chapterNav.querySelectorAll('a')];
-  const chapters = navLinks.map(link => document.querySelector(link.hash));
-  let heroAbove = false, nextVisible = false;
-  const updateNav = () => chapterNav.classList.toggle('is-visible', heroAbove && !nextVisible);
-  new IntersectionObserver(([entry]) => {
-    heroAbove = !entry.isIntersecting && entry.boundingClientRect.top < 0;
-    updateNav();
-  }).observe(document.querySelector('.mine-hero'));
-  new IntersectionObserver(([entry]) => { nextVisible = entry.isIntersecting; updateNav(); }).observe(document.querySelector('.next'));
-
-  let shown;
-  const markCurrent = () => {
-    const line = window.innerHeight * 0.4;
-    let current = -1;
-    chapters.forEach((chapter, i) => { if (chapter.getBoundingClientRect().top < line) current = i; });
-    if (current === shown) return;
-    shown = current;
-    navLinks.forEach((link, i) => (i === current ? link.setAttribute('aria-current', 'true') : link.removeAttribute('aria-current')));
-    // On narrow screens the pill scrolls sideways — keep the current section centred in it.
-    const link = navLinks[current];
-    if (link && chapterNav.scrollWidth > chapterNav.clientWidth) {
-      chapterNav.scrollTo({ left: link.offsetLeft - (chapterNav.clientWidth - link.offsetWidth) / 2, behavior: 'smooth' });
-    }
-  };
-  window.addEventListener('scroll', markCurrent, { passive: true });
-  markCurrent();
-}
+// ---- Pinned section nav: appears once the 3D pit scrolls away ----------------------
+setupChapterNav(document.getElementById('chapter-nav'), document.querySelector('.mine-hero'));
 

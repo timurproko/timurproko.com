@@ -725,57 +725,8 @@
 }
 @media (max-width: 600px) { .cast-grid { grid-template-columns: 1fr; } }
 
-/* Pinned section nav — same floating pill as VR for Everybody, level with the Back button */
-.chapter-nav {
-  position: fixed;
-  top: 76px;
-  left: 50%;
-  z-index: 95;
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  padding: 3px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: color-mix(in oklab, var(--surface), transparent 10%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 8px 24px rgba(17, 17, 17, 0.08);
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(-50%, -8px);
-  transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.chapter-nav.is-visible { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
-.chapter-nav a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 25px;
-  padding: 4px 11px;
-  border-radius: 999px;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background-color 200ms ease, color 200ms ease;
-}
-.chapter-nav a:hover { color: var(--fg); }
-.chapter-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-.chapter-nav a[aria-current] { background: var(--accent-dim); color: var(--accent); }
+/* Pinned section nav: shared .chapter-nav in case/case.css */
 #challenge, .lens[id] { scroll-margin-top: 110px; }
-@media (max-width: 1000px) {
-  .chapter-nav { max-width: calc(100vw - 150px); overflow-x: auto; scrollbar-width: none; }
-  .chapter-nav::-webkit-scrollbar { display: none; }
-}
-@media (max-width: 760px) {
-  .chapter-nav { top: 68px; left: auto; right: 16px; transform: translateY(-8px); }
-  .chapter-nav.is-visible { transform: none; }
-  .chapter-nav a { padding: 4px 9px; font-size: 12px; }
-  /* The nav takes the Website button's spot on phones */
-  .link-shortcut { display: none; }
-}
-@media (prefers-reduced-motion: reduce) { .chapter-nav { transition: opacity 1ms; } }
 
 /* "What MineCare watches" — line icons that rest fully drawn and animate while their card is hovered */
 .watch-icon {
