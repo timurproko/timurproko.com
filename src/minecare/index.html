@@ -34,6 +34,7 @@
   <link rel="stylesheet" href="./case-page.css" />
   <link rel="stylesheet" href="/styles/theme.css" />
   <script src="/theme.js"></script>
+  <script src="/back.js" defer></script>
 </head>
 <body>
   <div class="cover" aria-hidden="true">
@@ -53,7 +54,7 @@
 
   <main class="shell">
     <article>
-      <a class="back-shortcut" href="/" aria-label="Back to portfolio"><kbd>←</kbd> <span class="action-label">Back</span></a>
+      <a class="back-shortcut" href="/" aria-label="Back"><kbd>←</kbd> <span class="action-label">Back</span></a>
       <a class="link-shortcut" href="https://www.modularmining.com/" target="_blank" rel="noopener noreferrer" aria-label="Modular Mining website (opens in a new tab)"><kbd>↗</kbd> <span class="action-label">Website</span></a>
 
       <nav class="chapter-nav" id="chapter-nav" aria-label="Sections">
@@ -100,12 +101,14 @@
             <div class="mine-fleet-list"></div>
           </aside>
           <aside class="mine-panel" hidden aria-live="polite"></aside>
+          <button type="button" class="mine-expand" aria-label="Open the interactive pit full screen"><span>Tap to explore</span></button>
+          <button type="button" class="mine-collapse" aria-label="Close full screen">&times;</button>
           <details class="mine-credits">
             <summary aria-label="3D model credits">Credits</summary>
             <p><a href="https://sketchfab.com/3d-models/the-bingham-canyon-mine-utah-d4c90edf676843ed89a26c12228f0abc" target="_blank" rel="noopener noreferrer">Bingham Canyon Mine</a> by Dr Carlos Bartesaghi Koc, CC BY-NC-SA 4.0 · <a href="https://sketchfab.com/3d-models/komatsu-hd785-7-dump-truck-9f6d3aaf49f4460e81fa8b47f767bdd0" target="_blank" rel="noopener noreferrer">Komatsu HD785-7</a> by Maxim Lukyanov, CC BY 4.0 · <a href="https://sketchfab.com/3d-models/excavator-digger-3d-model-88b3ca0e6bac44ce8cef9865288d2ee0" target="_blank" rel="noopener noreferrer">Excavator</a> by Dioramass design, CC BY 4.0</p>
           </details>
         </div>
-        <p class="mine-note"><span data-hint="overview">Drag to orbit · Ctrl + scroll to zoom · click a truck or a marker</span><span data-hint="bird">Ctrl + scroll to change altitude · roads coloured by quality</span><span data-hint="follow">Chase camera · pick another truck in the fleet list</span><span data-hint="cab">Drag to look around the cab</span></p>
+        <p class="mine-note"><span data-hint="overview">Drag to orbit · Ctrl + scroll to zoom · click a truck or a marker</span><span data-hint="bird">Ctrl + scroll to change altitude · roads coloured by quality</span><span data-hint="follow">Chase camera · pick another truck in the fleet list</span><span data-hint="cab">Drag to look around the cab</span><span data-hint="touch">Tap the pit to explore it full screen</span></p>
       </section>
 
       <!-- Challenge -->

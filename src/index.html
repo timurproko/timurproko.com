@@ -1000,6 +1000,7 @@
       window.matchMedia?.("(pointer: coarse)").matches ||
       window.matchMedia?.("(max-width: 760px)").matches ||
       false;
+    const POSTER_VERSION = Date.now();
 
     const grid = document.getElementById("presentations");
     const count = document.getElementById("count");
@@ -1130,8 +1131,7 @@
       if (USE_STATIC_PREVIEW) {
         card.innerHTML = `
         <div class="preview is-loading" aria-hidden="true">
-          <img class="preview-poster" src="${posterUrl(item.file)}" alt="" loading="lazy" decoding="async"
-            onerror="this.style.display='none'" />
+          <img class="preview-poster" src="${posterUrl(item.file)}" data-file="${escapeHtml(item.file)}" alt="" loading="lazy" decoding="async" />
         </div>
         <div class="meta">
           <h2 class="title">${escapeHtml(item.title).replace(/\n/g, ' ')}</h2>
@@ -1147,6 +1147,11 @@
         const finishLoading = () => preview?.classList.remove("is-loading");
         poster?.addEventListener("load", finishLoading, { once: true });
         poster?.addEventListener("error", finishLoading, { once: true });
+        poster?.addEventListener("error", () => {
+          // No dark poster for this deck yet: fall back to the light one.
+          if (poster.src.includes("-dark.jpg")) poster.src = posterUrl(item.file, "light");
+          else poster.style.display = "none";
+        });
         if (poster?.complete) finishLoading();
         return card;
       }
@@ -1372,14 +1377,29 @@
 
     window.addEventListener("resize", scheduleProfileCardHeightSync);
 
+    // Cards left out for visitors in some countries. A static host has no geo-IP,
+    // so the country comes from the browser's time zone (no request leaves the page).
+    const HIDDEN_IN_TIME_ZONES = {
+      // Germany
+      "starkit": ["Europe/Berlin", "Europe/Busingen"]
+    };
+
     init();
+
+    function isShownInRegion(file) {
+      const zones = HIDDEN_IN_TIME_ZONES[normalizePresentationRoute(file)];
+      if (!zones) return true;
+      let zone = "";
+      try { zone = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (_) {}
+      return !zones.includes(zone);
+    }
 
     async function init() {
       document.querySelectorAll("[data-presentation-link]").forEach(link => {
         link.href = presentationUrl(link.dataset.presentationLink);
       });
 
-      const files = await discoverPresentationFiles();
+      const files = (await discoverPresentationFiles()).filter(isShownInRegion);
       presentations = await Promise.all(files.map(loadPresentationMeta));
       render(presentations);
       document.body.classList.add("content-loaded");
@@ -1843,12 +1863,21 @@
       return cacheBustedUrl(file, "preview=cover");
     }
 
-    function posterUrl(file) {
+    function posterUrl(file, theme = document.documentElement.getAttribute("data-theme")) {
       // Preview posters are regenerated during GitHub Actions builds. Cache-bust
       // them on load so mobile does not keep showing stale/blank posters from
       // a previous deploy while the page HTML has already updated.
-      return `assets/previews/${encodeURIComponent(normalizePresentationRoute(file))}.jpg?v=${Date.now()}`;
+      const suffix = theme === "dark" ? "-dark" : "";
+      return `assets/previews/${encodeURIComponent(normalizePresentationRoute(file))}${suffix}.jpg?v=${POSTER_VERSION}`;
     }
+
+    // Posters follow the theme toggle, like the live iframes do on desktop.
+    new MutationObserver(() => {
+      document.querySelectorAll("img.preview-poster[data-file]").forEach(poster => {
+        poster.style.display = "";
+        poster.src = posterUrl(poster.dataset.file);
+      });
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
     function presentationUrl(file) {
       const normalized = normalizePresentationRoute(file);

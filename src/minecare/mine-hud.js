@@ -1,6 +1,9 @@
 // HUD over the 3D pit: view modes, fleet list, hotspots and a telemetry panel
 // styled after the mining platform UI (white cards, indigo accent, live KPIs).
 
+// Touch-only grab handle that expands / collapses the panel (hidden on desktop).
+const SHEET_HANDLE = '<button type="button" class="mine-sheet-handle" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg></button>';
+
 const PHASE = {
   empty: { label: 'Returning empty', tone: 'ok' },
   loading: { label: 'Loading at shovel', tone: 'info' },
@@ -26,10 +29,14 @@ const el = (tag, cls, html) => {
 
 export function createHud(stage, mine) {
   const hotspots = stage.querySelector('.mine-hotspots');
-  const modes = [...stage.querySelectorAll('[data-mode]')];
+  // On touch the tabs live just above the stage until it opens full screen (main.js).
+  const modes = [...(stage.closest('.mine-hero') || stage).querySelectorAll('[data-mode]')];
   const fleet = stage.querySelector('.mine-fleet-list');
   const panel = stage.querySelector('.mine-panel');
   let selected = null, selectedPoi = null, accepted = false;
+  // On touch the panel opens as a peek (just its head) so it does not cover the
+  // scene; the chevron handle slides the details up. Desktop always shows it all.
+  let sheetOpen = false;
 
   // Hotspot pills for trucks and points of interest.
   const truckPins = mine.trucks.map(t => {
@@ -77,6 +84,7 @@ export function createHud(stage, mine) {
   }
 
   function selectTruck(t, { keepView = false } = {}) {
+    if (selected !== t) sheetOpen = false;
     selected = t;
     selectedPoi = null;
     if (!keepView && mine.view.mode !== 'overview') mine.setMode(mine.view.mode, { truck: t });
@@ -88,10 +96,12 @@ export function createHud(stage, mine) {
   function selectPoi(p) {
     selected = null;
     selectedPoi = p;
+    sheetOpen = false;
     mine.focusPoi(p);
     syncModes();
     const copy = POI_COPY[p.id];
     panel.innerHTML = `
+      ${SHEET_HANDLE}
       <div class="mine-panel-head">
         <div><p class="mine-eyebrow">${p.kind}</p><p class="mine-panel-title">${p.label}</p></div>
         <button type="button" class="mine-close" aria-label="Close">✕</button>
@@ -100,19 +110,32 @@ export function createHud(stage, mine) {
       <dl class="mine-kpis mine-kpis-3">${copy.stats.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>`;
     panel.hidden = false;
     panel.querySelector('.mine-close').addEventListener('click', closePanel);
+    mountSheet();
+  }
+
+  function mountSheet() {
+    const handle = panel.querySelector('.mine-sheet-handle');
+    const sync = () => {
+      panel.classList.toggle('is-peek', !sheetOpen);
+      handle.setAttribute('aria-expanded', String(sheetOpen));
+      handle.setAttribute('aria-label', sheetOpen ? 'Hide details' : 'Show details');
+      panel.scrollTop = 0;
+    };
+    handle.addEventListener('click', () => { sheetOpen = !sheetOpen; sync(); });
+    sync();
   }
 
   function closePanel() {
     selected = null;
     selectedPoi = null;
     panel.hidden = true;
-    if (mine.view.mode !== 'overview') mine.setMode('overview');
     syncModes();
   }
 
   function renderTruckPanel() {
     const t = selected;
     panel.innerHTML = `
+      ${SHEET_HANDLE}
       <div class="mine-panel-head">
         <div>
           <p class="mine-eyebrow">Komatsu HD785-7 · ${t.routeIndex ? 'Ramp B' : 'Ramp A'}</p>
@@ -156,6 +179,7 @@ export function createHud(stage, mine) {
       mine.setMode(b.dataset.go, { truck: t });
       syncModes();
     }));
+    mountSheet();
     updatePanel();
   }
 

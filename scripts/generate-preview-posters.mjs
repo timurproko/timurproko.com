@@ -30,6 +30,7 @@ const PRESENTATIONS = [
   { slug: 'vr-for-everybody', width: 1920, height: 1080 },
   { slug: 'untitled-world', width: 1920, height: 1080 },
   { slug: 'calmxr', width: 1920, height: 1080 },
+  { slug: 'minecare', width: 1920, height: 1080 },
   { slug: 'a1', width: 1920, height: 1080 },
   { slug: 'cv', width: 900, height: 900 },
 ];
@@ -50,19 +51,35 @@ async function main() {
   const server = await startStaticServer(distDir);
   const browser = await chromium.launch({ headless: true });
   try {
+    // One poster per theme: <slug>.jpg (light) and <slug>-dark.jpg. theme.js
+    // reads the stored pick before first paint, so seeding it picks the theme.
     for (const { slug, width, height } of PRESENTATIONS) {
-      const url = `${server.origin}/${encodeURIComponent(slug)}/?preview=cover`;
-      const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
-      await page.goto(url, { waitUntil: 'networkidle' });
-      // Deck covers and the CV render .hero; case pages (StarKit, A1) render .cover.
-      await page.waitForSelector('.slide.hero, .hero, .cover', { timeout: 10000 });
-      await page.waitForTimeout(SETTLE_MS);
-      const outPath = path.join(outDir, `${slug}.jpg`);
-      await page.screenshot({ path: outPath, type: 'jpeg', quality: 82 });
-      await page.close();
-      const { size } = await fs.stat(outPath);
-      console.log(`  ${slug}.jpg  ${width}x${height}  ${(size / 1024).toFixed(0)} KB`);
+      for (const theme of ['light', 'dark']) {
+        const url = `${server.origin}/${encodeURIComponent(slug)}/?preview=cover`;
+        const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
+        await page.addInitScript(value => localStorage.setItem('theme', value), theme);
+        await page.goto(url, { waitUntil: 'networkidle' });
+        // Deck covers and the CV render .hero; case pages (StarKit, A1) render .cover.
+        await page.waitForSelector('.slide.hero, .hero, .cover', { timeout: 10000 });
+        await page.waitForTimeout(SETTLE_MS);
+        const name = theme === 'dark' ? `${slug}-dark.jpg` : `${slug}.jpg`;
+        const outPath = path.join(outDir, name);
+        await page.screenshot({ path: outPath, type: 'jpeg', quality: 82 });
+        await page.close();
+        const { size } = await fs.stat(outPath);
+        console.log(`  ${name}  ${width}x${height}  ${(size / 1024).toFixed(0)} KB`);
+      }
     }
+
+    // The CV as a ready-made PDF, for mobile browsers that ignore window.print()
+    // (the CV page's Print button falls back to it).
+    const cvPage = await browser.newPage();
+    await cvPage.goto(`${server.origin}/cv/`, { waitUntil: 'networkidle' });
+    await cvPage.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
+    const pdfPath = path.join(rootDir, 'public', 'cv', 'Timur_Prokopiev_CV.pdf');
+    await cvPage.pdf({ path: pdfPath, preferCSSPageSize: true, printBackground: true });
+    await cvPage.close();
+    console.log(`  ${path.relative(rootDir, pdfPath)}`);
   } finally {
     await browser.close();
     await server.close();

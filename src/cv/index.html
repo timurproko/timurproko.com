@@ -68,12 +68,17 @@
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      padding-top: 57px; /* room for the fixed nav: 56px bar + 1px border */
     }
     a { color: inherit; }
 
+    /* Fixed rather than sticky: iOS Safari drops a sticky, backdrop-blurred
+       header while the page rubber-bands. */
     nav {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 100;
       background: var(--nav-bg);
       backdrop-filter: blur(12px);
@@ -646,6 +651,7 @@
       html,
       body {
         width: auto;
+        padding-top: 0;
         background: white !important;
         color: black;
         font-size: 11px;
@@ -1044,6 +1050,7 @@
     }
     html.preview-cover body {
       display: block;
+      padding-top: 0; /* the fixed nav is hidden in the card preview */
     }
     html.preview-cover nav,
     html.preview-cover .back-shortcut,
@@ -1172,6 +1179,7 @@
   <link rel="stylesheet" href="/styles/chips.css" />
   <link rel="stylesheet" href="/styles/theme.css" />
   <script src="/theme.js"></script>
+  <script src="/back.js" defer></script>
 </head>
 <body>
   <nav>
@@ -1188,7 +1196,7 @@
   <main class="shell">
     <section class="hero" aria-labelledby="page-title">
       <div class="hero-top">
-        <a class="back-shortcut" href="/" aria-label="Back to portfolio"><kbd>←</kbd> <span class="action-label">Back</span></a>
+        <a class="back-shortcut" href="/" aria-label="Back"><kbd>←</kbd> <span class="action-label">Back</span></a>
         <p class="eyebrow">Curriculum Vitae</p>
         <button class="print-shortcut" type="button" id="print-cv" aria-label="Print CV"><kbd>P</kbd> <span class="action-label">Print</span></button>
       </div>
@@ -1720,15 +1728,27 @@
       document.querySelectorAll(".email-reveal").forEach(revealEmail);
     }
 
+    // Some iOS browsers (Arc, in-app webviews) silently ignore window.print().
+    // If no print dialog opened, hand over the PDF built at deploy time instead;
+    // the system viewer can print, share or save it.
+    const PRINT_FILE_NAME = "Timur_Prokopiev_CV";
+    const PDF_URL = `/cv/${PRINT_FILE_NAME}.pdf`;
+    let printDialogOpened = false;
+
     function printCv() {
       revealEmailsForPrint();
+      printDialogOpened = false;
       window.print();
+      if (!window.matchMedia("(pointer: coarse)").matches) return;
+      setTimeout(() => {
+        if (!printDialogOpened && !document.hidden) window.location.href = PDF_URL;
+      }, 1200);
     }
 
     // "Save as PDF" names the file after the page title, so print under the file name.
-    const PRINT_FILE_NAME = "Timur_Prokopiev_CV";
     const screenTitle = document.title;
     window.addEventListener("beforeprint", () => {
+      printDialogOpened = true;
       revealEmailsForPrint();
       document.title = PRINT_FILE_NAME;
     });

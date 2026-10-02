@@ -548,6 +548,121 @@
   .wizard-steps li { padding-left: 26px; font-size: 11px; }
   .wizard-body { padding: 18px 16px 8px; }
 }
+
+/* Touch: a compact preview that scrolls with the page; tap to open full screen */
+.mine-expand, .mine-collapse, .mine-sheet-handle, .mine-note [data-hint="touch"] { display: none; }
+@media (pointer: coarse) {
+  .mine-stage:not(.is-expanded) { aspect-ratio: 1 / 1; height: auto; min-height: 0; max-height: 64svh; touch-action: auto; }
+  .mine-stage:not(.is-expanded) .mine-canvas { pointer-events: none; }
+  .mine-stage:not(.is-expanded) .mine-panel { display: none; }
+  /* Collapsed, the view tabs sit in their own row above the pit (moved there in main.js) */
+  .mine-hero > .mine-modes {
+    position: relative;
+    top: auto;
+    left: auto;
+    translate: none;
+    display: flex;
+    justify-content: space-between;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto 12px;
+    background: rgb(18 18 44);
+  }
+  .mine-hero:has(.mine-stage:not(.is-ready)) > .mine-modes { visibility: hidden; }
+  .mine-expand {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0 0 18px;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mine-expand span {
+    padding: 9px 16px;
+    border: 1px solid rgb(255 255 255 / 0.16);
+    border-radius: 999px;
+    background: rgb(18 18 44 / 0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #fff;
+    font: 500 11px/1 var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .mine-stage:not(.is-ready) .mine-expand span { visibility: hidden; }
+  .mine-stage:not(.is-expanded) .mine-credits { display: none; }
+  .mine-hero .mine-note [data-hint] { display: none; }
+  .mine-hero .mine-note [data-hint="touch"] { display: inline; }
+
+  .mine-stage.is-expanded {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    aspect-ratio: auto;
+    border: 0;
+    border-radius: 0;
+  }
+  .mine-stage.is-expanded .mine-expand { display: none; }
+  /* Selection panel: a bottom sheet that peeks with just its head; the chevron opens it */
+  .mine-sheet-handle {
+    display: grid;
+    place-items: center;
+    width: calc(100% + 28px);
+    height: 26px;
+    margin: -14px -14px 2px;
+    border: 0;
+    background: none;
+    color: #8a8aa3;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mine-sheet-handle svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: rotate 260ms ease; }
+  .mine-sheet-handle[aria-expanded="true"] svg { rotate: 180deg; }
+  .mine-panel.is-peek { overflow: hidden; }
+  .mine-panel.is-peek > :not(.mine-sheet-handle, .mine-panel-head),
+  .mine-panel.is-peek .mine-panel-sub { display: none; }
+  /* Full screen: the view tabs and the close button share the top row */
+  .mine-stage.is-expanded .mine-modes {
+    top: calc(env(safe-area-inset-top) + 10px);
+    left: 10px;
+    translate: none;
+    max-width: calc(100% - 66px);
+  }
+  .mine-stage.is-expanded .mine-modes button { padding: 10px 9px; letter-spacing: 0.02em; }
+  .mine-stage.is-expanded .mine-panel { bottom: calc(env(safe-area-inset-bottom) + 10px); }
+  .mine-stage.is-expanded .mine-credits { bottom: calc(env(safe-area-inset-bottom) + 14px); }
+  .mine-stage.is-expanded .mine-collapse {
+    position: absolute;
+    top: calc(env(safe-area-inset-top) + 10px);
+    right: 10px;
+    z-index: 6;
+    display: grid;
+    place-items: center;
+    /* Same height as the tab bar beside it */
+    width: 39px;
+    height: 39px;
+    border: 1px solid rgb(255 255 255 / 0.16);
+    border-radius: 50%;
+    background: rgb(18 18 44 / 0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #fff;
+    font: 400 18px/1 var(--ui-font);
+    cursor: pointer;
+  }
+  /* The reveal animation leaves a translate on the section, which would trap the fixed stage */
+  html.mine-locked, html.mine-locked body { overflow: hidden; }
+  html.mine-locked .mine-hero { animation: none; opacity: 1; translate: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mine-pin.is-alert .mine-pin-dot, .mine-fleet-row[data-tone="alert"] .mine-status-dot, .mine-loader-bar { animation: none; }
 }

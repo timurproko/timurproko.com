@@ -272,7 +272,10 @@ export async function createMine(container, { onProgress, onFrame } = {}) {
     // In-cab: driver's eye behind the steering wheel, free look with drag.
     const eye = template.userData.eye;
     out.copy(eye).applyMatrix4(m);
-    const dir = new THREE.Vector3(Math.sin(look.yaw) * Math.cos(look.pitch), Math.sin(look.pitch) - 0.12, Math.cos(look.yaw) * Math.cos(look.pitch));
+    // A square or tall (phone) view looks down a little so the dash and wheel are in
+    // frame; read from the live aspect so it follows the stage opening full screen.
+    const pitch = look.pitch + (camera.aspect <= 1 ? -0.27 : 0);
+    const dir = new THREE.Vector3(Math.sin(look.yaw) * Math.cos(pitch), Math.sin(pitch) - 0.12, Math.cos(look.yaw) * Math.cos(pitch));
     outTarget.copy(eye).add(dir).applyMatrix4(m);
   }
 

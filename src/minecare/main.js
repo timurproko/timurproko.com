@@ -56,6 +56,36 @@ if (stage && !document.documentElement.classList.contains('preview-cover')) {
   };
   new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); }).observe(stage);
   document.addEventListener('visibilitychange', sync);
+
+  // Touch: the inline pit is a preview that lets the page scroll past it. A tap
+  // opens it full screen, where drag and pinch drive the camera; the back
+  // gesture, the × button or Escape closes it again.
+  // Collapsed, the view tabs move out to a row above the pit so they stay
+  // tappable without opening it; full screen puts them back over the scene.
+  const coarse = matchMedia('(pointer: coarse)');
+  const modes = stage.querySelector('.mine-modes');
+  const placeModes = () => {
+    if (coarse.matches && !stage.classList.contains('is-expanded')) stage.before(modes);
+    else if (modes.parentElement !== stage) stage.insertBefore(modes, stage.querySelector('.mine-fleet'));
+  };
+  coarse.addEventListener('change', placeModes);
+  placeModes();
+  const setExpanded = on => {
+    stage.classList.toggle('is-expanded', on);
+    document.documentElement.classList.toggle('mine-locked', on);
+    placeModes();
+  };
+  stage.querySelector('.mine-expand').addEventListener('click', () => {
+    setExpanded(true);
+    history.pushState({ mineExpanded: true }, '');
+  });
+  const collapse = () => {
+    if (!stage.classList.contains('is-expanded')) return;
+    if (history.state?.mineExpanded) history.back(); else setExpanded(false);
+  };
+  stage.querySelector('.mine-collapse').addEventListener('click', collapse);
+  addEventListener('popstate', () => setExpanded(false));
+  addEventListener('keydown', e => { if (e.key === 'Escape') collapse(); });
 }
 
 // Scenario: jump to the truck with the alert.
