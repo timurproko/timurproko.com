@@ -1198,7 +1198,7 @@
       <div class="hero-top">
         <a class="back-shortcut" href="/" aria-label="Back"><kbd>←</kbd> <span class="action-label">Back</span></a>
         <p class="eyebrow">Curriculum Vitae</p>
-        <button class="print-shortcut" type="button" id="print-cv" aria-label="Print CV"><kbd>P</kbd> <span class="action-label">Print</span></button>
+        <button class="print-shortcut" type="button" id="print-cv" aria-label="Open the CV as a PDF"><kbd>P</kbd> <span class="action-label">Open PDF</span></button>
       </div>
       <img class="cv-photo" src="/assets/avatar.jpg" alt="Timur Prokopiev" width="400" height="400" decoding="async" />
       <h1 id="page-title">Timur Prokopiev</h1>
@@ -1728,27 +1728,26 @@
       document.querySelectorAll(".email-reveal").forEach(revealEmail);
     }
 
-    // Some iOS browsers (Arc, in-app webviews) silently ignore window.print().
-    // If no print dialog opened, hand over the PDF built at deploy time instead;
-    // the system viewer can print, share or save it.
+    // Print opens the PDF rendered at deploy time (scripts/generate-preview-posters.mjs)
+    // in every browser, so the result is the same everywhere and does not depend
+    // on each browser's print dialog; its viewer can print, share or save it.
     const PRINT_FILE_NAME = "Timur_Prokopiev_CV";
     const PDF_URL = `/cv/${PRINT_FILE_NAME}.pdf`;
-    let printDialogOpened = false;
 
     function printCv() {
-      revealEmailsForPrint();
-      printDialogOpened = false;
-      window.print();
-      if (!window.matchMedia("(pointer: coarse)").matches) return;
-      setTimeout(() => {
-        if (!printDialogOpened && !document.hidden) window.location.href = PDF_URL;
-      }, 1200);
+      // The PDF is re-rendered on every deploy under the same name; skip any
+      // cached copy so the newest CV always opens.
+      const url = `${PDF_URL}?v=${Date.now()}`;
+      const tab = window.open(url, "_blank");
+      if (tab) tab.opener = null;
+      // A blocked popup (some in-app browsers) opens it in this tab instead.
+      else window.location.href = url;
     }
 
-    // "Save as PDF" names the file after the page title, so print under the file name.
+    // Ctrl/Cmd+P still prints the page itself. "Save as PDF" names the file after
+    // the page title, so print under the file name.
     const screenTitle = document.title;
     window.addEventListener("beforeprint", () => {
-      printDialogOpened = true;
       revealEmailsForPrint();
       document.title = PRINT_FILE_NAME;
     });

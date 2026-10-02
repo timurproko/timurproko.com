@@ -39,11 +39,16 @@ jobs:
       - name: Build static site
         run: npm run build
 
-      - name: Generate mobile preview posters
+      # Renders the mobile card posters and the CV PDF (/cv/Timur_Prokopiev_CV.pdf)
+      # from the site just built, so every deploy ships a PDF of the current CV.
+      - name: Generate mobile preview posters and the CV PDF
         run: npm run previews:build
 
       - name: Rebuild static site with fresh previews
         run: npm run build
+
+      - name: Check the CV PDF is in the build
+        run: test -s dist/cv/Timur_Prokopiev_CV.pdf
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
