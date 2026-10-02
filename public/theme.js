@@ -42,7 +42,8 @@
     if (!button) return;
     var next = theme === 'dark' ? 'light' : 'dark';
     button.setAttribute('aria-label', 'Switch to ' + next + ' theme');
-    button.title = 'Switch to ' + next + ' theme';
+    // Shown by the styled tooltip in theme.css (a native title would double it)
+    button.setAttribute('data-tip', next === 'dark' ? 'Dark mode' : 'Light mode');
   }
 
   function apply(theme) {

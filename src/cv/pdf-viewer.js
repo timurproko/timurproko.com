@@ -169,10 +169,12 @@ export function createPdfViewer({ url, fileName }) {
       root.style.setProperty('--pdf-left', `${Math.round(back.left)}px`);
       root.style.setProperty('--pdf-right', `${Math.round(window.innerWidth - opener.right)}px`);
     }
-    root.hidden = false;
-    document.documentElement.classList.add('pdf-viewer-open');
+    transition('opening', () => {
+      root.hidden = false;
+      document.documentElement.classList.add('pdf-viewer-open');
+      root.querySelector('[data-act="back"]').focus();
+    });
     history.pushState({ cvPdf: true }, '');
-    root.querySelector('[data-act="back"]').focus();
     try {
       await load();
       await render();
@@ -185,9 +187,26 @@ export function createPdfViewer({ url, fileName }) {
 
   function hide() {
     if (!root || root.hidden) return;
-    root.hidden = true;
-    document.documentElement.classList.remove('pdf-viewer-open');
-    returnFocus?.focus?.();
+    transition('closing', () => {
+      root.hidden = true;
+      document.documentElement.classList.remove('pdf-viewer-open');
+      returnFocus?.focus?.({ preventScroll: true });
+    });
+  }
+
+  // The CV zooms out under the viewer as it rises, and back in as it drops away
+  // (the ::view-transition rules in pdf-viewer.css). Browsers without view
+  // transitions, or set to reduce motion, just swap.
+  function transition(direction, update) {
+    const html = document.documentElement;
+    if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      update();
+      return;
+    }
+    html.dataset.pdfTransition = direction;
+    document.startViewTransition(update).finished.finally(() => {
+      if (html.dataset.pdfTransition === direction) delete html.dataset.pdfTransition;
+    });
   }
 
   // Back steps the history entry open() added, so the browser's own back
