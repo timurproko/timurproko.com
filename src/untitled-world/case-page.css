@@ -424,7 +424,9 @@ h1, .lens-title { font-family: var(--font-type); font-weight: 400; letter-spacin
     --hue-fg: oklch(82% 0.04 var(--hue));
     --hue-border: oklch(38% 0.025 var(--hue));
   }
-  :root[data-theme="dark"] .word { color: oklch(38% 0.006 250); }
+  /* Only words still waiting to light up: as a plain .word rule this outranked
+     .word.is-lit, so in dark mode the manifesto never lit (and stayed dim on phones) */
+  :root[data-theme="dark"] .word:not(.is-lit) { color: oklch(38% 0.006 250); }
   :root[data-theme="dark"] .tag { border-color: var(--hue-border); color: var(--hue-fg); }
   :root[data-theme="dark"] .sighting-strip { box-shadow: 0 8px 24px var(--shadow-color); }
 }

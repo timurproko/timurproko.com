@@ -151,8 +151,10 @@ body > nav {
     color 720ms cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 720ms cubic-bezier(0.4, 0, 0.2, 1);
 }
-.back-shortcut { left: max(24px, calc((100vw - 1120px) / 2 + 32px)); }
-.link-shortcut { right: max(24px, calc((100vw - 1120px) / 2 + 32px)); }
+/* 100% (the viewport without its scrollbar, for fixed elements) rather than 100vw,
+   so the buttons line up with the centred content where scrollbars take space */
+.back-shortcut { left: max(32px, calc((100% - 1120px) / 2 + 32px)); }
+.link-shortcut { right: max(32px, calc((100% - 1120px) / 2 + 32px)); }
 .back-shortcut:hover,
 .back-shortcut:focus-visible,
 .link-shortcut:hover,

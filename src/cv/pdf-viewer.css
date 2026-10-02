@@ -1,0 +1,135 @@
+/* CV PDF viewer (pdf-viewer.js). Buttons match the CV's Back / Open PDF pills. */
+html.pdf-viewer-open,
+html.pdf-viewer-open body { overflow: hidden; }
+
+.pdf-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  /* A shade off the page colour: dark enough to frame the white sheets, light
+     enough that the bar's border line still shows against it (as the header's does) */
+  background: color-mix(in oklab, var(--bg), var(--fg) 4%);
+}
+.pdf-viewer[hidden] { display: none; }
+
+.pdf-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  /* Same height as the site header: a 56px bar plus its 1px border */
+  min-height: calc(57px + env(safe-area-inset-top));
+  /* Back and Print line up with the CV page's own Back and Open PDF buttons:
+     pdf-viewer.js sets --pdf-left / --pdf-right from where those sit; this is the
+     same layout rule as a fallback (100% = the viewer's width, not 100vw) */
+  --pdf-inset: max(32px, calc((100% - 1120px) / 2 + 32px));
+  padding:
+    env(safe-area-inset-top)
+    max(var(--pdf-right, var(--pdf-inset)), env(safe-area-inset-right))
+    0
+    max(var(--pdf-left, var(--pdf-inset)), env(safe-area-inset-left));
+  border-bottom: 1px solid var(--border);
+  /* The header's own colour over the page; solid here, since nothing scrolls under it */
+  background: var(--bg);
+}
+.pdf-zoom, .pdf-actions { display: flex; align-items: center; gap: 6px; }
+
+.pdf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 31px;
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font: 400 11px/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 200ms ease, border-color 200ms ease;
+}
+.pdf-btn:hover, .pdf-btn:focus-visible { color: var(--fg); }
+.pdf-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pdf-btn:disabled { opacity: 0.4; cursor: default; }
+.pdf-btn kbd {
+  font: inherit;
+  color: var(--fg);
+  background: color-mix(in oklab, var(--surface), var(--fg) 4%);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px 6px;
+  line-height: 1;
+  box-shadow: 0 1px 0 var(--border);
+}
+.pdf-icon { width: 31px; padding: 0; color: var(--fg); font-size: 16px; letter-spacing: 0; }
+.pdf-zoom-value { min-width: 46px; color: var(--muted); font: 400 11px/1 var(--font-mono); letter-spacing: 0.04em; text-align: center; }
+
+.pdf-pages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  padding: 16px 16px calc(env(safe-area-inset-bottom) + 24px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.pdf-pages:focus { outline: none; }
+/* margin-inline: auto centres a page that fits and lets a zoomed-in one scroll from its left edge */
+.pdf-page {
+  flex: none;
+  max-width: none;
+  margin-inline: auto;
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 10px 30px rgb(0 0 0 / 0.12);
+}
+.pdf-status { margin: auto; color: var(--muted); font: 400 12px/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* Same 20px insets as the CV's Back / Open PDF buttons at this width */
+@media (max-width: 760px) {
+  .pdf-bar { --pdf-inset: 20px; }
+}
+/* Phones: Download and Print keep just their key caps so the bar fits one row */
+@media (max-width: 560px) {
+  .pdf-bar { gap: 6px; }
+  .pdf-actions .pdf-btn span { display: none; }
+  .pdf-actions .pdf-btn { padding: 7px 9px; }
+  .pdf-zoom-value { min-width: 38px; }
+  .pdf-pages { padding: 10px 10px calc(env(safe-area-inset-bottom) + 20px); gap: 10px; }
+}
+
+/* The narrowest phones drop the zoom percentage (− and + still work) to keep one row */
+@media (max-width: 360px) {
+  .pdf-zoom-value { display: none; }
+}
+
+/* Print from the viewer: only the PDF's pages, one per sheet. Each image is held
+   to the printable area in BOTH directions — sized by width alone, an A4 page
+   inside the dialog's margins comes out a sliver too tall and spills onto a
+   blank sheet. */
+.pdf-print { display: none; }
+@media print {
+  @page pdf-sheet { size: A4; margin: 0; }
+  html.pdf-printing,
+  html.pdf-printing body { height: auto !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; background: #fff !important; }
+  html.pdf-printing body > :not(.pdf-print) { display: none !important; }
+  html.pdf-printing .pdf-print { display: block !important; }
+  .pdf-print img {
+    display: block;
+    width: 100%;
+    height: calc(100vh - 2px);
+    object-fit: contain;
+    page: pdf-sheet;
+    break-inside: avoid;
+    break-after: page;
+  }
+  .pdf-print img:last-child { break-after: auto; }
+}

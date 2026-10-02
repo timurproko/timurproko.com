@@ -229,8 +229,10 @@
         color 720ms cubic-bezier(0.4, 0, 0.2, 1),
         box-shadow 720ms cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .back-shortcut { left: max(24px, calc((100vw - 1120px) / 2 + 32px)); text-decoration: none; }
-    .print-shortcut { right: max(24px, calc((100vw - 1120px) / 2 + 32px)); }
+    /* 100% (the viewport without its scrollbar, for fixed elements) rather than 100vw,
+       so the buttons line up with the centred content where scrollbars take space */
+    .back-shortcut { left: max(32px, calc((100% - 1120px) / 2 + 32px)); text-decoration: none; }
+    .print-shortcut { right: max(32px, calc((100% - 1120px) / 2 + 32px)); }
     .back-shortcut:hover,
     .back-shortcut:focus-visible,
     .print-shortcut:hover,
@@ -1721,40 +1723,39 @@
       document.querySelectorAll(".email-reveal").forEach(revealEmail);
     }
 
-    // Print opens the PDF rendered at deploy time (scripts/generate-preview-posters.mjs)
-    // in every browser, so the result is the same everywhere and does not depend
-    // on each browser's print dialog; its viewer can print, share or save it.
-    const PRINT_FILE_NAME = "Timur_Prokopiev_CV";
-    const PDF_URL = `/cv/${PRINT_FILE_NAME}.pdf`;
-
-    function printCv() {
-      // The PDF is re-rendered on every deploy under the same name; skip any
-      // cached copy so the newest CV always opens.
-      const url = `${PDF_URL}?v=${Date.now()}`;
-      const tab = window.open(url, "_blank");
-      if (tab) tab.opener = null;
-      // A blocked popup (some in-app browsers) opens it in this tab instead.
-      else window.location.href = url;
-    }
-
-    // Ctrl/Cmd+P still prints the page itself. "Save as PDF" names the file after
+    // Ctrl/Cmd+P prints the page itself. "Save as PDF" names the file after
     // the page title, so print under the file name.
+    const PRINT_FILE_NAME = "Timur_Prokopiev_CV";
     const screenTitle = document.title;
     window.addEventListener("beforeprint", () => {
       revealEmailsForPrint();
       document.title = PRINT_FILE_NAME;
     });
     window.addEventListener("afterprint", () => { document.title = screenTitle; });
+  </script>
+  <script type="module">
+    // Open PDF (and P) shows the PDF rendered at deploy time
+    // (scripts/generate-preview-posters.mjs) in the site's own viewer, with the same
+    // Back / zoom / Download / Print bar on every browser.
+    import { createPdfViewer } from "./pdf-viewer.js";
 
-    const printButton = document.getElementById("print-cv");
-    printButton?.addEventListener("click", printCv);
+    // The PDF is re-rendered on every deploy under the same name; skip any cached
+    // copy so the newest CV always opens.
+    const viewer = createPdfViewer({
+      url: `/cv/Timur_Prokopiev_CV.pdf?v=${Date.now()}`,
+      fileName: "Timur_Prokopiev_CV.pdf",
+    });
+
+    document.getElementById("print-cv")?.addEventListener("click", () => viewer.open());
     window.addEventListener("keydown", event => {
       if (event.key !== "p" && event.key !== "P") return;
       if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
       const target = event.target;
       if (target instanceof HTMLElement && target.closest("input, textarea, select, [contenteditable]")) return;
       event.preventDefault();
-      printCv();
+      // In the viewer P prints, matching the key cap on its Print button
+      if (viewer.isOpen) document.querySelector('.pdf-viewer [data-act="print"]')?.click();
+      else viewer.open();
     });
   </script>
 </body>
