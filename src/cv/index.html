@@ -8,19 +8,19 @@
   <link rel="canonical" href="https://timurproko.com/cv/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Timur Prokopiev" />
-  <meta property="og:title" content="UX/XR Developer" />
+  <meta property="og:title" content="Timur Prokopiev – UX / XR / AI Experience Engineer" />
   <meta property="og:description" content="Building interactive experiences with a focus on usability, performance, and real-time systems." />
   <meta property="og:url" content="https://timurproko.com/cv/" />
   <meta property="og:image" content="https://timurproko.com/assets/social/cv.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="UX/XR Developer — social preview" />
+  <meta property="og:image:alt" content="Timur Prokopiev – UX / XR / AI Experience Engineer — social preview" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="UX/XR Developer" />
+  <meta name="twitter:title" content="Timur Prokopiev – UX / XR / AI Experience Engineer" />
   <meta name="twitter:description" content="Building interactive experiences with a focus on usability, performance, and real-time systems." />
   <meta name="twitter:image" content="https://timurproko.com/assets/social/cv.png" />
   <!-- social-preview:end -->
-  <title>UX/XR Developer</title>
+  <title>Timur Prokopiev – UX / XR / AI Experience Engineer</title>
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -688,15 +688,8 @@
         border-bottom: 0;
         break-after: avoid;
       }
-      /* Curriculum Vitae sits top-right, level with the photo */
-      .hero { position: relative; }
-      .hero-top { position: absolute; top: 0; right: 0; margin: 0; }
-      .eyebrow {
-        font-size: 9.5px;
-        letter-spacing: 0.14em;
-        color: black;
-      }
-      .eyebrow::before { width: 14px; height: 1px; }
+      /* The PDF leaves out the "Curriculum Vitae" eyebrow */
+      .hero-top { display: none; }
       /* Links carry the case pages' ↗ so they read as clickable in the PDF */
       .quick-meta a.chip .print-url::after,
       .quick-meta a.print-only-chip::after,
