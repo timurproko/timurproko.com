@@ -15,9 +15,11 @@ html.preview-cover .cover { background-size: auto 100%; background-repeat: no-re
   border-radius: 20px;
   background: radial-gradient(ellipse at 50% 60%, oklch(30% 0.05 280), oklch(14% 0.02 265) 70%);
 }
+/* width/height on the <img> give its ratio, so the panel holds its final height before the file loads */
 .hero-art img {
   display: block;
   width: 100%;
+  height: auto;
   max-height: 520px;
   object-fit: contain;
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
