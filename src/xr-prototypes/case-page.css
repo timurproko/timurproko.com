@@ -8,7 +8,8 @@
 .win-link { display: flex; flex-direction: column; gap: 10px; height: 100%; text-decoration: none; }
 .win:has(.win-link:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
 .win-link:focus-visible { outline: none; }
-.proto, #heart-viewer { scroll-margin-top: 96px; }
+/* Jumping to a prototype tucks its divider line under the site header */
+.proto, #heart-viewer { scroll-margin-top: 52px; }
 
 /* Prototype rows — copy on the left, square headset capture on the right */
 .proto .frame video { aspect-ratio: 1; object-fit: cover; }
@@ -113,6 +114,9 @@
 .webgl.is-fullscreen { margin: 0; padding: 0; border: 0; border-radius: 0; background: #1b2230; }
 .webgl.is-fullscreen .webgl-stage { width: 100%; height: 100%; aspect-ratio: auto; border: 0; border-radius: 0; }
 .webgl.is-fullscreen .webgl-fullscreen { top: 16px; right: 16px; }
+/* Fallback where the Fullscreen API is missing (iPhone Safari): cover the window */
+.webgl.is-window-fill { position: fixed; inset: 0; z-index: 1000; height: 100dvh; }
+html.webgl-window-fill, html.webgl-window-fill body { overflow: hidden; }
 @media (max-width: 760px) {
   .webgl-fullscreen { top: 14px; right: 14px; width: 34px; height: 34px; }
 }

@@ -68,7 +68,11 @@
 .flow-graph svg { display: block; width: min(360px, 100%); height: auto; margin: 0 auto; overflow: visible; font-family: var(--font); }
 
 @media (max-width: 760px) {
-  .trend { grid-template-columns: repeat(2, minmax(0, 1fr)); aspect-ratio: auto; padding: 16px; gap: 20px 16px; }
+  /* Top-aligned so a caption that wraps to two lines ("Traditional engineering")
+     doesn't push its panel out of line with its neighbour */
+  .trend { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; aspect-ratio: auto; padding: 16px; gap: 20px 16px; }
+  .trend figure { height: auto; }
+  .trend figcaption { text-wrap: balance; }
   .trend figure + figure::before { display: none; }
   .trend svg { width: 100%; height: auto; }
 }
@@ -76,7 +80,18 @@
 /* Dark theme — re-ink the light diagram SVGs (tokens live in /styles/theme.css) */
 @media screen {
   :root[data-theme="dark"] .stage.is-here .stage-tools .chip { color: var(--bg); }
-  :root[data-theme="dark"] .pillars-venn .venn-label text { fill-opacity: 1; filter: brightness(1.6); }
+  /* Rings: lighter strokes and denser fills, so they hold up on the dark page */
+  :root[data-theme="dark"] .pillars-venn .venn-rings circle { fill-opacity: 0.24; stroke-opacity: 0.95; }
+  :root[data-theme="dark"] .pillars-venn .venn-rings circle:nth-child(1) { fill: #5b8cff; stroke: #7da4ff; }
+  :root[data-theme="dark"] .pillars-venn .venn-rings circle:nth-child(2) { fill: #34c26a; stroke: #5fd98b; }
+  :root[data-theme="dark"] .pillars-venn .venn-rings circle:nth-child(3) { fill: #f5c533; stroke: #f7d35c; }
+  :root[data-theme="dark"] .pillars-venn .venn-rings circle:nth-child(4) { fill: #f05252; stroke: #ff7b7b; }
+  /* Labels: light tints of their ring colours */
+  :root[data-theme="dark"] .pillars-venn .venn-label text { fill-opacity: 1; }
+  :root[data-theme="dark"] .pillars-venn .venn-label text:nth-child(1) { fill: #a9c2ff; }
+  :root[data-theme="dark"] .pillars-venn .venn-label text:nth-child(2) { fill: #8be6ab; }
+  :root[data-theme="dark"] .pillars-venn .venn-label text:nth-child(3) { fill: #fbe08a; }
+  :root[data-theme="dark"] .pillars-venn .venn-label text:nth-child(4) { fill: #ffa3a3; }
   :root[data-theme="dark"] .flow-graph .flow-node rect { fill: var(--surface); stroke: var(--accent); }
   :root[data-theme="dark"] .flow-graph .flow-node text:first-of-type { fill: var(--accent); }
   :root[data-theme="dark"] .flow-graph .flow-node text + text { fill: var(--muted); }

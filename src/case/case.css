@@ -311,7 +311,7 @@ h1 {
   display: inline-flex;
   align-items: center;
   min-height: 28px;
-  padding: 0 13px;
+  padding: 0 13px 2px;
   border: 1px solid var(--hue-border);
   border-radius: 999px;
   background: var(--accent-dim);

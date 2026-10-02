@@ -50,8 +50,12 @@
       createUnityInstance(canvas, config, progress => { bar.style.width = `${100 * progress}%`; })
         .then(() => { loading.hidden = true; })
         .catch(message => {
+          // Usually the device ran out of memory for the build (phones), which
+          // Unity reports only as a bare "Script error."
+          console.error(message);
           label.classList.add('error');
-          label.textContent = `Couldn't start the prototype: ${message}`;
+          label.textContent = "Couldn't start the prototype on this device. It needs a desktop browser with WebGL 2.";
+          bar.parentElement.hidden = true;
         });
     };
     document.body.append(script);

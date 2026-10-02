@@ -13,11 +13,16 @@ export function setupChapterNav(nav, after) {
   const update = () => nav.classList.toggle('is-visible', afterAbove && !nextVisible);
   // `after` counts as scrolled away once it is up under the header and the pill
   // (the top 110px, the same as the sections' scroll-margin), so jumping to the
-  // first section — which sits right below it — keeps the pill on screen.
-  new IntersectionObserver(([entry]) => {
-    afterAbove = !entry.isIntersecting && entry.boundingClientRect.top < 110;
+  // first section — which sits right below it — shows the pill. Checked on
+  // scroll rather than observed: a jump lands `after` exactly on the 110px line
+  // (give or take a subpixel), and an IntersectionObserver still reports that
+  // edge-to-edge case as visible.
+  function checkAfter() {
+    const above = after.getBoundingClientRect().bottom <= 112;
+    if (above === afterAbove) return;
+    afterAbove = above;
     update();
-  }, { rootMargin: '-110px 0px 0px 0px' }).observe(after);
+  }
   if (next) {
     new IntersectionObserver(([entry]) => {
       nextVisible = entry.isIntersecting;
@@ -45,6 +50,10 @@ export function setupChapterNav(nav, after) {
       nav.scrollTo({ left: link.offsetLeft - (nav.clientWidth - link.offsetWidth) / 2, behavior: 'smooth' });
     }
   }
-  window.addEventListener('scroll', markCurrent, { passive: true });
-  markCurrent();
+  function onScroll() {
+    checkAfter();
+    markCurrent();
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 }

@@ -22,36 +22,62 @@ if (!reducedMotion && 'IntersectionObserver' in window) {
 // WebGL heart: the ~100 MB Unity build only loads once the viewer asks for it.
 const HEART_URL = '/xr-prototypes/heart/index.html';
 const stage = document.getElementById('webgl-stage');
+const launchButton = document.getElementById('webgl-launch');
+// Phones and tablets (iPadOS reports itself as a Mac) usually can't hold the
+// build in memory, so they get a warning first and must choose to try anyway.
+const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
+  (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
+let warned = false;
 function launchHeart() {
-  if (stage.querySelector('iframe')) return;
+  if (stage.querySelector('iframe')) return true;
+  if (isMobile && !warned) {
+    warned = true;
+    launchButton.querySelector('.webgl-title').textContent = 'Try anyway';
+    launchButton.querySelector('.webgl-note').textContent = 'Built for desktop — may not start on a phone';
+    return false;
+  }
   const iframe = document.createElement('iframe');
   iframe.src = HEART_URL;
   iframe.title = 'Heart Viewer — interactive WebGL prototype';
   iframe.allow = 'fullscreen';
   stage.replaceChildren(iframe);
   iframe.focus();
+  return true;
 }
-document.getElementById('webgl-launch')?.addEventListener('click', launchHeart);
+launchButton?.addEventListener('click', launchHeart);
 
 // Full screen takes the whole frame — stage plus this button, which becomes the
 // exit control — launching the build if needed. Where the Fullscreen API is
-// missing (iPhone Safari) the build opens in its own tab instead.
+// missing or refused (iPhone Safari), the frame instead covers the window with
+// CSS, so the exit button stays in reach.
 const frame = document.getElementById('webgl-frame');
 const fullscreenButton = document.getElementById('webgl-fullscreen');
+function setWindowFill(on) {
+  frame.classList.toggle('is-window-fill', on);
+  document.documentElement.classList.toggle('webgl-window-fill', on);
+  syncFullscreen();
+}
 fullscreenButton?.addEventListener('click', () => {
   if (document.fullscreenElement) {
     document.exitFullscreen().then(syncFullscreen, syncFullscreen);
     return;
   }
-  if (!frame.requestFullscreen) {
-    window.open(HEART_URL, '_blank', 'noopener');
+  if (frame.classList.contains('is-window-fill')) {
+    setWindowFill(false);
     return;
   }
-  launchHeart();
-  frame.requestFullscreen().catch(() => window.open(HEART_URL, '_blank', 'noopener'));
+  if (!launchHeart()) return;
+  if (!frame.requestFullscreen) {
+    setWindowFill(true);
+    return;
+  }
+  frame.requestFullscreen().catch(() => setWindowFill(true));
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && frame.classList.contains('is-window-fill')) setWindowFill(false);
 });
 function syncFullscreen() {
-  const active = document.fullscreenElement === frame;
+  const active = document.fullscreenElement === frame || frame.classList.contains('is-window-fill');
   frame.classList.toggle('is-fullscreen', active);
   fullscreenButton.setAttribute('aria-label', active ? 'Exit full screen' : 'Open full screen');
   fullscreenButton.title = active ? 'Exit full screen' : 'Full screen';
@@ -71,10 +97,17 @@ const next = document.querySelector('.next');
 let indexAbove = false;
 let nextVisible = false;
 const updateNav = () => protoNav.classList.toggle('is-visible', indexAbove && !nextVisible);
-new IntersectionObserver(([entry]) => {
-  indexAbove = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+// The index counts as scrolled away once it is up under the header and the pill
+// (the top 110px, give or take a subpixel). Checked on scroll rather than
+// observed: jumping to the first prototype lands the index right on that line.
+function checkIndex() {
+  const above = index.getBoundingClientRect().bottom <= 112;
+  if (above === indexAbove) return;
+  indexAbove = above;
   updateNav();
-}).observe(index);
+}
+window.addEventListener('scroll', checkIndex, { passive: true });
+checkIndex();
 new IntersectionObserver(([entry]) => {
   nextVisible = entry.isIntersecting;
   updateNav();

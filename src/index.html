@@ -560,6 +560,8 @@
       pointer-events: auto;
       background: linear-gradient(to top, var(--veil), transparent 60%);
     }
+    /* a1's blue cover keeps the dark veil in both themes; a white one washes it out */
+    .card[data-file="a1"] .preview::after { --veil: oklch(16.5% 0.008 255 / 0.28); }
 
     .meta {
       display: grid;
