@@ -172,6 +172,13 @@ function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+// "Name – Role" titles render as a large name over a smaller role line.
+function titleLines(title) {
+  const [main, ...rest] = title.split(/\s+[–—]\s+/);
+  if (!rest.length) return escapeHtml(title);
+  return `<span>${escapeHtml(main)}</span><span class="subtitle">${escapeHtml(rest.join(' – '))}</span>`;
+}
+
 function buildCardHtml({ title, description, url, siteName }) {
   return `<!doctype html>
 <html lang="en">
@@ -192,17 +199,17 @@ function buildCardHtml({ title, description, url, siteName }) {
         #f8f9fb;
       color: #111827;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      padding: 64px;
+      padding: 40px;
     }
     .card {
       position: relative;
       width: 100%;
       height: 100%;
       border: 1px solid rgba(17, 24, 39, 0.08);
-      border-radius: 44px;
-      background: rgba(255, 255, 255, 0.84);
+      border-radius: 40px;
+      background: rgba(255, 255, 255, 0.86);
       box-shadow: 0 32px 96px rgba(15, 23, 42, 0.14);
-      padding: 58px 64px;
+      padding: 50px 60px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -212,8 +219,8 @@ function buildCardHtml({ title, description, url, siteName }) {
       align-items: center;
       justify-content: space-between;
       gap: 28px;
-      color: #5b6472;
-      font: 500 22px/1.1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: #8a93a1;
+      font: 500 20px/1.1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       letter-spacing: 0.14em;
       text-transform: uppercase;
     }
@@ -221,25 +228,34 @@ function buildCardHtml({ title, description, url, siteName }) {
       content: "";
       flex: 1;
       max-width: 360px;
-      height: 6px;
+      height: 8px;
       border-radius: 999px;
       background: linear-gradient(90deg, #ff4d6d, #ffb703, #3ddc97, #3a86ff, #b517ff);
     }
+    /* The title is the only thing that must survive LinkedIn's ~160px thumbnail,
+       so it is large; the label, description, and URL stay quiet. */
     h1 {
       margin: 0;
-      max-width: 920px;
-      font-size: 70px;
-      line-height: 0.98;
-      letter-spacing: -0.055em;
+      font-size: 84px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.045em;
       text-wrap: balance;
     }
+    h1 span { display: block; }
+    h1 .subtitle {
+      margin-top: 10px;
+      color: #1f2937;
+      font-size: 62px;
+      letter-spacing: -0.035em;
+    }
     p {
-      margin: 28px 0 0;
-      max-width: 920px;
-      color: #5b6472;
-      font-size: 30px;
-      line-height: 1.25;
-      letter-spacing: -0.02em;
+      margin: 22px 0 0;
+      max-width: 960px;
+      color: #8a93a1;
+      font-size: 24px;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
     }
     .url {
       color: #2563eb;
@@ -252,10 +268,10 @@ function buildCardHtml({ title, description, url, siteName }) {
   <main class="card">
     <div class="brand"><span>${escapeHtml(siteName)}</span></div>
     <section>
-      <h1>${escapeHtml(title)}</h1>
+      <h1>${titleLines(title)}</h1>
       <p>${escapeHtml(description)}</p>
     </section>
-    <div class="url">${escapeHtml(url.replace(/^https?:\/\//, ''))}</div>
+    <div class="url">${escapeHtml(url.replace(/^https?:\/\//, '').replace(/\/$/, ''))}</div>
   </main>
 </body>
 </html>`;
