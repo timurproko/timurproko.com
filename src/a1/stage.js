@@ -14,7 +14,8 @@ export function setupStage(stage) {
   const working = stage.querySelector('.a1-working');
   const spinner = working.querySelector('.a1-spinner');
   const elapsed = working.querySelector('.a1-elapsed');
-  const promptText = panel.querySelector('.a1-prompt-text').textContent;
+  const workingLabel = working.querySelector('.a1-working-label');
+  const turns = [...panel.querySelectorAll('.a1-turn')];
 
   // Every text node with its full text, so a replay can blank and refill it
   const texts = [];
@@ -29,8 +30,24 @@ export function setupStage(stage) {
   // Keep the window on the latest lines, like a terminal following its output
   function follow(smooth) {
     const top = panel.scrollHeight - panel.clientHeight;
-    panel.classList.toggle('is-scrolled', top > 0);
+    // A prompt whose own row has scrolled away is pinned in a1's quiet style
+    turns.forEach(turn => turn.firstElementChild.classList.toggle('is-pinned', turn.offsetTop < top));
     panel.scrollTo({ top, behavior: smooth && !reducedMotion.matches ? 'smooth' : 'auto' });
+  }
+
+  // a1's working shimmer: a two-letter highlight sweeps the label one letter
+  // every three spinner frames, then rests for a pass; the ellipsis stays muted
+  function paintWorkingLabel(phase) {
+    const label = 'Working';
+    const step = Math.floor(phase / 3) % (label.length * 2);
+    if (step >= label.length) {
+      workingLabel.textContent = `${label}…`;
+      return;
+    }
+    const lit = document.createElement('span');
+    lit.className = 'a1-shimmer';
+    lit.textContent = label.slice(step, step + 2);
+    workingLabel.replaceChildren(label.slice(0, step), lit, `${label.slice(step + 2)}…`);
   }
 
   function setWorking(on) {
@@ -40,9 +57,12 @@ export function setupStage(stage) {
     elapsed.textContent = '0s';
     const startedAt = performance.now();
     let frame = 0;
+    let phase = 0;
+    paintWorkingLabel(phase);
     ticker = setInterval(() => {
       frame = (frame + 1) % SPINNER.length;
       spinner.textContent = SPINNER[frame];
+      paintWorkingLabel(++phase);
       elapsed.textContent = `${Math.floor((performance.now() - startedAt) / 1000)}s`;
     }, 80);
   }
@@ -89,20 +109,26 @@ export function setupStage(stage) {
     panel.querySelectorAll('.a1-out, .a1-took').forEach(el => el.classList.add('is-pending'));
     follow(false);
 
-    // Type the prompt into the editor, then submit it to the transcript
-    for (const char of promptText) {
-      editorText.textContent += char;
-      await wait(28);
-      if (!live()) return;
-    }
-    await wait(380);
-    if (!live()) return;
-    editorText.textContent = '';
-    show(lines[0]);
-    setWorking(true);
-
-    for (const line of lines.slice(1)) {
-      if (line.classList.contains('a1-thought')) {
+    for (const line of lines) {
+      if (line.classList.contains('a1-prompt')) {
+        // Finish the previous turn, then type the next prompt into the editor
+        // and submit it; it pins to the top while its turn streams below
+        if (line !== lines[0]) {
+          setWorking(false);
+          await wait(900);
+          if (!live()) return;
+        }
+        for (const char of line.querySelector('.a1-prompt-text').textContent) {
+          editorText.textContent += char;
+          await wait(28);
+          if (!live()) return;
+        }
+        await wait(380);
+        if (!live()) return;
+        editorText.textContent = '';
+        show(line);
+        setWorking(true);
+      } else if (line.classList.contains('a1-thought')) {
         await wait(650);
         if (!live()) return;
         show(line);

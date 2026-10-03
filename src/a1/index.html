@@ -110,10 +110,11 @@
       <section class="a1-stage reveal" style="animation-delay: 180ms" aria-label="Illustrative A1 session">
         <div class="ascii-field" data-ascii="morph" aria-hidden="true"><canvas></canvas></div>
         <div class="a1-terminal">
-          <div class="a1-titlebar"><span class="a1-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="a1-title">a1 <span class="a1-sep">—</span> ~/projects/orbit</span><button class="a1-replay" type="button" aria-label="Replay illustrative session"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>Replay</button></div>
+          <div class="a1-titlebar"><span class="a1-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="a1-title">a1</span><button class="a1-replay" type="button" aria-label="Replay illustrative session"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>Replay</button></div>
           <div class="a1-body">
             <div class="a1-panel">
-              <div class="a1-prompt a1-line"><span class="a1-glyph" aria-hidden="true">❯</span><span class="a1-prompt-text">Handle empty config files without breaking existing behavior.</span><span class="a1-time">14:02</span></div>
+              <div class="a1-turn">
+              <div class="a1-prompt a1-line"><span class="a1-glyph" aria-hidden="true">❯</span><span class="a1-prompt-text">Handle empty config files without breaking existing behavior</span><span class="a1-time">14:02</span></div>
               <p class="a1-thought a1-line">Checking how the loader reads config files</p>
               <div class="a1-tool a1-line">
                 <p class="a1-cmd">$ sed -n 1,12p src/config/load.ts</p>
@@ -137,8 +138,118 @@ Duration  1.8s</pre>
                 <p class="a1-took">Took 1.8s</p>
               </div>
               <p class="a1-response a1-line">Empty files now return an empty config. Existing behavior is preserved and covered by tests. Nothing has been committed.</p>
+              </div>
+              <div class="a1-turn">
+              <div class="a1-prompt a1-line"><span class="a1-glyph" aria-hidden="true">❯</span><span class="a1-prompt-text">Also warn when a config file is empty, so it doesn’t fail silently</span><span class="a1-time">14:05</span></div>
+              <p class="a1-thought a1-line">Looking for the project’s existing warning helper</p>
+              <div class="a1-tool a1-line">
+                <p class="a1-cmd">$ rg -n "export function warn" src</p>
+                <pre class="a1-out">src/log.ts:8:export function warn(message: string) {</pre>
+                <p class="a1-took">Took 0.1s</p>
+              </div>
+              <p class="a1-thought a1-line">Warning on the empty branch and adding a test for it</p>
+              <div class="a1-tool a1-line">
+                <p class="a1-cmd">edit src/config/load.ts <span class="a1-meta">(+6 −1)</span></p>
+                <pre class="a1-out"><span class="a1-added">+ import { warn } from '../log';</span>
+<span class="a1-removed">- return text ? JSON.parse(text) : {};</span>
+<span class="a1-added">+ if (!text) {</span>
+<span class="a1-added">+   warn('Config file is empty; using defaults');</span>
+<span class="a1-added">+   return {};</span>
+<span class="a1-added">+ }</span>
+<span class="a1-added">+ return JSON.parse(text);</span></pre>
+                <p class="a1-took">Took 0.2s</p>
+              </div>
+              <div class="a1-tool a1-line">
+                <p class="a1-cmd">edit test/config/load.test.ts <span class="a1-meta">(+4)</span></p>
+                <pre class="a1-out"><span class="a1-added">+ it('warns on an empty file', () => {</span>
+<span class="a1-added">+   loadConfig('  ');</span>
+<span class="a1-added">+   expect(warn).toHaveBeenCalledOnce();</span>
+<span class="a1-added">+ });</span></pre>
+                <p class="a1-took">Took 0.2s</p>
+              </div>
+              <div class="a1-tool a1-line">
+                <p class="a1-cmd">$ npm test <span class="a1-meta">(timeout 120s)</span></p>
+                <pre class="a1-out">Tests     9 passed (9)
+Duration  1.9s</pre>
+                <p class="a1-took">Took 1.9s</p>
+              </div>
+              <p class="a1-response a1-line">Empty config files now log a warning and fall back to defaults. A new test covers it, and all 9 tests pass. Nothing has been committed.</p>
+              </div>
+              <div class="a1-turn">
+              <div class="a1-prompt a1-line"><span class="a1-glyph" aria-hidden="true">❯</span><span class="a1-prompt-text">Add a --config flag so I can load a different file</span><span class="a1-time">14:09</span></div>
+              <p class="a1-thought a1-line">Checking how the CLI parses its arguments</p>
+              <div class="a1-tool a1-line">
+                <p class="a1-cmd">$ sed -n 1,9p src/cli.ts</p>
+                <pre class="a1-out">import { readFileSync } from 'node:fs';
+import { parseArgs } from 'node:util';
+import { loadConfig } from './config/load';
+
+const { values } = parseArgs({
+  options: { verbose: { type: 'boolean' } },
+});
+const source = readFileSync('orbit.json', 'utf8');</pre>
+                <p class="a1-took">Took 0.1s</p>
+              </div>
+              <p class="a1-thought a1-line">Adding the flag, with orbit.json as its default</p>
+              <div class="a1-tool a1-line">
+                <p class="a1-cmd">edit src/cli.ts <span class="a1-meta">(+2 −2)</span></p>
+                <pre class="a1-out"><span class="a1-removed">-   options: { verbose: { type: 'boolean' } },</span>
+<span class="a1-added">+   options: { verbose: { type: 'boolean' }, config: { type: 'string', default: 'orbit.json' } },</span>
+<span class="a1-removed">- const source = readFileSync('orbit.json', 'utf8');</span>
+<span class="a1-added">+ const source = readFileSync(values.config, 'utf8');</span></pre>
+                <p class="a1-took">Took 0.2s</p>
+              </div>
+              <p class="a1-thought a1-line">Trying the flag against an empty fixture</p>
+              <div class="a1-tool a1-line">
+                <p class="a1-cmd">$ npx tsx src/cli.ts --config fixtures/empty.json</p>
+                <pre class="a1-out">warn: Config file is empty; using defaults
+orbit ready (0 services)</pre>
+                <p class="a1-took">Took 0.6s</p>
+              </div>
+              <div class="a1-tool a1-line">
+                <p class="a1-cmd">$ npm test <span class="a1-meta">(timeout 120s)</span></p>
+                <pre class="a1-out">Tests     9 passed (9)
+Duration  1.9s</pre>
+                <p class="a1-took">Took 1.9s</p>
+              </div>
+              <p class="a1-response a1-line">orbit now accepts <span class="a1-nowrap">--config &lt;path&gt;</span> and still defaults to orbit.json. It works with the empty fixture, and all 9 tests pass. Nothing has been committed.</p>
+              </div>
+              <div class="a1-turn">
+              <div class="a1-prompt a1-line"><span class="a1-glyph" aria-hidden="true">❯</span><span class="a1-prompt-text">Document the flag in the README, then commit everything</span><span class="a1-time">14:12</span></div>
+              <p class="a1-thought a1-line">Finding the usage section in the README</p>
+              <div class="a1-tool a1-line">
+                <p class="a1-cmd">$ rg -n "## Usage" README.md</p>
+                <pre class="a1-out">42:## Usage</pre>
+                <p class="a1-took">Took 0.1s</p>
+              </div>
+              <p class="a1-thought a1-line">Adding an options list under Usage</p>
+              <div class="a1-tool a1-line">
+                <p class="a1-cmd">edit README.md <span class="a1-meta">(+4)</span></p>
+                <pre class="a1-out"><span class="a1-added">+ ### Options</span>
+<span class="a1-added">+</span>
+<span class="a1-added">+ - `--config &lt;path&gt;`: config file to load (default `orbit.json`)</span>
+<span class="a1-added">+ - `--verbose`: print detailed logs</span></pre>
+                <p class="a1-took">Took 0.2s</p>
+              </div>
+              <p class="a1-thought a1-line">Reviewing the changes before committing</p>
+              <div class="a1-tool a1-line">
+                <p class="a1-cmd">$ git status --short</p>
+                <pre class="a1-out"> M README.md
+ M src/cli.ts
+ M src/config/load.ts
+ M test/config/load.test.ts</pre>
+                <p class="a1-took">Took 0.1s</p>
+              </div>
+              <div class="a1-tool a1-line">
+                <p class="a1-cmd">$ git commit -am "Warn on empty config and add --config flag"</p>
+                <pre class="a1-out">[main 3f9c2ab] Warn on empty config and add --config flag
+ 4 files changed, 18 insertions(+), 4 deletions(-)</pre>
+                <p class="a1-took">Took 0.2s</p>
+              </div>
+              <p class="a1-response a1-line">Committed as 3f9c2ab on main. The README now documents <span class="a1-nowrap">--config</span> and <span class="a1-nowrap">--verbose</span>. Nothing has been pushed.</p>
+              </div>
             </div>
-            <div class="a1-working" aria-hidden="true"><span class="a1-spinner">⠋</span> Working… <span class="a1-elapsed">0s</span></div>
+            <div class="a1-working" aria-hidden="true"><span class="a1-spinner">⠋</span> <span class="a1-working-label">Working…</span> <span class="a1-elapsed">0s</span></div>
             <div class="a1-editor" aria-hidden="true"><span class="a1-glyph">❯</span><span class="a1-input"><span class="a1-editor-text"></span><span class="a1-cursor"></span></span></div>
             <div class="a1-status" aria-hidden="true">
               <span>~/projects/orbit (main)</span>
