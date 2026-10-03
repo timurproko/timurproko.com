@@ -99,15 +99,20 @@ export function setupStage(stage) {
     follow(false);
   }
 
+  // Blank the session so it can be generated from the top
+  function prime() {
+    panel.classList.add('is-replaying');
+    lines.forEach(line => line.classList.add('is-pending'));
+    panel.querySelectorAll('.a1-out, .a1-took').forEach(el => el.classList.add('is-pending'));
+    follow(false);
+  }
+
   async function replay() {
     stopReplay();
     if (reducedMotion.matches) return;
     const id = run;
     const live = () => id === run;
-    panel.classList.add('is-replaying');
-    lines.forEach(line => line.classList.add('is-pending'));
-    panel.querySelectorAll('.a1-out, .a1-took').forEach(el => el.classList.add('is-pending'));
-    follow(false);
+    prime();
 
     for (const line of lines) {
       if (line.classList.contains('a1-prompt')) {
@@ -170,8 +175,10 @@ export function setupStage(stage) {
   document.fonts?.ready.then(() => follow(false));
   follow(false);
 
-  // Play the session once when it first scrolls into view.
+  // Play the session once when it first scrolls into view. Start blank so the
+  // finished transcript doesn't flash before the replay clears it.
   if ('IntersectionObserver' in window) {
+    if (!reducedMotion.matches) prime();
     const observer = new IntersectionObserver(entries => {
       if (!entries.some(entry => entry.isIntersecting)) return;
       observer.disconnect();
