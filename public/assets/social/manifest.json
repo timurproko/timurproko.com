@@ -5,6 +5,11 @@
     "image": "/assets/social/home.png"
   },
   {
+    "title": "a1 — AI Coding Agent",
+    "url": "https://timurproko.com/a1/",
+    "image": "/assets/social/a1.png"
+  },
+  {
     "title": "AI for Unity Development",
     "url": "https://timurproko.com/ai-for-unity/",
     "image": "/assets/social/ai-for-unity.png"
@@ -15,7 +20,12 @@
     "image": "/assets/social/avatars.png"
   },
   {
-    "title": "CorelDRAW for macOS · UX Case Study",
+    "title": "CalmXR",
+    "url": "https://timurproko.com/calmxr/",
+    "image": "/assets/social/calmxr.png"
+  },
+  {
+    "title": "UX Case Study",
     "url": "https://timurproko.com/corel-for-mac/",
     "image": "/assets/social/corel-for-mac.png"
   },
@@ -25,8 +35,43 @@
     "image": "/assets/social/cv.png"
   },
   {
+    "title": "UX Case Study",
+    "url": "https://timurproko.com/minecare/",
+    "image": "/assets/social/minecare.png"
+  },
+  {
+    "title": "STARKIT SRD — Touch-free Experience",
+    "url": "https://timurproko.com/starkit/",
+    "image": "/assets/social/starkit.png"
+  },
+  {
     "title": "Touch My Heart XR Experience",
     "url": "https://timurproko.com/touch-my-heart/",
     "image": "/assets/social/touch-my-heart.png"
+  },
+  {
+    "title": "Untitled World",
+    "url": "https://timurproko.com/untitled-world/",
+    "image": "/assets/social/untitled-world.png"
+  },
+  {
+    "title": "VITAL Sports — VR Mental Training",
+    "url": "https://timurproko.com/vital-sports/",
+    "image": "/assets/social/vital-sports.png"
+  },
+  {
+    "title": "VR for Everybody",
+    "url": "https://timurproko.com/vr-for-everybody/",
+    "image": "/assets/social/vr-for-everybody.png"
+  },
+  {
+    "title": "XR Prototypes",
+    "url": "https://timurproko.com/xr-prototypes/",
+    "image": "/assets/social/xr-prototypes.png"
+  },
+  {
+    "title": "Heart Viewer — WebGL Prototype",
+    "url": "https://timurproko.com/xr-prototypes/heart/",
+    "image": "/assets/social/xr-prototypes-heart.png"
   }
 ]

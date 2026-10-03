@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -9,6 +10,8 @@ const srcDir = path.join(rootDir, 'src');
 const socialDir = path.join(publicDir, 'assets', 'social');
 const markerStart = '<!-- social-preview:start -->';
 const markerEnd = '<!-- social-preview:end -->';
+// Rendered at 2x (2400x1260) so the text stays crisp after LinkedIn rescales it.
+const scale = 2;
 
 const SKIP_DIRS = new Set(['.git', 'node_modules', 'assets', 'dist', 'work', 'legacy']);
 
@@ -140,8 +143,8 @@ function socialMetaBlock({ title, description, url, imageUrl, siteName }) {
   <meta property="og:description" content="${escapeAttr(description)}" />
   <meta property="og:url" content="${escapeAttr(url)}" />
   <meta property="og:image" content="${escapeAttr(imageUrl)}" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta property="og:image:width" content="${1200 * scale}" />
+  <meta property="og:image:height" content="${630 * scale}" />
   <meta property="og:image:alt" content="${escapeAttr(`${title} — social preview`)}" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${escapeAttr(title)}" />
@@ -267,7 +270,7 @@ async function renderPreviews(pages) {
   }
 
   const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 });
+  const page = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: scale });
 
   try {
     for (const pageData of pages) {
@@ -293,7 +296,9 @@ async function main() {
     const route = pageRoute(filePath);
     const slug = pageSlug(filePath);
     const url = new URL(route, siteUrl).toString();
-    const imageUrl = new URL(`/assets/social/${slug}.png`, siteUrl).toString();
+    // ?v= changes whenever the card does, so LinkedIn refetches instead of reusing its cached copy.
+    const version = createHash('sha1').update(`${scale}:${buildCardHtml({ title, description, url, siteName })}`).digest('hex').slice(0, 8);
+    const imageUrl = new URL(`/assets/social/${slug}.png?v=${version}`, siteUrl).toString();
     const imagePath = path.join(socialDir, `${slug}.png`);
     const nextHtml = injectSocialMeta(html, socialMetaBlock({ title, description, url, imageUrl, siteName }));
 
