@@ -1,6 +1,8 @@
 import { setupCover } from '../case/cover.js';
 import { setupFooterYear } from '../case/footer-year.js';
 import { mountAscii } from './ascii.js';
+import { setupFeatures } from './features.js';
+import { setupRoadmap } from './roadmap.js';
 import { setupStage } from './stage.js';
 
 if (document.documentElement.classList.contains('preview-cover')) {
@@ -9,6 +11,8 @@ if (document.documentElement.classList.contains('preview-cover')) {
   setupCover(null, { onStart: sphere.play, onStop: sphere.pause });
 } else {
   setupStage(document.querySelector('.a1-stage'));
+  setupFeatures(document.querySelector('.a1-features'));
+  setupRoadmap(document.querySelector('.a1-roadmap'));
   mountAscii(document.querySelector('.a1-stage .ascii-field'));
 }
 setupFooterYear();

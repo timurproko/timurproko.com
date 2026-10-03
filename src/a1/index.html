@@ -298,34 +298,42 @@ Duration  1.9s</pre>
         </p>
         <ul class="wins a1-features">
           <li class="win">
-            <div class="a1-mini" aria-hidden="true">
-              <div class="a1-mini-bar"><span>history</span><span><kbd>↑</kbd> <kbd>↓</kbd></span></div>
-              <div class="a1-mini-row"><span class="a1-glyph">❯</span><span class="a1-mini-text">Add tests for expired tokens</span><span class="a1-mini-tag">orbit · 2d</span></div>
-              <div class="a1-mini-row"><span class="a1-glyph">❯</span><span class="a1-mini-text">Explain the retry policy in src/net</span><span class="a1-mini-tag">relay · 5d</span></div>
-              <div class="a1-mini-row is-active"><span class="a1-glyph">❯</span><span class="a1-mini-text">Handle empty config files without breaking…</span><span class="a1-mini-tag">orbit · now</span></div>
-              <div class="a1-mini-row"><span class="a1-glyph">❯</span><span class="a1-mini-text">Migrate the logger to structured output</span><span class="a1-mini-tag">relay · 1w</span></div>
+            <div class="a1-mini a1-mini-history" aria-hidden="true">
+              <div class="a1-mini-bar"><span>prompt history</span></div>
+              <div class="a1-mini-list">
+                <div class="a1-mini-row"><span class="a1-glyph">❯</span><i class="a1-skel" style="--w: 46%"></i><span class="a1-mini-tag"><span class="a1-mini-when">1w</span></span></div>
+                <div class="a1-mini-row"><span class="a1-glyph">❯</span><i class="a1-skel" style="--w: 60%"></i><span class="a1-mini-tag"><span class="a1-mini-when">3d</span></span></div>
+                <div class="a1-mini-row"><span class="a1-glyph">❯</span><i class="a1-skel" style="--w: 54%"></i><span class="a1-mini-tag"><span class="a1-mini-when">1d</span></span></div>
+                <div class="a1-mini-row is-active"><span class="a1-glyph">❯</span><i class="a1-skel" style="--w: 40%"></i><span class="a1-mini-tag"><span class="a1-mini-when">2h</span></span></div>
+              </div>
+              <div class="a1-mini-input is-pinned"><span class="a1-glyph">❯</span><span class="a1-caret-slot is-before"><span class="a1-mini-caret"></span></span><i class="a1-skel is-recalled" style="--w: 40%"></i><span class="a1-mini-tag a1-mini-keys"><kbd data-key="up">↑</kbd><kbd data-key="down">↓</kbd></span></div>
             </div>
             <span class="win-title">Persistent prompt history</span>
             <span class="win-desc">Recall what you typed across sessions and projects, not just the current one. Stored locally, and can be turned off.</span>
           </li>
           <li class="win">
             <div class="a1-mini" aria-hidden="true">
-              <div class="a1-mini-bar"><span>suggestion</span><span>optional</span></div>
-              <p class="a1-mini-response"><span class="a1-added">✓</span> 8 tests passed. Empty files now return an empty config.</p>
-              <div class="a1-mini-input"><span class="a1-glyph">❯</span><span class="a1-mini-ghost">Review the diff for edge cases<span class="a1-mini-caret"></span></span></div>
-              <div class="a1-mini-hints"><span><kbd>Tab</kbd> accept</span><span><kbd>Enter</kbd> send</span><span><kbd>Esc</kbd> dismiss</span></div>
+              <div class="a1-mini-bar"><span>next step</span></div>
+              <div class="a1-mini-stream a1-mini-chat"><i class="a1-skel" style="--w: 86%"></i><i class="a1-skel" style="--w: 62%"></i><div class="a1-mini-chat-prompt"><span class="a1-glyph">❯</span><i class="a1-skel" style="--w: 44%"></i></div><i class="a1-skel" style="--w: 82%"></i><i class="a1-skel" style="--w: 90%"></i><i class="a1-skel" style="--w: 48%"></i></div>
+              <div class="a1-mini-input is-pinned a1-mini-suggest"><span class="a1-glyph">❯</span><span class="a1-caret-slot is-before"><span class="a1-mini-caret"></span></span><i class="a1-skel is-suggested" style="--w: 58%"></i><span class="a1-caret-slot is-after"><span class="a1-mini-caret"></span></span><span class="a1-mini-tag a1-mini-keys"><kbd data-key="tab">Tab</kbd><kbd data-key="enter">↵</kbd></span></div>
             </div>
             <span class="win-title">Next-step suggestions</span>
             <span class="win-desc">After a response, A1 can propose a next prompt. Accepting only places it in the editor — nothing is sent until you press Enter.</span>
           </li>
           <li class="win">
-            <div class="a1-mini" aria-hidden="true">
-              <div class="a1-mini-bar"><span>response</span><span>↑ 24 lines above</span></div>
+            <div class="a1-mini a1-mini-scroll" aria-hidden="true">
+              <div class="a1-mini-bar"><span>response</span></div>
               <div class="a1-mini-stream">
-                <i style="--w: 78%"></i><i style="--w: 92%"></i><i style="--w: 64%"></i>
-                <i class="is-code" style="--w: 70%"></i><i class="is-code" style="--w: 84%"></i><i style="--w: 46%"></i>
+                <div class="a1-mini-scroll-body">
+                  <i class="a1-skel" style="--w: 66%"></i><i class="a1-skel" style="--w: 90%"></i><i class="a1-skel is-code" style="--w: 58%"></i><i class="a1-skel is-code" style="--w: 76%"></i>
+                  <i class="a1-skel" style="--w: 78%"></i><i class="a1-skel" style="--w: 92%"></i><i class="a1-skel" style="--w: 64%"></i>
+                  <i class="a1-skel is-code" style="--w: 70%"></i><i class="a1-skel is-code" style="--w: 84%"></i><i class="a1-skel is-code" style="--w: 52%"></i>
+                  <i class="a1-skel" style="--w: 88%"></i><i class="a1-skel" style="--w: 40%"></i>
+                  <i class="a1-skel" style="--w: 74%"></i><i class="a1-skel is-code" style="--w: 62%"></i><i class="a1-skel is-code" style="--w: 80%"></i><i class="a1-skel" style="--w: 56%"></i>
+                </div>
+                <span class="a1-mini-scrollbar"><i></i></span>
               </div>
-              <div class="a1-mini-input is-pinned"><span class="a1-glyph">❯</span><span class="a1-mini-text">pinned editor stays in reach</span><span class="a1-mini-tag">↵</span></div>
+              <div class="a1-mini-input is-pinned"><span class="a1-glyph">❯</span><span class="a1-mini-text">pinned editor stays in reach</span><span class="a1-caret-slot"><span class="a1-mini-caret"></span></span></div>
             </div>
             <span class="win-title">An interface that keeps its place</span>
             <span class="win-desc">Prompts, tool output and responses are laid out to be read. Scroll back through a long answer, select and copy text, and return to the editor without losing context.</span>
@@ -381,12 +389,22 @@ Duration  1.9s</pre>
       </section>
 
       <section class="block">
-        <h2>Status</h2>
-        <ul class="wins">
-          <li class="win"><span class="win-index">/01</span><span class="win-title">Available</span><span class="win-desc">Install from npm with <code>npm x -y -- @timurproko/a1-install</code>.</span></li>
-          <li class="win"><span class="win-index">/02</span><span class="win-title">Shipped</span><span class="win-desc">Persistent prompt history, next-step suggestions, mouse selection and copy, session resume, and MCP through an adapter.</span></li>
-          <li class="win"><span class="win-index">/03</span><span class="win-title">Planned</span><span class="win-desc">Multi-agent workspace — several agents side by side in one terminal. On hold until the single-agent experience is finished.</span></li>
-        </ul>
+        <div class="a1-roadmap-head">
+          <h2>Roadmap</h2>
+          <div class="a1-roadmap-controls" hidden><button type="button" class="a1-roadmap-arrow" data-roadmap-step="-1" aria-label="Earlier versions" title="Earlier versions"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button><button type="button" class="a1-roadmap-arrow" data-roadmap-step="1" aria-label="Later versions" title="Later versions"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button></div>
+        </div>
+        <ol class="a1-roadmap" tabindex="0" aria-label="Versions">
+          <li class="a1-roadmap-item"><span class="a1-roadmap-version">0.1.0</span><div><h3>Infrastructure</h3><p>Repository, packaging, installer and release pipeline in place.</p></div></li>
+          <li class="a1-roadmap-item is-current" aria-current="step"><span class="a1-roadmap-version">0.2.0</span><div><h3>Pi parity<span class="a1-tag a1-roadmap-current">current</span></h3><p>Everything you rely on in Pi works in A1, with an improved UX around it.</p></div></li>
+          <li class="a1-roadmap-item"><span class="a1-roadmap-version">0.3.0</span><div><h3>Multi-agent</h3><p>Run several agents side by side from one A1 session.</p></div></li>
+          <li class="a1-roadmap-item"><span class="a1-roadmap-version">0.4.0</span><div><h3>Orchestrator</h3><p>Split a task across agents and coordinate their results.</p></div></li>
+          <li class="a1-roadmap-item"><span class="a1-roadmap-version">0.5.0</span><div><h3>Multiplexer</h3><p>Watch and steer many agent sessions in one terminal.</p></div></li>
+          <li class="a1-roadmap-item"><span class="a1-roadmap-version">0.6.0</span><div><h3>Custom design</h3><p>A fully A1-designed interface across every view.</p></div></li>
+          <li class="a1-roadmap-item"><span class="a1-roadmap-version">0.7.0</span><div><h3>Extensions</h3><p>Extensions built for A1, alongside the Pi ecosystem.</p></div></li>
+          <li class="a1-roadmap-item"><span class="a1-roadmap-version">0.8.0</span><div><h3>Remote agents</h3><p>Hand work to agents running on other machines.</p></div></li>
+          <li class="a1-roadmap-item"><span class="a1-roadmap-version">0.9.0</span><div><h3>Mobile app</h3><p>Check on remote agents and approve their work from your phone.</p></div></li>
+          <li class="a1-roadmap-item"><span class="a1-roadmap-version">1.0.0</span><div><h3>Public release</h3><p>Stable, documented and ready for everyday use.</p></div></li>
+        </ol>
       </section>
 
       <a class="next" href="/starkit/">
