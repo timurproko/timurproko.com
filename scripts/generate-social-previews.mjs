@@ -104,6 +104,14 @@ function getTitle(html) {
   return match ? decodeEntities(match[1].replace(/\s+/g, ' ').trim()) : 'Untitled page';
 }
 
+// Case page tabs read "Timur Prokopiev – <project>"; the card already prints the name,
+// so its title is just the project. The home page and CV keep their full title.
+const NAME_PREFIX = 'Timur Prokopiev – ';
+function socialTitle(title, route) {
+  if (route === '/' || route === '/cv/' || !title.startsWith(NAME_PREFIX)) return title;
+  return title.slice(NAME_PREFIX.length);
+}
+
 function decodeEntities(value) {
   return value
     .replaceAll('&amp;', '&')
@@ -307,9 +315,9 @@ async function main() {
 
   for (const filePath of await findSourceIndexPages()) {
     const html = await fs.readFile(filePath, 'utf8');
-    const title = getTitle(html);
-    const description = getMetaContent(html, 'description') || title;
     const route = pageRoute(filePath);
+    const title = socialTitle(getTitle(html), route);
+    const description = getMetaContent(html, 'description') || title;
     const slug = pageSlug(filePath);
     const url = new URL(route, siteUrl).toString();
     // ?v= changes whenever the card does, so LinkedIn refetches instead of reusing its cached copy.
