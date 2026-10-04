@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f8f8f9" />
+  <meta name="robots" content="noindex" />
+  <meta name="description" content="This page doesn’t exist. Head back to Timur Prokopiev’s portfolio." />
+  <title>Page not found – Timur Prokopiev</title>
+  <!-- GitHub Pages serves this for any missing path, so every URL here is root-relative. -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      oklch(99% 0.002 240);
+      --surface: oklch(100% 0 0);
+      --fg:      oklch(18% 0.012 250);
+      --muted:   oklch(54% 0.012 250);
+      --subtle:  oklch(72% 0.004 250);
+      --border:  oklch(92% 0.005 250);
+      --accent:  oklch(58% 0.18 255);
+      --accent-dim: oklch(58% 0.18 255 / 0.08);
+      --border-strong: oklch(85% 0.005 250);
+      --shadow-color: oklch(18% 0.012 250 / 0.07);
+      --chip-bg:     oklch(96% 0.006 250);
+      --chip-border: oklch(88% 0.01 250);
+      --chip-fg:     oklch(30% 0.012 250);
+      --rainbow: linear-gradient(90deg, #ff4d6d, #ffb703, #3ddc97, #3a86ff, #b517ff, #ff4d6d);
+      --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
+      --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a { color: inherit; }
+
+    @keyframes rainbowShift { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+    @keyframes reveal { from { opacity: 0; translate: 0 12px; } to { opacity: 1; translate: 0 0; } }
+
+    /* Same layout as the a1 404: a thin frame inset from the viewport edge,
+       copy on the left and the "404" hologram on the right. No nav or footer. */
+    /* body is its own stacking context, so the frame below paints over its background (html has its own for the CRT exit) */
+    body { isolation: isolate; }
+    body::before {
+      content: ""; position: fixed; inset: 16px; z-index: -1; pointer-events: none;
+      border: 1px solid var(--border); border-radius: 14px;
+      background: radial-gradient(60% 70% at 72% 50%, var(--accent-dim), transparent 70%);
+    }
+    .shell {
+      max-width: 1120px; min-height: 100svh; margin: 0 auto; padding: 72px 48px;
+      display: grid; grid-template-columns: 1fr 1.15fr; gap: 40px; align-items: center;
+    }
+
+    /* Stage: a "404" hologram that floats and leans toward the pointer. */
+    .stage {
+      --rx: 0deg; --ry: 0deg;
+      position: relative;
+      height: clamp(280px, 34vw, 440px);
+      perspective: 900px;
+      isolation: isolate;
+      animation: reveal 640ms cubic-bezier(0.22, 1, 0.36, 1) 260ms both;
+    }
+
+    .holo {
+      position: absolute; inset: 0; display: grid; place-items: center;
+      transform-style: preserve-3d;
+      transform: rotateX(var(--rx)) rotateY(var(--ry));
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+    }
+    .holo-float { display: grid; transform-style: preserve-3d; animation: float 5s ease-in-out infinite; }
+    @keyframes float { 50% { translate: 0 -12px; } }
+    .holo-layer {
+      grid-area: 1 / 1;
+      font-family: var(--font-mono); font-weight: 700;
+      font-size: clamp(96px, 15vw, 220px); line-height: 1; letter-spacing: -0.06em;
+      user-select: none;
+    }
+    /* Depth slices behind the front face, like a volumetric scan */
+    .holo-layer.l3 { transform: translateZ(-60px); color: transparent; -webkit-text-stroke: 1px oklch(58% 0.18 255 / 0.18); }
+    .holo-layer.l2 { transform: translateZ(-30px); color: transparent; -webkit-text-stroke: 1px oklch(58% 0.18 255 / 0.35); }
+    .holo-layer.l1 {
+      transform: translateZ(0);
+      background: var(--rainbow); background-size: 220% 100%;
+      background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      animation: rainbowShift 6s linear infinite alternate;
+      /* Scanlines cut into the letters themselves, so nothing is drawn around them */
+      -webkit-mask-image: repeating-linear-gradient(to bottom, #000 0 3px, rgb(0 0 0 / 0.45) 3px 4px);
+      mask-image: repeating-linear-gradient(to bottom, #000 0 3px, rgb(0 0 0 / 0.45) 3px 4px);
+    }
+
+    /* Copy */
+    .copy { animation: reveal 640ms cubic-bezier(0.22, 1, 0.36, 1) 120ms both; }
+    .eyebrow {
+      display: inline-flex; gap: 8px; align-items: center; margin: 0 0 20px;
+      color: var(--accent); font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 20px; height: 1.5px; background: currentColor; border-radius: 2px; }
+    /* Same title size as the home page */
+    h1 { font-family: var(--font-display); font-size: clamp(32px, 5vw, 56px); font-weight: 700; line-height: 1.08; letter-spacing: -0.03em; }
+    h1 span { display: block; }
+
+    /* Own stacking context, so the glow sits behind the buttons rather than behind the page */
+    .actions { isolation: isolate; display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+    .btn {
+      position: relative;
+      display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 22px;
+      border: 1.5px solid var(--chip-border); border-radius: 999px; background: var(--chip-bg) padding-box; color: var(--chip-fg);
+      font: inherit; font-size: 15px; text-decoration: none; cursor: pointer;
+      transition: border-color 0.25s ease, transform 0.1s;
+    }
+    /* Hover only fades two layers in and out, so leaving is as smooth as entering:
+       ::after is a rainbow ring over the border (the same moving rainbow as the 404),
+       ::before a soft rainbow glow under the primary button. */
+    .btn::before,
+    .btn::after {
+      content: ""; position: absolute; border-radius: inherit; pointer-events: none;
+      background: var(--rainbow); background-size: 220% 100%;
+      opacity: 0; transition: opacity 0.25s ease;
+      animation: rainbowShift 1.4s linear infinite alternate;
+    }
+    .btn::after {
+      /* Covers the 1.5px border and overlaps the fill by 1px, so no seam shows between them */
+      inset: -1.5px; padding: 2.5px;
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    }
+    .btn::before { inset: 4px 8px -2px; z-index: -1; filter: blur(12px); }
+    .btn:hover { border-color: transparent; }
+    .btn:hover::after { opacity: 1; }
+    .btn-primary:hover::before { opacity: 0.45; }
+    .btn:active { transform: translateY(1px); }
+    /* Isolated, so its glow paints over its own fill: the rainbow tint shows on hover, and pressing doesn't change it */
+    .btn-primary { isolation: isolate; background: var(--fg) padding-box; border-color: var(--fg); color: var(--bg); }
+    .btn-primary:hover { border-color: transparent; }
+    .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    @media (max-width: 900px) {
+      .shell { grid-template-columns: 1fr; align-content: center; gap: 24px; padding: 56px 36px; }
+      .stage { order: -1; height: clamp(200px, 50vw, 320px); }
+      body::before { background: radial-gradient(80% 40% at 50% 30%, var(--accent-dim), transparent 70%); }
+    }
+    @media (max-width: 480px) {
+      .shell { padding: 48px 32px; }
+    }
+    @media (max-width: 760px) {
+      h1 { font-size: clamp(36px, 5vw, 64px); line-height: 1.04; letter-spacing: -0.04em; }
+    }
+    /* The smallest phones: a touch smaller, so every headline line fits */
+    @media (max-width: 370px) {
+      h1 { font-size: 31px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+    /* CRT power-off on the way out: the screen squashes to a bright line, then a dot, then the next page loads.
+       html gets its own background so body's no longer paints the canvas and the collapse has black behind it. */
+    html { background: #000; }
+    html.crt-off body { transform-origin: 50% 50vh; animation: crt-off 520ms cubic-bezier(0.7, 0, 0.3, 1) forwards; pointer-events: none; }
+    @keyframes crt-off {
+      0%   { transform: scale(1, 1); filter: brightness(1); opacity: 1; }
+      45%  { transform: scale(1, 0.004); filter: brightness(4); opacity: 1; }
+      75%  { transform: scale(0.003, 0.004); filter: brightness(8); opacity: 1; }
+      100% { transform: scale(0, 0); filter: brightness(8); opacity: 0; }
+    }
+    /* Once the dot is gone, fade from black to the theme background, so a light site doesn't flash in after the black */
+    html.crt-off::after { content: ""; position: fixed; inset: 0; z-index: 1000; background: var(--bg); opacity: 0; animation: crt-fade 260ms ease 500ms forwards; }
+    @keyframes crt-fade { to { opacity: 1; } }
+  </style>
+  <link rel="stylesheet" href="/styles/theme.css" />
+  <script src="/theme.js"></script>
+</head>
+<body>
+  <main class="shell">
+    <section class="copy" aria-labelledby="page-title">
+      <p class="eyebrow">Error 404 · page not found</p>
+      <h1 id="page-title"><span>You’ve left</span> <span>the play area</span></h1>
+      <div class="actions">
+        <a class="btn btn-primary" href="/">Back to home</a>
+        <a class="btn" href="/cv/">Read the CV</a>
+      </div>
+    </section>
+
+    <div class="stage" data-stage aria-hidden="true">
+      <div class="holo">
+        <div class="holo-float">
+          <span class="holo-layer l3">404</span>
+          <span class="holo-layer l2">404</span>
+          <span class="holo-layer l1">404</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // A different design joke on every visit. The markup keeps the first one for no-JS visitors.
+    (function headline() {
+      const lines = [
+        ['You’ve left', 'the play area'],
+        ['This page failed', 'usability testing'],
+        ['Lorem ipsum', 'dolor not found'],
+        ['Someone moved', 'this pixel'],
+        ['This layout', 'broke the grid'],
+        ['final_final_v3', 'was deleted'],
+        ['The client asked', 'to remove it'],
+        ['Make the logo', 'bigger, they said'],
+        ['This page', 'is still in Figma'],
+        ['Even kerning', 'can’t fix this'],
+        ['This page', 'has no affordance'],
+        ['This page', 'wasn’t on brand'],
+        ['A dark pattern', 'led you here'],
+        ['Users never', 'read this anyway'],
+        ['Sorry, this is', 'just a mockup'],
+        ['This page', 'is a placeholder'],
+        ['Lost between', 'two artboards'],
+        ['Not in the', 'design system'],
+        ['This page didn’t', 'survive the crit'],
+        ['Out of bounds', 'of the safe area'],
+        ['Off canvas', 'and off grid'],
+        ['This page went', 'to the backlog'],
+        ['Missing from', 'the style guide'],
+        ['The hover state', 'ate this page'],
+        ['This page needs', 'more whitespace'],
+        ['Can you make it', 'pop? It popped'],
+        ['The burger menu', 'swallowed it'],
+        ['Ctrl+Z', 'went too far'],
+        ['This page is', 'on another layer'],
+        ['The layer', 'is hidden'],
+        ['Fully accessible', 'totally missing'],
+        ['This page fell', 'below 72 fps'],
+        ['The guardian', 'boundary says no'],
+        ['Clipped through', 'the floor'],
+        ['You spawned', 'outside the map'],
+        ['Lost in the', 'uncanny valley'],
+        ['This page', 'has no collider'],
+        ['Respawning', 'at the home page'],
+        ['Render queue', 'skipped this one'],
+        ['Z-fighting', 'with reality'],
+        ['The empty state', 'is the design'],
+        ['This user flow', 'hit a dead end'],
+        ['It’s not a bug', 'it’s a 404'],
+        ['This page was', 'A/B tested away'],
+        ['Stakeholders', 'killed this page'],
+        ['Pixel perfect', 'and missing'],
+        ['This page is', 'below the fold'],
+        ['Low fidelity', 'high mystery'],
+        ['The wireframe', 'never shipped'],
+        ['Out of scope', 'for this sprint'],
+      ];
+      const spans = document.querySelectorAll('#page-title span');
+      const pick = lines[Math.floor(Math.random() * lines.length)];
+      spans.forEach((span, i) => { span.textContent = pick[i]; });
+    })();
+
+    // Same-site links play the CRT power-off before navigating; new tabs, modified clicks and other sites go straight through.
+    (function crtOff() {
+      const root = document.documentElement;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+      document.addEventListener('click', event => {
+        const link = event.target.closest('a[href]');
+        if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        if (link.target && link.target !== '_self') return;
+        const url = new URL(link.href, location.href);
+        if (url.origin !== location.origin || reduce.matches || root.classList.contains('crt-off')) return;
+        event.preventDefault();
+        root.classList.add('crt-off');
+        setTimeout(() => { location.href = url.href; }, 780);
+      });
+      // Coming back with the browser's back button restores the page from cache; switch it back on.
+      window.addEventListener('pageshow', event => { if (event.persisted) root.classList.remove('crt-off'); });
+    })();
+    (function () {
+      // The hologram leans toward the pointer.
+      var stage = document.querySelector('[data-stage]');
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      function lean(nx, ny) {
+        stage.style.setProperty('--ry', (nx * 22).toFixed(2) + 'deg');
+        stage.style.setProperty('--rx', (-ny * 16).toFixed(2) + 'deg');
+      }
+      window.addEventListener('pointermove', function (event) {
+        var box = stage.getBoundingClientRect();
+        var nx = Math.max(-1, Math.min(1, (event.clientX - (box.left + box.width / 2)) / (box.width / 2)));
+        var ny = Math.max(-1, Math.min(1, (event.clientY - (box.top + box.height / 2)) / (window.innerHeight / 2)));
+        lean(nx, ny);
+      }, { passive: true });
+      document.addEventListener('pointerleave', function () { lean(0, 0); });
+    })();
+  </script>
+</body>
+</html>

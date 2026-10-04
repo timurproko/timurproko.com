@@ -74,6 +74,7 @@ LINKEDIN_OUT_DIR="./exports/linkedin" npm run linkedin:square
   - `public/avatars/assets/`, `public/touch-my-heart/assets/` — deck media kept at their original public URLs
 - `src/index.html` — portfolio home page served at `/`
 - `src/cv/index.html` — CV page served at `/cv/`
+- `src/404.html` — not-found page; GitHub Pages serves `dist/404.html` for any missing path, so its URLs are root-relative
 - `src/deck/` — shared deck chrome, navigation engine, and slide wrapper
 - `src/components/` — reusable content/layout primitives for deck pages
 - `src/styles/` — shared deck CSS extracted from the legacy pages

@@ -33,6 +33,8 @@ export default defineConfig({
         minecare: resolve(__dirname, 'src/minecare/index.html'),
         a1: resolve(__dirname, 'src/a1/index.html'),
         cv: resolve(__dirname, 'src/cv/index.html'),
+        // GitHub Pages serves dist/404.html for any missing path
+        'not-found': resolve(__dirname, 'src/404.html'),
       },
     },
   },
