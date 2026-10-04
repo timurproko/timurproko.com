@@ -1,10 +1,12 @@
 import { setupCover } from '../case/cover.js';
 import { setupFooterYear } from '../case/footer-year.js';
+import { setupNextPreview } from '../case/next-preview.js';
 import { setupZoom } from '../case/lightbox.js';
 
 // Home page preview cover uses the title scene as its backdrop.
 setupCover('/untitled-world/assets/scene-balloon.webp');
 setupFooterYear();
+setupNextPreview();
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 // On phones the manifesto is plain text you scroll past (case-page.css unpins it too).

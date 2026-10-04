@@ -2,6 +2,7 @@ import { renderGallery } from '../case/gallery.js';
 import { markLoading } from '../case/lightbox.js';
 import { setupCover } from '../case/cover.js';
 import { setupFooterYear } from '../case/footer-year.js';
+import { setupNextPreview } from '../case/next-preview.js';
 import { setupBiofeedback } from './biofeedback.js';
 import { createCoverPulse } from './cover-pulse.js';
 
@@ -17,6 +18,7 @@ renderGallery(images, document.getElementById('gallery'), { columns: 4 });
 const pulse = createCoverPulse(document.querySelector('.cover'));
 setupCover(null, { onStart: pulse.start, onStop: pulse.stop });
 setupFooterYear();
+setupNextPreview();
 
 // Hero: the same heartbeat trace, low across the photo, running while it's on screen.
 const hero = document.querySelector('.hero');

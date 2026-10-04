@@ -77,7 +77,7 @@ LINKEDIN_OUT_DIR="./exports/linkedin" npm run linkedin:square
 - `src/deck/` — shared deck chrome, navigation engine, and slide wrapper
 - `src/components/` — reusable content/layout primitives for deck pages
 - `src/styles/` — shared deck CSS extracted from the legacy pages
-- `src/starkit/`, `src/a1/`, `src/ai-for-unity/`, `src/avatars/`, `src/corel-for-mac/`, `src/minecare/`, `src/touch-my-heart/` — case pages (static HTML + `src/case/` styles; a page can set `--hue` to retheme); each deck-born page keeps a cover-only deck at `/<page>/cover/` (`cover.tsx`) for the home page preview
+- `src/starkit/`, `src/a1/`, `src/ai-for-unity/`, `src/avatars/`, `src/corel-for-mac/`, `src/feelxr/`, `src/minecare/`, `src/touch-my-heart/` — case pages (static HTML + `src/case/` styles; a page can set `--hue` to retheme); each deck-born page keeps a cover-only deck at `/<page>/cover/` (`cover.tsx`) for the home page preview
 - `legacy/` — original monolithic deck HTML retained as migration reference
 - `scripts/` — preview/social generation and one-time migration helpers
 

@@ -1,0 +1,450 @@
+/* FeelXR page — the experience's warm peach horizon, with the orb's palette as the only saturated colour. Loads after case/case.css. */
+:root {
+  --hue: 350;
+  --accent: oklch(55% 0.13 var(--hue));
+  --accent-dim: oklch(55% 0.13 var(--hue) / 0.08);
+  --sky-top: #f7bf85;
+  --sky-mid: #fdd39b;
+  --sand: #fcd9ad;
+  --floor: #9f978a;
+  --orb-tint: #86c9ee; /* follows the chosen palette (orb.js); Mist by default */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --cover-sweep: #f39a5b 41%, #f7c06b 47%, #ee7fb6 53%, #b98cf0 60%, #fff1e2 66%;
+}
+
+h1, .lens-title, .brief-text h2, .block h2 { font-family: Inter, var(--font-display); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.tag { border-color: oklch(88% 0.03 var(--hue)); color: oklch(42% 0.09 var(--hue)); }
+
+/* ─── Hero: live orb on the experience's horizon ────────────────────────── */
+.orb-hero { margin: 36px 0 0; }
+.orb-stage {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  background: var(--sky-mid);
+  container-type: inline-size;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.orb-sky, .orb-sky span, .orb-blooms, .orb-canvas { position: absolute; inset: 0; }
+.orb-sky { background: linear-gradient(var(--sky-top), var(--sky-mid) 50%, var(--sand) 62%); }
+/* Colour washes over the sky with the music's energy (--energy, 0–1, set per frame) */
+.orb-sky .orb-wash {
+  background: radial-gradient(75% 65% at 50% 40%, var(--orb-tint), transparent 72%);
+  opacity: calc(0.1 + var(--energy, 0) * 0.45);
+  mix-blend-mode: soft-light;
+}
+.orb-sky .orb-floor {
+  inset: auto -20% -62% -20%;
+  height: 92%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, #aaa295, var(--floor) 85%, #908a7e);
+}
+.orb-sky .orb-shadow {
+  inset: auto;
+  left: 50%;
+  top: 84%;
+  width: 22cqw;
+  height: 3.4cqw;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, oklch(30% 0.02 60 / 0.42), transparent);
+  translate: -50% -50%;
+  scale: var(--shadow, 1);
+}
+.orb-blooms { pointer-events: none; }
+.bloom {
+  position: absolute;
+  width: var(--size);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--color), transparent);
+  translate: -50% -50%;
+  filter: blur(0.8cqw);
+  opacity: 0;
+}
+.orb-canvas { width: 100%; height: 100%; }
+.orb-canvas.is-over { cursor: grab; }
+.orb-canvas.is-pressing { cursor: grabbing; }
+.orb-hint {
+  position: absolute;
+  left: 50%;
+  top: 19%; /* between the palette bar and the orb */
+  translate: -50% 0;
+  color: #3a0f10;
+  font-family: Inter, var(--font-display);
+  font-size: clamp(15px, 2.2cqw, 26px);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 800ms ease;
+}
+.orb-stage.is-touched .orb-hint { opacity: 0; }
+/* Glass pill, like the experience's soft buttons */
+.orb-play {
+  position: absolute;
+  left: 50%;
+  bottom: 5.5%;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px 8px 8px;
+  translate: -50% 0;
+  border: 1px solid oklch(100% 0 0 / 0.5);
+  border-radius: 999px;
+  background: oklch(100% 0 0 / 0.28);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  color: #3a0f10;
+  font: 600 14px/1 Inter, var(--font-display);
+  cursor: pointer;
+  transition: background-color 300ms ease, scale 300ms var(--ease-out);
+}
+.orb-play:hover { background: oklch(100% 0 0 / 0.42); scale: 1.04; }
+.orb-play:focus-visible { outline: 2px solid #3a0f10; outline-offset: 3px; }
+.orb-play-icon {
+  position: relative;
+  width: 28px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #3a0f10;
+}
+.orb-play-icon::after {
+  content: "";
+  position: absolute;
+  left: 55%;
+  top: 50%;
+  translate: -50% -50%;
+  border-style: solid;
+  border-width: 6px 0 6px 9px;
+  border-color: transparent transparent transparent #fde3c4;
+}
+.orb-play[aria-pressed="true"] .orb-play-icon::after {
+  left: 50%;
+  width: 9px;
+  height: 10px;
+  border-width: 0 3px;
+  border-color: #fde3c4;
+}
+/* Two-line label: a small "Audio guide" eyebrow over Play / Pause */
+.orb-play-text { display: grid; gap: 3px; text-align: left; }
+.orb-play-sub { color: oklch(30% 0.05 30 / 0.65); font: 500 10px/1 var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; }
+.orb-play-label { min-width: 3.2em; }
+.orb-play-time { color: oklch(30% 0.05 30 / 0.65); font: 500 12px/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* Palette: the eight orb colours from the experience, as a glass bar of spheres along
+   the top of the stage. Only the chosen sphere shows its name. */
+.palette {
+  position: absolute;
+  left: 50%;
+  top: 4.5%;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  translate: -50% 0;
+  border: 1px solid oklch(100% 0 0 / 0.5);
+  border-radius: 999px;
+  background: oklch(100% 0 0 / 0.26);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+}
+.swatch {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: #3a0f10;
+  font: 600 13px/1 Inter, var(--font-display);
+  cursor: pointer;
+  transition: background-color 250ms ease, padding 350ms var(--ease-out);
+}
+.swatch:hover { background: oklch(100% 0 0 / 0.3); }
+.swatch[aria-checked="true"] { padding-right: 12px; background: oklch(100% 0 0 / 0.55); }
+.swatch:focus-visible { outline: 2px solid #3a0f10; outline-offset: 1px; }
+.swatch-name {
+  display: inline-block;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  white-space: nowrap;
+  transition: max-width 350ms var(--ease-out), margin 350ms var(--ease-out), opacity 250ms ease;
+}
+.swatch[aria-checked="true"] .swatch-name { max-width: 80px; margin-left: 8px; opacity: 1; }
+.swatch-dot {
+  width: 24px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 16%, var(--c0) 0 12%, var(--c1) 38%, var(--c2) 70%, var(--c3));
+  box-shadow: inset 0 -1px 2px oklch(0% 0 0 / 0.15), 0 2px 6px oklch(30% 0.05 40 / 0.25);
+  transition: scale 300ms var(--ease-out);
+}
+.swatch:hover .swatch-dot { scale: 1.1; }
+
+/* ─── Brief ─────────────────────────────────────────────────────────────── */
+.brief {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: center;
+  gap: 32px 56px;
+  padding: 56px 0;
+}
+.brief-flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); padding-top: 0; }
+.brief-flip .brief-art { order: 2; }
+.brief-art { margin: 0; overflow: hidden; border-radius: 16px; background: var(--sky-mid); }
+/* Previews are tall crops of the full slides; a click opens the whole image */
+.brief-art img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1100 / 1251;
+  object-position: var(--focus, 50% 50%);
+  object-fit: cover;
+  cursor: zoom-in;
+  transition: scale 0.6s var(--ease-out);
+}
+.brief-art:hover img { scale: 1.02; }
+.brief-text h2 { font-size: clamp(26px, 3vw, 34px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; }
+.brief-text > p:not(.eyebrow) { margin-top: 14px; color: var(--text); line-height: 1.7; }
+
+/* ─── Goals ─────────────────────────────────────────────────────────────── */
+.goals {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+  list-style: none;
+}
+.goals li {
+  padding: 22px 22px 24px;
+  border: 1px solid oklch(92% 0.015 var(--hue));
+  border-radius: 16px;
+  background: linear-gradient(160deg, oklch(97.5% 0.012 var(--hue)), oklch(99.5% 0.003 var(--hue)) 70%);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+/* Same lift as the cards on the other cases */
+.goals li:hover {
+  transform: translateY(-2px);
+  border-color: oklch(86% 0.04 var(--hue));
+  box-shadow: 0 14px 38px rgba(17, 17, 17, 0.12);
+}
+.goal-no { color: var(--accent); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; }
+.goals h3 { margin-top: 18px; font-size: 17px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.3; }
+.goals p { margin-top: 8px; color: var(--muted); font-size: 15px; line-height: 1.6; }
+
+/* ─── Session flow: sticky screen on the right, steps scroll on the left ─── */
+.lens { scroll-margin-top: 72px; }
+.flow {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  gap: 0 56px;
+  padding-bottom: 24px;
+}
+.flow-stage {
+  grid-column: 2;
+  grid-row: 1;
+  position: sticky;
+  top: max(76px, calc(50vh - 200px));
+  align-self: start;
+  margin-top: 40px;
+}
+.flow-screen {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  background: var(--sky-mid);
+  box-shadow: 0 30px 60px -30px oklch(40% 0.08 40 / 0.4);
+}
+/* Screens cross-fade; the incoming one settles from a slight zoom, like focusing the eyes.
+   The screenshots are already 16:9, so there is no extra crop. */
+.flow-screen { --zoom: 1; }
+.flow-screen img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  scale: calc(var(--zoom) * 1.04);
+  transition: opacity 700ms ease, scale 1100ms var(--ease-out);
+}
+.flow-screen img.is-active { opacity: 1; scale: var(--zoom); }
+.flow-screen { cursor: zoom-in; }
+.flow-screen:hover img.is-active { scale: calc(var(--zoom) * 1.03); transition: opacity 700ms ease, scale 600ms var(--ease-out); }
+.flow-screen:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.flow-progress {
+  height: 2px;
+  margin: 14px 4px 0;
+  overflow: hidden;
+  border-radius: 1px;
+  background: var(--border);
+}
+.flow-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #f39a5b, #ee7fb6, #b98cf0);
+  transform-origin: left;
+  scale: var(--progress, 0.143) 1;
+  transition: scale 500ms var(--ease-out);
+}
+
+.flow-steps { grid-column: 1; grid-row: 1; list-style: none; padding: 0; }
+.flow-step {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 72vh;
+  padding: 24px 0;
+  opacity: 0.32;
+  transition: opacity 500ms ease;
+}
+.flow-step:first-child { min-height: 56vh; }
+.flow-step.is-active { opacity: 1; }
+.flow-shot { display: none; }
+.step-no { color: var(--accent); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; }
+.flow-step h3 { margin-top: 6px; font-family: Inter, var(--font-display); font-size: clamp(24px, 2.6vw, 30px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; }
+.step-quote { margin-top: 10px; font-size: 17px; font-weight: 500; color: var(--fg); }
+.flow-step p:not(.step-quote) { margin-top: 10px; color: var(--muted); line-height: 1.65; }
+
+/* ─── Film ───────────────────────────────────────────────────────────────── */
+.tests { display: grid; gap: 40px; }
+.clip { margin: 0; }
+.clip video {
+  display: block;
+  width: 100%;
+  border-radius: 16px;
+  background: oklch(20% 0.01 250);
+  object-fit: cover;
+}
+.clip-film video { aspect-ratio: 16 / 9; }
+/* Film: a round glass play button over the poster (as on CalmXR); controls appear once playing */
+.film-frame { position: relative; }
+.film-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 16px;
+  background: oklch(15% 0.02 240 / 0.25);
+  cursor: pointer;
+  transition: background-color 300ms ease;
+}
+.film-play:hover { background: oklch(15% 0.02 240 / 0.1); }
+.film-play:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.film-icon {
+  position: relative;
+  width: 76px;
+  aspect-ratio: 1;
+  border: 1.5px solid oklch(97% 0.01 var(--hue));
+  border-radius: 50%;
+  background: oklch(20% 0.02 var(--hue) / 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: scale 300ms ease;
+}
+.film-icon::after {
+  content: "";
+  position: absolute;
+  left: 54%;
+  top: 50%;
+  translate: -50% -50%;
+  border-style: solid;
+  border-width: 12px 0 12px 20px;
+  border-color: transparent transparent transparent oklch(97% 0.01 var(--hue));
+}
+.film-play:hover .film-icon { scale: 1.08; }
+.clip figcaption { margin-top: 10px; padding: 0 2px; color: var(--muted); font-size: 14px; line-height: 1.55; text-align: center; }
+
+/* ─── Data ──────────────────────────────────────────────────────────────── */
+.data-sub { max-width: 640px; margin-top: 12px; color: var(--text); line-height: 1.7; }
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+  list-style: none;
+}
+.metrics li {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 22px;
+  border: 1px solid oklch(92% 0.015 var(--hue));
+  border-radius: 16px;
+}
+.metric-value {
+  justify-self: start;
+  font-family: Inter, var(--font-display);
+  font-size: clamp(32px, 4vw, 44px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  background: linear-gradient(120deg, #f39a5b, #ee7fb6 55%, #b98cf0);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.metric-label { color: var(--muted); font-size: 14px; line-height: 1.4; }
+/* Scroll reveal: hidden from the first paint, then main.js adds .is-visible once in view */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .metrics:not(.is-visible) li { opacity: 0; transform: translateY(18px); }
+}
+.metrics.is-visible li {
+  opacity: 1;
+  transform: none;
+  transition: opacity 600ms ease var(--delay), transform 700ms var(--ease-out) var(--delay);
+}
+
+/* ─── Responsive & motion ───────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .brief { grid-template-columns: 1fr; padding: 40px 0; }
+  .brief-art img { aspect-ratio: 4 / 3; }
+  .brief-flip .brief-art { order: 0; }
+  .goals { grid-template-columns: 1fr; }
+  .metrics { grid-template-columns: 1fr 1fr; }
+  /* The sticky screen gives way to one screenshot per step */
+  .flow { display: block; }
+  .flow-stage { display: none; }
+  .flow-step, .flow-step:first-child { min-height: 0; padding: 28px 0 8px; opacity: 1; }
+  .flow-shot {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-bottom: 16px;
+    border-radius: 14px;
+    object-fit: cover;
+    background: var(--sky-mid);
+    cursor: zoom-in;
+  }
+}
+@media (max-width: 760px) {
+  .orb-stage { aspect-ratio: 4 / 5; border-radius: 14px; }
+  .orb-sky .orb-floor { inset: auto -60% -40% -60%; height: 70%; }
+  .orb-sky .orb-shadow { top: 80%; width: 46cqw; height: 7cqw; }
+  .orb-hint { top: 15%; font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .goals li { transition: none; }
+  .flow-screen img, .flow-step, .flow-progress span { transition: none; }
+}
+
+/* ─── Dark theme ────────────────────────────────────────────────────────── */
+@media screen {
+  :root[data-theme="dark"] {
+    --accent: oklch(78% 0.1 var(--hue));
+    --accent-dim: oklch(78% 0.1 var(--hue) / 0.14);
+  }
+  :root[data-theme="dark"] .tag { border-color: oklch(40% 0.05 var(--hue)); color: oklch(85% 0.06 var(--hue)); }
+  :root[data-theme="dark"] :is(.goals li, .metrics li) {
+    border-color: oklch(30% 0.02 var(--hue));
+    background: linear-gradient(160deg, oklch(24% 0.025 var(--hue)), oklch(20% 0.01 var(--hue)) 70%);
+  }
+  :root[data-theme="dark"] .goals li:hover { border-color: oklch(42% 0.05 var(--hue)); }
+}

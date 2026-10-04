@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f8f8f9" />
+  <meta name="description" content="A guided VR creative-health prototype for Meta Quest — touch a living orb of sound and colour, with WHOLI wellbeing check-ins before and after to measure the change." />
+  <!-- social-preview:start -->
+  <link rel="canonical" href="https://timurproko.com/feelxr/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Timur Prokopiev" />
+  <meta property="og:title" content="FeelXR" />
+  <meta property="og:description" content="A guided VR creative-health prototype for Meta Quest — touch a living orb of sound and colour, with WHOLI wellbeing check-ins before and after to measure the change." />
+  <meta property="og:url" content="https://timurproko.com/feelxr/" />
+  <meta property="og:image" content="https://timurproko.com/assets/social/feelxr.png?v=0306adcb" />
+  <meta property="og:image:width" content="2400" />
+  <meta property="og:image:height" content="1260" />
+  <meta property="og:image:alt" content="FeelXR — social preview" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="FeelXR" />
+  <meta name="twitter:description" content="A guided VR creative-health prototype for Meta Quest — touch a living orb of sound and colour, with WHOLI wellbeing check-ins before and after to measure the change." />
+  <meta name="twitter:image" content="https://timurproko.com/assets/social/feelxr.png?v=0306adcb" />
+  <!-- social-preview:end -->
+  <title>FeelXR</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    // Home page cards load this page with ?preview=cover — show only the cover.
+    if (new URLSearchParams(location.search).get('preview') === 'cover') {
+      document.documentElement.classList.add('preview-cover');
+    }
+  </script>
+  <link rel="stylesheet" href="../case/case.css" />
+  <link rel="stylesheet" href="./case-page.css" />
+  <link rel="stylesheet" href="/styles/theme.css" />
+  <script src="/theme.js"></script>
+  <script src="/back.js" defer></script>
+</head>
+<body>
+  <div class="cover" aria-hidden="true">
+    <p class="cover-title">FeelXR</p>
+  </div>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Timur Prokopiev</a>
+      <div class="nav-links" aria-label="Navigation">
+        <a href="/" class="nav-link">Portfolio</a>
+        <a href="/cv/" class="nav-link">CV</a>
+        <a href="https://www.linkedin.com/in/timurproko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <article>
+      <a class="back-shortcut" href="/" aria-label="Back"><kbd>←</kbd> <span class="action-label">Back</span></a>
+
+      <header class="page-head reveal" style="animation-delay: 80ms">
+        <div class="head">
+          <h1>FeelXR</h1>
+        </div>
+        <p class="lede">
+          A guided VR experience for creative health and relaxation.
+          You touch a soft orb that answers with sound, movement and colour. A short wellbeing
+          check-in before and after the session shows how your state has changed.
+        </p>
+        <ul class="tags" aria-label="Focus areas">
+          <li><span class="tag">Virtual Reality</span></li>
+          <li><span class="tag">Creative Health</span></li>
+          <li><span class="tag">Sound Design</span></li>
+          <li><span class="tag">Wellbeing Data</span></li>
+          <li><span class="tag">Meta Quest</span></li>
+        </ul>
+      </header>
+
+      <!-- Hero: the orb rebuilt live in WebGL, driven by the pilot film's score -->
+      <figure class="orb-hero reveal" style="animation-delay: 180ms">
+        <div class="orb-stage" data-orb-stage>
+          <div class="orb-sky" aria-hidden="true"><span class="orb-wash"></span><span class="orb-floor"></span><span class="orb-shadow"></span></div>
+          <div class="orb-blooms" aria-hidden="true"></div>
+          <canvas class="orb-canvas" aria-label="An interactive orb that moves with the music. Touch it to play a note."></canvas>
+          <div class="palette" role="radiogroup" aria-label="Orb colour">
+            <!-- Swatches are filled in from the palette list in orb.js -->
+          </div>
+          <p class="orb-hint" aria-hidden="true">Touch the orb</p>
+          <button type="button" class="orb-play" aria-pressed="false">
+            <span class="orb-play-icon" aria-hidden="true"></span>
+            <span class="orb-play-text"><span class="orb-play-sub">Audio guide</span><span class="orb-play-label">Play</span></span>
+            <span class="orb-play-time" aria-hidden="true">1:20</span>
+          </button>
+        </div>
+        <figcaption class="visually-hidden">A live orb on the experience's warm horizon. Press Play to hear the audio guide; the orb swells with the bass, ripples with the highs and sends colour into the sky.</figcaption>
+        <audio class="orb-audio" src="/feelxr/assets/score.mp3" preload="none"></audio>
+      </figure>
+
+      <!-- Brief -->
+      <section class="brief">
+        <figure class="brief-art">
+          <img src="/feelxr/assets/hold.webp" alt="Two hands resting on a large pink orb against a warm peach sky" style="--focus: 50% 60%" loading="lazy" data-zoom />
+        </figure>
+        <div class="brief-text">
+          <p class="eyebrow">The challenge</p>
+          <h2>Wellbeing you can measure</h2>
+          <p>
+            The goal was to show that immersive experiences can work as measurable wellbeing
+            interventions in cultural institutions. The app had to prove that creative play in
+            VR leads to observable changes in mental state, measured with the WHOLI wellbeing
+            assessment framework.
+          </p>
+          <p>
+            It also had to run by itself. There could be no technical setup and no staff to
+            guide visitors, so it would be ready for galleries, museums and public installations.
+          </p>
+        </div>
+      </section>
+
+      <!-- Sensory design -->
+      <section class="brief brief-flip">
+        <figure class="brief-art">
+          <img src="/feelxr/assets/palette.webp" alt="The colour palette: eight small orbs on the floor below a large glowing orange orb" style="--focus: 55% 55%" loading="lazy" data-zoom />
+        </figure>
+        <div class="brief-text">
+          <p class="eyebrow">Sensory design</p>
+          <h2>Comfort over spectacle</h2>
+          <p>
+            The experience is tuned for comfort, flow and emotional subtlety. The visuals and
+            audio were made with a sound psychologist and a concept designer, so every detail
+            adds to a balanced sensory environment.
+          </p>
+          <p>
+            Warm, low-contrast skies, slow motion and soft-edged spheres keep the headset
+            comfortable for first-time visitors. The orb's sounds are gentle by design. They
+            respond to touch, but they never startle.
+          </p>
+        </div>
+      </section>
+
+      <!-- Goals -->
+      <section class="block goals-block">
+        <h2>Project goals</h2>
+        <ol class="goals">
+          <li>
+            <span class="goal-no">01</span>
+            <h3>Measure the change</h3>
+            <p>Ask the same WHOLI questions before and after every session, so each visit records a before and an after.</p>
+          </li>
+          <li>
+            <span class="goal-no">02</span>
+            <h3>Zero setup</h3>
+            <p>Run fully on a standalone Meta Quest, from first question to goodbye, with no menus, laptops or operators.</p>
+          </li>
+          <li>
+            <span class="goal-no">03</span>
+            <h3>Non-verbal and inclusive</h3>
+            <p>Let touch, sound and colour carry the experience, so anyone can take part whatever their language or familiarity with VR.</p>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Session flow: a sticky screen swaps as the steps scroll past -->
+      <header class="lens" id="session">
+        <p class="eyebrow">Session flow</p>
+        <h2 class="lens-title">One session, start to finish</h2>
+        <p class="lens-sub">Every session follows the same guided structure. Choices are made by touching spheres, and the orb is the only thing that asks for more than a moment.</p>
+      </header>
+
+      <div class="flow">
+        <div class="flow-stage">
+          <div class="flow-screen" role="button" tabindex="0" aria-label="Enlarge the current session screen">
+            <img src="/feelxr/assets/checkin.webp" alt="" class="is-active" />
+            <img src="/feelxr/assets/sound.webp" alt="" loading="lazy" />
+            <img src="/feelxr/assets/palette.webp" alt="" loading="lazy" />
+            <img src="/feelxr/assets/touch.webp" alt="" loading="lazy" />
+            <img src="/feelxr/assets/portal.webp" alt="" loading="lazy" />
+            <img src="/feelxr/assets/thanks.webp" alt="" loading="lazy" />
+            <img src="/feelxr/assets/exit.webp" alt="" loading="lazy" />
+          </div>
+          <div class="flow-progress"><span></span></div>
+        </div>
+
+        <ol class="flow-steps" data-zoom-group>
+          <li class="flow-step is-active">
+            <img class="flow-shot" src="/feelxr/assets/checkin.webp" alt="Six soft spheres rated 0 to 5 under “How calm or physically settled do you feel right now?”" loading="lazy" data-zoom />
+            <span class="step-no">01</span>
+            <h3>Check in</h3>
+            <p class="step-quote">“How calm or physically settled do you feel right now?”</p>
+            <p>Four WHOLI questions, each answered by touching one of six spheres. It sets the baseline for the session.</p>
+          </li>
+          <li class="flow-step">
+            <img class="flow-shot" src="/feelxr/assets/sound.webp" alt="Five spheres named Float, Glow, Reflect, Settle and Rise under “Which sound group do you like best?”, one filling with a green ring" loading="lazy" data-zoom />
+            <span class="step-no">02</span>
+            <h3>Set the scene</h3>
+            <p class="step-quote">“Which sound group do you like best?”</p>
+            <p>Pick a background environment (forest, sea, street or fireplace) and a sound palette for your touches: Float, Glow, Reflect, Settle or Rise.</p>
+          </li>
+          <li class="flow-step">
+            <img class="flow-shot" src="/feelxr/assets/palette.webp" alt="Eight small coloured orbs named Mist, Ember, Iris, Haze, Drift, Verdant, Dusk and Blush below a large orange orb" loading="lazy" data-zoom />
+            <span class="step-no">03</span>
+            <h3>Choose a colour</h3>
+            <p class="step-quote">“Please, select the color palette”</p>
+            <p>Eight palettes, from Mist to Blush. The big orb takes on your choice as soon as you touch it.</p>
+          </li>
+          <li class="flow-step">
+            <img class="flow-shot" src="/feelxr/assets/touch.webp" alt="A hand pressed flat against the dark, glossy side of the orb" loading="lazy" data-zoom />
+            <span class="step-no">04</span>
+            <h3>Touch the orb</h3>
+            <p class="step-quote">“Touch the orb”</p>
+            <p>The orb gives way under your hands. Every touch plays a gentle note and sends colour out across the environment.</p>
+          </li>
+          <li class="flow-step">
+            <img class="flow-shot" src="/feelxr/assets/portal.webp" alt="Hands on the pink orb in front of a large blue-violet portal, with the sky swirling around it" loading="lazy" data-zoom />
+            <span class="step-no">05</span>
+            <h3>Let it unfold</h3>
+            <p class="step-quote">No timer, no score.</p>
+            <p>The world shifts with you. The sky swirls and colours drift, and the session lasts as long as it feels right.</p>
+          </li>
+          <li class="flow-step">
+            <img class="flow-shot" src="/feelxr/assets/thanks.webp" alt="Two thumbs-up hands either side of a small pink orb under “Thank you!”" loading="lazy" data-zoom />
+            <span class="step-no">06</span>
+            <h3>Check out</h3>
+            <p class="step-quote">“Thank you!”</p>
+            <p>The same four WHOLI questions come back, so the change in emotional state can be measured against the first answers.</p>
+          </li>
+          <li class="flow-step">
+            <img class="flow-shot" src="/feelxr/assets/exit.webp" alt="A finger pressing a round pink Exit button on the floor of the scene" loading="lazy" data-zoom />
+            <span class="step-no">07</span>
+            <h3>Exit</h3>
+            <p class="step-quote">“Exit”</p>
+            <p>One last soft button and the headset is ready for the next visitor. Nobody needs to reset it.</p>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Data -->
+      <section class="block data-block">
+        <h2>Data behind the calm</h2>
+        <p class="data-sub">Every session is stored securely for later analysis, from the choices visitors make to how often they touch the orb. That way the wellbeing impact of each experience can be measured.</p>
+        <ul class="metrics">
+          <li><span class="metric-value">4</span><span class="metric-label">WHOLI questions</span></li>
+          <li><span class="metric-value">2×</span><span class="metric-label">Check-ins, before and after</span></li>
+          <li><span class="metric-value">0–5</span><span class="metric-label">Rating per answer</span></li>
+          <li><span class="metric-value">0</span><span class="metric-label">Setup steps on site</span></li>
+        </ul>
+      </section>
+
+      <!-- In the headset -->
+      <header class="lens" id="film">
+        <p class="eyebrow">In the headset</p>
+        <h2 class="lens-title">Recorded on Meta Quest</h2>
+        <p class="lens-sub">A full session in the headset, from the first check-in to the orb. It is scored with the same music that drives the orb at the top of this page.</p>
+      </header>
+
+      <section class="block tests">
+        <figure class="clip clip-film">
+          <div class="film-frame">
+            <video src="/feelxr/assets/film.mp4" poster="/feelxr/assets/film.webp" playsinline preload="none" aria-label="FeelXR pilot film: the check-in, sound and colour choices, then hands shaping a green orb"></video>
+            <button type="button" class="film-play" aria-label="Play the FeelXR pilot film"><span class="film-icon" aria-hidden="true"></span></button>
+          </div>
+          <figcaption>Future of Creative Health. A non-verbal journey you can put on and use straight away, with no setup, no menus and no distractions.</figcaption>
+        </figure>
+      </section>
+
+
+      <a class="next" href="/calmxr/">
+        <div>
+          <p class="label">Next project</p>
+          <p class="name">CalmXR</p>
+          <p class="desc">Prototype for Smart Glasses <span>→</span></p>
+        </div>
+        <div class="thumb">
+          <img src="/assets/previews/calmxr.jpg" alt="" loading="lazy" />
+        </div>
+      </a>
+    </article>
+
+    <footer><span class="footer-year" data-footer-year aria-label="Current year">0000</span></footer>
+  </main>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

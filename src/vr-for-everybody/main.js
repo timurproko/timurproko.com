@@ -1,5 +1,6 @@
 import { setupCover } from '../case/cover.js';
 import { setupFooterYear } from '../case/footer-year.js';
+import { setupNextPreview } from '../case/next-preview.js';
 import { setupStatReveal } from '../case/stat-reveal.js';
 import { setupZoom } from '../case/lightbox.js';
 import { setupChapterNav } from '../case/chapter-nav.js';
@@ -7,6 +8,7 @@ import { setupChapterNav } from '../case/chapter-nav.js';
 // Home page preview cover uses the deck's title artwork as its backdrop.
 setupCover('/vr-for-everybody/assets/hero.webp');
 setupFooterYear();
+setupNextPreview();
 setupStatReveal();
 
 // Deck clips load lazily (preload="none") and play muted only while on screen.

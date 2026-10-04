@@ -1,10 +1,12 @@
 import { setupCover } from '../case/cover.js';
 import { setupFooterYear } from '../case/footer-year.js';
+import { setupNextPreview } from '../case/next-preview.js';
 import { setupZoom } from '../case/lightbox.js';
 
 // Home page preview cover uses the title slide's empty sky as its backdrop.
 setupCover('/calmxr/assets/sky.webp');
 setupFooterYear();
+setupNextPreview();
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

@@ -15,7 +15,8 @@
 .proto .frame video { aspect-ratio: 1; object-fit: cover; }
 .proto-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
 
-/* WebGL heart — poster with a launch button, swapped for the live build on click (main.js) */
+/* WebGL heart — poster with a launch button, swapped for the live build on click (main.js).
+   Phones get a recording of the build instead (.is-video). */
 .webgl { margin-top: 24px; }
 .webgl-stage {
   position: relative;
@@ -26,6 +27,7 @@
   background: #1b2230;
 }
 .frame .webgl-stage img,
+.frame .webgl-stage video,
 .webgl-stage iframe {
   position: absolute;
   inset: 0;
@@ -40,51 +42,44 @@
   position: absolute;
   inset: 0;
   display: grid;
-  place-content: center;
-  justify-items: center;
-  gap: 10px;
+  place-items: center;
   border: 0;
-  background: oklch(12% 0.02 260 / 0.68);
-  color: #fff;
-  font: 600 17px/1.2 var(--font-display);
+  background: oklch(15% 0.02 260 / 0.25);
   cursor: pointer;
-  transition: background-color 200ms ease;
+  transition: background-color 300ms ease;
 }
-.webgl-launch:hover { background: oklch(12% 0.02 260 / 0.56); }
+/* Only the play button reacts to hover; the whole poster stays still but clickable */
+.webgl-launch:has(.webgl-play:hover) { background: oklch(15% 0.02 260 / 0.1); }
 .webgl-launch:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
-/* Play button — same glass tile as the full-screen button, just larger */
+/* Round glass play button, the same as the film buttons on CalmXR and FeelXR */
 .webgl-play {
   position: relative;
-  width: 64px;
-  height: 64px;
-  border: 1px solid rgb(255 255 255 / 0.18);
-  border-radius: 16px;
-  background: oklch(12% 0.02 260 / 0.55);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: background-color 200ms ease, transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  width: 76px;
+  aspect-ratio: 1;
+  border: 1.5px solid oklch(97% 0.01 var(--hue));
+  border-radius: 50%;
+  background: oklch(20% 0.02 var(--hue) / 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: scale 300ms ease;
 }
 .webgl-play::after {
   content: "";
   position: absolute;
-  left: 25px;
-  top: 21px;
-  border-left: 16px solid #fff;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
+  left: 54%;
+  top: 50%;
+  translate: -50% -50%;
+  border-style: solid;
+  border-width: 12px 0 12px 20px;
+  border-color: transparent transparent transparent oklch(97% 0.01 var(--hue));
 }
-.webgl-launch:hover .webgl-play { background: var(--accent); transform: scale(1.06); }
-.webgl-note {
-  color: oklch(88% 0.01 260);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
+.webgl-play:hover { scale: 1.08; }
+/* The recording has its own controls, so the full-screen button steps aside */
+.webgl.is-video .webgl-fullscreen { display: none; }
 
-
-/* Full-screen icon button, pinned to the stage's top-right corner */
+/* Full-screen icon button, pinned to the stage's top-right corner. Same glass as the
+   round play button, kept square. 1px border on a 38px box leaves an even 36px inside,
+   so the 18px icon sits on whole pixels. */
 .webgl { position: relative; }
 .webgl-fullscreen {
   position: absolute;
@@ -95,18 +90,19 @@
   place-items: center;
   width: 38px;
   height: 38px;
-  border: 1px solid rgb(255 255 255 / 0.18);
+  border: 1px solid oklch(97% 0.01 var(--hue) / 0.9);
   border-radius: 10px;
-  background: oklch(12% 0.02 260 / 0.55);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: #fff;
+  background: oklch(20% 0.02 var(--hue) / 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: oklch(97% 0.01 var(--hue));
   cursor: pointer;
-  transition: background-color 200ms ease, transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: background-color 200ms ease, border-color 200ms ease;
 }
-.webgl-fullscreen:hover { background: var(--accent); transform: scale(1.06); }
+/* Neutral hover: the glass brightens, nothing moves */
+.webgl-fullscreen:hover { border-color: oklch(100% 0 0); background: oklch(100% 0 0 / 0.2); }
 .webgl-fullscreen:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.webgl-fullscreen svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.webgl-fullscreen svg { display: block; width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .webgl-fullscreen .icon-exit,
 .webgl.is-fullscreen .webgl-fullscreen .icon-enter { display: none; }
 .webgl.is-fullscreen .webgl-fullscreen .icon-exit { display: block; }
@@ -130,62 +126,9 @@ html.webgl-window-fill, html.webgl-window-fill body { overflow: hidden; }
   .wins.cols-5 > :last-child { grid-column: 1 / -1; }
 }
 
-/* Pinned prototype nav — a floating pill level with the Back button, shown once
-   the index cards scroll away (main.js). The current prototype shows its name. */
-.proto-nav {
-  position: fixed;
-  top: 76px;
-  left: 50%;
-  z-index: 95;
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  padding: 3px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: color-mix(in oklab, var(--surface), transparent 10%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 8px 24px rgba(17, 17, 17, 0.08);
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(-50%, -8px);
-  transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.proto-nav.is-visible { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
-.proto-nav a {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 25px;
-  padding: 4px 11px;
-  border-radius: 999px;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background-color 200ms ease, color 200ms ease;
-}
-.proto-nav a:hover { color: var(--fg); }
-.proto-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-.proto-nav a[aria-current] { background: var(--accent-dim); color: var(--accent); }
-/* Too narrow for every title: the pill scrolls sideways instead of wrapping */
-@media (max-width: 1000px) {
-  .proto-nav { max-width: calc(100vw - 150px); overflow-x: auto; scrollbar-width: none; }
-  .proto-nav::-webkit-scrollbar { display: none; }
-}
-@media (max-width: 760px) {
-  .proto-nav { top: 68px; left: auto; right: 16px; transform: translateY(-8px); }
-  .proto-nav.is-visible { transform: none; }
-  .proto-nav a { padding: 4px 9px; font-size: 12px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .proto-nav { transition: opacity 1ms; }
-}
+/* Pinned prototype nav: shared .chapter-nav in case/case.css */
 
 /* Dark theme */
 @media screen {
   :root[data-theme="dark"] .webgl-stage { border-color: var(--tint-border); }
-  :root[data-theme="dark"] .proto-nav { box-shadow: 0 8px 24px var(--shadow-color); }
 }

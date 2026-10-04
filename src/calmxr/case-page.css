@@ -294,8 +294,7 @@ h1, .lens-title, .brief-text h2 { font-family: Inter, var(--font-display); }
 .clip-sessions figcaption span { display: none; }
 .clip-sessions:has(#session-daylight:checked) figcaption span:nth-child(1),
 .clip-sessions:has(#session-evening:checked) figcaption span:nth-child(2) { display: inline; }
-.clip figcaption { margin-top: 10px; padding: 0 2px; color: var(--muted); font-size: 14px; line-height: 1.55; }
-.clip figcaption strong { color: var(--fg); font-weight: 600; }
+.clip figcaption { margin-top: 10px; padding: 0 2px; color: var(--muted); font-size: 14px; line-height: 1.55; text-align: center; }
 
 /* ─── Responsive & motion ───────────────────────────────────────────────── */
 @media (max-width: 860px) {

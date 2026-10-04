@@ -42,8 +42,8 @@ a { color: inherit; }
 
 /* Nav — same component as the home and CV pages. Fixed rather than sticky:
    iOS Safari drops a sticky, backdrop-blurred header while the page rubber-bands.
-   Scoped to the site header so the pages' own section navs (.chapter-nav,
-   .proto-nav) keep their floating pill. */
+   Scoped to the site header so the pages' own section nav (.chapter-nav)
+   keeps its floating pill. */
 body > nav {
   position: fixed;
   top: 0;
@@ -213,7 +213,8 @@ body > nav {
   transform: translateY(1px);
 }
 
-/* Pinned section nav — a floating pill level with the Back button (chapter-nav.js) */
+/* Pinned section nav — a floating pill level with the Back button (chapter-nav.js).
+   One component for every case: links come from the page's sections, colour from its --accent. */
 .chapter-nav {
   position: fixed;
   top: 76px;
@@ -240,7 +241,7 @@ body > nav {
   align-items: center;
   gap: 8px;
   min-height: 25px;
-  padding: 4px 11px;
+  padding: 3px 11px 5px; /* 1px more below: the glyphs sit low in a line-height: 1 box */
   border-radius: 999px;
   color: var(--muted);
   font-size: 13px;
@@ -263,7 +264,7 @@ body > nav {
 @media (max-width: 760px) {
   .chapter-nav { top: 68px; left: auto; right: 16px; transform: translateY(-8px); }
   .chapter-nav.is-visible { transform: none; }
-  .chapter-nav a { padding: 4px 9px; font-size: 12px; }
+  .chapter-nav a { padding: 3px 9px 5px; font-size: 12px; }
   /* The section nav takes the Website button's spot on phones */
   article:has(.chapter-nav) .link-shortcut { display: none; }
 }
@@ -851,10 +852,12 @@ article > :is(.block, .feature, .pair):has(+ :is(.lens, .next)) { padding-bottom
 .stat-caption { margin-top: 10px; color: var(--muted); font-size: 16px; }
 .stat .points strong { color: var(--accent); font-weight: 700; }
 .stat-big, .stat .points strong { font-variant-numeric: tabular-nums; }
-/* Scroll reveal (stat-reveal.js adds .is-armed, then .is-visible) */
-.stat.is-armed .stat-big,
-.stat.is-armed .stat-caption,
-.stat.is-armed .points li { opacity: 0; }
+/* Scroll reveal: hidden from the first paint (so nothing flashes before the script runs),
+   then stat-reveal.js adds .is-visible once in view. Without scripts or with reduced
+   motion it simply stays visible. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .stat:not(.is-visible) :is(.stat-big, .stat-caption, .points li) { opacity: 0; }
+}
 .stat.is-visible .stat-big { animation: statRise 720ms cubic-bezier(0.22, 1, 0.36, 1) both; }
 .stat.is-visible .stat-caption { animation: statRise 640ms cubic-bezier(0.22, 1, 0.36, 1) 240ms both; }
 .stat.is-visible .points li { animation: statRise 560ms cubic-bezier(0.22, 1, 0.36, 1) var(--sd, 0ms) both; }
@@ -936,9 +939,11 @@ article > :is(.block, .feature, .pair):has(+ :is(.lens, .next)) { padding-bottom
 .switcher > input:nth-of-type(3):focus-visible ~ .switcher-tabs > :nth-child(3),
 .switcher > input:nth-of-type(4):focus-visible ~ .switcher-tabs > :nth-child(4) { outline: 2px solid #fff; outline-offset: 1px; }
 
-/* Venn reveal — .venn is armed by case/venn-reveal.js, then plays once in view.
-   Each piece staggers by its inline --vd delay. */
-.venn.is-armed :is(.venn-rings circle, .venn-core-circle, .venn-intersection, .venn-core-glow, .venn-label text, .venn-core, .orbit-dot) { opacity: 0; }
+/* Venn reveal — hidden from the first paint, then case/venn-reveal.js adds .is-visible
+   once in view and it plays once. Each piece staggers by its inline --vd delay. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .venn:not(.is-visible) :is(.venn-rings circle, .venn-core-circle, .venn-intersection, .venn-core-glow, .venn-label text, .venn-core, .orbit-dot) { opacity: 0; }
+}
 .venn :is(.venn-rings circle, .venn-core-circle, .venn-intersection) { transform-box: fill-box; transform-origin: center; }
 .venn.is-visible .venn-rings circle { animation: vennRing 680ms cubic-bezier(0.22, 1, 0.36, 1) var(--vd, 0ms) both; }
 .venn.is-visible :is(.venn-core-circle, .venn-intersection) { animation: vennCore 720ms cubic-bezier(0.34, 1.56, 0.64, 1) var(--vd, 0ms) both; }
@@ -979,6 +984,7 @@ article > :is(.block, .feature, .pair):has(+ :is(.lens, .next)) { padding-bottom
 .next .desc span { display: inline-block; transition: translate 0.2s; }
 .next:hover .desc span { translate: 4px 0; }
 .next .thumb {
+  position: relative;
   overflow: hidden;
   aspect-ratio: 16 / 9;
   border: 1px solid var(--border);
@@ -987,6 +993,22 @@ article > :is(.block, .feature, .pair):has(+ :is(.lens, .next)) { padding-bottom
 }
 .next .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
 .next:hover .thumb img { transform: scale(1.03); }
+/* Live cover (case/next-preview.js): the project's 1920×1080 cover page scaled into the
+   thumb, fading in over its poster once loaded. It animates itself on hover. */
+.next .thumb iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  border: 0;
+  opacity: 0;
+  transform-origin: top left;
+  pointer-events: none;
+  transition: opacity 300ms ease;
+}
+.next .thumb.is-live iframe { opacity: 1; }
+.next .thumb.is-live img { transform: none; }
 
 /* Footer — same component as the home and CV pages */
 footer {

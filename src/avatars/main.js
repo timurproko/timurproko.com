@@ -1,6 +1,7 @@
 import { renderGallery } from '../case/gallery.js';
 import { setupCompare } from '../case/compare.js';
 import { setupFooterYear } from '../case/footer-year.js';
+import { setupNextPreview } from '../case/next-preview.js';
 
 // Media lives in public/avatars/assets (shared with the sections below), so the
 // gallery gets it listed here instead of via import.meta.glob. Keys set the order.
@@ -17,3 +18,4 @@ renderGallery({
 }, document.getElementById('gallery'), { pair: false });
 setupCompare();
 setupFooterYear();
+setupNextPreview();

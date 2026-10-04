@@ -1,9 +1,12 @@
 import { setupCover } from '../case/cover.js';
 import { setupFooterYear } from '../case/footer-year.js';
+import { setupNextPreview } from '../case/next-preview.js';
+import { setupChapterNav } from '../case/chapter-nav.js';
 
 // Home page preview cover uses the first prototype's frame as its backdrop.
 setupCover('/xr-prototypes/assets/physics-playground.webp');
 setupFooterYear();
+setupNextPreview();
 
 // Prototype captures are long and heavy, so they load lazily (preload="none")
 // and play muted only while on screen. Controls let a viewer unmute or scrub.
@@ -24,18 +27,23 @@ const HEART_URL = '/xr-prototypes/heart/index.html';
 const stage = document.getElementById('webgl-stage');
 const launchButton = document.getElementById('webgl-launch');
 // Phones and tablets (iPadOS reports itself as a Mac) usually can't hold the
-// build in memory, so they get a warning first and must choose to try anyway.
+// build in memory, so they get a recording of it instead, played like the
+// other prototype captures.
 const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
   (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
-let warned = false;
-function launchHeart() {
-  if (stage.querySelector('iframe')) return true;
-  if (isMobile && !warned) {
-    warned = true;
-    launchButton.querySelector('.webgl-title').textContent = 'Try anyway';
-    launchButton.querySelector('.webgl-note').textContent = 'Built for desktop — may not start on a phone';
-    return false;
+if (isMobile && stage) {
+  const video = document.createElement('video');
+  Object.assign(video, { src: '/xr-prototypes/assets/heart-viewer.mp4', poster: '/xr-prototypes/assets/heart-viewer.webp', muted: true, loop: true, playsInline: true, controls: true, preload: 'none' });
+  video.setAttribute('aria-label', 'Heart Viewer prototype: turning, slicing and X-raying the heart');
+  stage.replaceChildren(video);
+  document.getElementById('webgl-frame').classList.add('is-video');
+  if (!reducedMotion && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => (entry.isIntersecting ? video.play().catch(() => {}) : video.pause()), { threshold: 0.5 }).observe(video);
   }
+}
+function launchHeart() {
+  if (isMobile) return false;
+  if (stage.querySelector('iframe')) return true;
   const iframe = document.createElement('iframe');
   iframe.src = HEART_URL;
   iframe.title = 'Heart Viewer — interactive WebGL prototype';
@@ -47,7 +55,8 @@ function launchHeart() {
 launchButton?.addEventListener('click', launchHeart);
 
 // Full screen takes the whole frame — stage plus this button, which becomes the
-// exit control — launching the build if needed. Where the Fullscreen API is
+// exit control. It does not launch the build: before it is played, full screen
+// shows the same poster and play button, just larger. Where the Fullscreen API is
 // missing or refused (iPhone Safari), the frame instead covers the window with
 // CSS, so the exit button stays in reach.
 const frame = document.getElementById('webgl-frame');
@@ -66,7 +75,6 @@ fullscreenButton?.addEventListener('click', () => {
     setWindowFill(false);
     return;
   }
-  if (!launchHeart()) return;
   if (!frame.requestFullscreen) {
     setWindowFill(true);
     return;
@@ -87,43 +95,6 @@ function syncFullscreen() {
 }
 document.addEventListener('fullscreenchange', syncFullscreen);
 
-// Pinned prototype nav: appears once the index cards scroll away, hides again at
-// the "next project" footer, and marks the prototype currently in the middle of the screen.
-const protoNav = document.getElementById('proto-nav');
-const navLinks = [...protoNav.querySelectorAll('a')];
-const sections = navLinks.map(link => document.querySelector(link.hash));
-const index = document.querySelector('.proto-index');
-const next = document.querySelector('.next');
-let indexAbove = false;
-let nextVisible = false;
-const updateNav = () => protoNav.classList.toggle('is-visible', indexAbove && !nextVisible);
-// The index counts as scrolled away once it is up under the header and the pill
-// (the top 110px, give or take a subpixel). Checked on scroll rather than
-// observed: jumping to the first prototype lands the index right on that line.
-function checkIndex() {
-  const above = index.getBoundingClientRect().bottom <= 112;
-  if (above === indexAbove) return;
-  indexAbove = above;
-  updateNav();
-}
-window.addEventListener('scroll', checkIndex, { passive: true });
-checkIndex();
-new IntersectionObserver(([entry]) => {
-  nextVisible = entry.isIntersecting;
-  updateNav();
-}).observe(next);
-const sectionObserver = new IntersectionObserver(entries => {
-  entries.forEach(({ target, isIntersecting }) => {
-    if (!isIntersecting) return;
-    navLinks.forEach((link, i) => {
-      if (sections[i] === target) link.setAttribute('aria-current', 'true');
-      else link.removeAttribute('aria-current');
-    });
-    // On narrow screens the pill scrolls sideways — keep the current prototype centred in it.
-    const link = navLinks[sections.indexOf(target)];
-    if (protoNav.scrollWidth > protoNav.clientWidth) {
-      protoNav.scrollTo({ left: link.offsetLeft - (protoNav.clientWidth - link.offsetWidth) / 2, behavior: 'smooth' });
-    }
-  });
-}, { rootMargin: '-45% 0px -50% 0px' });
-sections.forEach(section => sectionObserver.observe(section));
+// Pinned prototype nav (shared case/chapter-nav.js): appears once the index cards
+// scroll away, hides again at the "next project" footer, and marks the prototype in view.
+setupChapterNav(document.getElementById('chapter-nav'), document.querySelector('.proto-index'));

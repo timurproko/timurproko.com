@@ -1,5 +1,6 @@
 import { renderGallery } from '../case/gallery.js';
 import { setupFooterYear } from '../case/footer-year.js';
+import { setupNextPreview } from '../case/next-preview.js';
 import { setupZoom } from '../case/lightbox.js';
 
 // Media lives in public/touch-my-heart/assets (shared with the sections below), so the
@@ -18,6 +19,7 @@ renderGallery({
   '10.png': `${A}prototype.png`,
 }, document.getElementById('gallery'), { pair: false });
 setupFooterYear();
+setupNextPreview();
 setupZoom();
 
 // Heart states: each condition clip rests on its first frame and plays only

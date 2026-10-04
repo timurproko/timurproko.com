@@ -1,5 +1,6 @@
 import { setupCover } from '../case/cover.js';
 import { setupFooterYear } from '../case/footer-year.js';
+import { setupNextPreview } from '../case/next-preview.js';
 import { mountAscii } from './ascii.js';
 import { setupFeatures } from './features.js';
 import { setupRoadmap } from './roadmap.js';
@@ -16,3 +17,4 @@ if (document.documentElement.classList.contains('preview-cover')) {
   mountAscii(document.querySelector('.a1-stage .ascii-field'));
 }
 setupFooterYear();
+setupNextPreview();

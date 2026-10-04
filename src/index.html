@@ -936,7 +936,7 @@
   <script>
     // Static fallback for hosts that do not expose a directory listing/API.
     // This list was generated from the current folder when index.html was created.
-    const FALLBACK_PRESENTATIONS = ["ai-for-unity", "touch-my-heart", "avatars", "corel-for-mac", "starkit", "vital-sports", "xr-prototypes", "vr-for-everybody", "untitled-world", "calmxr", "minecare", "a1", "cv"];
+    const FALLBACK_PRESENTATIONS = ["ai-for-unity", "touch-my-heart", "avatars", "corel-for-mac", "starkit", "vital-sports", "xr-prototypes", "vr-for-everybody", "untitled-world", "calmxr", "feelxr", "minecare", "a1", "cv"];
     const GITHUB_CONTENTS_API_BY_HOST = {
       "timurproko.com": "https://api.github.com/repos/timurproko/timurproko.com/contents",
       "www.timurproko.com": "https://api.github.com/repos/timurproko/timurproko.com/contents"
@@ -952,6 +952,7 @@
       "vr-for-everybody": "Field Research",
       "untitled-world": "AR Art Project",
       "calmxr": "Prototype for Smart Glasses",
+      "feelxr": "VR Health Prototype",
       "minecare": "UX Case Study",
       "a1": "AI Coding Agent",
       "cv": "UX/XR Developer"
@@ -968,6 +969,7 @@
       "untitled-world": "An augmented-reality art project — wireframe holograms anchored over rooftops, parks, frozen rivers and underpasses, imagining a world where reality itself becomes a piece of art.",
       "minecare": "A UX case study for MineCare — one role-based platform for fleet health, diagnostics and maintenance, with an interactive 3D open pit.",
       "calmxr": "A calm-tech experience for smart glasses — short guided sessions with spatial audio, gentle visuals and simple focus exercises, prototyped on Meta Quest 3.",
+      "feelxr": "A guided VR creative-health prototype for Meta Quest — touch a living orb of sound and colour, with WHOLI wellbeing check-ins before and after to measure the change.",
       "a1": "An open-source, terminal-native AI coding agent built on Pi — conversational coding, file tools and command execution, with configurable models and extensions.",
       "cv": "Building interactive experiences with a focus on usability, performance, and real-time systems."
     };
@@ -982,6 +984,7 @@
       "vr-for-everybody": ["xr"],
       "untitled-world": ["xr", "3d"],
       "calmxr": ["xr", "ux"],
+      "feelxr": ["xr", "ux"],
       "minecare": ["ux", "3d"],
       "a1": ["ai"],
       "cv": []
@@ -1386,7 +1389,9 @@
     // zone reports Europe/Berlin for much of Western Europe.
     const HIDDEN_IN_REGIONS = {
       // Germany
-      "starkit": { timeZones: ["Europe/Berlin", "Europe/Busingen"], languages: ["de"] }
+      "starkit": { timeZones: ["Europe/Berlin", "Europe/Busingen"], languages: ["de"] },
+      // Portugal: mainland, Madeira and the Azores
+      "feelxr": { timeZones: ["Europe/Lisbon", "Atlantic/Madeira", "Atlantic/Azores"], languages: ["pt"] }
     };
 
     init();

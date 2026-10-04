@@ -1,11 +1,15 @@
-// Venn diagrams (.venn): hidden until scrolled into view, then rings, labels and
-// core play the deck's staggered reveal once. Per-element delays come from
-// inline --vd styles in the SVG; the animation itself lives in case.css.
+// Venn diagrams (.venn): hidden by case.css from the first paint, then rings, labels
+// and core play the deck's staggered reveal once scrolled into view. Per-element
+// delays come from inline --vd styles in the SVG; the animation lives in case.css.
 export function setupVennReveal(root = document) {
-  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const venns = root.querySelectorAll('.venn');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!('IntersectionObserver' in window)) {
+    venns.forEach(venn => venn.classList.add('is-visible'));
+    return;
+  }
 
-  root.querySelectorAll('.venn').forEach(venn => {
-    venn.classList.add('is-armed');
+  venns.forEach(venn => {
     const observer = new IntersectionObserver(entries => {
       if (!entries.some(entry => entry.isIntersecting)) return;
       venn.classList.add('is-visible');

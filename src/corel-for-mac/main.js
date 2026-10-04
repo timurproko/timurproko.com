@@ -1,5 +1,6 @@
 import { renderGallery } from '../case/gallery.js';
 import { setupFooterYear } from '../case/footer-year.js';
+import { setupNextPreview } from '../case/next-preview.js';
 import { setupStatReveal } from '../case/stat-reveal.js';
 import { setupVennReveal } from '../case/venn-reveal.js';
 import { setupChapterNav } from '../case/chapter-nav.js';
@@ -50,5 +51,6 @@ document.querySelectorAll('.breakdown-stage').forEach(stage => {
 setupVennReveal();
 setupStatReveal();
 setupFooterYear();
+setupNextPreview();
 // Section tabs appear once the gallery has scrolled away
 setupChapterNav(document.getElementById('chapter-nav'), document.getElementById('gallery'));

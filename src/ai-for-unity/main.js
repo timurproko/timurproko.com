@@ -1,4 +1,5 @@
 import { setupFooterYear } from '../case/footer-year.js';
+import { setupNextPreview } from '../case/next-preview.js';
 import { setupVennReveal } from '../case/venn-reveal.js';
 import { setupChapterNav } from '../case/chapter-nav.js';
 
@@ -34,5 +35,6 @@ if (trend && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-m
 
 setupVennReveal();
 setupFooterYear();
+setupNextPreview();
 // Section tabs appear once the trend panels have scrolled away
 setupChapterNav(document.getElementById('chapter-nav'), trend);

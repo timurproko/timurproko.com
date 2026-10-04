@@ -1,4 +1,4 @@
-// Stat blocks (.stat): hidden until scrolled into view, then numbers count up
+// Stat blocks (.stat): hidden by case.css until scrolled into view, then numbers count up
 // from 0 and the caption / list items fade up in sequence. Plays once.
 // Any element with data-count counts up to the number in its text, keeping
 // the rest of the text (e.g. "%") as a suffix.
@@ -21,10 +21,14 @@ function countUp(el, delay) {
 }
 
 export function setupStatReveal(root = document) {
-  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const stats = root.querySelectorAll('.stat');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!('IntersectionObserver' in window)) {
+    stats.forEach(stat => stat.classList.add('is-visible'));
+    return;
+  }
 
-  root.querySelectorAll('.stat').forEach(stat => {
-    stat.classList.add('is-armed');
+  stats.forEach(stat => {
     stat.querySelectorAll('.points li').forEach((li, i) => li.style.setProperty('--sd', `${380 + i * 110}ms`));
 
     const observer = new IntersectionObserver(entries => {

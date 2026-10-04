@@ -2,6 +2,7 @@ import { renderGallery } from '../case/gallery.js';
 import { setupZoom } from '../case/lightbox.js';
 import { setupCover } from '../case/cover.js';
 import { setupFooterYear } from '../case/footer-year.js';
+import { setupNextPreview } from '../case/next-preview.js';
 import { setupChapterNav } from '../case/chapter-nav.js';
 import coverImage from './cover.webp';
 
@@ -15,6 +16,7 @@ renderGallery(images, document.getElementById('gallery'), { pair: false });
 setupCover(coverImage);
 setupZoom(document.querySelector('article'));
 setupFooterYear();
+setupNextPreview();
 
 // ---- 3D pit: loads when the section comes near the viewport --------------------
 const stage = document.querySelector('[data-mine]');
