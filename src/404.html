@@ -153,14 +153,20 @@
 
     @media (max-width: 900px) {
       .shell { grid-template-columns: 1fr; align-content: center; gap: 24px; padding: 56px 36px; }
-      .stage { order: -1; height: clamp(200px, 50vw, 320px); }
+      .stage { order: -1; height: clamp(240px, 60vw, 360px); }
+      .holo-layer { font-size: clamp(120px, 34vw, 240px); }
       body::before { background: radial-gradient(80% 40% at 50% 30%, var(--accent-dim), transparent 70%); }
     }
     @media (max-width: 480px) {
       .shell { padding: 48px 32px; }
     }
-    @media (max-width: 760px) {
-      h1 { font-size: clamp(36px, 5vw, 64px); line-height: 1.04; letter-spacing: -0.04em; }
+    /* Mobile: the buttons split the full content width, like the a1 404 */
+    @media (max-width: 600px) {
+      .actions { display: grid; grid-template-columns: 1fr 1fr; }
+      .btn { justify-content: center; padding-inline: 16px; }
+    }
+    @media (max-width: 900px) {
+      h1 { font-size: clamp(36px, 9.6vw, 64px); line-height: 1.04; letter-spacing: -0.04em; }
     }
     /* The smallest phones: a touch smaller, so every headline line fits */
     @media (max-width: 370px) {
