@@ -52,6 +52,8 @@ export function setupRoadmap(roadmap) {
   syncArrows();
 
   // Versions rise in one after another the first time the roadmap scrolls into view
+  // (stage.css hides them until then; without IntersectionObserver they show at once)
+  if (!('IntersectionObserver' in window)) roadmap.classList.add('is-revealed');
   if ('IntersectionObserver' in window && !reducedMotion.matches) {
     roadmap.querySelectorAll('.a1-roadmap-item').forEach((item, index) => item.style.setProperty('--i', index));
     roadmap.classList.add('is-animated');

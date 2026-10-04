@@ -39,10 +39,13 @@
   text-transform: uppercase;
 }
 
-/* Reveal once in view (main.js arms it): panels scale in one by one, each arrow slides in
+/* Reveal once in view: hidden from the first paint (so nothing flashes before the script
+   runs), then main.js adds .is-visible. Panels scale in one by one, each arrow slides in
    after the panel before it, and captions fade up under their panel */
-.trend.is-armed :is(svg, figcaption),
-.trend.is-armed figure + figure::before { opacity: 0; }
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .trend:not(.is-visible) :is(svg, figcaption),
+  .trend:not(.is-visible) figure + figure::before { opacity: 0; }
+}
 .trend.is-visible svg { animation: trendPanel 620ms cubic-bezier(0.22, 1, 0.36, 1) var(--td) both; }
 .trend.is-visible figcaption { animation: trendCaption 480ms cubic-bezier(0.22, 1, 0.36, 1) calc(var(--td) + 180ms) both; }
 .trend.is-visible figure + figure::before { animation: trendArrow 420ms cubic-bezier(0.22, 1, 0.36, 1) calc(var(--td) - 120ms) both; }

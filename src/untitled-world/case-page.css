@@ -215,7 +215,10 @@ h1, .lens-title { font-family: var(--font-type); font-weight: 400; letter-spacin
   line-height: 0.9;
   color: var(--accent);
 }
-.sighting.is-armed .log > div { opacity: 0; translate: 12px 0; }
+/* Hidden from the first paint, so the rows never flash before main.js locks the sighting */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .sighting:not(.is-locked) .log > div { opacity: 0; translate: 12px 0; }
+}
 .sighting.is-locked .log > div {
   opacity: 1;
   translate: 0 0;

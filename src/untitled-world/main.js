@@ -139,7 +139,6 @@ if (!reducedMotion && 'IntersectionObserver' in window) {
   }, { threshold: 0.45 });
   document.querySelectorAll('.sighting').forEach(sighting => {
     sighting.querySelectorAll('.log > div').forEach((row, i) => row.style.setProperty('--i', i));
-    sighting.classList.add('is-armed');
     lockObserver.observe(sighting);
   });
 } else {

@@ -21,10 +21,10 @@ if (motion && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
   }
 }
 
-// Hero trend panels: armed hidden, then play the staggered reveal (case-page.css) once in view.
+// Hero trend panels: hidden by case-page.css, then play the staggered reveal once in view.
 const trend = document.querySelector('.trend');
+if (trend && !('IntersectionObserver' in window)) trend.classList.add('is-visible');
 if (trend && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  trend.classList.add('is-armed');
   const observer = new IntersectionObserver(entries => {
     if (!entries.some(entry => entry.isIntersecting)) return;
     observer.disconnect();

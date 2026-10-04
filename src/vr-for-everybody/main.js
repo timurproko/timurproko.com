@@ -40,15 +40,15 @@ if (!reducedMotion && 'IntersectionObserver' in window) {
       target.classList.toggle('is-onscreen', isIntersecting);
     });
   }, { threshold: 0.35 });
-  document.querySelectorAll('.lens.chapter').forEach(chapter => {
-    chapter.classList.add('is-armed');
-    artObserver.observe(chapter);
-  });
+  document.querySelectorAll('.lens.chapter').forEach(chapter => artObserver.observe(chapter));
   // The hero bust floats the same way; its loop rests while scrolled away.
   const heroArt = document.querySelector('.hero-art');
   if (heroArt) {
     new IntersectionObserver(([entry]) => heroArt.classList.toggle('is-offscreen', !entry.isIntersecting)).observe(heroArt);
   }
+} else if (!reducedMotion) {
+  // No IntersectionObserver: show the art straight away (case-page.css hides it until then)
+  document.querySelectorAll('.lens.chapter').forEach(chapter => chapter.classList.add('is-visible'));
 }
 
 // Pinned chapter nav: appears once the index cards scroll away (shared case/chapter-nav.js)

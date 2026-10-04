@@ -336,14 +336,20 @@
   .a1-roadmap-item h3 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .a1-roadmap-item.is-current .a1-roadmap-current { position: absolute; top: 0; left: 0; margin: 0; }
 }
-/* Versions rise in one after another the first time the roadmap is seen */
-.a1-roadmap.is-animated .a1-roadmap-item { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(var(--i) * 70ms); }
-.a1-roadmap.is-animated.is-revealed .a1-roadmap-item { opacity: 1; transform: none; }
-.a1-roadmap.is-animated::before { transform: scaleY(0); transform-origin: top; transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1); }
-.a1-roadmap.is-animated.is-revealed::before { transform: none; }
+/* Versions rise in one after another the first time the roadmap is seen. Hidden from the
+   first paint (so nothing flashes before roadmap.js runs); roadmap.js adds .is-animated
+   for the transitions, then .is-revealed once in view. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .a1-roadmap:not(.is-revealed) .a1-roadmap-item { opacity: 0; transform: translateY(16px); }
+  .a1-roadmap:not(.is-revealed)::before { transform: scaleY(0); }
+}
+.a1-roadmap.is-animated .a1-roadmap-item { transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(var(--i) * 70ms); }
+.a1-roadmap.is-animated::before { transform-origin: top; transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1); }
+@media (min-width: 1025px) and (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .a1-roadmap:not(.is-revealed) .a1-roadmap-item::before { transform: scaleX(0); }
+}
 @media (min-width: 1025px) {
-  .a1-roadmap.is-animated .a1-roadmap-item::before { transform: scaleX(0); transform-origin: left; transition: transform 0.5s ease; transition-delay: calc(var(--i) * 70ms + 150ms); }
-  .a1-roadmap.is-animated.is-revealed .a1-roadmap-item::before { transform: none; }
+  .a1-roadmap.is-animated .a1-roadmap-item::before { transform-origin: left; transition: transform 0.5s ease; transition-delay: calc(var(--i) * 70ms + 150ms); }
 }
 
 @media (max-width: 760px) {
