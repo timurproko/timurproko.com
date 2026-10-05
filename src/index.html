@@ -1385,14 +1385,12 @@
 
     window.addEventListener("resize", scheduleProfileCardHeightSync);
 
-    // Cards left out for visitors in some countries. A static host has no geo-IP,
-    // so the country is guessed in the browser (no request leaves the page): the
-    // time zone AND a browser language must both match. The zone alone is too
-    // broad — Windows' default "Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna"
-    // zone reports Europe/Berlin for much of Western Europe.
+    // Cards left out for visitors associated with some countries. A static host
+    // has no geo-IP, so the country is guessed in the browser (no request leaves
+    // the page). A region can match either signal or require both signals.
     const HIDDEN_IN_REGIONS = {
       // Germany
-      "starkit": { timeZones: ["Europe/Berlin", "Europe/Busingen"], languages: ["de"] },
+      "starkit": { timeZones: ["Europe/Berlin", "Europe/Busingen"], languages: ["de"], match: "any" },
       // Portugal: mainland, Madeira and the Azores
       "feelxr": { timeZones: ["Europe/Lisbon", "Atlantic/Madeira", "Atlantic/Azores"], languages: ["pt"] }
     };
@@ -1414,7 +1412,11 @@
       try { zone = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (_) {}
       const languages = (navigator.languages?.length ? navigator.languages : [navigator.language || ""])
         .map(tag => tag.toLowerCase().split("-")[0]);
-      const inRegion = region.timeZones.includes(zone) && languages.some(lang => region.languages.includes(lang));
+      const timeZoneMatches = region.timeZones.includes(zone);
+      const languageMatches = languages.some(lang => region.languages.includes(lang));
+      const inRegion = region.match === "any"
+        ? timeZoneMatches || languageMatches
+        : timeZoneMatches && languageMatches;
       return !inRegion;
     }
 
