@@ -225,46 +225,8 @@ h1, .lens-title, .brief-text h2 { font-family: Inter, var(--font-display); }
   background: oklch(20% 0.01 250);
   object-fit: cover;
 }
-.clip-film video { aspect-ratio: 16 / 9; }
-/* Film: a round glass play button over the poster (as on Untitled World); controls appear once playing */
-.film-frame { position: relative; }
-.film-play {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  border: 0;
-  border-radius: 16px;
-  background: oklch(15% 0.02 240 / 0.25);
-  cursor: pointer;
-  transition: background-color 300ms ease;
-}
-.film-play:hover { background: oklch(15% 0.02 240 / 0.1); }
-.film-play:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.film-icon {
-  position: relative;
-  width: 76px;
-  aspect-ratio: 1;
-  border: 1.5px solid oklch(97% 0.01 var(--hue));
-  border-radius: 50%;
-  background: oklch(20% 0.02 var(--hue) / 0.35);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  transition: scale 300ms ease;
-}
-.film-icon::after {
-  content: "";
-  position: absolute;
-  left: 54%;
-  top: 50%;
-  translate: -50% -50%;
-  border-style: solid;
-  border-width: 12px 0 12px 20px;
-  border-color: transparent transparent transparent oklch(97% 0.01 var(--hue));
-}
-.film-play:hover .film-icon { scale: 1.08; }
-/* Square session recordings in the film's 16:9 frame: a blurred copy fills the width,
-   the full square sits centred on top */
+/* All recordings share one 16:9 player. Square sessions use a blurred copy to fill
+   the width, while the concept film fills the frame directly. */
 .session-panel {
   position: relative;
   aspect-ratio: 16 / 9;
@@ -290,10 +252,84 @@ h1, .lens-title, .brief-text h2 { font-family: Inter, var(--font-display); }
   object-fit: cover;
   box-shadow: 0 0 60px oklch(0% 0 0 / 0.35);
 }
+.clip-sessions .concept-panel .session-fg {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  translate: none;
+  object-fit: cover;
+}
 .clip-sessions .switcher-panels > :not(:first-child) { pointer-events: none; }
+/* Shared playback controls sit around the existing recording tabs. The blurred video
+   remains muted; only the centred foreground recording supplies audio. */
+.clip-sessions .switcher-tabs { z-index: 3; }
+.session-control {
+  position: absolute;
+  z-index: 3;
+  bottom: 14px;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 50%;
+  background: rgb(12 14 18 / 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 200ms ease, transform 200ms ease;
+}
+.session-play { left: 14px; }
+.session-sound { right: 14px; }
+.session-control:hover { background: rgb(12 14 18 / 0.78); transform: translateY(-1px); }
+.session-control:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.session-control svg { width: 18px; height: 18px; fill: currentColor; }
+.session-play .pause-icon { display: none; }
+.session-play.is-playing .play-icon { display: none; }
+.session-play.is-playing .pause-icon { display: block; }
+.session-sound :is(.sound-wave, .sound-mute) { fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: 1.5; }
+.session-sound .sound-wave { display: none; }
+.session-sound.is-on .sound-wave { display: block; }
+.session-sound.is-on .sound-mute { display: none; }
+.switcher > .session-progress {
+  --session-progress: 0%;
+  position: absolute;
+  z-index: 3;
+  right: 14px;
+  bottom: 58px;
+  left: 14px;
+  width: calc(100% - 28px);
+  height: 3px;
+  opacity: 1;
+  border-radius: 999px;
+  background: linear-gradient(to right, #fff var(--session-progress), rgb(255 255 255 / 0.3) var(--session-progress));
+  appearance: none;
+  -webkit-appearance: none;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.session-progress::-webkit-slider-runnable-track { height: 3px; background: transparent; }
+.session-progress::-webkit-slider-thumb {
+  width: 13px;
+  height: 13px;
+  margin-top: -5px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 5px rgb(0 0 0 / 0.35);
+  appearance: none;
+  -webkit-appearance: none;
+}
+.session-progress::-moz-range-track { height: 3px; background: transparent; }
+.session-progress::-moz-range-thumb { width: 13px; height: 13px; border: 0; border-radius: 50%; background: #fff; }
+.session-progress:focus-visible { outline: 2px solid #fff; outline-offset: 6px; }
 .clip-sessions figcaption span { display: none; }
-.clip-sessions:has(#session-daylight:checked) figcaption span:nth-child(1),
-.clip-sessions:has(#session-evening:checked) figcaption span:nth-child(2) { display: inline; }
+.clip-sessions:has(#session-concept:checked) figcaption span:nth-child(1),
+.clip-sessions:has(#session-daylight:checked) figcaption span:nth-child(2),
+.clip-sessions:has(#session-evening:checked) figcaption span:nth-child(3) { display: inline; }
 .clip figcaption { margin-top: 10px; padding: 0 2px; color: var(--muted); font-size: 14px; line-height: 1.55; text-align: center; }
 
 /* ─── Responsive & motion ───────────────────────────────────────────────── */
@@ -323,6 +359,9 @@ h1, .lens-title, .brief-text h2 { font-family: Inter, var(--font-display); }
 @media (max-width: 760px) {
   .sky-hero { border-radius: 14px; }
   .sky-scene > img { aspect-ratio: 4 / 3; object-position: 30% 50%; }
+}
+@media (max-width: 500px) {
+  .switcher-tabs label { padding-inline: 6px; font-size: 9px; letter-spacing: 0.06em; }
 }
 @media (prefers-reduced-motion: reduce) {
   .orb, .cue-in, .cue-out { animation: none; }

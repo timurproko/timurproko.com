@@ -40,38 +40,96 @@ window.addEventListener('scroll', updateFlow, { passive: true });
 window.addEventListener('resize', updateFlow);
 updateFlow();
 
-// Session recordings: the tabbed pair loads lazily (preload="none") and only the selected
-// recording plays, muted, while the frame is on screen. The concept film keeps its
-// controls and waits to be played.
+// All three recordings share one player and autoplay silently while it is on screen.
+// Browsers block autoplay with audio, so the sound button enables it after a user gesture.
 const sessions = document.querySelector('.clip-sessions .switcher');
 if (sessions) {
-  const radios = [...sessions.querySelectorAll('input')];
+  const radios = [...sessions.querySelectorAll('input[type="radio"]')];
   const panels = [...sessions.querySelectorAll('.session-panel')];
+  const playButton = sessions.querySelector('.session-play');
+  const soundButton = sessions.querySelector('.session-sound');
+  const progress = sessions.querySelector('.session-progress');
   let onScreen = false;
-  const sync = () => panels.forEach((panel, i) => {
-    const active = onScreen && radios[i].checked && !reducedMotion;
-    panel.querySelectorAll('video').forEach(clip => (active ? clip.play().catch(() => {}) : clip.pause()));
+  let playing = !reducedMotion;
+  let soundEnabled = false;
+  let scrubbing = false;
+
+  const selectedPanel = () => panels[radios.findIndex(radio => radio.checked)];
+  const panelMedia = panel => ({
+    bg: panel.querySelector('.session-bg'),
+    fg: panel.querySelector('.session-fg'),
   });
+  const updatePlayButton = () => {
+    playButton?.classList.toggle('is-playing', playing);
+    playButton?.setAttribute('aria-label', playing ? 'Pause video' : 'Play video');
+  };
+  const updateProgress = video => {
+    if (!progress || scrubbing || !Number.isFinite(video.duration) || !video.duration) return;
+    const value = Math.round((video.currentTime / video.duration) * Number(progress.max));
+    progress.value = String(value);
+    progress.style.setProperty('--session-progress', `${value / 10}%`);
+  };
+  const sync = () => panels.forEach((panel, i) => {
+    const active = onScreen && radios[i].checked && playing;
+    const { bg, fg } = panelMedia(panel);
+    if (bg) bg.muted = true;
+    fg.muted = !soundEnabled || !radios[i].checked;
+    [bg, fg].filter(Boolean).forEach(clip => (active ? clip.play().catch(() => {}) : clip.pause()));
+  });
+
   // The blurred backdrop follows the square recording it frames.
-  panels.forEach(panel => {
-    const [bg, fg] = panel.querySelectorAll('video');
+  panels.forEach((panel, i) => {
+    const { bg, fg } = panelMedia(panel);
     fg.addEventListener('timeupdate', () => {
-      if (Math.abs(bg.currentTime - fg.currentTime) > 0.3) bg.currentTime = fg.currentTime;
+      if (bg && Math.abs(bg.currentTime - fg.currentTime) > 0.3) bg.currentTime = fg.currentTime;
+      if (radios[i].checked) updateProgress(fg);
+    });
+    fg.addEventListener('loadedmetadata', () => {
+      if (radios[i].checked) updateProgress(fg);
+    });
+    fg.addEventListener('ended', () => {
+      if (!fg.loop && radios[i].checked) {
+        playing = false;
+        updatePlayButton();
+      }
     });
   });
-  radios.forEach(radio => radio.addEventListener('change', sync));
+  playButton?.addEventListener('click', () => {
+    playing = !playing;
+    updatePlayButton();
+    sync();
+  });
+  soundButton?.addEventListener('click', () => {
+    soundEnabled = !soundEnabled;
+    soundButton.classList.toggle('is-on', soundEnabled);
+    soundButton.setAttribute('aria-pressed', String(soundEnabled));
+    soundButton.setAttribute('aria-label', soundEnabled ? 'Turn video audio off' : 'Turn video audio on');
+    sync();
+  });
+  progress?.addEventListener('input', () => {
+    scrubbing = true;
+    const panel = selectedPanel();
+    if (!panel) return;
+    const { bg, fg } = panelMedia(panel);
+    if (!Number.isFinite(fg.duration)) return;
+    const time = (Number(progress.value) / Number(progress.max)) * fg.duration;
+    [bg, fg].filter(Boolean).forEach(video => { video.currentTime = time; });
+    progress.style.setProperty('--session-progress', `${Number(progress.value) / 10}%`);
+  });
+  progress?.addEventListener('change', () => { scrubbing = false; });
+  radios.forEach(radio => radio.addEventListener('change', () => {
+    const fg = selectedPanel()?.querySelector('.session-fg');
+    if (fg) updateProgress(fg);
+    sync();
+  }));
+  updatePlayButton();
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; sync(); }, { threshold: 0.5 }).observe(sessions);
+  } else {
+    onScreen = true;
+    sync();
   }
 }
-
-// Concept film: the centred play button starts it and hands over to the native controls.
-document.querySelector('.film-play')?.addEventListener('click', event => {
-  const video = event.currentTarget.parentElement.querySelector('video');
-  video.controls = true;
-  video.play().catch(() => {});
-  event.currentTarget.remove();
-});
 
 // Zoomable images open full screen; the flow screenshots swipe as one group (case/lightbox.js).
 setupZoom();

@@ -249,20 +249,17 @@
       </header>
 
       <section class="block tests">
-        <figure class="clip clip-film">
-          <div class="film-frame">
-            <video src="/calmxr/assets/concept-film.mp4" poster="/calmxr/assets/concept-film.webp" playsinline preload="none" aria-label="CalmXR concept film: stressed people in a crowd, then a session in a busy café seen through the headset"></video>
-            <button type="button" class="film-play" aria-label="Play the CalmXR concept film"><span class="film-icon" aria-hidden="true"></span></button>
-          </div>
-          <figcaption>Concept film. From a crowded street to a busy café, a session starts right where the stress is.</figcaption>
-        </figure>
-        <!-- Two home sessions share one frame; the tabs pick which recording plays -->
+        <!-- The concept film and both home sessions share one player. Square recordings
+             sit over a blurred full-width copy of themselves. -->
         <figure class="clip clip-sessions">
-          <div class="switcher" aria-label="Session recordings">
-            <input type="radio" name="session-clip" id="session-daylight" checked />
+          <div class="switcher" aria-label="CalmXR videos">
+            <input type="radio" name="session-clip" id="session-concept" checked />
+            <input type="radio" name="session-clip" id="session-daylight" />
             <input type="radio" name="session-clip" id="session-evening" />
-            <!-- Each square recording sits on a blurred, full-width copy of itself -->
             <div class="switcher-panels">
+              <div class="session-panel concept-panel">
+                <video class="session-fg" src="/calmxr/assets/concept-film.mp4" poster="/calmxr/assets/concept-film.webp" muted playsinline preload="none" aria-label="CalmXR concept film: stressed people in a crowd, then a session in a busy café seen through the headset"></video>
+              </div>
               <div class="session-panel">
                 <video class="session-bg" src="/calmxr/assets/session-daylight.mp4" poster="/calmxr/assets/session-daylight.webp" muted loop playsinline preload="none" aria-hidden="true"></video>
                 <video class="session-fg" src="/calmxr/assets/session-daylight.mp4" poster="/calmxr/assets/session-daylight.webp" muted loop playsinline preload="none" aria-label="A full session recorded in a daylit room, from the mood check-in to a breathing cloud over a teal-tinted room"></video>
@@ -272,12 +269,28 @@
                 <video class="session-fg" src="/calmxr/assets/session-evening.mp4" poster="/calmxr/assets/session-evening.webp" muted loop playsinline preload="none" aria-label="A full session recorded in an evening living room, from room capture to a breathing cloud with a countdown"></video>
               </div>
             </div>
+            <input class="session-progress" type="range" min="0" max="1000" value="0" aria-label="Video playback position" />
+            <button type="button" class="session-control session-play is-playing" aria-label="Pause video">
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path class="play-icon" d="m7 5 8 5-8 5z" />
+                <path class="pause-icon" d="M6 5h3v10H6zm5 0h3v10h-3z" />
+              </svg>
+            </button>
             <div class="switcher-tabs">
+              <label for="session-concept">Concept</label>
               <label for="session-daylight">Daylight</label>
               <label for="session-evening">Evening</label>
             </div>
+            <button type="button" class="session-control session-sound" aria-pressed="false" aria-label="Turn video audio on">
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M3 8h3l4-3v10l-4-3H3z" />
+                <path class="sound-wave" d="M13 7.5c1.4 1.4 1.4 3.6 0 5m2-7c2.5 2.5 2.5 6.5 0 9" />
+                <path class="sound-mute" d="m13 8 4 4m0-4-4 4" />
+              </svg>
+            </button>
           </div>
           <figcaption>
+            <span>Concept film. From a crowded street to a busy café, a session starts right where the stress is.</span>
             <span>Daylight, open room. The mood check-in floats against the balcony door, then the room settles into teal.</span>
             <span>Evening, living room. Capture, analyse, then the room turns a soft plum while the cloud breathes.</span>
           </figcaption>
