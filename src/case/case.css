@@ -955,6 +955,7 @@ article > :is(.block, .feature, .pair):has(+ :is(.lens, .next)) { padding-bottom
 @keyframes vennFade { from { opacity: 0; } to { opacity: 1; } }
 
 /* Next project */
+.next[hidden] { display: none; }
 .next {
   display: grid;
   grid-template-columns: 1fr 280px;

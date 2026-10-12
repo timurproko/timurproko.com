@@ -1,4 +1,7 @@
-// "Next project" thumbnail: the same preview the home page cards show.
+import { nextVisibleProjectCandidates } from './project-catalog.js';
+
+// "Next project" is generated from the shared visible-project sequence. Its title and
+// description come from the next available page, so case pages contain no stale links.
 // Touch / small screens get the project's static cover poster (light or dark, following
 // the theme). Desktop layers the live cover page on top of it, in a scaled iframe
 // (`/<slug>/?preview=cover`, as on the home page), loaded once the block comes near the
@@ -50,21 +53,74 @@ function motionControl(iframe) {
   };
 }
 
-export function setupNextPreview() {
+function routeSlug(pathname = location.pathname) {
+  return pathname.split('/').filter(Boolean)[0] || '';
+}
+
+async function loadProject(slug) {
+  try {
+    const response = await fetch(`/${slug}/`, { cache: 'force-cache' });
+    if (!response.ok) return null;
+    const html = await response.text();
+    const page = new DOMParser().parseFromString(html, 'text/html');
+    const title = page.querySelector('h1')?.textContent?.trim();
+    if (!title) return null;
+    const pageDescription = page.querySelector('meta[name="description"]')?.content?.trim() || '';
+    const description = pageDescription.split(/\s+[—–]\s+/)[0];
+    return { slug, title, description };
+  } catch {
+    return null;
+  }
+}
+
+async function findNextProject(currentSlug) {
+  for (const slug of nextVisibleProjectCandidates(currentSlug)) {
+    const project = await loadProject(slug);
+    if (project) return project;
+  }
+  return null;
+}
+
+function renderNextProject(link, project) {
+  const details = document.createElement('div');
+  const label = document.createElement('p');
+  label.className = 'label';
+  label.textContent = 'Next project';
+  const name = document.createElement('p');
+  name.className = 'name';
+  name.textContent = project.title;
+  const description = document.createElement('p');
+  description.className = 'desc';
+  description.append(document.createTextNode(project.description ? `${project.description} ` : ''));
+  const arrow = document.createElement('span');
+  arrow.textContent = '→';
+  description.append(arrow);
+  details.append(label, name, description);
+
+  const thumb = document.createElement('div');
+  thumb.className = 'thumb';
+  const poster = document.createElement('img');
+  poster.alt = '';
+  poster.loading = 'lazy';
+  thumb.append(poster);
+
+  link.href = `/${project.slug}/`;
+  link.setAttribute('aria-label', `Open next project: ${project.title}`);
+  link.replaceChildren(details, thumb);
+  link.hidden = false;
+  return { thumb, poster };
+}
+
+export async function setupNextPreview() {
   const link = document.querySelector('a.next');
-  const thumb = link?.querySelector('.thumb');
-  if (!thumb || document.documentElement.classList.contains('preview-cover')) return;
-  const slug = new URL(link.href, location.href).pathname.split('/').filter(Boolean)[0];
-  if (!slug) return;
+  if (!link || document.documentElement.classList.contains('preview-cover')) return;
+
+  const project = await findNextProject(routeSlug());
+  if (!project) return;
+  const { thumb, poster } = renderNextProject(link, project);
+  const { slug } = project;
 
   // Poster: always present, so there is something to see before (or without) the live cover.
-  let poster = thumb.querySelector('img');
-  if (!poster) {
-    poster = document.createElement('img');
-    poster.alt = '';
-    poster.loading = 'lazy';
-    thumb.append(poster);
-  }
   const showPoster = () => { poster.style.display = ''; poster.src = posterUrl(slug); };
   // No dark poster yet: fall back to the light one.
   poster.addEventListener('error', () => {
