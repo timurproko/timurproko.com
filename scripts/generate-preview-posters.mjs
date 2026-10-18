@@ -59,7 +59,9 @@ async function main() {
         const url = `${server.origin}/${encodeURIComponent(slug)}/?preview=cover`;
         const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
         await page.addInitScript(value => localStorage.setItem('theme', value), theme);
-        await page.goto(url, { waitUntil: 'networkidle' });
+        // Third-party embeds may keep network connections open indefinitely.
+        // The cover is self-contained, so wait for its DOM instead of global idleness.
+        await page.goto(url, { waitUntil: 'domcontentloaded' });
         // Deck covers and the CV render .hero; case pages (StarKit, A1) render .cover.
         await page.waitForSelector('.slide.hero, .hero, .cover', { timeout: 10000 });
         await page.waitForTimeout(SETTLE_MS);
