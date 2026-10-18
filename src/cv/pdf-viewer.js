@@ -1,11 +1,20 @@
 // Full-screen viewer for the deploy-built CV PDF: Back, zoom, Download and Print
 // in the same toolbar on every browser, instead of each browser's own PDF view
 // (which on phones leaves no obvious way back). Pages are drawn with PDF.js,
-// loaded only when the viewer first opens.
+// with clickable annotation overlays for links, and loaded only when first opened.
 import './pdf-viewer.css';
 
 const ZOOMS = [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3];
 const PRINT_SCALE = 2.5; // ≈180 dpi on A4 — sharp on paper, light enough to build quickly
+
+function linkLabel(href) {
+  try {
+    const url = new URL(href);
+    return `${url.hostname.replace(/^www\./, '')}${url.pathname === '/' ? '' : url.pathname.replace(/\/$/, '')}`;
+  } catch {
+    return href;
+  }
+}
 
 export function createPdfViewer({ url, fileName }) {
   let root = null;
@@ -90,17 +99,49 @@ export function createPdfViewer({ url, fileName }) {
     for (let n = 1; n <= pdf.numPages; n++) {
       const page = await pdf.getPage(n);
       const viewport = page.getViewport({ scale });
+      const width = Math.floor(viewport.width);
+      const height = Math.floor(viewport.height);
+      const sheet = document.createElement('div');
+      sheet.className = 'pdf-sheet';
+      sheet.style.width = `${width}px`;
+      sheet.style.height = `${height}px`;
+
       const canvas = document.createElement('canvas');
       canvas.className = 'pdf-page';
       canvas.width = Math.floor(viewport.width * ratio);
       canvas.height = Math.floor(viewport.height * ratio);
-      canvas.style.width = `${Math.floor(viewport.width)}px`;
-      canvas.style.height = `${Math.floor(viewport.height)}px`;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
       canvas.setAttribute('role', 'img');
       canvas.setAttribute('aria-label', `Page ${n} of ${pdf.numPages}`);
+      sheet.append(canvas);
+
+      const annotationsPromise = page.getAnnotations({ intent: 'display' });
       await page.render({ canvasContext: canvas.getContext('2d'), viewport, transform: ratio === 1 ? null : [ratio, 0, 0, ratio, 0, 0] }).promise;
       if (token !== renderToken) return; // a newer zoom or resize took over
-      sheets.push(canvas);
+
+      const annotations = await annotationsPromise;
+      for (const annotation of annotations) {
+        const href = annotation.url || annotation.unsafeUrl;
+        if (!href || !annotation.rect) continue;
+        const [x1, y1, x2, y2] = viewport.convertToViewportRectangle(annotation.rect);
+        const link = document.createElement('a');
+        const alignmentClass = n === 1 ? ' pdf-link-chip' : n === 3 ? ' pdf-link-lower' : '';
+        link.className = `pdf-link${alignmentClass}`;
+        link.href = href;
+        if (/^https?:/i.test(href)) {
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+        }
+        link.setAttribute('aria-label', `Open ${linkLabel(href)} in a new tab`);
+        link.style.left = `${Math.min(x1, x2)}px`;
+        link.style.top = `${Math.min(y1, y2)}px`;
+        link.style.width = `${Math.abs(x2 - x1)}px`;
+        link.style.height = `${Math.abs(y2 - y1)}px`;
+        sheet.append(link);
+      }
+      if (token !== renderToken) return;
+      sheets.push(sheet);
     }
     // Keep the reader's place: the same fraction of the document stays at the top.
     const at = pages.scrollHeight ? pages.scrollTop / pages.scrollHeight : 0;

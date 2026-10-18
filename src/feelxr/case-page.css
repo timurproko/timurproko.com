@@ -338,28 +338,6 @@ h1, .lens-title, .brief-text h2, .block h2 { font-family: Inter, var(--font-disp
 }
 .film-play:hover { background: oklch(15% 0.02 240 / 0.1); }
 .film-play:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.film-icon {
-  position: relative;
-  width: 76px;
-  aspect-ratio: 1;
-  border: 1.5px solid oklch(97% 0.01 var(--hue));
-  border-radius: 50%;
-  background: oklch(20% 0.02 var(--hue) / 0.35);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  transition: scale 300ms ease;
-}
-.film-icon::after {
-  content: "";
-  position: absolute;
-  left: 54%;
-  top: 50%;
-  translate: -50% -50%;
-  border-style: solid;
-  border-width: 12px 0 12px 20px;
-  border-color: transparent transparent transparent oklch(97% 0.01 var(--hue));
-}
-.film-play:hover .film-icon { scale: 1.08; }
 .clip figcaption { margin-top: 10px; padding: 0 2px; color: var(--muted); font-size: 14px; line-height: 1.55; text-align: center; }
 
 /* ─── Data ──────────────────────────────────────────────────────────────── */

@@ -124,13 +124,27 @@ html[data-pdf-transition="closing"]::view-transition-new(root) {
 }
 .pdf-pages:focus { outline: none; }
 /* margin-inline: auto centres a page that fits and lets a zoomed-in one scroll from its left edge */
-.pdf-page {
+.pdf-sheet {
+  position: relative;
   flex: none;
   max-width: none;
   margin-inline: auto;
   background: #fff;
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 10px 30px rgb(0 0 0 / 0.12);
 }
+.pdf-page { display: block; max-width: none; }
+.pdf-link {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  border-radius: 999px;
+  background: transparent;
+  transform: translateY(-1px);
+}
+.pdf-link-chip { transform: none; }
+.pdf-link-lower { transform: translateY(1px); }
+.pdf-link:hover { background: var(--accent-dim); outline: 2px solid var(--accent); outline-offset: 1px; }
+.pdf-link:focus-visible { background: var(--accent-dim); outline: 2px solid var(--accent); outline-offset: 2px; }
 .pdf-status { margin: auto; color: var(--muted); font: 400 12px/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; }
 
 /* Same 20px insets as the CV's Back / Open PDF buttons at this width */

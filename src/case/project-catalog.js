@@ -18,7 +18,7 @@ export const PROJECT_ORDER = Object.freeze([
 export const PRESENTATION_ORDER = Object.freeze([...PROJECT_ORDER, 'cv']);
 
 // Pages kept live for direct links but omitted from public discovery and recommendations.
-export const UNLISTED_PROJECTS = Object.freeze(['feelxr', 'starkit']);
+export const UNLISTED_PROJECTS = Object.freeze(['feelxr']);
 
 // Additional location-based visibility rules. A region can match either signal or require both.
 const HIDDEN_IN_REGIONS = Object.freeze({

@@ -10,16 +10,11 @@ const images = import.meta.glob('./images/*.{jpg,jpeg,png,webp,avif,gif,mp4,webm
   import: 'default',
 });
 
-renderGallery(images, document.getElementById('gallery'));
+// Keep 06 as the home-page cover backdrop, but do not show it in the case gallery.
+const galleryImages = { ...images };
+delete galleryImages['./images/06.webp'];
+renderGallery(galleryImages, document.getElementById('gallery'), { pair: false });
 
-// Recordings live in src/starkit/videos/ and fill their own grid at the bottom of the page.
-const videos = import.meta.glob('./videos/*.{mp4,webm}', {
-  eager: true,
-  query: '?url',
-  import: 'default',
-});
-renderGallery(videos, document.getElementById('videos'), { columns: 3 });
-// Home page preview cover uses this gallery image as its backdrop.
 setupCover(images['./images/06.webp'] ?? Object.values(images)[0]);
 setupFooterYear();
 setupNextPreview();
@@ -34,3 +29,27 @@ document.querySelector('.promo-play')?.addEventListener('click', event => {
   frame.allowFullscreen = true;
   button.replaceWith(frame);
 });
+
+// LinkedIn posts: a compact carousel keeps one portrait video visible at a time.
+const linkedinCarousel = document.querySelector('[data-linkedin-carousel]');
+if (linkedinCarousel) {
+  const track = linkedinCarousel.querySelector('.linkedin-carousel-track');
+  const slides = [...linkedinCarousel.querySelectorAll('.linkedin-embed')];
+  const currentLabel = linkedinCarousel.querySelector('[data-linkedin-current]');
+  let current = 0;
+
+  const show = index => {
+    current = (index + slides.length) % slides.length;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    currentLabel.textContent = current + 1;
+    slides.forEach((slide, slideIndex) => {
+      const active = slideIndex === current;
+      slide.inert = !active;
+      slide.setAttribute('aria-hidden', String(!active));
+    });
+  };
+
+  linkedinCarousel.querySelector('[data-linkedin-prev]').addEventListener('click', () => show(current - 1));
+  linkedinCarousel.querySelector('[data-linkedin-next]').addEventListener('click', () => show(current + 1));
+  show(0);
+}
