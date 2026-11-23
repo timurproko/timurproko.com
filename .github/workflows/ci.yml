@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  site:
+    name: CI required
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check shared bootstrap behavior
+        run: node --test scripts/workflow-bootstrap.test.mjs
+
+      - name: Install Chromium for preview rendering
+        run: npx playwright install --with-deps chromium
+
+      - name: Build static site
+        run: npm run build
+
+      - name: Generate preview posters and the CV PDF
+        run: npm run previews:build
+
+      - name: Rebuild with generated assets
+        run: npm run build
+
+      - name: Require the generated CV PDF in the build
+        run: test -s dist/cv/Timur_Prokopiev_CV.pdf
