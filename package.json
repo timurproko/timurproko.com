@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prepare": "node scripts/workflow-bootstrap.mjs",
     "dev": "vite",
     "dev:force": "vite --force",
     "build": "vite build",

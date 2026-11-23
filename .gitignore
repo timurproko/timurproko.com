@@ -1,5 +1,7 @@
 node_modules/
 dist/
 work/
+.artifacts/
+.worktrees/
 # Rendered from the CV page on every deploy (scripts/generate-preview-posters.mjs)
 public/cv/Timur_Prokopiev_CV.pdf
