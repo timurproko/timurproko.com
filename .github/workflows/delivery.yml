@@ -1,0 +1,31 @@
+# Copy to .github/workflows/delivery.yml in a repository that adopts the shared delivery workflow.
+# Use it unchanged: every repository stores the delivery bot's App id and key under these two names.
+name: Delivery
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, ready_for_review, converted_to_draft, reopened, edited, closed]
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: Implementation PR number to reconcile
+        type: string
+        required: true
+      dry_run:
+        description: Report the candidate classification without pushing
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  delivery:
+    uses: timurproko/MyWorkflows/.github/workflows/delivery.yml@main
+    with:
+      pr: ${{ inputs.pr }}
+      dry_run: ${{ inputs.dry_run || false }}
+    secrets:
+      app_id: ${{ vars.DELIVERY_BOT_APP_ID }}
+      app_private_key: ${{ secrets.DELIVERY_BOT_PRIVATE_KEY }}
