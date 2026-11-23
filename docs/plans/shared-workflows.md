@@ -6,7 +6,7 @@ Integrate timurproko.com with the standard tooling from
 https://github.com/timurproko/MyWorkflows without changing site content or the existing GitHub Pages deployment.
 The upstream adoption instructions and templates are the source of truth; no workflow implementation is copied locally.
 
-## Current state
+## Baseline at proposal
 
 - `.github/workflows/pages.yml` builds and publishes the site, preview posters and CV PDF on updates to the default branch.
 - No shared delivery caller, standard agent instruction files, bootstrap script or dependency-install bootstrap exists.
@@ -43,9 +43,22 @@ The upstream adoption instructions and templates are the source of truth; no wor
 
 - Compare copied files byte-for-byte with the upstream templates and run `delivery instructions`.
 - Check npm metadata and the bootstrap script's syntax and CI/skip behavior without altering machine setup unnecessarily.
+- Run `node --test scripts/workflow-bootstrap.test.mjs` for isolated bootstrap regression coverage.
 - Validate workflow syntax and inspect trigger, permission and failure-propagation behavior.
 - Run the site build and targeted generation checks for this integration; use GitHub CI for the final complete asset-rendering gate.
 - Run `git diff --check` and the final body validator.
+
+## Implemented results
+
+- The shared delivery caller, `AGENTS.md` and `CLAUDE.md` match their upstream templates.
+- npm `prepare` runs the unchanged bootstrap template; six isolated regression tests cover its entry point, skip modes and failure behavior.
+- `.artifacts/` and `.worktrees/` are ignored. Dependency versions and the package lock are unchanged.
+- `.github/workflows/ci.yml` defines the read-only `CI required` job, including bootstrap tests and complete site asset generation.
+- The existing Pages workflow is unchanged. No OpenSpec files or finalization link are introduced; the shared workflow uses plain delivery.
+- Local checks passed: template comparison, instruction validation, six bootstrap tests, actionlint, the production build, sample light/dark cover rendering and the three-page CV PDF.
+- The full poster-generation run remains a GitHub CI check, not a repeated local suite.
+- GitHub App access remains unverified and the two required Actions credentials are still absent. Live protection is intentionally unchanged until credentials and checks are available.
+- This first adoption needs maintainer activation because the shared event handler is not yet present on the default branch; subsequent automation uses the standard caller.
 
 ## GitHub prerequisites and rollout
 
